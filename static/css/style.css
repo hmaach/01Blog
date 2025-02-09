@@ -1,0 +1,365 @@
+body {
+  background: #292929;
+  font-family: 'Lexend Exa', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: #ee5e4b;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #e02a21;
+  text-shadow: 0px 0px 2px #a1a1a1;
+}
+
+button:not(:last-child) {
+  margin-right: 40px;
+}
+button {
+  border: 2px solid transparent;
+  border-radius: 5px;
+  padding: 10px;
+  transition: background 0.7s;
+  color: #ec2f00;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 30px;
+}
+button:hover {
+  background: #ec4138;
+  border: 2px solid #f05749;
+  border-right: 2px solid #e02a21;
+  border-bottom: 2px solid #e02a21;
+  color: #f9f8fd;
+}
+
+.content {
+  background-color: #646464;
+  margin: 0 auto;
+  width: 65%;
+  padding: 20px 60px;
+  box-shadow: 0px 0px 35px -20px #ec2f00;
+  border-radius: 25px;
+}
+
+.content p {
+  text-align: center;
+  margin: 30px 0px;
+  white-space: pre-line;
+}
+
+.like_button {
+  background-color: white;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  padding: 10px;
+  transition: background 0.7s;
+  color: #ec2f00;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.like_button:hover {
+  background: #ec4138;
+  border: 2px solid #f05749;
+  border-right: 2px solid #e02a21;
+  border-bottom: 2px solid #e02a21;
+  color: #f9f8fd;
+}
+
+.title {
+  text-align: center;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 60px;
+  font-weight: bold;
+  text-decoration: 2px underline;
+  text-decoration-color: rgba(255, 68, 0, 0.37);
+}
+/* ======================================== Home Page ============================================== */
+
+.home_logo {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 70px;
+}
+
+.site_title {
+  text-align: center;
+  font-size: 70px;
+}
+
+/* ============================================================================================== */
+
+/* ======================================== Navbar ============================================== */
+
+.navbar {
+  position: sticky;
+  top: 15px;
+  box-shadow: inset 1px -1px 10px rgb(116, 116, 116);
+  border: 2px solid white;
+  border-radius: 30px;
+  animation: slide-in 1s ease-out;
+  background-color: #e7e7e7;
+  width: 95%;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+.navbar ul {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0 30px;
+  list-style-type: none;
+}
+.navbar ul li:not(:last-child) {
+  margin-right: 40px;
+}
+.navbar ul li {
+  border: 2px solid transparent;
+  border-radius: 5px;
+  padding: 10px;
+  transition: background 0.2s;
+}
+.navbar ul li a {
+  color: #ec2f00;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.navbar ul li ul {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  display: block;
+  margin: 12px -12px;
+  padding: 0;
+  background: #ffa91b;
+  border: 2px solid #f7c833;
+  border-right: 2px solid #f89329;
+  border-bottom: 2px solid #f89329;
+  border-radius: 5px;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+.navbar ul li ul li {
+  margin: -2px 0 0 -2px;
+  width: calc(100% - 20px);
+  line-height: 1.7;
+}
+
+.navbar ul li:hover {
+  background: #ec4138;
+  border: 2px solid #f05749;
+  border-right: 2px solid #e02a21;
+  border-bottom: 2px solid #e02a21;
+}
+.navbar ul li:hover a {
+  color: #f9f8fd;
+}
+.navbar ul li:hover ul {
+  visibility: visible;
+  opacity: 1;
+  box-shadow: 0px 3px 5px 2px #ebecf1;
+}
+.navbar ul li:hover ul li a {
+  color: #f9f8fd;
+}
+
+.last_navbar {
+  right: 0;
+  position: absolute;
+  margin-right: 20px;
+}
+
+/* ============================================================================================== */
+
+/* ======================================== Service Info ======================================== */
+
+.service_info_header {
+  display: block ruby;
+}
+.service_info_header h5 {
+  float: right;
+}
+
+/* ============================================================================================== */
+
+/* ======================================== Service List ======================================== */
+
+.services_list {
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+pre {
+  display: none;
+}
+
+.service_list_info {
+  padding: 0 30px;
+}
+.service_list_info li {
+  list-style-type: none;
+}
+.service_list_info li a:hover > pre {
+  display: block;
+}
+
+.line {
+  width: 100%;
+  margin: 0 auto;
+  height: 2px;
+  background-color: #00000044;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  margin-top: 35px;
+}
+
+.create_service {
+  background: antiquewhite;
+  padding: 10px 20px;
+  border-radius: 17px;
+  display: table;
+  margin: 0 auto;
+  border: 2px solid #474747;
+  margin-bottom: 60px;
+  text-decoration: none;
+}
+
+.create_service:hover {
+  background-color: #b8b8b8;
+  box-shadow: 2px 3px 6px 1px #21212173;
+  transition: 0.5s;
+}
+.create_service:not(hover) {
+  transition: 0.6s;
+}
+
+.list_services_profile {
+  font-size: x-large;
+}
+
+/* ============================================================================================== */
+
+/* ===================================== Choose user type ======================================= */
+
+.choice_text {
+  text-shadow: 0px 0px 1px #e02a21;
+  color: black;
+  text-align: center;
+  font-size: 40px;
+  font-weight: initial;
+}
+
+.choice {
+  display: inline-grid;
+}
+
+.img {
+  border: 1px solid #b8b8b8;
+  border-radius: 14px;
+  display: inline-block;
+  padding: 20px;
+  box-shadow: 0px 0px 5px 5px rgb(50, 50, 50);
+  cursor: pointer;
+}
+.img:hover {
+  box-shadow: 0px 0px 9px 5px rgb(27, 27, 27);
+}
+.img:active {
+  background-color: #474747;
+  transition: 0.1s;
+  box-shadow: 0px 0px 9px 5px black;
+}
+
+.label_images {
+  display: block;
+}
+
+/* ============================================================================================== */
+
+/* =========================================== Forms ============================================ */
+
+form label {
+  display: none;
+}
+
+form {
+  margin: 0 auto;
+  display: grid;
+  width: 65%;
+}
+
+/* form ul {
+  display: none;
+} */
+
+form input {
+  padding: 10px 3px;
+  font-size: 20px;
+  display: block;
+  border: none;
+  border-bottom: 3px solid black;
+  background-color: inherit;
+  margin-top: 30px;
+}
+
+form input:hover,
+input:focus {
+  transition: 0.5s;
+  border-bottom: 3px solid orangered;
+}
+
+form select {
+  display: block;
+  font-size: 20px;
+  padding: 6px 3px;
+  background: inherit;
+  border: none;
+  border-bottom: 3px solid black;
+  margin-top: 30px;
+}
+
+form select:focus,
+select:hover {
+  transition: 0.5s;
+  border-bottom: 3px solid orangered;
+}
+
+.error_message {
+  color: #ff4040;
+  text-shadow: 0px 0px 10px #800;
+}
+
+form textarea {
+  display: block;
+  border: none;
+  border-bottom: 3px solid black;
+  background: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  margin-top: 30px;
+}
+
+form textarea:hover,
+textarea:focus {
+  transition: 0.5s;
+  border-bottom: 3px solid orangered;
+}
+
+span {
+  background-color: #3834343d;
+  border-radius: 30px;
+  box-shadow: 0px 0px 23px 1px #2423213d;
+  padding: 5px 10px;
+  margin: 5px 0px;
+}
+
+/* ============================================================================================== */

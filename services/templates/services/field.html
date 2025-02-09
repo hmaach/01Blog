@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% block title %}
+    {{field}} Services List
+{% endblock %}
+{% block content %}
+
+    {% if services.all|length != 0 %}
+        <p class="title">{{field}} Services</p>
+        <ul class='services_list'>
+            {% for service in services.all %}
+                <div style="display: ruby;">
+                    <div class='service_list_info'>
+                        <li><a href="/services/{{service.id}}">{{ service.name }}</a>-- {{ service.price_hour }}€/hour</li>
+                        <pre>{{ service.description }}</pre>
+                    </div>
+                    <p style="display:block; margin: 0; float: right;font-size: small; margin-right: 30px;">by <a href="/company/{{service.company.user}}">{{service.company.user}}</a></p>
+                </div>
+                {% if forloop.counter != services.all|length %}
+                    <div class="line"></div>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2>Sorry. No {{field}} services available</h2>
+    {% endif %}
+{% endblock %}

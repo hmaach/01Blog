@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %} 
+{% block title %}
+  Company Registration
+{%endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{form}}
+        <span class="helptext">Choose Field Above</span>
+        <button type="submit" name="register">Register</button>
+    </form>
+{% endblock %}

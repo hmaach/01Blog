@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+{% block title %}
+    {{ service.name }}
+{% endblock %}
+{% block content %}
+    <div class='service_info_header'>
+        <h1>{{service.name}} -- {{service.price_hour}}€/hour</h1>
+        <h5>by <a href="/company/{{service.company.user}}">{{service.company.user}}</a></h5>
+    </div>
+    <h3>{{service.field}}</h3>
+    <p style="text-align: left;">{{service.description}}</p>
+    {% if request.user.is_customer %}
+        <a href="/services/{{service.id}}/request_service/" class="like_button">Request Service</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+{% block title %}
+    Services List
+{% endblock %}
+{% block content %}
+    <p class="title">Services</p>
+    {% if user.is_company %}
+        <a class="create_service" href="/services/create"> Create Service</a>
+    {% endif %}
+    <div class='services_list'>
+        {% if services %}
+            {% for service in services.all %}
+            {% endfor %}
+        {% else %}
+            <h2>Sorry No services available yet</h2>
+        {% endif %}
+     </div>
+{% endblock %}

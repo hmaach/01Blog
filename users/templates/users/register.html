@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %} 
+{% block title %}
+  User Type
+{%endblock %}
+
+{%block content %}
+    <p class="choice_text">Choose wether you want to be a customer or a company</p>
+    
+    <div style="margin-top: 70px;">
+        <div style="margin-left: 50px" class="choice">
+            <div class="company img" id="company">
+                <a href="/register/company">
+                    <img src="/static/css/company.png" alt="company" >
+                </a>
+            </div>
+            <p class="label_images">Company</p>
+        </div>
+
+        <div style="float: right; margin-right: 50px;" class="choice">
+            <div class="img" id="customer">
+                <a href="/register/customer">
+                    <img src="/static/css/customer.png" alt="customer">
+                </a>
+            </div>
+            <p>Customer</p>
+        </div>
+    </div>
+{% endblock %}
