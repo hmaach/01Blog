@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -8,11 +9,16 @@ class User(AbstractUser):
     is_customer = models.BooleanField(default=False)
     email = models.CharField(max_length=100, unique=True)
 
+User = get_user_model()
 
 class Customer(models.Model):
-    pass
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    birth = models.DateField()
 
-
+    def __str__(self):
+        return self.user.username
+    
+    
 class Company(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True)
