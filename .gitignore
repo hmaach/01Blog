@@ -1,0 +1,64 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# Django migrations (optional, but sometimes excluded for team-based clean setup)
+**/migrations/*.py
+**/migrations/*.pyc
+!*/migrations/__init__.py  # keep init file to make it a valid package
+
+# SQLite database file (if you're using SQLite locally)
+db.sqlite3
+
+# Django secret key file (if applicable)
+.secret_key
+
+# Static files
+/staticfiles/
+/static/
+
+# Media files (uploaded by users)
+media/
+
+# VS Code or other editor files
+.vscode/
+.idea/
+
+# MacOS / Linux / Windows system files
+.DS_Store
+Thumbs.db
+
+# Python test cache
+.pytest_cache/
+
+# Log files
+*.log
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# MyPy type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pipenv / Poetry / requirements files
+Pipfile.lock
+poetry.lock
