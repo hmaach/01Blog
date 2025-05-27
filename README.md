@@ -1,12 +1,8 @@
-Great to hear it's working! Here's a simple and clear `README.md` file you can include at the root of your `netfix/` project:
-
----
-
-# Netfix 🛠️
+# Netfix
 
 Netfix is a Django-based service marketplace that connects customers with companies providing home services like plumbing, painting, electricity, and more.
 
-## 📦 Features
+## Features
 
 - Two types of users: Customers and Companies
 - Registration and login system
@@ -16,7 +12,7 @@ Netfix is a Django-based service marketplace that connects customers with compan
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 
@@ -62,7 +58,7 @@ Visit [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 
 ---
 
-## 📁 Project Structure
+## Project Structure 📁
 
 ```
 netfix/
@@ -78,7 +74,7 @@ netfix/
 
 ---
 
-## 🛠️ Django Admin
+## Django Admin
 
 Visit [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) to access the Django admin panel.
 
