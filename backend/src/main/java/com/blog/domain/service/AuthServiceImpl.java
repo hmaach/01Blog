@@ -17,7 +17,7 @@ import com.blog.application.exception.EmailAlreadyExistsException;
 import com.blog.domain.model.User;
 import com.blog.domain.port.in.AuthService;
 import com.blog.infrastructure.persistence.UserRepositoryImpl;
-import com.blog.infrastructure.security.JwtService;
+import com.blog.shared.infrastructure.security.JwtService;
 
 @Service
 public class AuthServiceImpl implements AuthService {

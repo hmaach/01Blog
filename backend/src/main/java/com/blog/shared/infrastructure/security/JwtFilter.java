@@ -1,4 +1,4 @@
-package com.blog.infrastructure.security;
+package com.blog.shared.infrastructure.security;
 
 import java.io.IOException;
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blog.application.dto.request.UpdateUserCommand;
 import com.blog.application.dto.response.UserResponse;
 import com.blog.domain.service.UserServiceImpl;
-import com.blog.infrastructure.security.JwtService;
+import com.blog.shared.infrastructure.security.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

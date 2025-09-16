@@ -1,4 +1,4 @@
-package com.blog.infrastructure.config;
+package com.blog.shared.infrastructure.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,9 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.blog.infrastructure.security.CustomAuthHandlers;
-import com.blog.infrastructure.security.CustomUserDetailsService;
-import com.blog.infrastructure.security.JwtFilter;
+import com.blog.shared.infrastructure.security.CustomAuthHandlers;
+import com.blog.shared.infrastructure.security.CustomUserDetailsService;
+import com.blog.shared.infrastructure.security.JwtFilter;
+
+
 
 @Configuration
 @EnableWebSecurity

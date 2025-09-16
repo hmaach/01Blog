@@ -16,7 +16,7 @@ import com.blog.application.dto.request.UpdateProductCommand;
 import com.blog.application.dto.response.ProductResponse;
 import com.blog.domain.model.Product;
 import com.blog.domain.service.ProductServiceImpl;
-import com.blog.infrastructure.security.JwtService;
+import com.blog.shared.infrastructure.security.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

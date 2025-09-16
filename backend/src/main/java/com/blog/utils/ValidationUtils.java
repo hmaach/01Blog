@@ -1,1 +1,5 @@
-// package com.blog.
+package com.blog.utils;
+
+public class ValidationUtils {
+
+}
