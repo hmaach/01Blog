@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import com.blog.application.dto.request.CreateProductCommand;
 import com.blog.application.dto.request.UpdateProductCommand;
 import com.blog.application.exception.ProductNotFoundException;
-import com.blog.application.exception.UserNotFoundException;
 import com.blog.domain.model.Product;
-import com.blog.domain.model.User;
+import com.blog.modules.user.domain.model.User;
 import com.blog.domain.port.in.ProductService;
 import com.blog.infrastructure.persistence.ProductRepositoryImpl;
 import com.blog.infrastructure.persistence.UserRepositoryImpl;
+import com.blog.modules.user.domain.exception.UserNotFoundException;
 
 @Service
 public class ProductServiceImpl implements ProductService {

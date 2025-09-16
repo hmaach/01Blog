@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.blog.domain.model.User;
-import com.blog.domain.model.UserPrincipal;
+import com.blog.modules.user.domain.model.User;
+import com.blog.modules.user.domain.model.UserPrincipal;
 import com.blog.infrastructure.persistence.UserRepositoryImpl;
 
 @Service

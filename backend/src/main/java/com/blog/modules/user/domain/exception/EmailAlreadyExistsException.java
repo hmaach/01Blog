@@ -1,4 +1,4 @@
-package com.blog.application.exception;
+package com.blog.modules.user.domain.exception;
 
 public class EmailAlreadyExistsException extends RuntimeException {
 

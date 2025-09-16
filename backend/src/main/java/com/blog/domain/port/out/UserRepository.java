@@ -3,7 +3,7 @@ package com.blog.domain.port.out;
 import java.util.List;
 import java.util.Optional;
 
-import com.blog.domain.model.User;
+import com.blog.modules.user.domain.model.User;
 
 public interface UserRepository {
 

@@ -2,7 +2,7 @@ package com.blog.domain.port.in;
 
 import java.util.List;
 
-import com.blog.domain.model.User;
+import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.dto.CreateUserCommand;
 import com.blog.modules.user.dto.UpdateUserCommand;
 

@@ -2,7 +2,8 @@ package com.blog.modules.user.dto;
 
 import java.time.LocalDateTime;
 
-import com.blog.domain.model.User;
+import com.blog.modules.user.domain.model.User;
+
 
 public record UserResponse(
         String id,

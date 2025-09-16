@@ -1,4 +1,4 @@
-package com.blog.domain.model;
+package com.blog.modules.user.domain.model;
 
 import java.time.LocalDateTime;
 

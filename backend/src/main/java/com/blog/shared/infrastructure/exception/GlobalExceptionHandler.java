@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.blog.application.dto.response.ErrorResponse;
-import com.blog.application.exception.EmailAlreadyExistsException;
 import com.blog.application.exception.ProductNotFoundException;
-import com.blog.application.exception.UserNotFoundException;
+import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
+import com.blog.modules.user.domain.exception.UserNotFoundException;
+import com.blog.shared.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

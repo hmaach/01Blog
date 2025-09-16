@@ -1,4 +1,4 @@
-package com.blog.application.dto.response;
+package com.blog.shared.dto;
 
 public record ErrorResponse(
         String error,

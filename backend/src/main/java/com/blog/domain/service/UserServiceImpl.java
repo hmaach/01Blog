@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.blog.application.exception.EmailAlreadyExistsException;
-import com.blog.application.exception.UserNotFoundException;
-import com.blog.domain.model.User;
+import com.blog.modules.user.domain.model.User;
 import com.blog.domain.port.in.UserService;
 import com.blog.infrastructure.persistence.UserRepositoryImpl;
+import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
+import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.dto.CreateUserCommand;
 import com.blog.modules.user.dto.UpdateUserCommand;
 

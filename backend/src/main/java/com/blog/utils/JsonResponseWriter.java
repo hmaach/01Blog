@@ -1,4 +1,4 @@
-package com.blog.application.exception;
+package com.blog.utils;
 
 import java.io.IOException;
 import java.util.HashMap;
