@@ -7,8 +7,8 @@ A Java backend project using **Hexagonal Architecture**, integrated with **Mongo
 ## Project Structure
 
 ```text
-src/main/java/com/letsplay/
-├── LetsPlayApplication.java
+src/main/java/com/blog/
+├── blogApplication.java
 ├── domain/            # Core business logic
 │   ├── model/
 │   ├── port/
@@ -100,8 +100,8 @@ JWT_SECRET=secret-key
 
 # SSL config
 CERT_PASSWORD=password
-CERT_ALIAS=letsplay
-CERT_DNAME=CN=localhost,OU=Dev,O=LetsPlay,L=Oujda,ST=Oriental,C=MA
+CERT_ALIAS=blog
+CERT_DNAME=CN=localhost,OU=Dev,O=blog,L=Oujda,ST=Oriental,C=MA
 
 ```
 

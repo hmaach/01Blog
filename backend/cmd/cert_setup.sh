@@ -2,15 +2,15 @@
 set -e
 
 CERT_DIR="./certs"
-CERT_FILE="$CERT_DIR/letsplay.p12"
+CERT_FILE="$CERT_DIR/blog.p12"
 
 if [ -f .env ]; then
   source .env
 fi
 
 CERT_PASSWORD=${CERT_PASSWORD:-default}
-CERT_ALIAS=${CERT_ALIAS:-letsplay}
-CERT_DNAME=${CERT_DNAME:-"CN=localhost, OU=Dev, O=LetsPlay, L=Oujda, ST=Oriental, C=MA"}
+CERT_ALIAS=${CERT_ALIAS:-blog}
+CERT_DNAME=${CERT_DNAME:-"CN=localhost, OU=Dev, O=blog, L=Oujda, ST=Oriental, C=MA"}
 
 mkdir -p "$CERT_DIR"
 

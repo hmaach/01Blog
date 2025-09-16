@@ -8,10 +8,10 @@
         <version>3.5.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.letsplay</groupId>
-    <artifactId>lets-play-api</artifactId>
+    <groupId>com.blog</groupId>
+    <artifactId>blog-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>lets-play-api</name>
+    <name>blog-api</name>
     <description>CRUD API with MongoDB and Spring Security</description>
     <url/>
     <licenses>
