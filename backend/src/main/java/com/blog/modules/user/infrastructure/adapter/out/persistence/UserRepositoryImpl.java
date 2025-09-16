@@ -1,4 +1,4 @@
-package com.blog.infrastructure.persistence;
+package com.blog.modules.user.infrastructure.adapter.out.persistence;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +10,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.blog.modules.user.domain.model.User;
-import com.blog.infrastructure.persistence.entity.UserEntity;
-import com.blog.infrastructure.persistence.mapper.UserMapper;
 import com.blog.modules.user.domain.port.out.UserRepository;
 
 @Repository

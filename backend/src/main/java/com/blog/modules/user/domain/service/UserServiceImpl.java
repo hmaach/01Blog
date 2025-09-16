@@ -9,12 +9,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.blog.modules.user.domain.model.User;
-import com.blog.infrastructure.persistence.UserRepositoryImpl;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.dto.CreateUserCommand;
 import com.blog.modules.user.dto.UpdateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
 
 @Service
 public class UserServiceImpl implements UserService {

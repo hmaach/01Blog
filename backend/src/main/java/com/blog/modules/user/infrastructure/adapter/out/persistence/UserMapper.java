@@ -1,7 +1,6 @@
-package com.blog.infrastructure.persistence.mapper;
+package com.blog.modules.user.infrastructure.adapter.out.persistence;
 
 import com.blog.modules.user.domain.model.User;
-import com.blog.infrastructure.persistence.entity.UserEntity;
 
 public class UserMapper {
 

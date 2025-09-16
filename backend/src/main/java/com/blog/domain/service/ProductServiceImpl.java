@@ -15,8 +15,8 @@ import com.blog.domain.model.Product;
 import com.blog.modules.user.domain.model.User;
 import com.blog.domain.port.in.ProductService;
 import com.blog.infrastructure.persistence.ProductRepositoryImpl;
-import com.blog.infrastructure.persistence.UserRepositoryImpl;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
 
 @Service
 public class ProductServiceImpl implements ProductService {

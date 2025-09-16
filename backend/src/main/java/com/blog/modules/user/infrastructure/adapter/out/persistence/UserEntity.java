@@ -1,4 +1,4 @@
-package com.blog.infrastructure.persistence.entity;
+package com.blog.modules.user.infrastructure.adapter.out.persistence;
 
 import java.time.LocalDateTime;
 
