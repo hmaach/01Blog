@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.application.dto.request.LoginUserCommand;
-import com.blog.application.dto.request.RegisterUserCommand;
-import com.blog.application.dto.response.UserResponse;
 import com.blog.domain.service.AuthServiceImpl;
+import com.blog.modules.user.dto.LoginUserCommand;
+import com.blog.modules.user.dto.RegisterUserCommand;
+import com.blog.modules.user.dto.UserResponse;
 
 import jakarta.validation.Valid;
 

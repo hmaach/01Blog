@@ -1,4 +1,4 @@
-package com.blog.application.exception;
+package com.blog.shared.infrastructure.exception;
 
 import java.util.stream.Collectors;
 
@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.blog.application.dto.response.ErrorResponse;
+import com.blog.application.exception.EmailAlreadyExistsException;
+import com.blog.application.exception.ProductNotFoundException;
+import com.blog.application.exception.UserNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

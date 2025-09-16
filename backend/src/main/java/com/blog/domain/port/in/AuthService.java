@@ -1,8 +1,9 @@
 package com.blog.domain.port.in;
 
-import com.blog.application.dto.request.LoginUserCommand;
-import com.blog.application.dto.request.RegisterUserCommand;
-import com.blog.application.dto.response.UserResponse;
+import com.blog.modules.user.dto.LoginUserCommand;
+import com.blog.modules.user.dto.RegisterUserCommand;
+import com.blog.modules.user.dto.UserResponse;
+
 
 public interface AuthService {
 

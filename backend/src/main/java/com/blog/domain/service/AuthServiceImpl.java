@@ -10,13 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.blog.application.dto.request.LoginUserCommand;
-import com.blog.application.dto.request.RegisterUserCommand;
-import com.blog.application.dto.response.UserResponse;
 import com.blog.application.exception.EmailAlreadyExistsException;
 import com.blog.domain.model.User;
 import com.blog.domain.port.in.AuthService;
 import com.blog.infrastructure.persistence.UserRepositoryImpl;
+import com.blog.modules.user.dto.LoginUserCommand;
+import com.blog.modules.user.dto.RegisterUserCommand;
+import com.blog.modules.user.dto.UserResponse;
 import com.blog.shared.infrastructure.security.JwtService;
 
 @Service

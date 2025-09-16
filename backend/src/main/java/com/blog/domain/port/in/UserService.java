@@ -2,9 +2,9 @@ package com.blog.domain.port.in;
 
 import java.util.List;
 
-import com.blog.application.dto.request.CreateUserCommand;
-import com.blog.application.dto.request.UpdateUserCommand;
 import com.blog.domain.model.User;
+import com.blog.modules.user.dto.CreateUserCommand;
+import com.blog.modules.user.dto.UpdateUserCommand;
 
 public interface UserService {
 

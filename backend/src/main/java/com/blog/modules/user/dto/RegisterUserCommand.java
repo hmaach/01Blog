@@ -1,10 +1,12 @@
-package com.blog.application.dto.request;
+package com.blog.modules.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record LoginUserCommand(
+public record RegisterUserCommand(
+        @NotBlank
+        String name,
         @Email
         @NotBlank
         String email,

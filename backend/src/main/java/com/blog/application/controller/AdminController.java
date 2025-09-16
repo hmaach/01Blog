@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.application.dto.request.CreateUserCommand;
-import com.blog.application.dto.request.UpdateUserCommand;
-import com.blog.application.dto.response.UserResponse;
 import com.blog.domain.service.UserServiceImpl;
+import com.blog.modules.user.dto.CreateUserCommand;
+import com.blog.modules.user.dto.UpdateUserCommand;
+import com.blog.modules.user.dto.UserResponse;
 
 import jakarta.validation.Valid;
 
