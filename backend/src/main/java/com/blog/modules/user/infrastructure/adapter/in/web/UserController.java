@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blog.modules.admin.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.domain.service.UserDomainService;
-import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 import com.blog.shared.infrastructure.security.JwtService;
 

@@ -92,10 +92,6 @@ modules/user/
 │   ├── entity/
 │   │   ├── User.java                    # Pure domain entity
 │   │   └── UserPrincipal.java          # Domain model for authentication
-│   ├── valueobject/
-│   │   ├── Email.java                  # Email value object
-│   │   ├── Username.java               # Username value object
-│   │   └── Password.java               # Password value object
 │   ├── service/
 │   │   └── UserDomainService.java      # Pure domain business rules
 │   ├── repository/
@@ -127,8 +123,6 @@ modules/user/
 │   │   │   ├── RegisterUserCommand.java
 │   │   │   ├── LoginUserCommand.java
 │   │   │   └── UpdateUserCommand.java
-│   │   └── query/
-│   │       └── UserQuery.java
 │   └── mapper/
 │       └── UserApplicationMapper.java
 ├── presentation/
