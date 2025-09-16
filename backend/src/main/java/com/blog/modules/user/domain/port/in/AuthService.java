@@ -1,4 +1,4 @@
-package com.blog.domain.port.in;
+package com.blog.modules.user.domain.port.in;
 
 import com.blog.modules.user.dto.LoginUserCommand;
 import com.blog.modules.user.dto.RegisterUserCommand;

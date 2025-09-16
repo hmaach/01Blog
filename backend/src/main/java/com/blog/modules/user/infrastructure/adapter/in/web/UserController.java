@@ -1,4 +1,4 @@
-package com.blog.application.controller;
+package com.blog.modules.user.infrastructure.adapter.in.web;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.domain.service.UserServiceImpl;
+import com.blog.modules.user.domain.service.UserServiceImpl;
 import com.blog.modules.user.dto.UpdateUserCommand;
 import com.blog.modules.user.dto.UserResponse;
 import com.blog.shared.infrastructure.security.JwtService;

@@ -1,4 +1,4 @@
-package com.blog.domain.port.in;
+package com.blog.modules.user.domain.port.in;
 
 import java.util.List;
 

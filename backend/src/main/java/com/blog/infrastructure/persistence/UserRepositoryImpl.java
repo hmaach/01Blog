@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.blog.modules.user.domain.model.User;
-import com.blog.domain.port.out.UserRepository;
 import com.blog.infrastructure.persistence.entity.UserEntity;
 import com.blog.infrastructure.persistence.mapper.UserMapper;
+import com.blog.modules.user.domain.port.out.UserRepository;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {

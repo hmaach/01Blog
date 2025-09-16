@@ -1,4 +1,4 @@
-package com.blog.domain.port.out;
+package com.blog.modules.user.domain.port.out;
 
 import java.util.List;
 import java.util.Optional;

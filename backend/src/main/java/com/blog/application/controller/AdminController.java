@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.domain.service.UserServiceImpl;
+import com.blog.modules.user.domain.service.UserServiceImpl;
 import com.blog.modules.user.dto.CreateUserCommand;
 import com.blog.modules.user.dto.UpdateUserCommand;
 import com.blog.modules.user.dto.UserResponse;
