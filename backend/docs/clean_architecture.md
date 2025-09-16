@@ -78,3 +78,90 @@ src/main/java/com/blogplatform/
 └── utils/
     ├── MediaProcessor.java
     └── ValidationUtils.java```
+
+
+
+
+
+
+
+
+    ```text
+modules/user/
+├── domain/
+│   ├── entity/
+│   │   ├── User.java                    # Pure domain entity
+│   │   └── UserPrincipal.java          # Domain model for authentication
+│   ├── valueobject/
+│   │   ├── Email.java                  # Email value object
+│   │   ├── Username.java               # Username value object
+│   │   └── Password.java               # Password value object
+│   ├── service/
+│   │   └── UserDomainService.java      # Pure domain business rules
+│   ├── repository/
+│   │   └── UserRepository.java         # Repository interface
+│   ├── exception/
+│   │   ├── EmailAlreadyExistsException.java
+│   │   ├── UserNotFoundException.java
+│   │   └── InvalidCredentialsException.java
+│   └── event/
+│       ├── UserRegisteredEvent.java
+│       └── UserLoggedInEvent.java
+├── application/
+│   ├── usecase/
+│   │   ├── RegisterUserUseCase.java    # Application use cases
+│   │   ├── LoginUserUseCase.java
+│   │   ├── UpdateUserUseCase.java
+│   │   └── GetUserUseCase.java
+│   ├── service/
+│   │   └── UserApplicationService.java # Orchestrates use cases
+│   ├── port/
+│   │   ├── in/
+│   │   │   ├── AuthUseCase.java       # Input port interfaces
+│   │   │   └── UserManagementUseCase.java
+│   │   └── out/
+│   │       ├── UserRepositoryPort.java # Output port interfaces
+│   │       └── PasswordEncoderPort.java
+│   ├── dto/
+│   │   ├── command/
+│   │   │   ├── RegisterUserCommand.java
+│   │   │   ├── LoginUserCommand.java
+│   │   │   └── UpdateUserCommand.java
+│   │   └── query/
+│   │       └── UserQuery.java
+│   └── mapper/
+│       └── UserApplicationMapper.java
+├── presentation/
+│   ├── web/
+│   │   ├── AuthController.java
+│   │   └── UserController.java
+│   ├── dto/
+│   │   ├── request/
+│   │   │   ├── RegisterUserRequest.java
+│   │   │   ├── LoginRequest.java
+│   │   │   └── UpdateUserRequest.java
+│   │   └── response/
+│   │       ├── UserResponse.java
+│   │       ├── AuthResponse.java
+│   │       └── ApiResponse.java
+│   ├── mapper/
+│   │   └── UserWebMapper.java
+│   └── exception/
+│       └── UserControllerAdvice.java
+└── infrastructure/
+    ├── persistence/
+    │   ├── entity/
+    │   │   └── UserJpaEntity.java
+    │   ├── repository/
+    │   │   └── UserJpaRepository.java
+    │   ├── mapper/
+    │   │   └── UserPersistenceMapper.java
+    │   └── adapter/
+    │       └── UserRepositoryAdapter.java
+    ├── security/
+    │   ├── JwtTokenProvider.java
+    │   ├── PasswordEncoderAdapter.java
+    │   └── UserDetailsServiceAdapter.java
+    └── config/
+        └── UserModuleConfig.java
+```

@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.modules.user.domain.service.AuthServiceImpl;
-import com.blog.modules.user.dto.LoginUserCommand;
-import com.blog.modules.user.dto.RegisterUserCommand;
-import com.blog.modules.user.dto.UserResponse;
+import com.blog.modules.user.domain.service.AuthDomainService;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 
 import jakarta.validation.Valid;
 
@@ -18,9 +18,9 @@ import jakarta.validation.Valid;
 public class AuthController {
 
     @Autowired
-    private final AuthServiceImpl service;
+    private final AuthDomainService service;
 
-    public AuthController(AuthServiceImpl service) {
+    public AuthController(AuthDomainService service) {
         this.service = service;
     }
 

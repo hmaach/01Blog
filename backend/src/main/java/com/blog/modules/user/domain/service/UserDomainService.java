@@ -12,19 +12,19 @@ import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.in.UserService;
-import com.blog.modules.user.dto.CreateUserCommand;
-import com.blog.modules.user.dto.UpdateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.CreateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserDomainService implements UserService {
 
     @Autowired
     private final UserRepositoryImpl userRepository;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public UserServiceImpl(UserRepositoryImpl userRepository) {
+    public UserDomainService(UserRepositoryImpl userRepository) {
         this.userRepository = userRepository;
     }
 

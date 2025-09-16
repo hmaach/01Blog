@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.modules.user.domain.service.UserServiceImpl;
-import com.blog.modules.user.dto.CreateUserCommand;
-import com.blog.modules.user.dto.UpdateUserCommand;
-import com.blog.modules.user.dto.UserResponse;
+import com.blog.modules.user.domain.service.UserDomainService;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.CreateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 
 import jakarta.validation.Valid;
 
@@ -22,9 +22,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/admin/users")
 public class AdminController {
 
-    private final UserServiceImpl service;
+    private final UserDomainService service;
 
-    public AdminController(UserServiceImpl service) {
+    public AdminController(UserDomainService service) {
         this.service = service;
     }
 

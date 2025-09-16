@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.modules.user.domain.service.UserServiceImpl;
-import com.blog.modules.user.dto.UpdateUserCommand;
-import com.blog.modules.user.dto.UserResponse;
+import com.blog.modules.user.domain.service.UserDomainService;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 import com.blog.shared.infrastructure.security.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,10 +19,10 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/me")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserDomainService userService;
     private final JwtService jwtService;
 
-    public UserController(UserServiceImpl userService, JwtService jwtService) {
+    public UserController(UserDomainService userService, JwtService jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
     }

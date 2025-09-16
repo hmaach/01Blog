@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.port.in.AuthService;
-import com.blog.modules.user.dto.LoginUserCommand;
-import com.blog.modules.user.dto.RegisterUserCommand;
-import com.blog.modules.user.dto.UserResponse;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
 import com.blog.shared.infrastructure.security.JwtService;
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthDomainService implements AuthService {
 
     @Autowired
     private final UserRepositoryImpl userRepository;
@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public AuthServiceImpl(UserRepositoryImpl userRepository) {
+    public AuthDomainService(UserRepositoryImpl userRepository) {
         this.userRepository = userRepository;
     }
 

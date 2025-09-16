@@ -1,9 +1,8 @@
-package com.blog.modules.user.dto;
+package com.blog.modules.user.infrastructure.adapter.in.web.dto;
 
 import java.time.LocalDateTime;
 
 import com.blog.modules.user.domain.model.User;
-
 
 public record UserResponse(
         String id,

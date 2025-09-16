@@ -3,8 +3,8 @@ package com.blog.modules.user.domain.port.in;
 import java.util.List;
 
 import com.blog.modules.user.domain.model.User;
-import com.blog.modules.user.dto.CreateUserCommand;
-import com.blog.modules.user.dto.UpdateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.CreateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 
 public interface UserService {
 
