@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "products")
-public class ProductEntity {
+@Document(collection = "posts")
+public class PostEntity {
 
     @Id
     private String id;
@@ -16,7 +16,7 @@ public class ProductEntity {
     private String userId;
     private final LocalDateTime createdAt;
 
-    public ProductEntity(
+    public PostEntity(
             String id,
             String name,
             String description,

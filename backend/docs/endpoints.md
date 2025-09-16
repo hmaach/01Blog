@@ -8,8 +8,8 @@
 | POST     | `/users`         | ✅              | Admin      | Create user              | -> done 
 | PATCH    | `/users/{id}`    | ✅              | Admin/User | Update user details      | -> done 
 | DELETE   | `/users/{id}`    | ✅              | Admin/User | Delete user              | -> done 
-| GET      | `/products`      | ❌              | -          | List all products        | -> done 
-| GET      | `/products/{id}` | ❌              | -          | Get product by ID        | -> done 
-| POST     | `/products`      | ✅              | Admin      | Create a new product     | -> done 
-| PATCH    | `/products/{id}` | ✅              | Admin      | Update product           | -> done 
-| DELETE   | `/products/{id}` | ✅              | Admin      | Delete product           | -> done 
+| GET      | `/posts`      | ❌              | -          | List all posts        | -> done 
+| GET      | `/posts/{id}` | ❌              | -          | Get post by ID        | -> done 
+| POST     | `/posts`      | ✅              | Admin      | Create a new post     | -> done 
+| PATCH    | `/posts/{id}` | ✅              | Admin      | Update post           | -> done 
+| DELETE   | `/posts/{id}` | ✅              | Admin      | Delete post           | -> done 

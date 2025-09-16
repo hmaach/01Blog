@@ -8,45 +8,45 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.blog.modules.post.domain.model.Product;
-import com.blog.modules.post.domain.port.out.ProductRepository;
+import com.blog.modules.post.domain.model.Post;
+import com.blog.modules.post.domain.port.out.PostRepository;
 
 @Repository
-public class ProductRepositoryImpl implements ProductRepository {
+public class PostRepositoryImpl implements PostRepository {
 
     private final MongoTemplate mongoTemplate;
 
-    public ProductRepositoryImpl(MongoTemplate mongoTemplate) {
+    public PostRepositoryImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public Product save(Product product) {
-        return mongoTemplate.save(product);
+    public Post save(Post post) {
+        return mongoTemplate.save(post);
     }
 
     @Override
-    public Optional<Product> findById(String id) {
-        Product product = mongoTemplate.findById(id, Product.class);
-        return Optional.ofNullable(product);
+    public Optional<Post> findById(String id) {
+        Post post = mongoTemplate.findById(id, Post.class);
+        return Optional.ofNullable(post);
     }
 
     @Override
-    public List<Product> findByUserId(String userId) {
+    public List<Post> findByUserId(String userId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
-        return mongoTemplate.find(query, Product.class);
+        return mongoTemplate.find(query, Post.class);
     }
 
     @Override
-    public List<Product> findAll() {
-        return mongoTemplate.findAll(Product.class);
+    public List<Post> findAll() {
+        return mongoTemplate.findAll(Post.class);
     }
 
     @Override
     public void deleteById(String id) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
-        mongoTemplate.remove(query, Product.class);
+        mongoTemplate.remove(query, Post.class);
     }
 }

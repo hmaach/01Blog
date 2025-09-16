@@ -2,7 +2,7 @@ package com.blog.modules.post.domain.model;
 
 import java.time.LocalDateTime;
 
-public class Product {
+public class Post {
 
     private final String id;
     private final String userId;
@@ -11,7 +11,7 @@ public class Product {
     private Double price;
     private final LocalDateTime createdAt;
 
-    public Product(
+    public Post(
             String id,
             String name,
             String description,

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.blog.modules.post.domain.exception.ProductNotFoundException;
+import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.shared.dto.ErrorResponse;
@@ -78,8 +78,8 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("METHOD_NOT_ALLOWED", message));
     }
 
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleProductNotExists(ProductNotFoundException ex) {
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePostNotExists(PostNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("PRODUCT_NOT_EXISTS", ex.getMessage()));
     }

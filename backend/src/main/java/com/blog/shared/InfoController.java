@@ -26,13 +26,13 @@ public class InfoController {
                         Map.of("method", "GET", "path", "/api/me", "description", "Get current user profile"),
                         Map.of("method", "PATCH", "path", "/api/me", "description", "Update current user"),
                         Map.of("method", "DELETE", "path", "/api/me", "description", "Delete current user"),
-                        Map.of("method", "GET", "path", "/api/products", "description", "List all products"),
-                        Map.of("method", "GET", "path", "/api/products/{id}", "description", "Get product by ID"),
-                        Map.of("method", "GET", "path", "/api/products/user", "description", "Get products of current user"),
-                        Map.of("method", "GET", "path", "/api/products/user/{id}", "description", "Get products by user ID"),
-                        Map.of("method", "POST", "path", "/api/products", "description", "Create a new product (Admin)"),
-                        Map.of("method", "PATCH", "path", "/api/products/{id}", "description", "Update product (Admin)"),
-                        Map.of("method", "DELETE", "path", "/api/products/{id}", "description", "Delete product (Admin)")
+                        Map.of("method", "GET", "path", "/api/posts", "description", "List all posts"),
+                        Map.of("method", "GET", "path", "/api/posts/{id}", "description", "Get post by ID"),
+                        Map.of("method", "GET", "path", "/api/posts/user", "description", "Get posts of current user"),
+                        Map.of("method", "GET", "path", "/api/posts/user/{id}", "description", "Get posts by user ID"),
+                        Map.of("method", "POST", "path", "/api/posts", "description", "Create a new post (Admin)"),
+                        Map.of("method", "PATCH", "path", "/api/posts/{id}", "description", "Update post (Admin)"),
+                        Map.of("method", "DELETE", "path", "/api/posts/{id}", "description", "Delete post (Admin)")
                 )
         );
     }

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
-public record CreateProductCommand(
+public record CreatePostCommand(
         @NotBlank(message = "Name cannot be blank")
         @Size(max = 255, message = "Name must be less than 255 characters")
         String name,

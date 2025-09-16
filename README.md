@@ -45,11 +45,11 @@ Other files:
 | POST   | `/users`         | ✅    | Admin      | Create user              |
 | PATCH  | `/users/{id}`    | ✅    | Admin/User | Update user details      |
 | DELETE | `/users/{id}`    | ✅    | Admin/User | Delete user              |
-| GET    | `/products`      | ❌    | -          | List all products        |
-| GET    | `/products/{id}` | ❌    | -          | Get product by ID        |
-| POST   | `/products`      | ✅    | Admin      | Create a product         |
-| PATCH  | `/products/{id}` | ✅    | Admin      | Update product           |
-| DELETE | `/products/{id}` | ✅    | Admin      | Delete product           |
+| GET    | `/posts`      | ❌    | -          | List all posts        |
+| GET    | `/posts/{id}` | ❌    | -          | Get post by ID        |
+| POST   | `/posts`      | ✅    | Admin      | Create a post         |
+| PATCH  | `/posts/{id}` | ✅    | Admin      | Update post           |
+| DELETE | `/posts/{id}` | ✅    | Admin      | Delete post           |
 
 ---
 
@@ -57,17 +57,17 @@ Other files:
 
 ```mermaid
 classDiagram
-User "1" -- "n" Product : Owns
+User "1" -- "n" Post : Owns
 User : +String id
 User : +String name
 User : +String email
 User : +String password
 User : +String role
-Product : +String id
-Product : +String name
-Product : +String description
-Product : +Double price
-Product : +String userId
+Post : +String id
+Post : +String name
+Post : +String description
+Post : +Double price
+Post : +String userId
 ```
 
 ---

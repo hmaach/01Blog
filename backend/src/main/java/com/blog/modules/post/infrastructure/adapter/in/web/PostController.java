@@ -11,82 +11,82 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.modules.post.domain.model.Product;
-import com.blog.modules.post.domain.service.ProductDomainService;
-import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreateProductCommand;
-import com.blog.modules.post.infrastructure.adapter.in.web.dto.ProductResponse;
-import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdateProductCommand;
+import com.blog.modules.post.domain.model.Post;
+import com.blog.modules.post.domain.service.PostDomainService;
+import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
+import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse;
+import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand;
 import com.blog.shared.infrastructure.security.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/posts")
 public class PostController {
 
-    private final ProductDomainService productService;
+    private final PostDomainService postService;
     private final JwtService jwtService;
 
     public PostController(
-            ProductDomainService productService,
+            PostDomainService postService,
             JwtService jwtService
     ) {
-        this.productService = productService;
+        this.postService = postService;
         this.jwtService = jwtService;
 
     }
 
     @GetMapping
-    public List<ProductResponse> getProducts() {
-        return productService.findAll().stream()
-                .map(ProductResponse::fromDomain)
+    public List<PostResponse> getPosts() {
+        return postService.findAll().stream()
+                .map(PostResponse::fromDomain)
                 .toList();
     }
 
     @GetMapping("/user")
-    public List<ProductResponse> getProductsOfCurrentUser(HttpServletRequest request) {
+    public List<PostResponse> getPostsOfCurrentUser(HttpServletRequest request) {
         String id = jwtService.extractUserIdFromRequest(request);
 
-        return productService.findByUserId(id).stream()
-                .map(ProductResponse::fromDomain)
+        return postService.findByUserId(id).stream()
+                .map(PostResponse::fromDomain)
                 .toList();
     }
 
     @GetMapping("/user/{id}")
-    public List<ProductResponse> getProductsByUserId(@PathVariable String id) {
-        return productService.findByUserId(id).stream()
-                .map(ProductResponse::fromDomain)
+    public List<PostResponse> getPostsByUserId(@PathVariable String id) {
+        return postService.findByUserId(id).stream()
+                .map(PostResponse::fromDomain)
                 .toList();
     }
 
     @GetMapping("/{id}")
-    public ProductResponse getProduct(@PathVariable String id) {
-        return ProductResponse.fromDomain(productService.findById(id));
+    public PostResponse getPost(@PathVariable String id) {
+        return PostResponse.fromDomain(postService.findById(id));
     }
 
     @PostMapping
-    public ProductResponse createProduct(@RequestBody @Valid CreateProductCommand cmd, HttpServletRequest request) {
+    public PostResponse createPost(@RequestBody @Valid CreatePostCommand cmd, HttpServletRequest request) {
         String userId = jwtService.extractUserIdFromRequest(request);
-        return ProductResponse.fromDomain(productService.createProduct(cmd, userId));
+        return PostResponse.fromDomain(postService.createPost(cmd, userId));
     }
 
     @PatchMapping("/{id}")
-    public ProductResponse updateProduct(
+    public PostResponse updatePost(
             @PathVariable String id,
-            @RequestBody UpdateProductCommand cmd,
+            @RequestBody UpdatePostCommand cmd,
             HttpServletRequest request) {
 
         String userId = jwtService.extractUserIdFromRequest(request);
         String role = jwtService.extractRoleFromRequest(request);
         boolean isAdmin = role.equals("ADMIN");
 
-        Product updated = productService.updateProduct(id, cmd, userId, isAdmin);
-        return ProductResponse.fromDomain(updated);
+        Post updated = postService.updatePost(id, cmd, userId, isAdmin);
+        return PostResponse.fromDomain(updated);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable String id, HttpServletRequest request) {
+    public void deletePost(@PathVariable String id, HttpServletRequest request) {
 
         String userId = jwtService.extractUserIdFromRequest(request);
         String role = jwtService.extractUserIdFromRequest(request);
@@ -94,6 +94,6 @@ public class PostController {
 
         System.err.println("---------------------" + role + "---------------------");
 
-        productService.deleteProduct(id, userId, isAdmin);
+        postService.deletePost(id, userId, isAdmin);
     }
 }

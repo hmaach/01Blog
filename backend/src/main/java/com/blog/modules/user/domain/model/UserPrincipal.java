@@ -51,11 +51,6 @@ public class UserPrincipal implements UserDetails {
     }
 
     @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-    }
-
-    @Override
     public String toString() {
         return super.toString();
     }
