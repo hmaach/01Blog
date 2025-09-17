@@ -11,10 +11,10 @@ public class PostMapper {
 
         return new PostEntity(
                 post.getId(),
-                post.getName(),
-                post.getDescription(),
-                post.getPrice(),
+                post.getTitle(),
+                post.getBody(),
                 post.getUserId(),
+                post.getStatus(),
                 post.getCreatedAt()
         );
     }
@@ -26,10 +26,10 @@ public class PostMapper {
 
         return new Post(
                 entity.getId(),
-                entity.getName(),
-                entity.getDescription(),
-                entity.getPrice(),
+                entity.getTitle(),
+                entity.getBody(),
                 entity.getUserId(),
+                entity.getStatus(),
                 entity.getCreatedAt()
         );
     }

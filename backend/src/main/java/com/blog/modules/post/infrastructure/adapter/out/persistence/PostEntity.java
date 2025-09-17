@@ -1,77 +1,94 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "posts")
 public class PostEntity {
 
     @Id
-    private String id;
-    private String name;
-    private String description;
-    private double price;
-    private String userId;
-    private final LocalDateTime createdAt;
+    private UUID id;
 
-    public PostEntity(
-            String id,
-            String name,
-            String description,
-            double price,
-            String userId,
-            LocalDateTime createdAt
-    ) {
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "body")
+    private String body;
+
+    @Column(name = "user_id")
+    private UUID userId;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
+
+    public PostEntity(UUID id, String title, String body, UUID userId, String status, Instant createdAt) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
+        this.title = title;
+        this.body = body;
         this.userId = userId;
+        this.status = status;
         this.createdAt = createdAt;
     }
 
-    public String getId() {
+    public PostEntity() {
+
+    }
+
+    // Getters and setters
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBody() {
+        return body;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 }

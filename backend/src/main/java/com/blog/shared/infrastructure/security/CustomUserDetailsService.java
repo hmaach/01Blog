@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.blog.modules.user.domain.model.User;
-import com.blog.modules.user.domain.model.UserPrincipal;
 import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
 
 @Service

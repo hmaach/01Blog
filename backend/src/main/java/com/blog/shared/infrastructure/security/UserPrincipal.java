@@ -1,4 +1,4 @@
-package com.blog.modules.user.domain.model;
+package com.blog.shared.infrastructure.security;
 
 import java.util.Collection;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.blog.modules.user.domain.model.User;
 
 public class UserPrincipal implements UserDetails {
 

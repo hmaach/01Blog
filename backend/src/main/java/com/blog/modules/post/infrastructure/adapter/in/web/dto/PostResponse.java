@@ -1,25 +1,26 @@
 package com.blog.modules.post.infrastructure.adapter.in.web.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.UUID;
 
 import com.blog.modules.post.domain.model.Post;
 
 public record PostResponse(
-        String id,
-        String name,
-        String description,
-        Double price,
-        String userId,
-        LocalDateTime createdAt
-        ) {
+        UUID id,
+        String title,
+        String body,
+        UUID userId,
+        String status,
+        Instant createdAt
+) {
 
     public static PostResponse fromDomain(Post post) {
         return new PostResponse(
                 post.getId(),
-                post.getName(),
-                post.getDescription(),
-                post.getPrice(),
+                post.getTitle(),
+                post.getBody(),
                 post.getUserId(),
+                post.getStatus(),
                 post.getCreatedAt()
         );
     }
