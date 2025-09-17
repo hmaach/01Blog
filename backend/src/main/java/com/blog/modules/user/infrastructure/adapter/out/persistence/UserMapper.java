@@ -12,6 +12,7 @@ public class UserMapper {
         return new UserEntity(
                 user.getId(),
                 user.getName(),
+                user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole(),

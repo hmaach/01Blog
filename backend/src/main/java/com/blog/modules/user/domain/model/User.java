@@ -1,17 +1,40 @@
 package com.blog.modules.user.domain.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.UUID;
 
 public class User {
 
-    private final String id;
+    private final UUID id;
     private String name;
     private String email;
+    private String username;
     private String role;
     private String password;
-    private final LocalDateTime createdAt;
+    private final Instant createdAt;
+    private UUID avatarMediaId;
 
-    public User(String id, String name, String email, String password, String role, LocalDateTime createdAt) {
+    public User(
+            UUID id,
+            String name,
+            String email,
+            String username,
+            String password,
+            String role,
+            Instant createdAt,
+            UUID avatarMediaId
+    ) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.createdAt = createdAt;
+        this.avatarMediaId = avatarMediaId;
+    }
+
+    public User(UUID id, String name, String email, String password, String role, Instant createdAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -21,7 +44,7 @@ public class User {
     }
 
     // Getters
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -33,6 +56,10 @@ public class User {
         return email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -41,8 +68,12 @@ public class User {
         return role;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public UUID getAvatarMediaId() {
+        return avatarMediaId;
     }
 
     // Domain actions
@@ -54,11 +85,19 @@ public class User {
         this.email = email;
     }
 
+    public void changeUsername(String username) {
+        this.username = username;
+    }
+
     public void changeRole(String role) {
         this.role = role;
     }
 
-    public void changePassword(String encode) {
-        this.password = encode;
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
+    public void changeAvatar(UUID avatarMediaId) {
+        this.avatarMediaId = avatarMediaId;
     }
 }

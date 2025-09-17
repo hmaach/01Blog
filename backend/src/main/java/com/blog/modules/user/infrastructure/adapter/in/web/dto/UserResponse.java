@@ -1,15 +1,16 @@
 package com.blog.modules.user.infrastructure.adapter.in.web.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.UUID;
 
 import com.blog.modules.user.domain.model.User;
 
 public record UserResponse(
-        String id,
+        UUID id,
         String name,
         String email,
         String role,
-        LocalDateTime createdAt
+        Instant createdAt
         ) {
 
     public static UserResponse fromDomain(User user) {

@@ -1,6 +1,7 @@
 package com.blog.modules.post.domain.port.in;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
@@ -10,13 +11,13 @@ public interface PostService {
 
     List<Post> findAll();
 
-    Post findById(String id);
+    Post findById(UUID id);
 
-    List<Post> findByUserId(String id);
+    List<Post> findByUserId(UUID id);
 
-    Post createPost(CreatePostCommand command, String userID);
+    Post createPost(CreatePostCommand command, UUID userID);
 
-    Post updatePost(String postId, UpdatePostCommand cmd, String currentUserId, boolean isAdmin);
+    Post updatePost(UUID postId, UpdatePostCommand cmd, UUID currentUserId, boolean isAdmin);
 
-    void deletePost(String postId, String currentUserId, boolean isAdmin);
+    void deletePost(UUID postId, UUID currentUserId, boolean isAdmin);
 }

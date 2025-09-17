@@ -1,31 +1,54 @@
 package com.blog.modules.user.infrastructure.adapter.out.persistence;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Document(collection = "users")
+@Entity
+@Table(name = "users")
 public class UserEntity {
 
     @Id
-    private String id;
-    private String name;
+    // @GeneratedValue
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
     private String email;
-    private String password;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
     private String role;
-    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(name = "avatar_media_id")
+    private UUID avatarMediaId;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
 
     public UserEntity(
-            String id,
+            UUID id,
             String name,
+            String username,
             String email,
             String password,
             String role,
-            LocalDateTime createdAt
+            Instant createdAt
     ) {
         this.id = id;
         this.name = name;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
@@ -33,14 +56,13 @@ public class UserEntity {
     }
 
     public UserEntity() {
-        // for Mongo
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -72,7 +94,23 @@ public class UserEntity {
         this.role = role;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public UUID getAvatarMediaId() {
+        return avatarMediaId;
+    }
+
+    public void setAvatarMediaId(UUID avatarMediaId) {
+        this.avatarMediaId = avatarMediaId;
     }
 }

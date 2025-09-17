@@ -1,6 +1,6 @@
 package com.blog.modules.user.domain.service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,11 +9,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.CreateUserCommand;
+import com.blog.modules.admin.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.UserService;
-import com.blog.modules.admin.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
 
 @Service
@@ -39,7 +39,7 @@ public class UserDomainService implements UserService {
             throw new EmailAlreadyExistsException(cmd.email());
         }
 
-        String id = UUID.randomUUID().toString();
+        UUID id = UUID.randomUUID();
 
         User user = new User(
                 id,
@@ -47,7 +47,7 @@ public class UserDomainService implements UserService {
                 cmd.email(),
                 encoder.encode(cmd.password()),
                 cmd.role() != null ? cmd.role() : "USER",
-                LocalDateTime.now()
+                Instant.now()
         );
 
         userRepository.save(user);

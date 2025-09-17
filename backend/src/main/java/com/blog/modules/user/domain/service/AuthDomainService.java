@@ -1,6 +1,6 @@
 package com.blog.modules.user.domain.service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
+import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.AuthService;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserCommand;
@@ -43,15 +43,17 @@ public class AuthDomainService implements AuthService {
             throw new EmailAlreadyExistsException(cmd.email());
         }
 
-        String id = UUID.randomUUID().toString();
+        UUID id = UUID.randomUUID();
 
         User user = new User(
                 id,
                 cmd.name(),
                 cmd.email(),
+                cmd.username(),
                 encoder.encode(cmd.password()),
                 "USER",
-                LocalDateTime.now()
+                Instant.now(),
+                cmd.avatarMediaId()
         );
 
         userRepository.save(user);
