@@ -1,17 +1,18 @@
 package com.blog.modules.user.infrastructure.adapter.out.persistence;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Repository;
+
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.out.UserRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Repository
 @Transactional
@@ -35,8 +36,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String id) {
-        UserEntity entity = entityManager.find(UserEntity.class, UUID.fromString(id));
+    public Optional<User> findById(UUID id) {
+        UserEntity entity = entityManager.find(UserEntity.class, id);
         return Optional.ofNullable(UserMapper.toDomain(entity));
     }
 
@@ -62,10 +63,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteById(String id) {
-        UserEntity entity = entityManager.find(UserEntity.class, UUID.fromString(id));
+    public void deleteById(UUID id) {
+        UserEntity entity = entityManager.find(UserEntity.class, id);
         if (entity != null) {
             entityManager.remove(entity);
         }
+    }
+
+    public void ban(UUID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'ban'");
+    }
+
+    public void unban(UUID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'unban'");
     }
 }

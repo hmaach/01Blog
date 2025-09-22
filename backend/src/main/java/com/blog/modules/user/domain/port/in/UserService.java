@@ -1,6 +1,7 @@
 package com.blog.modules.user.domain.port.in;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.CreateUserCommand;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.UpdateUserCommand;
@@ -10,14 +11,14 @@ public interface UserService {
 
     User createUser(CreateUserCommand command);
 
-    User findById(String id);
+    User findById(UUID id);
 
     User findByEmail(String email);
 
     List<User> findAll();
 
     // TODO: separate between the update of the user and the admin
-    User updateUser(String id, UpdateUserCommand command);
+    User updateUser(UUID id, UpdateUserCommand command);
 
-    void deleteUser(String id);
+    void deleteUser(UUID id);
 }

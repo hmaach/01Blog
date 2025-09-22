@@ -1,5 +1,7 @@
 package com.blog.modules.user.infrastructure.adapter.in.web;
 
+import java.util.UUID;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,19 +32,19 @@ public class UserController {
     @GetMapping
     public UserResponse getUser(HttpServletRequest request) {
         String id = jwtService.extractUserIdFromRequest(request);
-        return UserResponse.fromDomain(userService.findById(id));
+        return UserResponse.fromDomain(userService.findById(UUID.fromString(id)));
     }
 
     @PatchMapping
     public UserResponse updateUser(HttpServletRequest request, @Valid @RequestBody UpdateUserCommand cmd) {
         String id = jwtService.extractUserIdFromRequest(request);
-        return UserResponse.fromDomain(userService.updateUser(id, cmd));
+        return UserResponse.fromDomain(userService.updateUser(UUID.fromString(id), cmd));
     }
 
     @DeleteMapping
     public void deleteUser(HttpServletRequest request) {
         String id = jwtService.extractUserIdFromRequest(request);
-        userService.deleteUser(id);
+        userService.deleteUser(UUID.fromString(id));
     }
 
 }

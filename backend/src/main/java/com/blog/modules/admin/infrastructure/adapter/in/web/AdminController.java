@@ -1,6 +1,7 @@
 package com.blog.modules.admin.infrastructure.adapter.in.web;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    public UserResponse getUser(@PathVariable String id) {
+    public UserResponse getUser(@PathVariable UUID id) {
         return UserResponse.fromDomain(service.findById(id));
     }
 
@@ -46,12 +47,12 @@ public class AdminController {
     }
 
     @PatchMapping("/{id}")
-    public UserResponse updateUser(@PathVariable String id, @Valid @RequestBody UpdateUserCommand cmd) {
+    public UserResponse updateUser(@PathVariable UUID id, @Valid @RequestBody UpdateUserCommand cmd) {
         return UserResponse.fromDomain(service.updateUser(id, cmd));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable String id) {
+    public void deleteUser(@PathVariable UUID id) {
         service.deleteUser(id);
     }
 }

@@ -57,9 +57,9 @@ public class UserDomainService implements UserService {
     }
 
     @Override
-    public User findById(String id) {
+    public User findById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
         return user;
     }
 
@@ -71,9 +71,9 @@ public class UserDomainService implements UserService {
     }
 
     @Override
-    public User updateUser(String id, UpdateUserCommand cmd) {
+    public User updateUser(UUID id, UpdateUserCommand cmd) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
 
         if (cmd.getName() != null) {
             user.changeName(cmd.getName());
@@ -100,10 +100,9 @@ public class UserDomainService implements UserService {
     }
 
     @Override
-    public void deleteUser(String id) {
-        @SuppressWarnings("unused")
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+    public void deleteUser(UUID id) {
+        userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id.toString()));
         userRepository.deleteById(id);
     }
 

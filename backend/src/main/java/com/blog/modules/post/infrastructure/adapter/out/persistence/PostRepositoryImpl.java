@@ -73,6 +73,11 @@ public class PostRepositoryImpl implements PostRepository {
                 .collect(Collectors.toList());
     }
 
+    public void hidePostById(UUID postId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'hidePostById'");
+    }
+
     // @Override
     // public void deleteById(String id) {
     //     Query query = new Query();
