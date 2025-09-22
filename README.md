@@ -1,141 +1,51 @@
-# LET'S PLAY
-
-A Java backend project using **Hexagonal Architecture**, integrated with **MongoDB**, and containerized using **Docker**. Follows clean architecture principles with clear separation of concerns between domain logic, application logic, and infrastructure.
+Here’s a simple README that incorporates your requests, including a description of the Clean Architecture, an image, and relevant links:
 
 ---
 
-## Project Structure
+# 01Blog
 
-```text
-src/main/java/com/blog/
-├── blogApplication.java
-├── domain/            # Core business logic
-│   ├── model/
-│   ├── port/
-│   │   ├── in/       # Input ports (use cases)
-│   │   └── out/      # Output ports (interfaces)
-│   └── service/      # Domain services
-├── infrastructure/   # External concerns
-│   ├── config/
-│   ├── persistence/  # Database adapters
-│   └── security/
-└── application/      # Application layer
-    ├── controller/   # REST controllers
-    ├── dto/          # Request & Response DTOs
-    └── exception/    # Global exception handling
+## Overview
 
-Other files:
-├── .env-example      # Example environment variables
-├── compose.yaml      # Docker Compose config
-├── pom.xml           # Maven config
-└── setup.sh          # Setup environment script
-```
+In this project, you will build a social blogging platform called **01Blog**, where students can share their learning experiences, discoveries, and progress throughout their journey. Users can interact with each other’s content, follow one another, and engage in meaningful discussions.
 
----
+You will develop this platform as a fullstack application, using **Java Spring Boot** for the backend and **Angular** for the frontend. The project covers essential features such as REST API development, user authentication, media handling, and more.
 
-## Endpoints
+### Key Features:
 
-| Method | Endpoint         | Auth | Roles      | Description              |
-| ------ | ---------------- | ---- | ---------- | ------------------------ |
-| POST   | `/auth/register` | ❌    | -          | Register a new user      |
-| POST   | `/auth/login`    | ❌    | -          | User login               |
-| GET    | `/users`         | ✅    | Admin      | List all users           |
-| GET    | `/users/{id}`    | ✅    | Admin/User | Get user by ID           |
-| GET    | `/users/me`      | ✅    | Any        | Get current user profile |
-| POST   | `/users`         | ✅    | Admin      | Create user              |
-| PATCH  | `/users/{id}`    | ✅    | Admin/User | Update user details      |
-| DELETE | `/users/{id}`    | ✅    | Admin/User | Delete user              |
-| GET    | `/posts`      | ❌    | -          | List all posts        |
-| GET    | `/posts/{id}` | ❌    | -          | Get post by ID        |
-| POST   | `/posts`      | ✅    | Admin      | Create a post         |
-| PATCH  | `/posts/{id}` | ✅    | Admin      | Update post           |
-| DELETE | `/posts/{id}` | ✅    | Admin      | Delete post           |
+* User registration and secure login
+* Role-based access control (User vs Admin)
+* Media uploads (Images/Video)
+* Real-time post interactions (Likes/Comments)
+* Admin panel for content moderation
+
+## Clean Architecture
+
+**Clean Architecture** is a software design philosophy that emphasizes separation of concerns, testability, and scalability. It structures your application into layers, each with a specific responsibility, making it easier to maintain and extend.
+
+* **Entities**: Core business logic, independent of any external dependencies.
+* **Use Cases**: Application-specific business rules.
+* **Interface Adapters**: Converts data from external sources into a format that can be understood by the use cases and entities.
+* **Frameworks & Drivers**: External agents such as databases, web frameworks, or UI components.
+
+
+[Read more about Clean Architecture](https://medium.com/@souzaluis/applying-clean-architecture-in-java-with-spring-boot-framework-part-iv-a3cb82d5421a)
+
+
+
+![Clean Architecture Diagram](./docs/assets/clean_architecture.png)
 
 ---
 
-## Database Design
+## Backend Documentation
 
-```mermaid
-classDiagram
-User "1" -- "n" Post : Owns
-User : +String id
-User : +String name
-User : +String email
-User : +String password
-User : +String role
-Post : +String id
-Post : +String name
-Post : +String description
-Post : +Double price
-Post : +String userId
-```
+For more detailed backend implementation and setup instructions, please check the [Backend Documentation](./docs/README-backend.md).
 
 ---
 
-## Getting Started
+### Technologies Used:
 
-### 1. Clone the Repo
+* **Java**: Spring Boot, Spring Security
+* **SQL**: PostgreSQL
+* **Frontend**: Angular
+* **Docker**
 
-```bash
-git clone https://github.com/hmaach/lets-play.git
-cd lets-play
-```
-
-### 2. Set Up Environment
-
-```bash
-cp .env-example .env
-```
-
-Update `.env` with your MongoDB credentials:
-
-```env
-# Database config
-MONGO_INITDB_ROOT_USERNAME=username
-MONGO_INITDB_ROOT_PASSWORD=password
-MONGO_INITDB_DATABASE=lets-play-db
-
-# JWT config
-JWT_SECRET=secret-key
-
-# SSL config
-CERT_PASSWORD=password
-CERT_ALIAS=blog
-CERT_DNAME=CN=localhost,OU=Dev,O=blog,L=Oujda,ST=Oriental,C=MA
-
-```
-
-### 3. Setup Environment
-
-```bash
-source ./setup.sh
-```
-
-This will:
-
-* Install Docker rootless if missing
-* Create Docker volume for persistent data
-
-### 4. Connect to MongoDB
-
-```bash
-mongosh "mongodb://localhost:27017"
-```
-
-### 5. Stop MongoDB
-
-```bash
-docker compose down
-```
-
----
-
-## Requirements
-
-* Java 17+
-* Maven
-* MongoDB (Dockerized)
-* Docker (Rootless compatible)
-* Docker Compose v2
-* `mongosh` (optional, for testing)
-* Angular (for frontend integration)
