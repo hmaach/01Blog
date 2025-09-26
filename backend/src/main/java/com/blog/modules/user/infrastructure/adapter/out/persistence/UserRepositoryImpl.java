@@ -55,6 +55,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUsername(String username) {
+        TypedQuery<UserEntity> query = entityManager.createQuery(
+                "SELECT u FROM UserEntity u WHERE u.username = :username", UserEntity.class
+        );
+        query.setParameter("username", username);
+        List<UserEntity> result = query.getResultList();
+        if (result.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(UserMapper.toDomain(result.get(0)));
+    }
+
+    @Override
     public List<User> findAll() {
         TypedQuery<UserEntity> query = entityManager.createQuery("SELECT u FROM UserEntity u", UserEntity.class);
         return query.getResultList().stream()

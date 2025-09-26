@@ -28,9 +28,11 @@ public class UserMapper {
         return new User(
                 entity.getId(),
                 entity.getName(),
+                entity.getUsername(),
                 entity.getEmail(),
                 entity.getPassword(),
                 entity.getRole(),
+                entity.getAvatarMediaId(),
                 entity.getCreatedAt()
         );
     }

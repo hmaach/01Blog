@@ -9,6 +9,9 @@ public class UpdateUserCommand {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String username;
+
     @Email
     private String email;
 
@@ -37,5 +40,13 @@ public class UpdateUserCommand {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

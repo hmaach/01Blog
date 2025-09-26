@@ -1,4 +1,4 @@
-package com.blog.modules.user.domain.service;
+package com.blog.modules.user.application.service;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -20,7 +20,7 @@ import com.blog.modules.user.infrastructure.adapter.out.persistence.UserReposito
 import com.blog.shared.infrastructure.security.JwtService;
 
 @Service
-public class AuthDomainService implements AuthService {
+public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private final UserRepositoryImpl userRepository;
@@ -33,7 +33,7 @@ public class AuthDomainService implements AuthService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public AuthDomainService(UserRepositoryImpl userRepository) {
+    public AuthServiceImpl(UserRepositoryImpl userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -52,8 +52,8 @@ public class AuthDomainService implements AuthService {
                 cmd.username(),
                 encoder.encode(cmd.password()),
                 "USER",
-                Instant.now(),
-                cmd.avatarMediaId()
+                cmd.avatarMediaId(),
+                Instant.now()
         );
 
         userRepository.save(user);

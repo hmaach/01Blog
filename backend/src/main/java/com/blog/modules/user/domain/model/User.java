@@ -17,12 +17,12 @@ public class User {
     public User(
             UUID id,
             String name,
-            String email,
             String username,
+            String email,
             String password,
             String role,
-            Instant createdAt,
-            UUID avatarMediaId
+            UUID avatarMediaId,
+            Instant createdAt
     ) {
         this.id = id;
         this.name = name;
@@ -32,15 +32,6 @@ public class User {
         this.role = role;
         this.createdAt = createdAt;
         this.avatarMediaId = avatarMediaId;
-    }
-
-    public User(UUID id, String name, String email, String password, String role, Instant createdAt) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.createdAt = createdAt;
     }
 
     // Getters
