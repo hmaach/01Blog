@@ -1,4 +1,3 @@
-// infrastructure/adapter/out/storage/LocalFileStorage.java
 package com.blog.modules.media.infrastructure.adapter.out.storage;
 
 import java.io.IOException;
@@ -40,9 +39,9 @@ public class LocalFileStorage implements FileStorage {
 
     @Override
     public void delete(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
-        if (Files.exists(path)) {
-            Files.delete(path);
+        Path targetPath = Paths.get(uploadDir.toString(), filePath);
+        if (Files.exists(targetPath)) {
+            Files.delete(targetPath);
         }
     }
 

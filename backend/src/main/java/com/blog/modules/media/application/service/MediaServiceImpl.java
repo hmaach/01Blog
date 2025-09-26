@@ -34,7 +34,8 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public UUID uploadAvatar(UUID userId, MultipartFile file) throws IOException, java.io.IOException {
         Optional<UUID> avatarId = userRepository.getAvatarId(userId);
-        if (!avatarId.isEmpty()) {
+
+        if (avatarId.isPresent()) {
             mediaRepository.findById(avatarId.get()).ifPresent(media -> {
                 try {
                     fileStorage.delete(media.getUrl());
@@ -45,23 +46,19 @@ public class MediaServiceImpl implements MediaService {
             });
         }
 
-        // Générer le nouveau nom de fichier
         String filename = generateAvatarFilename(userId, file);
         String relativePath = "avatars/" + filename;
 
-        // Stocker le fichier
-        String storedPath = fileStorage.store(file, relativePath);
+        fileStorage.store(file, relativePath);
 
-        // Créer et sauvegarder l'entité Media
         Media media = new Media();
         media.setUserId(userId);
         media.setMediaType("IMAGE");
-        media.setUrl(storedPath);
+        media.setUrl(relativePath);
         media.setUploadedAt(Instant.now());
 
         Media savedMedia = mediaRepository.save(media);
 
-        // Mettre à jour l'utilisateur avec le nouvel avatar
         userRepository.updateAvatarId(userId, savedMedia.getId());
 
         return savedMedia.getId();
