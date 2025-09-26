@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.blog.modules.post.domain.exception.PostNotFoundException;
@@ -24,6 +25,13 @@ import com.blog.shared.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorResponse> handleApi(ApiException ex) {
+        return ResponseEntity
+                .status(ex.getStatus())
+                .body(new ErrorResponse(ex.getCode(), ex.getMessage()));
+    }
 
     // User exceptions
     @ExceptionHandler(AccessDeniedException.class)
@@ -117,5 +125,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .badRequest()
                 .body(Map.of("error", "Invalid JSON format"));
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ResponseEntity<Map<String, String>> handleMultipartException(MultipartException ex) {
+        return ResponseEntity
+                .badRequest()
+                .body(Map.of("error", "Invalid request: must be multipart/form-data with a 'file' part."));
     }
 }

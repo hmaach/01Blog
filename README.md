@@ -1,7 +1,3 @@
-Here’s a simple README that incorporates your requests, including a description of the Clean Architecture, an image, and relevant links:
-
----
-
 # 01Blog
 
 ## Overview

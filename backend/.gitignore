@@ -37,3 +37,6 @@ build/
 
 ### certs ###
 certs/
+
+### uploaded files ###
+uploads/

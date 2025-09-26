@@ -31,17 +31,17 @@ public class UserController {
         this.jwtService = jwtService;
     }
 
+    @GetMapping
+    public UserResponse getCurrentUser(HttpServletRequest request) {
+        String id = jwtService.extractUserIdFromRequest(request);
+        return UserResponse.fromDomain(userService.findById(UUID.fromString(id)));
+    }
+
     @GetMapping("/all")
     public List<UserResponse> getUsers() {
         return userService.findAll().stream()
                 .map(UserResponse::fromDomain)
                 .toList();
-    }
-
-    @GetMapping
-    public UserResponse getCurrentUser(HttpServletRequest request) {
-        String id = jwtService.extractUserIdFromRequest(request);
-        return UserResponse.fromDomain(userService.findById(UUID.fromString(id)));
     }
 
     @GetMapping("/{id}")

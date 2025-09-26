@@ -11,6 +11,7 @@ import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.out.UserRepository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
@@ -76,6 +77,43 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<UUID> getAvatarId(UUID userId) {
+
+        TypedQuery<UUID> query = entityManager.createQuery(
+                "SELECT u.avatarMediaId FROM UserEntity u WHERE u.id = :userId", UUID.class
+        );
+        query.setParameter("userId", userId);
+        UUID avatarId = query.getSingleResult();
+        return Optional.ofNullable(avatarId);
+    }
+
+    @Override
+    public void updateAvatarId(UUID userId, UUID avatarId) {
+        int updated = entityManager.createQuery(
+                "UPDATE UserEntity u SET u.avatarMediaId = :avatarId WHERE u.id = :userId"
+        )
+                .setParameter("avatarId", avatarId)
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        if (updated == 0) {
+            throw new EntityNotFoundException("User not found with id: " + userId);
+        }
+    }
+
+    @Override
+    public void ban(UUID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'ban'");
+    }
+
+    @Override
+    public void unban(UUID userId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'unban'");
+    }
+
+    @Override
     public void deleteById(UUID id) {
         UserEntity entity = entityManager.find(UserEntity.class, id);
         if (entity != null) {
@@ -83,13 +121,4 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    public void ban(UUID userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'ban'");
-    }
-
-    public void unban(UUID userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'unban'");
-    }
 }

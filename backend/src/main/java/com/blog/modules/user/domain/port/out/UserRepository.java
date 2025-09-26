@@ -14,9 +14,17 @@ public interface UserRepository {
 
     Optional<User> findByEmail(String email);
 
-    public Optional<User> findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
     List<User> findAll();
+
+    Optional<UUID> getAvatarId(UUID userId);
+
+    void updateAvatarId(UUID userId, UUID avatarUrl);
+
+    void ban(UUID userId);
+
+    void unban(UUID userId);
 
     void deleteById(UUID id);
 }
