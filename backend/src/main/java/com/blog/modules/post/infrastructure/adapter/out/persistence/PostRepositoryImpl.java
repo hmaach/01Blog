@@ -12,6 +12,7 @@ import com.blog.modules.post.domain.port.out.PostRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -24,8 +25,9 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        PostEntity entity = PostMapper.toEntity(post);
+        entity = entityManager.merge(entity);
+        return PostMapper.toDomain(entity);
     }
 
     @Override
@@ -38,6 +40,16 @@ public class PostRepositoryImpl implements PostRepository {
     public List<Post> findByUserId(UUID id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findByUserId'");
+    }
+
+    @Override
+    @Transactional
+    public void attachMediaToPost(UUID postId, UUID mediaId) {
+        entityManager.createNativeQuery(
+                "INSERT INTO post_media (post_id, media_id, created_at) VALUES (:postId, :mediaId, NOW())")
+                .setParameter("postId", postId)
+                .setParameter("mediaId", mediaId)
+                .executeUpdate();
     }
 
     @Override

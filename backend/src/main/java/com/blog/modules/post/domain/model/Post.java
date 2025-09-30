@@ -14,9 +14,9 @@ public class Post {
 
     public Post(
             UUID id,
+            UUID userId,
             String title,
             String body,
-            UUID userId,
             String status,
             Instant createdAt
     ) {
@@ -27,22 +27,6 @@ public class Post {
         this.status = status;
         this.createdAt = createdAt;
     }
-
-    // public Post(
-    //         String id,
-    //         String name,
-    //         String description,
-    //         Double price,
-    //         String userId,
-    //         Instant createdAt
-    // ) {
-    //     this.id = id;
-    //     this.name = name;
-    //     this.description = description;
-    //     this.price = price;
-    //     this.userId = userId;
-    //     this.createdAt = createdAt;
-    // }
 
     // --- Getters ---
     public UUID getId() {

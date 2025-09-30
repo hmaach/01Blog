@@ -26,9 +26,9 @@ public class PostMapper {
 
         return new Post(
                 entity.getId(),
+                entity.getUserId(),
                 entity.getTitle(),
                 entity.getBody(),
-                entity.getUserId(),
                 entity.getStatus(),
                 entity.getCreatedAt()
         );

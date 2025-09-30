@@ -1,6 +1,7 @@
 package com.blog.modules.user.application.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id.toString()));
         return user;
+    }
+
+    @Override
+    public Optional<User> userExist(UUID id) {
+        return userRepository.findById(id);
     }
 
     @Override

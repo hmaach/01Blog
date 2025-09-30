@@ -17,6 +17,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import com.blog.modules.media.domain.exception.MediaStorageException;
 import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
@@ -76,6 +77,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("INTERNAL_ERROR", "Something went wrong. Please try again later."));
+    }
+
+    @ExceptionHandler(MediaStorageException.class)
+    public ResponseEntity<ErrorResponse> handleMediaError(MediaStorageException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse("MEDIA_ERROR", ex.getMessage()));
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)

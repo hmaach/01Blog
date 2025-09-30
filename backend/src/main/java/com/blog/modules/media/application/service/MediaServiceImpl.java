@@ -12,6 +12,7 @@ import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
 import com.blog.modules.media.domain.port.out.MediaRepository;
+import com.blog.modules.post.domain.port.out.PostRepository;
 import com.blog.modules.user.domain.port.out.UserRepository;
 
 import io.jsonwebtoken.io.IOException;
@@ -19,14 +20,17 @@ import io.jsonwebtoken.io.IOException;
 @Service
 public class MediaServiceImpl implements MediaService {
 
+    private final PostRepository postRepository;
     private final MediaRepository mediaRepository;
     private final UserRepository userRepository;
     private final FileStorage fileStorage;
 
     public MediaServiceImpl(
+            PostRepository postRepository,
             MediaRepository mediaRepository,
             UserRepository userRepository,
             FileStorage fileStorage) {
+        this.postRepository = postRepository;
         this.mediaRepository = mediaRepository;
         this.userRepository = userRepository;
         this.fileStorage = fileStorage;
@@ -47,7 +51,7 @@ public class MediaServiceImpl implements MediaService {
             });
         }
 
-        String filename = generateAvatarFilename(userId, file);
+        String filename = generateMediaFilename(userId, file);
         String relativePath = "avatars/" + filename;
 
         fileStorage.store(file, relativePath);
@@ -79,9 +83,9 @@ public class MediaServiceImpl implements MediaService {
         return MediaType.APPLICATION_OCTET_STREAM;
     }
 
-    private String generateAvatarFilename(UUID userId, MultipartFile file) {
+    private String generateMediaFilename(UUID relatedId, MultipartFile file) {
         String extension = getFileExtension(file.getOriginalFilename());
-        return userId.toString() + "_" + System.currentTimeMillis() + "." + extension;
+        return relatedId.toString() + "_" + System.currentTimeMillis() + "." + extension;
     }
 
     private String getFileExtension(String filename) {
@@ -95,6 +99,28 @@ public class MediaServiceImpl implements MediaService {
 
         fileStorage.delete(media.getUrl());
         mediaRepository.deleteById(UUID.fromString(mediaId));
+    }
+
+    @Override
+    public UUID savePostMedia(UUID userId, UUID postId, MultipartFile file)
+            throws IOException, java.io.IOException {
+
+        String filename = generateMediaFilename(postId, file);
+        String relativePath = "posts/" + filename;
+
+        fileStorage.store(file, relativePath);
+
+        Media media = new Media();
+        media.setUserId(userId);
+        media.setMediaType("IMAGE");
+        media.setUrl(relativePath);
+        media.setUploadedAt(Instant.now());
+
+        Media savedMedia = mediaRepository.save(media);
+
+        postRepository.attachMediaToPost(postId, savedMedia.getId());
+
+        return savedMedia.getId();
     }
 
 }

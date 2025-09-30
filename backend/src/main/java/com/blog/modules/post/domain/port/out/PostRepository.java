@@ -16,5 +16,7 @@ public interface PostRepository {
 
     List<Post> findAll();
 
+    void attachMediaToPost(UUID postId, UUID mediaId);
+
     void deleteById(UUID id);
 }

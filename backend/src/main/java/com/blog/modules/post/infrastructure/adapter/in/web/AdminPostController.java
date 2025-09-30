@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse;
-import com.blog.modules.post.infrastructure.service.PostServiceImpl;
 import com.blog.shared.infrastructure.security.JwtService;
 
 @RestController
 @RequestMapping("/api/admin/posts")
 public class AdminPostController {
 
-    private final PostServiceImpl postService;
+    private final PostService postService;
     private final JwtService jwtService;
 
     public AdminPostController(
-            PostServiceImpl postService,
+            PostService postService,
             JwtService jwtService
     ) {
         this.postService = postService;
