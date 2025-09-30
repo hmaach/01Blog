@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,12 +66,17 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public void deleteFile(String mediaId) throws IOException, java.io.IOException {
-        Media media = mediaRepository.findById(UUID.fromString(mediaId))
-                .orElseThrow(() -> new IllegalArgumentException("Media not found"));
-
-        fileStorage.delete(media.getUrl());
-        mediaRepository.deleteById(UUID.fromString(mediaId));
+    public MediaType getMediaType(String path) {
+        if (path.endsWith(".png")) {
+            return MediaType.IMAGE_PNG;
+        }
+        if (path.endsWith(".jpg") || path.endsWith(".jpeg")) {
+            return MediaType.IMAGE_JPEG;
+        }
+        if (path.endsWith(".mp4")) {
+            return MediaType.valueOf("video/mp4");
+        }
+        return MediaType.APPLICATION_OCTET_STREAM;
     }
 
     private String generateAvatarFilename(UUID userId, MultipartFile file) {
@@ -81,4 +87,14 @@ public class MediaServiceImpl implements MediaService {
     private String getFileExtension(String filename) {
         return filename.substring(filename.lastIndexOf(".") + 1);
     }
+
+    @Override
+    public void deleteFile(String mediaId) throws IOException, java.io.IOException {
+        Media media = mediaRepository.findById(UUID.fromString(mediaId))
+                .orElseThrow(() -> new IllegalArgumentException("Media not found"));
+
+        fileStorage.delete(media.getUrl());
+        mediaRepository.deleteById(UUID.fromString(mediaId));
+    }
+
 }

@@ -20,8 +20,6 @@ import com.blog.shared.infrastructure.security.CustomAuthHandlers;
 import com.blog.shared.infrastructure.security.CustomUserDetailsService;
 import com.blog.shared.infrastructure.security.JwtFilter;
 
-
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -44,6 +42,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(request -> request
                 .requestMatchers("api/auth/**").permitAll()
+                .requestMatchers("api/media/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                 .requestMatchers(HttpMethod.GET, "api/posts").permitAll()
                 .requestMatchers("api/admin/**").hasRole("ADMIN")

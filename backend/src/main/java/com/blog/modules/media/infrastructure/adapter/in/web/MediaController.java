@@ -2,8 +2,12 @@ package com.blog.modules.media.infrastructure.adapter.in.web;
 
 import java.util.UUID;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.modules.media.domain.port.in.MediaService;
+import com.blog.modules.media.domain.port.out.FileStorage;
 import com.blog.shared.infrastructure.exception.ApiException;
 import com.blog.shared.infrastructure.security.JwtService;
 
@@ -23,10 +28,28 @@ public class MediaController {
 
     private final MediaService mediaService;
     private final JwtService jwtService;
+    private final FileStorage fileStorage;
 
-    public MediaController(JwtService jwtService, MediaService mediaService) {
+    public MediaController(JwtService jwtService,
+            MediaService mediaService, FileStorage fileStorage) {
         this.mediaService = mediaService;
         this.jwtService = jwtService;
+        this.fileStorage = fileStorage;
+    }
+
+    @GetMapping("/avatars/{filename:.+}")
+    public ResponseEntity<ByteArrayResource> getAvatar(@PathVariable String filename)
+            throws IOException, java.io.IOException {
+
+        String path = "avatars/" + filename;
+
+        byte[] fileBytes = fileStorage.retrieve(path);
+        MediaType mediaType = mediaService.getMediaType(path);
+
+        return ResponseEntity.ok()
+                .contentLength(fileBytes.length)
+                .contentType(mediaType)
+                .body(new ByteArrayResource(fileBytes));
     }
 
     @PostMapping("/avatar")

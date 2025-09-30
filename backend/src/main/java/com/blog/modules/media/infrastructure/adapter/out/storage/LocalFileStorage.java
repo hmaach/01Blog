@@ -47,7 +47,7 @@ public class LocalFileStorage implements FileStorage {
 
     @Override
     public byte[] retrieve(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
+        Path path = Paths.get(uploadDir.toString(), filePath);
         return Files.readAllBytes(path);
     }
 }
