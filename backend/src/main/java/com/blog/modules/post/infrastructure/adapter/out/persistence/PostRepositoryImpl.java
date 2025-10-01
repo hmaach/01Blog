@@ -1,5 +1,6 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,11 +46,12 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     @Transactional
     public void attachMediaToPost(UUID postId, UUID mediaId) {
-        entityManager.createNativeQuery(
-                "INSERT INTO post_media (post_id, media_id, created_at) VALUES (:postId, :mediaId, NOW())")
-                .setParameter("postId", postId)
-                .setParameter("mediaId", mediaId)
-                .executeUpdate();
+        PostMediaEntity entity = new PostMediaEntity();
+        entity.setPostId(postId);
+        entity.setMediaId(mediaId);
+        entity.setCreatedAt(Instant.now());
+
+        entityManager.persist(entity);
     }
 
     @Override

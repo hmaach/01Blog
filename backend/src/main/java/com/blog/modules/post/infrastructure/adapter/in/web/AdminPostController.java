@@ -1,13 +1,9 @@
 package com.blog.modules.post.infrastructure.adapter.in.web;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.modules.post.domain.port.in.PostService;
-import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse;
 import com.blog.shared.infrastructure.security.JwtService;
 
 @RestController
@@ -25,12 +21,12 @@ public class AdminPostController {
         this.jwtService = jwtService;
     }
 
-    @GetMapping
-    public List<PostResponse> getPosts() {
-        return postService.findAll().stream()
-                .map(PostResponse::fromDomain)
-                .toList();
-    }
+    // @GetMapping
+    // public List<PostResponse> getPosts() {
+    //     return postService.findAll().stream()
+    //             .map(PostResponse::fromDomain)
+    //             .toList();
+    // }
 
     // @GetMapping("/user")
     // public List<PostResponse> getPostsOfCurrentUser(HttpServletRequest request) {

@@ -55,6 +55,20 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
+    public List<Media> findByPostId(UUID postId) {
+        return entityManager.createQuery("""
+            SELECT m FROM MediaEntity m
+            JOIN PostMediaEntity pm ON m.id = pm.mediaId
+            WHERE pm.postId = :postId
+            """, MediaEntity.class)
+                .setParameter("postId", postId)
+                .getResultList()
+                .stream()
+                .map(MediaMapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public void deleteById(UUID id) {
         MediaEntity entity = entityManager.find(MediaEntity.class, id);
         if (entity != null) {

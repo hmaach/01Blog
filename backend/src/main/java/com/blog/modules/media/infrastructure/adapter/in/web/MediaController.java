@@ -18,6 +18,7 @@ import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
 import com.blog.shared.infrastructure.exception.ApiException;
 import com.blog.shared.infrastructure.security.JwtService;
+import com.blog.shared.validation.MediaValidator;
 
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,12 +30,15 @@ public class MediaController {
     private final MediaService mediaService;
     private final JwtService jwtService;
     private final FileStorage fileStorage;
+    private final MediaValidator mediaValidator;
 
     public MediaController(JwtService jwtService,
-            MediaService mediaService, FileStorage fileStorage) {
+            MediaService mediaService, FileStorage fileStorage,
+            MediaValidator mediaValidator) {
         this.mediaService = mediaService;
         this.jwtService = jwtService;
         this.fileStorage = fileStorage;
+        this.mediaValidator = mediaValidator;
     }
 
     @GetMapping("/avatars/{filename:.+}")
@@ -57,36 +61,7 @@ public class MediaController {
             HttpServletRequest request,
             @RequestParam("file") MultipartFile file) {
 
-        if (file.isEmpty()) {
-            throw new ApiException(
-                    "EMPTY_AVATAR",
-                    "Avatar cannot be empty",
-                    HttpStatus.BAD_REQUEST
-            );
-        }
-
-        // Max size = 2 MB
-        long maxSize = 2 * 1024 * 1024;
-        if (file.getSize() > maxSize) {
-            throw new ApiException(
-                    "BIG_SIZED_AVATAR",
-                    "Avatar size must not exceed 2 MB",
-                    HttpStatus.BAD_REQUEST
-            );
-        }
-
-        // Validate content type
-        String contentType = file.getContentType();
-        if (contentType == null
-                || !(contentType.equalsIgnoreCase("image/jpeg")
-                || contentType.equalsIgnoreCase("image/png")
-                || contentType.equalsIgnoreCase("image/jpg"))) {
-            throw new ApiException(
-                    "INVALID_MEDIA_TYPE",
-                    "Only JPG, JPEG, and PNG images are allowed",
-                    HttpStatus.BAD_REQUEST
-            );
-        }
+        mediaValidator.validateAvatar(file);
 
         UUID userId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
 
@@ -100,5 +75,20 @@ public class MediaController {
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
+    }
+
+    @GetMapping("/posts/{filename:.+}")
+    public ResponseEntity<ByteArrayResource> getPostMedia(@PathVariable String filename)
+            throws IOException, java.io.IOException {
+
+        String path = "posts/" + filename;
+
+        byte[] fileBytes = fileStorage.retrieve(path);
+        MediaType mediaType = mediaService.getMediaType(path);
+
+        return ResponseEntity.ok()
+                .contentLength(fileBytes.length)
+                .contentType(mediaType)
+                .body(new ByteArrayResource(fileBytes));
     }
 }

@@ -14,6 +14,8 @@ public interface MediaRepository {
 
     List<Media> findByUserId(UUID userId);
 
+    public List<Media> findByPostId(UUID postId);
+
     void deleteById(UUID id);
 
     Media update(Media media);

@@ -1,6 +1,7 @@
 package com.blog.modules.media.application.service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -121,6 +122,11 @@ public class MediaServiceImpl implements MediaService {
         postRepository.attachMediaToPost(postId, savedMedia.getId());
 
         return savedMedia.getId();
+    }
+
+    @Override
+    public List<Media> findByPostId(UUID postID) {
+        return mediaRepository.findByPostId(postID);
     }
 
 }
