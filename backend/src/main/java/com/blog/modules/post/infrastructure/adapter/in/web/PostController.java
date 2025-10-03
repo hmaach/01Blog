@@ -58,6 +58,7 @@ public class PostController {
     //     return PostResponse.fromDomain(updated);
     // }
     // @DeleteMapping("/{id}")
+    // @ResponseStatus(HttpStatus.NO_CONTENT)
     // public void deletePost(@PathVariable String id, HttpServletRequest request) {
     //     String userId = jwtService.extractUserIdFromRequest(request);
     //     String role = jwtService.extractUserIdFromRequest(request);

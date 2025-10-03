@@ -9,12 +9,16 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blog.modules.media.domain.exception.MediaNotFoundException;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
 import com.blog.modules.media.domain.port.out.MediaRepository;
+import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.out.PostRepository;
+import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.out.UserRepository;
+import com.blog.shared.infrastructure.exception.UnauthorizedAccessException;
 
 import io.jsonwebtoken.io.IOException;
 
@@ -94,14 +98,14 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public void deleteMedia(Media media) throws IOException, java.io.IOException {
-        fileStorage.delete(media.getUrl());
-        mediaRepository.deleteById(media.getId());
-    }
-
-    @Override
-    public UUID savePostMedia(UUID userId, UUID postId, MultipartFile file)
+    public UUID savePostMedia(UUID currentUserId, UUID postId, MultipartFile file)
             throws IOException, java.io.IOException {
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new UserNotFoundException(postId.toString()));
+        if (!currentUserId.equals(post.getUserId())) {
+            throw new UnauthorizedAccessException("User does not have permission to delete this post");
+        }
 
         String filename = generateMediaFilename(postId, file);
         String relativePath = "posts/" + filename;
@@ -109,7 +113,7 @@ public class MediaServiceImpl implements MediaService {
         fileStorage.store(file, relativePath);
 
         Media media = new Media();
-        media.setUserId(userId);
+        media.setUserId(currentUserId);
         media.setMediaType("IMAGE");
         media.setUrl(relativePath);
         media.setUploadedAt(Instant.now());
@@ -124,6 +128,28 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public List<Media> findByPostId(UUID postID) {
         return mediaRepository.findByPostId(postID);
+    }
+
+    @Override
+    public void deleteMedia(Media media) throws IOException, java.io.IOException {
+        fileStorage.delete(media.getUrl());
+        mediaRepository.deleteById(media.getId());
+    }
+
+    @Override
+    public void deleteMediaFromPost(UUID currentUserId, UUID postId, UUID mediaId) throws IOException, java.io.IOException {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new UserNotFoundException(postId.toString()));
+
+        if (!currentUserId.equals(post.getUserId())) {
+            throw new UnauthorizedAccessException("User does not have permission to delete this post");
+        }
+
+        Media media = mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new MediaNotFoundException(mediaId.toString()));
+
+        fileStorage.delete(media.getUrl());
+        mediaRepository.deleteById(media.getId());
     }
 
 }

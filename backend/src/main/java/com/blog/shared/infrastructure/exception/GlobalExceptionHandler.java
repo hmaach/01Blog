@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.blog.modules.media.domain.exception.MediaStorageException;
@@ -163,9 +164,8 @@ public class GlobalExceptionHandler {
                         "File Not found"
                 ));
     }
-    
 
-        @ExceptionHandler(MissingPathVariableException.class)
+    @ExceptionHandler(MissingPathVariableException.class)
     public ResponseEntity<ErrorResponse> handleUnsupportedMediaType(MissingPathVariableException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -173,6 +173,15 @@ public class GlobalExceptionHandler {
                         "MissingPathVariable",
                         "missing path variable"
                 ));
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<ErrorResponse> handleMissingFile(MissingServletRequestPartException ex) {
+        ErrorResponse error = new ErrorResponse(
+                "MISSING_FILE",
+                "File part is required but was not sent"
+        );
+        return ResponseEntity.badRequest().body(error);
     }
 
 }

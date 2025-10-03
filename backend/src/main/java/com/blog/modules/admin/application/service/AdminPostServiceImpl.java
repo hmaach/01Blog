@@ -18,17 +18,17 @@ public class AdminPostServiceImpl implements AdminPostService {
     }
 
     @Override
-    public void HidePost(UUID PostId) {
-        postRepository.findById(PostId)
-                .orElseThrow(() -> new PostNotFoundException(PostId.toString()));
-        postRepository.hidePostById(PostId);
+    public void HidePost(UUID postId) {
+        postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
+        postRepository.hidePostById(postId);
     }
 
     @Override
-    public void DeletePost(UUID PostId) {
-        postRepository.findById(PostId)
-                .orElseThrow(() -> new PostNotFoundException(PostId.toString()));
-        postRepository.deleteById(PostId);
+    public void DeletePost(UUID postId) {
+        postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
+        postRepository.deleteById(postId);
     }
 
 }

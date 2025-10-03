@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -86,6 +87,7 @@ public class UserPostController {
     }
 
     @DeleteMapping("/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable UUID postId, HttpServletRequest request) {
         UUID currentUserId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
         postService.deletePost(postId, currentUserId, false);

@@ -12,14 +12,16 @@ import io.jsonwebtoken.io.IOException;
 
 public interface MediaService {
 
-    UUID uploadAvatar(UUID userId, MultipartFile file) throws IOException, IllegalStateException, java.io.IOException;
+    UUID uploadAvatar(UUID currentUserId, MultipartFile file) throws IOException, IllegalStateException, java.io.IOException;
 
-    UUID savePostMedia(UUID userId, UUID postId, MultipartFile media) throws IOException, java.io.IOException;
+    UUID savePostMedia(UUID currentUserId, UUID postId, MultipartFile media) throws IOException, java.io.IOException;
 
     void deleteMedia(Media media) throws IOException, java.io.IOException;
 
     MediaType getMediaType(String filename);
 
     List<Media> findByPostId(UUID postId);
+
+    void deleteMediaFromPost(UUID currentUserId, UUID postId, UUID mediaId) throws IOException, java.io.IOException;
 
 }
