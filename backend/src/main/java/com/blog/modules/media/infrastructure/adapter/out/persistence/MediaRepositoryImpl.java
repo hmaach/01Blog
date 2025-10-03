@@ -23,6 +23,7 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
+    @Transactional
     public Media save(Media media) {
         MediaEntity entity = MediaMapper.toEntity(media);
 
@@ -50,6 +51,7 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
+    @Transactional
     public Media update(Media media) {
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
@@ -69,7 +71,15 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
+    @Transactional
     public void deleteById(UUID id) {
+        entityManager.createQuery("""
+        DELETE FROM PostMediaEntity pm
+        WHERE pm.mediaId = :mediaId
+    """)
+                .setParameter("mediaId", id)
+                .executeUpdate();
+
         MediaEntity entity = entityManager.find(MediaEntity.class, id);
         if (entity != null) {
             entityManager.remove(entity);

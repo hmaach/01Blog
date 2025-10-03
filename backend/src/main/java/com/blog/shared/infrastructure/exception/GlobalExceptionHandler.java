@@ -1,5 +1,6 @@
 package com.blog.shared.infrastructure.exception;
 
+import java.nio.file.NoSuchFileException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -70,7 +72,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PostNotFoundException.class)
     public ResponseEntity<ErrorResponse> handlePostNotExists(PostNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse("PRODUCT_NOT_EXISTS", ex.getMessage()));
+                .body(new ErrorResponse("POST_NOT_EXISTS", ex.getMessage()));
     }
 
     // general exceptions
@@ -148,7 +150,28 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(
                         "Media_Type_Not_Supported",
-                        "Unsupported Media Type" 
+                        "Unsupported Media Type"
+                ));
+    }
+
+    @ExceptionHandler(NoSuchFileException.class)
+    public ResponseEntity<ErrorResponse> handleFileNotFound(NoSuchFileException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(
+                        "Media_Not_Found",
+                        "File Not found"
+                ));
+    }
+    
+
+        @ExceptionHandler(MissingPathVariableException.class)
+    public ResponseEntity<ErrorResponse> handleUnsupportedMediaType(MissingPathVariableException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(
+                        "MissingPathVariable",
+                        "missing path variable"
                 ));
     }
 

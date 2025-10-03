@@ -94,12 +94,9 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public void deleteFile(String mediaId) throws IOException, java.io.IOException {
-        Media media = mediaRepository.findById(UUID.fromString(mediaId))
-                .orElseThrow(() -> new IllegalArgumentException("Media not found"));
-
+    public void deleteMedia(Media media) throws IOException, java.io.IOException {
         fileStorage.delete(media.getUrl());
-        mediaRepository.deleteById(UUID.fromString(mediaId));
+        mediaRepository.deleteById(media.getId());
     }
 
     @Override

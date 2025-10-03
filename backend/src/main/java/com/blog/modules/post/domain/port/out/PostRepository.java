@@ -19,4 +19,6 @@ public interface PostRepository {
     void attachMediaToPost(UUID postId, UUID mediaId);
 
     void deleteById(UUID id);
+
+    void deletePostMediaLinks(UUID postId);
 }

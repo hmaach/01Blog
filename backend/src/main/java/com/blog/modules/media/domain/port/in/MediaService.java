@@ -16,7 +16,7 @@ public interface MediaService {
 
     UUID savePostMedia(UUID userId, UUID postId, MultipartFile media) throws IOException, java.io.IOException;
 
-    void deleteFile(String url) throws IOException, java.io.IOException;
+    void deleteMedia(Media media) throws IOException, java.io.IOException;
 
     MediaType getMediaType(String filename);
 

@@ -6,8 +6,10 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,6 +60,12 @@ public class UserPostController {
         return ResponseEntity.ok(responses);
     }
 
+    @GetMapping("/{postId}")
+    public PostResponse getPost(@PathVariable UUID postId, HttpServletRequest request) {
+        List<Media> mediaList = mediaService.findByPostId(postId);
+        return PostResponse.fromDomain(postService.findById(postId), mediaList);
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponse> createPost(
             HttpServletRequest request,
@@ -77,4 +85,9 @@ public class UserPostController {
                 .body(PostResponse.fromDomain(createdPost, mediaList));
     }
 
+    @DeleteMapping("/{postId}")
+    public void deletePost(@PathVariable UUID postId, HttpServletRequest request) {
+        UUID currentUserId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
+        postService.deletePost(postId, currentUserId, false);
+    }
 }

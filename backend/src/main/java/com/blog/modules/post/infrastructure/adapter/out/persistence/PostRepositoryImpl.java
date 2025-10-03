@@ -25,22 +25,36 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Post save(Post post) {
-        PostEntity entity = PostMapper.toEntity(post);
-        entity = entityManager.merge(entity);
-        return PostMapper.toDomain(entity);
+    public List<Post> findAll() {
+        TypedQuery<PostEntity> query = entityManager.createQuery("SELECT u FROM PostEntity u", PostEntity.class);
+        return query.getResultList().stream()
+                .map(PostMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<Post> findById(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        PostEntity entity = entityManager.find(PostEntity.class, id);
+        return Optional.ofNullable(PostMapper.toDomain(entity));
     }
 
     @Override
-    public List<Post> findByUserId(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByUserId'");
+    public List<Post> findByUserId(UUID userId) {
+        TypedQuery<PostEntity> query = entityManager.createQuery(
+                "SELECT p FROM PostEntity p WHERE p.userId = :userId", PostEntity.class);
+        query.setParameter("userId", userId);
+
+        return query.getResultList().stream()
+                .map(PostMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public Post save(Post post) {
+        PostEntity entity = PostMapper.toEntity(post);
+        entity = entityManager.merge(entity);
+        return PostMapper.toDomain(entity);
     }
 
     @Override
@@ -55,9 +69,31 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    @Transactional
+    public void deletePostMediaLinks(UUID postId) {
+        entityManager.createQuery(
+                "DELETE FROM PostMediaEntity pm WHERE pm.postId = :postId")
+                .setParameter("postId", postId)
+                .executeUpdate();
+    }
+
+    @Transactional
+    public void deleteMediaLinks(UUID mediaId) {
+        entityManager.createQuery(
+                "DELETE FROM PostMediaEntity pm WHERE pm.mediaId = :mediaId")
+                .setParameter("mediaId", mediaId)
+                .executeUpdate();
+    }
+
+    @Override
+    @Transactional
     public void deleteById(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+        deletePostMediaLinks(id);
+
+        PostEntity entity = entityManager.find(PostEntity.class, id);
+        if (entity != null) {
+            entityManager.remove(entity);
+        }
     }
 
     // private final MongoTemplate mongoTemplate;
@@ -79,14 +115,7 @@ public class PostRepositoryImpl implements PostRepository {
     //     query.addCriteria(Criteria.where("userId").is(userId));
     //     return mongoTemplate.find(query, Post.class);
     // }
-    @Override
-    public List<Post> findAll() {
-        TypedQuery<PostEntity> query = entityManager.createQuery("SELECT u FROM PostEntity u", PostEntity.class);
-        return query.getResultList().stream()
-                .map(PostMapper::toDomain)
-                .collect(Collectors.toList());
-    }
-
+    @Transactional
     public void hidePostById(UUID postId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'hidePostById'");

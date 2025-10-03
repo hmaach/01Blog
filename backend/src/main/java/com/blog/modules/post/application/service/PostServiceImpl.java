@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.modules.media.domain.exception.MediaStorageException;
+import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.domain.model.Post;
@@ -17,6 +18,7 @@ import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.in.UserService;
+import com.blog.shared.infrastructure.exception.UnauthorizedAccessException;
 
 import jakarta.transaction.Transactional;
 
@@ -110,8 +112,20 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(UUID postId, UUID currentUserId, boolean isAdmin) {
-        postRepository.findById(postId)
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new UserNotFoundException(postId.toString()));
+        if (!isAdmin && !currentUserId.equals(post.getUserId())) {
+            throw new UnauthorizedAccessException("User does not have permission to delete this post");
+        }
+
+        List<Media> mediaList = mediaService.findByPostId(post.getId());
+        for (Media media : mediaList) {
+            try {
+                mediaService.deleteMedia(media);
+            } catch (java.io.IOException e) {
+                throw new MediaStorageException("Failed to delete media: " + e.getMessage());
+            }
+        }
         postRepository.deleteById(postId);
     }
 
