@@ -12,6 +12,8 @@ import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.domain.model.Post;
+import com.blog.modules.post.domain.port.in.CommentService;
+import com.blog.modules.post.domain.port.in.LikeService;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.domain.port.out.PostRepository;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
@@ -28,11 +30,21 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserService userService;
     private final MediaService mediaService;
+    CommentService commentService;
+    LikeService likeService;
 
-    public PostServiceImpl(PostRepository postRepository, UserService userService, MediaService mediaService) {
+    public PostServiceImpl(
+            PostRepository postRepository,
+            UserService userService,
+            MediaService mediaService,
+            CommentService commentService,
+            LikeService likeService
+    ) {
         this.postRepository = postRepository;
         this.userService = userService;
         this.mediaService = mediaService;
+        this.commentService = commentService;
+        this.likeService = likeService;
     }
 
     @Override
@@ -87,7 +99,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post updatePost(UUID postId, UpdatePostCommand cmd, UUID currentUserId, boolean isAdmin) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new UserNotFoundException(postId.toString()));
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
         //     if (cmd.getName() != null) {
         //         user.changeName(cmd.getName());
         //     }
@@ -111,9 +123,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Integer likePost(UUID postId, UUID currentUserId) {
+        postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
+        return likeService.likePost(postId, currentUserId);
+    }
+
+    @Override
     public void deletePost(UUID postId, UUID currentUserId, boolean isAdmin) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new UserNotFoundException(postId.toString()));
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
         if (!isAdmin && !currentUserId.equals(post.getUserId())) {
             throw new UnauthorizedAccessException("User does not have permission to delete this post");
         }
@@ -128,5 +147,4 @@ public class PostServiceImpl implements PostService {
         }
         postRepository.deleteById(postId);
     }
-
 }

@@ -60,11 +60,7 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     @Transactional
     public void attachMediaToPost(UUID postId, UUID mediaId) {
-        PostMediaEntity entity = new PostMediaEntity();
-        entity.setPostId(postId);
-        entity.setMediaId(mediaId);
-        entity.setCreatedAt(Instant.now());
-
+        PostMediaEntity entity = new PostMediaEntity(postId, mediaId, Instant.now());
         entityManager.persist(entity);
     }
 

@@ -19,5 +19,7 @@ public interface PostService {
 
     Post updatePost(UUID postId, UpdatePostCommand cmd, UUID currentUserId, boolean isAdmin);
 
+    Integer likePost(UUID postId, UUID currentUserId);
+
     void deletePost(UUID postId, UUID currentUserId, boolean isAdmin);
 }

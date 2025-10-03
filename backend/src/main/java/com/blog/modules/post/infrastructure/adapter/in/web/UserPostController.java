@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.post.domain.model.Post;
+import com.blog.modules.post.domain.port.in.CommentService;
+import com.blog.modules.post.domain.port.in.LikeService;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse;
@@ -84,6 +86,12 @@ public class UserPostController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(PostResponse.fromDomain(createdPost, mediaList));
+    }
+
+    @PostMapping("/like/{postId}")
+    public Integer likePost(@PathVariable UUID postId, HttpServletRequest request) {
+        UUID currentUserId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
+        return postService.likePost(postId, currentUserId);
     }
 
     @DeleteMapping("/{postId}")

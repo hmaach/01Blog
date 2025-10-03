@@ -1,24 +1,22 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.post;
 
+import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "post_media")
 public class PostMediaEntity {
 
-    @Id
-    @Column(name = "post_id", nullable = false)
-    private UUID postId;
-    
-    @Id
-    @Column(name = "media_id", nullable = false)
-    private UUID mediaId;
+    @EmbeddedId
+    private PostMediaKey id;
 
     @Column(name = "created_at")
     private Instant createdAt;
@@ -27,25 +25,16 @@ public class PostMediaEntity {
     }
 
     public PostMediaEntity(UUID postId, UUID mediaId, Instant createdAt) {
-        this.postId = postId;
-        this.mediaId = mediaId;
+        this.id = new PostMediaKey(postId, mediaId);
         this.createdAt = createdAt;
     }
 
-    public UUID getPostId() {
-        return postId;
+    public PostMediaKey getId() {
+        return id;
     }
 
-    public void setPostId(UUID postId) {
-        this.postId = postId;
-    }
-
-    public UUID getMediaId() {
-        return mediaId;
-    }
-
-    public void setMediaId(UUID mediaId) {
-        this.mediaId = mediaId;
+    public void setId(PostMediaKey id) {
+        this.id = id;
     }
 
     public Instant getCreatedAt() {
@@ -54,6 +43,50 @@ public class PostMediaEntity {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @Embeddable
+    public static class PostMediaKey implements Serializable {
+
+        @Column(name = "post_id", nullable = false)
+        private UUID postId;
+
+        @Column(name = "media_id", nullable = false)
+        private UUID mediaId;
+
+        public PostMediaKey() {
+        }
+
+        public PostMediaKey(UUID postId, UUID mediaId) {
+            this.postId = postId;
+            this.mediaId = mediaId;
+        }
+
+        public UUID getPostId() {
+            return postId;
+        }
+
+        public UUID getMediaId() {
+            return mediaId;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (!(obj instanceof PostMediaKey)) {
+                return false;
+            }
+            PostMediaKey that = (PostMediaKey) obj;
+            return Objects.equals(postId, that.postId)
+                    && Objects.equals(mediaId, that.mediaId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(postId, mediaId);
+        }
     }
 
 }
