@@ -64,6 +64,42 @@ public class PostRepositoryImpl implements PostRepository {
         entityManager.persist(entity);
     }
 
+    // @Override
+    // public void incrementLikesCount(UUID postId) {
+    //     PostEntity post = entityManager.find(PostEntity.class, postId);
+    //     if (post != null) {
+    //         post.setLikesCount(post.getLikesCount() + 1);
+    //     }
+    // }
+    // @Override
+    // public void decrementLikesCount(UUID postId) {
+    //     PostEntity post = entityManager.find(PostEntity.class, postId);
+    //     if (post != null) {
+    //         post.setLikesCount(post.getLikesCount() - 1);
+    //     }
+    // }
+    @Override
+    public void incrementLikesCount(UUID postId) {
+        entityManager.createQuery("""
+            UPDATE PostEntity p
+            SET p.likesCount = p.likesCount + 1
+            WHERE p.id = :postId
+        """)
+                .setParameter("postId", postId)
+                .executeUpdate();
+    }
+
+    @Override
+    public void decrementLikesCount(UUID postId) {
+        entityManager.createQuery("""
+            UPDATE PostEntity p
+            SET p.likesCount = p.likesCount - 1
+            WHERE p.id = :postId
+        """)
+                .setParameter("postId", postId)
+                .executeUpdate();
+    }
+
     @Override
     @Transactional
     public void deletePostMediaLinks(UUID postId) {

@@ -12,11 +12,7 @@ public interface MediaRepository {
 
     Optional<Media> findById(UUID id);
 
-    List<Media> findByUserId(UUID userId);
-
     public List<Media> findByPostId(UUID postId);
 
     void deleteById(UUID id);
-
-    Media update(Media media);
 }

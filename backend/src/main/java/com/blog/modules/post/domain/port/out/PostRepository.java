@@ -18,7 +18,11 @@ public interface PostRepository {
 
     void attachMediaToPost(UUID postId, UUID mediaId);
 
+    void incrementLikesCount(UUID postId);
+
     void deleteById(UUID id);
 
     void deletePostMediaLinks(UUID postId);
+
+    void decrementLikesCount(UUID postId);
 }

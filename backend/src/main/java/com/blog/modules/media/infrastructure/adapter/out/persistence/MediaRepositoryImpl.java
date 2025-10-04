@@ -46,23 +46,12 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
-    public List<Media> findByUserId(UUID userId) {
-        throw new UnsupportedOperationException("Unimplemented method 'findByUserId'");
-    }
-
-    @Override
-    @Transactional
-    public Media update(Media media) {
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
     public List<Media> findByPostId(UUID postId) {
         return entityManager.createQuery("""
-            SELECT m FROM MediaEntity m
-            JOIN PostMediaEntity pm ON m.id = pm.mediaId
-            WHERE pm.postId = :postId
-            """, MediaEntity.class)
+        SELECT m FROM MediaEntity m
+        JOIN PostMediaEntity pm ON m.id = pm.id.mediaId
+        WHERE pm.id.postId = :postId
+        """, MediaEntity.class)
                 .setParameter("postId", postId)
                 .getResultList()
                 .stream()
