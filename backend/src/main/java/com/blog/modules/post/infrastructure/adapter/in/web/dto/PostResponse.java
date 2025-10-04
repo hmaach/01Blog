@@ -14,8 +14,9 @@ public record PostResponse(
         String body,
         UUID userId,
         String status,
-        Integer likes_count,
-        Integer comments_count,
+        int likesCount,
+        int commentsCount,
+        int impressionsCount,
         Instant createdAt,
         List<MediaResponse> media
         ) {
@@ -29,6 +30,7 @@ public record PostResponse(
                 post.getStatus(),
                 post.getLikesCount(),
                 post.getCommentsCount(),
+                post.getImpressionsCount(),
                 post.getCreatedAt(),
                 mediaList.stream().map(MediaResponse::fromDomain).toList()
         );

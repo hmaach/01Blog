@@ -33,6 +33,9 @@ public class PostEntity {
     @Column(name = "comments_count")
     private int commentsCount;
 
+    @Column(name = "impressions_count")
+    private int impressionsCount;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -44,6 +47,7 @@ public class PostEntity {
             String status,
             int likesCount,
             int commentsCount,
+            int impressionsCount,
             Instant createdAt
     ) {
         this.id = id;
@@ -53,6 +57,7 @@ public class PostEntity {
         this.status = status;
         this.likesCount = likesCount;
         this.commentsCount = commentsCount;
+        this.impressionsCount = impressionsCount;
         this.createdAt = createdAt;
     }
 
@@ -115,6 +120,14 @@ public class PostEntity {
 
     public void setCommentsCount(int commentsCount) {
         this.commentsCount = commentsCount;
+    }
+
+    public int getImpressionsCount() {
+        return impressionsCount;
+    }
+
+    public void setImpressionsCount(int impressionsCount) {
+        this.impressionsCount = impressionsCount;
     }
 
     public Instant getCreatedAt() {

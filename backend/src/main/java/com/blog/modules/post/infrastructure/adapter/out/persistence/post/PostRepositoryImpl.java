@@ -101,6 +101,17 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public void incrementImpressionsCount(List<UUID> postIds) {
+        entityManager.createQuery("""
+        UPDATE PostEntity p
+        SET p.impressionsCount = p.impressionsCount + 1
+        WHERE p.id IN :postIds
+    """)
+                .setParameter("postIds", postIds)
+                .executeUpdate();
+    }
+
+    @Override
     @Transactional
     public void deletePostMediaLinks(UUID postId) {
         entityManager.createQuery(

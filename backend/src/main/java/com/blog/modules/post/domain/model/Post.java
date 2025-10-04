@@ -10,8 +10,9 @@ public class Post {
     private String title;
     private String body;
     private String status;
-    private int likesCount;
-    private int commentsCount;
+    private final int likesCount;
+    private final int commentsCount;
+    private final int ImpressionsCount;
     private final Instant createdAt;
 
     public Post(
@@ -22,6 +23,7 @@ public class Post {
             String status,
             int likesCount,
             int commentsCount,
+            int ImpressionsCount,
             Instant createdAt
     ) {
         this.id = id;
@@ -31,6 +33,25 @@ public class Post {
         this.status = status;
         this.likesCount = likesCount;
         this.commentsCount = commentsCount;
+        this.ImpressionsCount = ImpressionsCount;
+        this.createdAt = createdAt;
+    }
+
+    public Post(
+            UUID id,
+            UUID userId,
+            String title,
+            String body,
+            Instant createdAt
+    ) {
+        this.id = id;
+        this.title = title;
+        this.body = body;
+        this.userId = userId;
+        this.status = "published";
+        this.likesCount = 0;
+        this.commentsCount = 0;
+        this.ImpressionsCount = 0;
         this.createdAt = createdAt;
     }
 
@@ -65,6 +86,10 @@ public class Post {
 
     public int getCommentsCount() {
         return commentsCount;
+    }
+
+    public int getImpressionsCount() {
+        return ImpressionsCount;
     }
 
     // --- Domain actions ---

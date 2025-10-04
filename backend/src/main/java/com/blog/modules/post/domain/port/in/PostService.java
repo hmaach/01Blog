@@ -26,4 +26,6 @@ public interface PostService {
     void incrementLikesCount(UUID postId);
 
     void decrementLikesCount(UUID postId);
+
+    void incrementImpressionsCount(List<UUID> postIds);
 }

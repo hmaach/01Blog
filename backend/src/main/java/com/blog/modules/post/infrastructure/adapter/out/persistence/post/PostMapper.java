@@ -17,6 +17,7 @@ public class PostMapper {
                 post.getStatus(),
                 post.getLikesCount(),
                 post.getCommentsCount(),
+                post.getImpressionsCount(),
                 post.getCreatedAt()
         );
     }
@@ -34,6 +35,7 @@ public class PostMapper {
                 entity.getStatus(),
                 entity.getLikesCount(),
                 entity.getCommentsCount(),
+                entity.getImpressionsCount(),
                 entity.getCreatedAt()
         );
     }

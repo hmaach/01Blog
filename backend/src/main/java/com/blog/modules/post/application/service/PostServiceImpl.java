@@ -4,12 +4,15 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.modules.media.domain.exception.MediaStorageException;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
+import com.blog.modules.post.domain.event.PostFetchedEvent;
+import com.blog.modules.post.domain.event.PostsFetchedEvent;
 import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.CommentService;
@@ -30,32 +33,38 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserService userService;
     private final MediaService mediaService;
-    CommentService commentService;
-    LikeService likeService;
+    private CommentService commentService;
+    private LikeService likeService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public PostServiceImpl(
             PostRepository postRepository,
             UserService userService,
             MediaService mediaService,
             CommentService commentService,
-            LikeService likeService
+            LikeService likeService,
+            ApplicationEventPublisher eventPublisher
     ) {
         this.postRepository = postRepository;
         this.userService = userService;
         this.mediaService = mediaService;
         this.commentService = commentService;
         this.likeService = likeService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
     public List<Post> findAll() {
-        return postRepository.findAll();
+        List<Post> posts = postRepository.findAll();
+        eventPublisher.publishEvent(new PostsFetchedEvent(posts));
+        return posts;
     }
 
     @Override
-    public Post findById(UUID id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException(id.toString()));
+    public Post findById(UUID postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
+        eventPublisher.publishEvent(new PostFetchedEvent(postId));
         return post;
     }
 
@@ -77,9 +86,6 @@ public class PostServiceImpl implements PostService {
                 userId,
                 cmd.title(),
                 cmd.body(),
-                "published",
-                0,
-                0,
                 Instant.now()
         );
 
@@ -99,6 +105,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public Post updatePost(UUID postId, UpdatePostCommand cmd, UUID currentUserId, boolean isAdmin) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
@@ -125,6 +132,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
     public void likePost(UUID postId, UUID currentUserId) {
         postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
@@ -144,6 +152,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    @Transactional
+    public void incrementImpressionsCount(List<UUID> postIds) {
+        postRepository.incrementImpressionsCount(postIds);
+    }
+
+    @Override
+    @Transactional
     public void deletePost(UUID postId, UUID currentUserId, boolean isAdmin) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
