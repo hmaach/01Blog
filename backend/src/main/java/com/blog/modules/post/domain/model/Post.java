@@ -10,6 +10,8 @@ public class Post {
     private String title;
     private String body;
     private String status;
+    private int likesCount;
+    private int commentsCount;
     private final Instant createdAt;
 
     public Post(
@@ -18,6 +20,8 @@ public class Post {
             String title,
             String body,
             String status,
+            int likesCount,
+            int commentsCount,
             Instant createdAt
     ) {
         this.id = id;
@@ -25,6 +29,8 @@ public class Post {
         this.body = body;
         this.userId = userId;
         this.status = status;
+        this.likesCount = likesCount;
+        this.commentsCount = commentsCount;
         this.createdAt = createdAt;
     }
 
@@ -51,6 +57,14 @@ public class Post {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public int getCommentsCount() {
+        return commentsCount;
     }
 
     // --- Domain actions ---

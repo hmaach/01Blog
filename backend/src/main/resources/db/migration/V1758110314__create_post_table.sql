@@ -6,6 +6,8 @@ CREATE TABLE posts (
     body TEXT NOT NULL,
     user_id UUID NOT NULL,
     status VARCHAR,
+    likes_count INT DEFAULT 0,
+    comments_count INT DEFAULT 0,
     created_at TIMESTAMP NOT NULL,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );

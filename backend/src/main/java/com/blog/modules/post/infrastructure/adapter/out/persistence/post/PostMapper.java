@@ -15,6 +15,8 @@ public class PostMapper {
                 post.getBody(),
                 post.getUserId(),
                 post.getStatus(),
+                post.getLikesCount(),
+                post.getCommentsCount(),
                 post.getCreatedAt()
         );
     }
@@ -30,6 +32,8 @@ public class PostMapper {
                 entity.getTitle(),
                 entity.getBody(),
                 entity.getStatus(),
+                entity.getLikesCount(),
+                entity.getCommentsCount(),
                 entity.getCreatedAt()
         );
     }

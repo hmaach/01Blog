@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public interface LikeService {
 
-    Integer likePost(UUID postId, UUID currentUserId);
+    void likePost(UUID postId, UUID currentUserId);
 
 }

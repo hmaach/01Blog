@@ -17,29 +17,31 @@ public class LikeRepositoryImpl implements LikeRepository {
         this.entityManager = entityManager;
     }
 
+
     @Override
-    public Integer likePost(UUID postId, UUID userId) {
-        entityManager.createNativeQuery("""
-        WITH upsert AS (
-            INSERT INTO likes (user_id, post_id, created_at)
-            VALUES (:userId, :postId, NOW())
-            ON CONFLICT (user_id, post_id) DO NOTHING
-            RETURNING *
-        )
-        DELETE FROM likes
-        WHERE user_id = :userId AND post_id = :postId
-        AND NOT EXISTS (SELECT 1 FROM upsert)
+    public boolean existsByUserIdAndPostId(UUID userId, UUID postId) {
+        Long count = entityManager.createQuery(
+                "SELECT COUNT(l) FROM LikeEntity l WHERE l.id.userId = :userId AND l.id.postId = :postId", Long.class)
+                .setParameter("userId", userId)
+                .setParameter("postId", postId)
+                .getSingleResult();
+        return count > 0;
+    }
+
+    @Override
+    public void save(LikeEntity likeEntity) {
+        entityManager.persist(likeEntity);
+    }
+
+    @Override
+    public void delete(UUID userId, UUID postId) {
+        entityManager.createQuery("""
+        DELETE FROM LikeEntity l
+        WHERE l.id.userId = :userId AND l.id.postId = :postId
     """)
                 .setParameter("userId", userId)
                 .setParameter("postId", postId)
                 .executeUpdate();
-
-        Long count = (Long) entityManager.createQuery(
-                "SELECT COUNT(l) FROM LikeEntity l WHERE l.id.postId = :postId")
-                .setParameter("postId", postId)
-                .getSingleResult();
-
-        return count.intValue();
     }
 
 }

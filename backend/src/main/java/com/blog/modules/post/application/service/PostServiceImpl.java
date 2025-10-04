@@ -78,6 +78,8 @@ public class PostServiceImpl implements PostService {
                 cmd.title(),
                 cmd.body(),
                 "published",
+                0,
+                0,
                 Instant.now()
         );
 
@@ -123,10 +125,22 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Integer likePost(UUID postId, UUID currentUserId) {
+    public void likePost(UUID postId, UUID currentUserId) {
         postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
-        return likeService.likePost(postId, currentUserId);
+        likeService.likePost(postId, currentUserId);
+    }
+
+    @Override
+    @Transactional
+    public void incrementLikesCount(UUID postId) {
+        postRepository.incrementLikesCount(postId);
+    }
+
+    @Override
+    @Transactional
+    public void decrementLikesCount(UUID postId) {
+        postRepository.decrementLikesCount(postId);
     }
 
     @Override

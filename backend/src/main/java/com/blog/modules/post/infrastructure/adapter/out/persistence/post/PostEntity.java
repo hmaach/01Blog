@@ -27,15 +27,32 @@ public class PostEntity {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "likes_count")
+    private int likesCount = 0;
+
+    @Column(name = "comments_count")
+    private int commentsCount;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    public PostEntity(UUID id, String title, String body, UUID userId, String status, Instant createdAt) {
+    public PostEntity(
+            UUID id,
+            String title,
+            String body,
+            UUID userId,
+            String status,
+            int likesCount,
+            int commentsCount,
+            Instant createdAt
+    ) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.userId = userId;
         this.status = status;
+        this.likesCount = likesCount;
+        this.commentsCount = commentsCount;
         this.createdAt = createdAt;
     }
 
@@ -84,6 +101,22 @@ public class PostEntity {
         this.status = status;
     }
 
+    public int getLikesCount() {
+        return likesCount;
+    }
+
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
+    }
+
+    public int getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(int commentsCount) {
+        this.commentsCount = commentsCount;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -91,4 +124,5 @@ public class PostEntity {
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
+
 }

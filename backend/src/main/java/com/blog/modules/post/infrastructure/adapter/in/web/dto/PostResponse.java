@@ -4,9 +4,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.infrastructure.adapter.in.web.dto.MediaResponse;
+import com.blog.modules.post.domain.model.Post;
 
 public record PostResponse(
         UUID id,
@@ -14,6 +14,8 @@ public record PostResponse(
         String body,
         UUID userId,
         String status,
+        Integer likes_count,
+        Integer comments_count,
         Instant createdAt,
         List<MediaResponse> media
         ) {
@@ -25,6 +27,8 @@ public record PostResponse(
                 post.getBody(),
                 post.getUserId(),
                 post.getStatus(),
+                post.getLikesCount(),
+                post.getCommentsCount(),
                 post.getCreatedAt(),
                 mediaList.stream().map(MediaResponse::fromDomain).toList()
         );
