@@ -61,6 +61,18 @@ public class UserPostController {
         return ResponseEntity.ok(responses);
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<PostResponse>> getPostByUser(@PathVariable UUID userId) {
+        List<Post> posts = postService.findByUserId(userId);
+        List<PostResponse> responses = posts.stream()
+                .map(post -> {
+                    List<Media> mediaList = mediaService.findByPostId(post.getId());
+                    return PostResponse.fromDomain(post, mediaList);
+                })
+                .toList();
+        return ResponseEntity.ok(responses);
+    }
+
     @GetMapping("/{postId}")
     public PostResponse getPost(@PathVariable UUID postId, HttpServletRequest request) {
         List<Media> mediaList = mediaService.findByPostId(postId);
