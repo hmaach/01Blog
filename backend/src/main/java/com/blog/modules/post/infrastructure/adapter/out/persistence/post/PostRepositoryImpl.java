@@ -114,16 +114,20 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     @Transactional
     public void deletePostMediaLinks(UUID postId) {
-        entityManager.createQuery(
-                "DELETE FROM PostMediaEntity pm WHERE pm.postId = :postId")
+        entityManager.createQuery("""
+        DELETE FROM PostMediaEntity pm
+        WHERE pm.id.postId = :postId
+    """)
                 .setParameter("postId", postId)
                 .executeUpdate();
     }
 
     @Transactional
     public void deleteMediaLinks(UUID mediaId) {
-        entityManager.createQuery(
-                "DELETE FROM PostMediaEntity pm WHERE pm.mediaId = :mediaId")
+                    entityManager.createQuery("""
+                    DELETE FROM PostMediaEntity pm
+                    WHERE pm.id.mediaId = :mediaId
+                """)
                 .setParameter("mediaId", mediaId)
                 .executeUpdate();
     }

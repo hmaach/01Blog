@@ -64,7 +64,7 @@ public class MediaRepositoryImpl implements MediaRepository {
     public void deleteById(UUID id) {
         entityManager.createQuery("""
         DELETE FROM PostMediaEntity pm
-        WHERE pm.mediaId = :mediaId
+        WHERE pm.id.mediaId = :mediaId
     """)
                 .setParameter("mediaId", id)
                 .executeUpdate();
