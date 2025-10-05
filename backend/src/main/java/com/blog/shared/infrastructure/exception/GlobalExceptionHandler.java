@@ -21,7 +21,9 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import com.blog.modules.media.domain.exception.EmptyMediaFileException;
 import com.blog.modules.media.domain.exception.MediaStorageException;
+import com.blog.modules.media.domain.exception.TooLargeMediaFileException;
 import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
@@ -31,13 +33,12 @@ import com.blog.shared.dto.ErrorResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<ErrorResponse> handleApi(ApiException ex) {
-        return ResponseEntity
-                .status(ex.getStatus())
-                .body(new ErrorResponse(ex.getCode(), ex.getMessage()));
-    }
-
+//     @ExceptionHandler(ApiException.class)
+//     public ResponseEntity<ErrorResponse> handleApi(ApiException ex) {
+//         return ResponseEntity
+//                 .status(ex.getStatus())
+//                 .body(new ErrorResponse(ex.getCode(), ex.getMessage()));
+//     }
     // User exceptions
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
@@ -76,11 +77,32 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse("POST_NOT_EXISTS", ex.getMessage()));
     }
 
+    // media exception
+    @ExceptionHandler(EmptyMediaFileException.class)
+    public ResponseEntity<ErrorResponse> handleEmptyMedia(EmptyMediaFileException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("EMPTY_MEDIA", ex.getMessage()));
+    }
+
+    @ExceptionHandler(TooLargeMediaFileException.class)
+    public ResponseEntity<ErrorResponse> handleTooLargeMedia(TooLargeMediaFileException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse("FILE_TOO_LARGE", ex.getMessage()));
+    }
+
     // general exceptions
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("INTERNAL_ERROR", "Something went wrong. Please try again later."));
+    }
+
+    @ExceptionHandler(InternalServerErrorException.class)
+    public ResponseEntity<ErrorResponse> handleInternalServerErrorException(InternalServerErrorException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorResponse("INTERNAL_ERROR", ex.getMessage()));
     }
 
     @ExceptionHandler(MediaStorageException.class)

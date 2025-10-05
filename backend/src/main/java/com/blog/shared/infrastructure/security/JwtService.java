@@ -1,6 +1,7 @@
 package com.blog.shared.infrastructure.security;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -60,11 +61,11 @@ public class JwtService {
                 .equals(userDetails.getUsername());
     }
 
-    public String extractUserIdFromRequest(HttpServletRequest request) {
+    public UUID extractUserIdFromRequest(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            return getIdFromToken(token);
+            return UUID.fromString(getIdFromToken(token));
         }
         throw new RuntimeException("JWT token missing or invalid");
     }

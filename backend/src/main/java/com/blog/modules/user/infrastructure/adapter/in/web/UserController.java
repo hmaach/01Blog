@@ -35,8 +35,8 @@ public class UserController {
 
     @GetMapping
     public UserResponse getCurrentUser(HttpServletRequest request) {
-        String id = jwtService.extractUserIdFromRequest(request);
-        return UserResponse.fromDomain(userService.findById(UUID.fromString(id)));
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        return UserResponse.fromDomain(userService.findById(currUserId));
     }
 
     @GetMapping("/all")
@@ -53,15 +53,15 @@ public class UserController {
 
     @PatchMapping
     public UserResponse updateUser(HttpServletRequest request, @Valid @RequestBody UpdateUserCommand cmd) {
-        String id = jwtService.extractUserIdFromRequest(request);
-        return UserResponse.fromDomain(userService.updateUser(UUID.fromString(id), cmd));
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        return UserResponse.fromDomain(userService.updateUser(currUserId, cmd));
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(HttpServletRequest request) {
-        String id = jwtService.extractUserIdFromRequest(request);
-        userService.deleteUser(UUID.fromString(id));
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        userService.deleteUser(currUserId);
     }
 
 }

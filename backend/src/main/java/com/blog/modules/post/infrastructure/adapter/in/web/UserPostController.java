@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,14 +21,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blog.modules.media.application.validation.MediaValidator;
+import com.blog.modules.media.application.validation.PostMediaValidator;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse;
+import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand;
 import com.blog.shared.infrastructure.security.JwtService;
-import com.blog.shared.validation.MediaValidator;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -39,13 +42,13 @@ public class UserPostController {
     private final PostService postService;
     private final JwtService jwtService;
     private final MediaService mediaService;
-    private final MediaValidator mediaValidator;
+    private final PostMediaValidator mediaValidator;
 
     public UserPostController(
             PostService postService,
             JwtService jwtService,
             MediaService mediaService,
-            MediaValidator mediaValidator
+            PostMediaValidator mediaValidator
     ) {
         this.postService = postService;
         this.jwtService = jwtService;
@@ -105,10 +108,10 @@ public class UserPostController {
             HttpServletRequest request,
             @Valid @ModelAttribute CreatePostCommand cmd
     ) {
-        UUID userId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
+        UUID userId = jwtService.extractUserIdFromRequest(request);
 
         for (MultipartFile file : cmd.files()) {
-            mediaValidator.validatePostMedia(file);
+            mediaValidator.validate(file);
         }
 
         Post createdPost = postService.createPost(cmd, userId);
@@ -119,17 +122,32 @@ public class UserPostController {
                 .body(PostResponse.fromDomain(createdPost, mediaList));
     }
 
+    @PatchMapping("/{postId}")
+    public ResponseEntity<PostResponse> updatePost(
+            @PathVariable UUID postId,
+            HttpServletRequest request,
+            @Valid UpdatePostCommand cmd
+    ) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        Post post = postService.updatePost(postId, cmd, currUserId, false);
+        List<Media> mediaList = mediaService.findByPostId(postId);
+
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(PostResponse.fromDomain(post, mediaList));
+    }
+
     @PostMapping("/like/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void likePost(@PathVariable UUID postId, HttpServletRequest request) {
-        UUID currentUserId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
+        UUID currentUserId = jwtService.extractUserIdFromRequest(request);
         postService.likePost(postId, currentUserId);
     }
 
     @DeleteMapping("/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable UUID postId, HttpServletRequest request) {
-        UUID currentUserId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
+        UUID currentUserId = jwtService.extractUserIdFromRequest(request);
         postService.deletePost(postId, currentUserId, false);
     }
 }

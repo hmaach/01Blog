@@ -17,13 +17,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blog.modules.media.application.validation.AvatarMediaValidator;
+import com.blog.modules.media.application.validation.MediaValidator;
+import com.blog.modules.media.application.validation.PostMediaValidator;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.PostService;
-import com.blog.shared.infrastructure.exception.ApiException;
+import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 import com.blog.shared.infrastructure.security.JwtService;
-import com.blog.shared.validation.MediaValidator;
 
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,16 +38,23 @@ public class MediaController {
     private final PostService postService;
     private final JwtService jwtService;
     private final FileStorage fileStorage;
-    private final MediaValidator mediaValidator;
+    private final PostMediaValidator postMediaValidator;
+    private final AvatarMediaValidator avatarMediaValidator;
 
-    public MediaController(JwtService jwtService,
-            MediaService mediaService, FileStorage fileStorage,
-            MediaValidator mediaValidator, PostService postService) {
+    public MediaController(
+            JwtService jwtService,
+            MediaService mediaService,
+            PostService postService,
+            PostMediaValidator postMediaValidator,
+            AvatarMediaValidator avatarMediaValidator,
+            FileStorage fileStorage
+    ) {
         this.mediaService = mediaService;
         this.postService = postService;
         this.jwtService = jwtService;
         this.fileStorage = fileStorage;
-        this.mediaValidator = mediaValidator;
+        this.postMediaValidator = postMediaValidator;
+        this.avatarMediaValidator = avatarMediaValidator;
     }
 
     @GetMapping("/avatars/{filename:.+}")
@@ -60,11 +69,7 @@ public class MediaController {
         } catch (java.nio.file.NoSuchFileException e) {
             throw e;
         } catch (IOException | java.io.IOException | IllegalStateException e) {
-            throw new ApiException(
-                    "INTERNAL_SERVER_ERROR",
-                    "Failed to retrieve avatar: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            throw new InternalServerErrorException("Failed to retrieve avatar: " + e.getMessage());
         }
         MediaType mediaType = mediaService.getMediaType(path);
 
@@ -79,19 +84,14 @@ public class MediaController {
             HttpServletRequest request,
             @RequestParam("file") MultipartFile file) {
 
-        mediaValidator.validateAvatar(file);
-
-        UUID userId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
+        avatarMediaValidator.validate(file);
+        UUID userId = jwtService.extractUserIdFromRequest(request);
 
         try {
             UUID mediaId = mediaService.uploadAvatar(userId, file);
             return ResponseEntity.ok(mediaId);
         } catch (IOException | java.io.IOException | IllegalStateException e) {
-            throw new ApiException(
-                    "INTERNAL_SERVER_ERROR",
-                    "Failed to upload avatar: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
         }
     }
 
@@ -107,11 +107,7 @@ public class MediaController {
         } catch (java.nio.file.NoSuchFileException e) {
             throw e;
         } catch (IOException | IllegalStateException | java.io.IOException e) {
-            throw new ApiException(
-                    "INTERNAL_SERVER_ERROR",
-                    "Failed to retrieve post media: " + e.toString(),
-                    HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            throw new InternalServerErrorException("Failed to retrieve post media: " + e.getMessage());
         }
         MediaType mediaType = mediaService.getMediaType(path);
 
@@ -127,19 +123,15 @@ public class MediaController {
             @PathVariable UUID postId,
             @RequestParam("file") MultipartFile file
     ) {
-        mediaValidator.validateAvatar(file);
+        postMediaValidator.validate(file);
         Post post = postService.findById(postId);
-        UUID userId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
+        UUID userId = jwtService.extractUserIdFromRequest(request);
 
         try {
             UUID mediaId = mediaService.savePostMedia(userId, post.getId(), file);
             return ResponseEntity.ok(mediaId);
         } catch (IOException | java.io.IOException | IllegalStateException e) {
-            throw new ApiException(
-                    "INTERNAL_SERVER_ERROR",
-                    "Failed to upload avatar: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
         }
     }
 
@@ -150,16 +142,12 @@ public class MediaController {
             @PathVariable UUID postId,
             @PathVariable UUID mediaId
     ) {
-        UUID currentUserId = UUID.fromString(jwtService.extractUserIdFromRequest(request));
+        UUID currentUserId = jwtService.extractUserIdFromRequest(request);
 
         try {
             mediaService.deleteMediaFromPost(currentUserId, postId, mediaId);
         } catch (IOException | IllegalStateException | java.io.IOException e) {
-            throw new ApiException(
-                    "INTERNAL_SERVER_ERROR",
-                    "Failed to delete media from the post: " + e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            throw new InternalServerErrorException("Failed to delete media from the post: " + e.getMessage());
         }
     }
 }

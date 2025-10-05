@@ -1,44 +1,31 @@
 package com.blog.modules.post.infrastructure.adapter.in.web.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public class UpdatePostCommand {
 
-    @NotBlank(message = "Name cannot be blank")
-    @Size(max = 255, message = "Name must be less than 255 characters")
-    private String name;
+    @NotBlank(message = "Title cannot be blank")
+    @Size(max = 255, message = "Title must be less than 255 characters")
+    String title;
+    @NotBlank(message = "Body cannot be blank")
+    @Size(max = 5000, message = "Body must be less than 5000 characters")
+    String body;
 
-    @NotBlank(message = "Description cannot be blank")
-    private String description;
-
-    @NotNull(message = "Price cannot be null")
-    @Positive(message = "Price must be greater than 0")
-    private Double price;
-
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBody() {
+        return body;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
 }
