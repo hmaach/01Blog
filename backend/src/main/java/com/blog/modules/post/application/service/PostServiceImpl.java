@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,10 +55,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findAll() {
-        List<Post> posts = postRepository.findAll();
+    public List<Post> findAll(Pageable pageable) {
+        List<Post> posts = postRepository.findAll(pageable);
         eventPublisher.publishEvent(new PostsFetchedEvent(posts));
         return posts;
+    }
+
+    @Override
+    public List<Post> findByUserId(UUID id, Pageable pageable) {
+        if (userService.userExist(id).isEmpty()) {
+            throw new UserNotFoundException(id.toString());
+        }
+        return postRepository.findByUserId(id, pageable);
     }
 
     @Override
@@ -66,14 +75,6 @@ public class PostServiceImpl implements PostService {
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
         eventPublisher.publishEvent(new PostFetchedEvent(postId));
         return post;
-    }
-
-    @Override
-    public List<Post> findByUserId(UUID id) {
-        if (userService.userExist(id).isEmpty()) {
-            throw new UserNotFoundException(id.toString());
-        }
-        return postRepository.findByUserId(id);
     }
 
     @Override

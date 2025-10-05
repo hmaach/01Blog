@@ -3,6 +3,9 @@ package com.blog.modules.post.infrastructure.adapter.in.web;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,8 +54,16 @@ public class UserPostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> getAllPosts() {
-        List<Post> posts = postService.findAll();
+    public ResponseEntity<List<PostResponse>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy
+    ) {
+
+        Sort sort = Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        List<Post> posts = postService.findAll(pageable);
         List<PostResponse> responses = posts.stream()
                 .map(post -> {
                     List<Media> mediaList = mediaService.findByPostId(post.getId());
@@ -62,8 +74,17 @@ public class UserPostController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<PostResponse>> getPostByUser(@PathVariable UUID userId) {
-        List<Post> posts = postService.findByUserId(userId);
+    public ResponseEntity<List<PostResponse>> getPostByUser(
+            @PathVariable UUID userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy
+    ) {
+
+        Sort sort = Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        List<Post> posts = postService.findByUserId(userId, pageable);
         List<PostResponse> responses = posts.stream()
                 .map(post -> {
                     List<Media> mediaList = mediaService.findByPostId(post.getId());

@@ -4,17 +4,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+
 import com.blog.modules.post.domain.model.Post;
 
 public interface PostRepository {
 
-    Post save(Post post);
+    List<Post> findAll(Pageable pageable);
+
+    List<Post> findByUserId(UUID id, Pageable pageable);
 
     Optional<Post> findById(UUID id);
 
-    List<Post> findByUserId(UUID id);
-
-    List<Post> findAll();
+    Post save(Post post);
 
     void attachMediaToPost(UUID postId, UUID mediaId);
 

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.blog.modules.post.domain.model.Post;
@@ -25,8 +27,17 @@ public class PostRepositoryImpl implements PostRepository {
 
     // --- CRUD operations ---
     @Override
-    public List<Post> findAll() {
-        return jpaRepository.findAll().stream()
+    public List<Post> findAll(Pageable pageable) {
+        return jpaRepository.findAll(pageable)
+                .stream()
+                .map(PostMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Post> findByUserId(UUID userId, Pageable pageable) {
+        return jpaRepository.findByUserId(userId, pageable)
+                .stream()
                 .map(PostMapper::toDomain)
                 .toList();
     }
@@ -34,13 +45,6 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Optional<Post> findById(UUID id) {
         return jpaRepository.findById(id).map(PostMapper::toDomain);
-    }
-
-    @Override
-    public List<Post> findByUserId(UUID userId) {
-        return jpaRepository.findByUserId(userId).stream()
-                .map(PostMapper::toDomain)
-                .toList();
     }
 
     @Override
