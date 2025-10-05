@@ -1,8 +1,12 @@
 package com.blog.modules.user.domain.exception;
 
-public class EmailAlreadyExistsException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+import com.blog.shared.infrastructure.exception.BaseException;
+
+public class EmailAlreadyExistsException extends BaseException {
 
     public EmailAlreadyExistsException(String email) {
-        super("Email already exists: " + email);
+        super("EMAIL_EXISTS", "Email already exists: " + email, HttpStatus.CONFLICT);
     }
 }

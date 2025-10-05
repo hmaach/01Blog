@@ -1,8 +1,12 @@
 package com.blog.modules.user.domain.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+import com.blog.shared.infrastructure.exception.BaseException;
+
+public class UserNotFoundException extends BaseException {
 
     public UserNotFoundException(String label) {
-        super("User doesn't exists: " + label);
+        super("USER_NOT_FOUND", "User doesn't exist: " + label, HttpStatus.NOT_FOUND);
     }
 }

@@ -24,7 +24,8 @@ import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.in.UserService;
-import com.blog.shared.infrastructure.exception.UnauthorizedAccessException;
+import com.blog.shared.infrastructure.exception.ForbiddenException;
+import com.blog.shared.infrastructure.exception.UnauthorizedException;
 
 import jakarta.transaction.Transactional;
 
@@ -164,7 +165,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
         if (!isAdmin && !currentUserId.equals(post.getUserId())) {
-            throw new UnauthorizedAccessException("User does not have permission to delete this post");
+            throw new ForbiddenException();
         }
 
         List<Media> mediaList = mediaService.findByPostId(post.getId());

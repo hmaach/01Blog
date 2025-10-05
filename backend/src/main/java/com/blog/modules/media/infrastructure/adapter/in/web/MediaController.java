@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.modules.media.application.validation.AvatarMediaValidator;
-import com.blog.modules.media.application.validation.MediaValidator;
 import com.blog.modules.media.application.validation.PostMediaValidator;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;

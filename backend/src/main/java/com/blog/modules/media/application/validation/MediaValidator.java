@@ -12,11 +12,15 @@ public abstract class MediaValidator {
     protected static final List<String> VIDEO_TYPES = List.of("video/mp4", "video/quicktime", "video/x-msvideo");
 
     protected void validateNotEmpty(MultipartFile file) {
-        if (file.isEmpty()) throw new EmptyMediaFileException();
+        if (file.isEmpty()) {
+            throw new EmptyMediaFileException();
+        }
     }
 
     protected void validateSize(MultipartFile file, long maxSize) {
-        if (file.getSize() > maxSize) throw new TooLargeMediaFileException(maxSize);
+        if (file.getSize() > maxSize) {
+            throw new TooLargeMediaFileException(maxSize);
+        }
     }
 
     protected void validateContentType(MultipartFile file, List<String> allowedTypes) {
@@ -26,7 +30,11 @@ public abstract class MediaValidator {
         }
     }
 
-    protected List<String> merge(List<String>... lists) {
-        return Arrays.stream(lists).flatMap(List::stream).toList();
+    @SafeVarargs
+    protected final List<String> merge(List<String>... lists) {
+        return Arrays.stream(lists)
+                .flatMap(List::stream)
+                .toList();
     }
+
 }

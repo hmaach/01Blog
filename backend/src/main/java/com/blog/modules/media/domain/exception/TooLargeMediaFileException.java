@@ -1,8 +1,12 @@
 package com.blog.modules.media.domain.exception;
 
-public class TooLargeMediaFileException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+import com.blog.shared.infrastructure.exception.BaseException;
+
+public class TooLargeMediaFileException extends BaseException {
 
     public TooLargeMediaFileException(long maxSize) {
-        super("File size must not exceed " + (maxSize / (1024 * 1024)) + " MB");
+        super("MEDIA_TOO_LARGE", "File size must not exceed " + (maxSize / (1024 * 1024)) + " MB", HttpStatus.BAD_REQUEST);
     }
 }

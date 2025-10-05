@@ -18,7 +18,8 @@ import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.out.PostRepository;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.out.UserRepository;
-import com.blog.shared.infrastructure.exception.UnauthorizedAccessException;
+import com.blog.shared.infrastructure.exception.ForbiddenException;
+import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 
 import io.jsonwebtoken.io.IOException;
 
@@ -51,7 +52,7 @@ public class MediaServiceImpl implements MediaService {
                     fileStorage.delete(media.getUrl());
                     mediaRepository.deleteById(avatarId.get());
                 } catch (IOException | java.io.IOException e) {
-                    throw new RuntimeException("Failed to delete existing avatar", e);
+                    throw new InternalServerErrorException("Failed to delete existing avatar");
                 }
             });
         }
@@ -104,7 +105,7 @@ public class MediaServiceImpl implements MediaService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new UserNotFoundException(postId.toString()));
         if (!currentUserId.equals(post.getUserId())) {
-            throw new UnauthorizedAccessException("User does not have permission to delete this post");
+            throw new ForbiddenException();
         }
 
         String filename = generateMediaFilename(postId, file);
@@ -142,7 +143,7 @@ public class MediaServiceImpl implements MediaService {
                 .orElseThrow(() -> new UserNotFoundException(postId.toString()));
 
         if (!currentUserId.equals(post.getUserId())) {
-            throw new UnauthorizedAccessException("User does not have permission to delete this post");
+            throw new ForbiddenException();
         }
 
         Media media = mediaRepository.findById(mediaId)

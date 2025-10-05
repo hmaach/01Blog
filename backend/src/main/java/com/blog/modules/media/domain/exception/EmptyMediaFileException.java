@@ -1,8 +1,12 @@
 package com.blog.modules.media.domain.exception;
 
-public class EmptyMediaFileException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+import com.blog.shared.infrastructure.exception.BaseException;
+
+public class EmptyMediaFileException extends BaseException {
 
     public EmptyMediaFileException() {
-        super("Uploaded file cannot be empty");
+        super("EMPTY_MEDIA", "Uploaded file cannot be empty", HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,8 +1,12 @@
 package com.blog.modules.media.domain.exception;
 
-public class MediaNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+import com.blog.shared.infrastructure.exception.BaseException;
+
+public class MediaNotFoundException extends BaseException {
 
     public MediaNotFoundException(String id) {
-        super("Media doesn't exists: " + id);
+        super("MEDIA_NOT_FOUND", "Media doesn't exist: " + id, HttpStatus.NOT_FOUND);
     }
 }
