@@ -111,25 +111,25 @@ public class PostServiceImpl implements PostService {
     public Post updatePost(UUID postId, UpdatePostCommand cmd, UUID currentUserId, boolean isAdmin) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
-        //     if (cmd.getName() != null) {
-        //         user.changeName(cmd.getName());
-        //     }
-        //     if (cmd.getUsername() != null && !user.getUsername().equals(cmd.getUsername())) {
-        //         if (userRepository.findByUsername(cmd.getUsername()).isPresent()) {
-        //             throw new UsernameAlreadyExistsException(cmd.getUsername());
-        //         }
-        //         user.changeUsername(cmd.getUsername());
-        //     }
-        //     if (cmd.getEmail() != null && !user.getEmail().equals(cmd.getEmail())) {
-        //         if (userRepository.findByEmail(cmd.getEmail()).isPresent()) {
-        //             throw new EmailAlreadyExistsException(cmd.getEmail());
-        //         }
-        //         user.changeEmail(cmd.getEmail());
-        //     }
-        //     if (cmd.getPassword() != null) {
-        //         user.changePassword(encoder.encode(cmd.getPassword()));
-        //     }
-        //     userRepository.save(user);
+
+        if (!isAdmin && !currentUserId.equals(post.getUserId())) {
+            throw new ForbiddenException();
+        }
+        
+        boolean updated = false;
+
+        if (cmd.getTitle() != null && !cmd.getTitle().equals(post.getTitle())) {
+            post.updateTitle(cmd.getTitle());
+            updated = true;
+        }
+        if (cmd.getBody() != null && !cmd.getBody().equals(post.getBody())) {
+            post.updateBody(cmd.getBody());
+            updated = true;
+        }
+        if (updated) {
+            postRepository.save(post);
+        }
+
         return post;
     }
 
