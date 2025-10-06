@@ -7,10 +7,12 @@ import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.blog.modules.post.domain.exception.CommentNotFoundException;
 import com.blog.modules.post.domain.model.Comment;
 import com.blog.modules.post.domain.port.in.CommentService;
 import com.blog.modules.post.domain.port.out.CommentRepository;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreateCommentCommand;
+import com.blog.shared.infrastructure.exception.ForbiddenException;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -41,5 +43,17 @@ public class CommentServiceImpl implements CommentService {
         );
 
         return commentRepository.save(comment);
+    }
+
+    @Override
+    public void deleteComment(UUID commentId, UUID currUserId, boolean isAdmin) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(commentId.toString()));
+
+        if (!isAdmin && !currUserId.equals(comment.getUserId())) {
+            throw new ForbiddenException();
+        }
+
+        commentRepository.deleteById(commentId);
     }
 }

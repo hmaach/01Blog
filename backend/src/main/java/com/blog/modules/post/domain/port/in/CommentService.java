@@ -14,4 +14,6 @@ public interface CommentService {
 
     Comment createComment(UUID postId, UUID currUserId, CreateCommentCommand cmd);
 
+    void deleteComment(UUID commentId, UUID currUserId, boolean isAdmin);
+
 }

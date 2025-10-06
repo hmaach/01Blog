@@ -1,6 +1,7 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.comment;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import jakarta.persistence.EntityManager;
 public class CommentRepositoryImpl implements CommentRepository {
 
     private final SpringDataCommentRepository jpaRepository;
+    @SuppressWarnings("unused")
     private final EntityManager entityManager;
 
     public CommentRepositoryImpl(SpringDataCommentRepository jpaRepository, EntityManager entityManager) {
@@ -36,4 +38,13 @@ public class CommentRepositoryImpl implements CommentRepository {
         return CommentMapper.toDomain(jpaRepository.save(entity));
     }
 
+    @Override
+    public Optional<Comment> findById(UUID commentId) {
+        return jpaRepository.findById(commentId).map(CommentMapper::toDomain);
+    }
+
+    @Override
+    public void deleteById(UUID commentId) {
+        jpaRepository.deleteById(commentId);
+    }
 }
