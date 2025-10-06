@@ -17,6 +17,8 @@ public interface PostService {
 
     Post findById(UUID id);
 
+    Boolean existsById(UUID id);
+
     Post createPost(CreatePostCommand command, UUID userID);
 
     Post updatePost(UUID postId, UpdatePostCommand cmd, UUID currentUserId, boolean isAdmin);

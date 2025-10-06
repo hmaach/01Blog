@@ -47,6 +47,11 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public Boolean existsById(UUID postId) {
+        return jpaRepository.existsById(postId);
+    }
+
+    @Override
     public Post save(Post post) {
         PostEntity entity = PostMapper.toEntity(post);
         return PostMapper.toDomain(jpaRepository.save(entity));

@@ -33,4 +33,6 @@ public interface PostRepository {
     void deleteMediaLinks(UUID mediaId);
 
     void hidePostById(UUID postId);
+
+    Boolean existsById(UUID postId);
 }

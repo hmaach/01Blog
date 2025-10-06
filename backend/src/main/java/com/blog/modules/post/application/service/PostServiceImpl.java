@@ -25,7 +25,6 @@ import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
-import com.blog.shared.infrastructure.exception.UnauthorizedException;
 
 import jakarta.transaction.Transactional;
 
@@ -79,6 +78,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public Boolean existsById(UUID postId) {
+        return postRepository.existsById(postId);
+    }
+
+    @Override
     @Transactional
     public Post createPost(CreatePostCommand cmd, UUID userId) {
         UUID postId = UUID.randomUUID();
@@ -115,7 +119,7 @@ public class PostServiceImpl implements PostService {
         if (!isAdmin && !currentUserId.equals(post.getUserId())) {
             throw new ForbiddenException();
         }
-        
+
         boolean updated = false;
 
         if (cmd.getTitle() != null && !cmd.getTitle().equals(post.getTitle())) {

@@ -30,4 +30,10 @@ public class CommentRepositoryImpl implements CommentRepository {
                 .toList();
     }
 
+    @Override
+    public Comment save(Comment comment) {
+        CommentEntity entity = CommentMapper.toEntity(comment);
+        return CommentMapper.toDomain(jpaRepository.save(entity));
+    }
+
 }

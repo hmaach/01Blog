@@ -10,5 +10,7 @@ import com.blog.modules.post.domain.model.Comment;
 public interface CommentRepository {
 
     List<Comment> findByPostId(UUID postId, Pageable pageable);
+
+    Comment save(Comment comment);
     
 }
