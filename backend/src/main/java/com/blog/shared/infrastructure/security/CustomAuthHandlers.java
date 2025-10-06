@@ -7,6 +7,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.blog.shared.infrastructure.exception.UnauthorizedException;
+import com.blog.utils.JsonResponseWriter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,7 +23,14 @@ public class CustomAuthHandlers {
                 HttpServletResponse response,
                 AuthenticationException authException
         ) throws IOException {
-            throw new UnauthorizedException();
+            UnauthorizedException ex = new UnauthorizedException();
+
+            JsonResponseWriter.write(
+                    response,
+                    ex.getStatus().value(),
+                    ex.getCode(),
+                    ex.getMessage()
+            );
         }
     }
 }
