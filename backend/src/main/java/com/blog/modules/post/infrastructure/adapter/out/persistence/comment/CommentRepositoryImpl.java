@@ -1,6 +1,7 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.comment;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -22,8 +23,8 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
-    public List<Comment> findAll(Pageable pageable) {
-        return jpaRepository.findAll(pageable)
+    public List<Comment> findByPostId(UUID postId, Pageable pageable) {
+        return jpaRepository.findByPostId(postId, pageable)
                 .stream()
                 .map(CommentMapper::toDomain)
                 .toList();

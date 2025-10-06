@@ -1,6 +1,7 @@
 package com.blog.modules.post.application.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> findAll(Pageable pageable) {
-        return commentRepository.findAll(pageable);
+    public List<Comment> getByPostId(UUID postId, Pageable pageable) {
+        return commentRepository.findByPostId(postId, pageable);
     }
 }
