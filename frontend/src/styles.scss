@@ -1,5 +1,70 @@
-@use 'tailwindcss' as *;
+// ✅ 1. Import Material theming API using @use (NOT @import)
+@use '@angular/material' as mat;
 
-// @tailwind base;
-// @tailwind components;
-// @tailwind utilities;
+// ✅ 2. Include core styles (only once, before themes)
+@include mat.core();
+
+// ✅ 3. Define the Material 3 theme with custom colors
+$light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$orange-palette,
+      tertiary: mat.$blue-palette,
+    ),
+  )
+);
+
+// ✅ 4. Define a dark theme
+$dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$orange-palette,
+      tertiary: mat.$blue-palette,
+    ),
+  )
+);
+
+// ✅ 5. Apply the light theme globally
+html {
+  @include mat.all-component-themes($light-theme);
+}
+
+// ✅ 6. Dark theme toggle
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+}
+
+// ✅ 7. Base styles
+body {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  margin: 0;
+  height: 100%;
+}
+
+// ✅ 8. Custom utilities
+.btn-primary {
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--mat-sys-primary) 85%, black);
+  }
+}
+
+a {
+  color: var(--mat-sys-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

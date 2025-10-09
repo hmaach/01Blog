@@ -1,0 +1,15 @@
+<header class="flex justify-between items-center p-4 shadow bg-white dark:bg-gray-800">
+  <h1 class="text-xl font-bold cursor-pointer" routerLink="/feed">01Blog</h1>
+
+  <nav class="flex items-center gap-4">
+    <a routerLink="/feed" routerLinkActive="text-blue-500">Feed</a>
+    <a routerLink="/profile/me" routerLinkActive="text-blue-500">My Block</a>
+    <button mat-button (click)="themeService.toggleDarkMode()">Toggle Theme</button>
+
+    <!-- Tailwind -->
+    <button class="btn-primary">Tailwind Button</button>
+
+    <!-- Angular Material -->
+    <button mat-raised-button color="primary">Material Button</button>
+  </nav>
+</header>

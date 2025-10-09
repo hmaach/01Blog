@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+
+/* 1. Define your custom color palettes */
+$primary-color: mat.define-palette(mat.$orange-palette, 600, 500, 700);
+$accent-color: mat.define-palette(mat.$grey-palette, 500, 400, 600);
+$warn-color: mat.define-palette(mat.$red-palette);
+
+/* 2. Define your theme using your custom palettes */
+$custom-theme: mat.define-light-theme((
+  color: (
+    primary: $primary-color,
+    accent: $accent-color,
+    warn: $warn-color,
+  ),
+));
+
+/* 3. Include the theme mixin to generate Material CSS variables */
+@include mat.core();
+@include mat.all-component-themes($custom-theme);
