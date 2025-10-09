@@ -7,6 +7,13 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
+
+// @Component({
+//   selector: 'app-root',
+//   standalone: true,
+//   imports: [RouterOutlet],
+//   template: '<router-outlet></router-outlet>',
+// })
 export class App {
-  protected readonly title = signal('frontend');
+  protected readonly title = signal('01Blog');
 }

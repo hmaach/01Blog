@@ -1,0 +1,32 @@
+<header
+  class="flex justify-between items-center p-4 shadow-md bg-white dark:bg-gray-800 transition-colors"
+>
+  <h1 class="text-xl font-bold cursor-pointer flex items-center gap-2" routerLink="/feed">
+    <img src="/logo.png" alt="logo" class="h-8" />
+    <span class="text-gray-900 dark:text-white">Blog</span>
+  </h1>
+
+  <nav class="flex items-center gap-4">
+    <a
+      routerLink="/feed"
+      routerLinkActive="text-primary font-semibold"
+      class="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
+    >
+      Feed
+    </a>
+    <a
+      routerLink="/profile/me"
+      routerLinkActive="text-primary font-semibold"
+      class="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors"
+    >
+      My Block
+    </a>
+
+    <button mat-icon-button (click)="themeService.toggleDarkMode()" class="dark:text-white">
+      {{ themeService.isDarkMode() ? '☀️' : '🌙' }}
+    </button>
+
+    <button class="btn-primary">Custom Button</button>
+    <button mat-raised-button color="primary">Material Button</button>
+  </nav>
+</header>

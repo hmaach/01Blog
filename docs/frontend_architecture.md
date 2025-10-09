@@ -159,3 +159,33 @@ src/
 │   └── environment.prod.ts
 │
 └── styles.scss```
+
+```text
+src/
+├── app/
+│   ├── core/   
+│   ├── features/                      # Feature modules (lazy loaded)
+│   │   ├── auth/
+│   │   ├── posts/
+│   │   ├── profile/
+│   │   ├── feed/
+│   │   ├── admin/
+│   │   └── notifications/
+│   ├── layouts/                       # Layout wrappers
+│   │   ├── main-layout/
+│   │   ├── admin-layout/
+│   │   └── auth-layout/
+│   ├── shared/                        # Shared components/utilities
+│   │   ├── components/
+│   │   ├── pipes/
+│   │   ├── directives/
+│   │   └── shared.module.ts
+│   │
+│   ├── app.ts
+│   ├── app.html
+│   ├── app.routes.ts                 # Angular 17+ standalone routing
+│   └── app.config.ts
+│
+├── assets/
+├── environments/
+└── styles.scss```

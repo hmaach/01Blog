@@ -1,10 +1,11 @@
-// ✅ 1. Import Material theming API using @use (NOT @import)
+// ✅ 1. Import Material theming API and Tailwind
 @use '@angular/material' as mat;
+@import 'tailwindcss';
 
 // ✅ 2. Include core styles (only once, before themes)
 @include mat.core();
 
-// ✅ 3. Define the Material 3 theme with custom colors
+// ✅ 3. Define the Material 3 light theme
 $light-theme: mat.define-theme(
   (
     color: (
@@ -15,7 +16,7 @@ $light-theme: mat.define-theme(
   )
 );
 
-// ✅ 4. Define a dark theme
+// ✅ 4. Define the Material 3 dark theme
 $dark-theme: mat.define-theme(
   (
     color: (
@@ -26,26 +27,25 @@ $dark-theme: mat.define-theme(
   )
 );
 
-// ✅ 5. Apply the light theme globally
+// ✅ 5. Apply the light theme by default
 html {
   @include mat.all-component-themes($light-theme);
 }
 
-// ✅ 6. Dark theme toggle
-.dark-theme {
+// ✅ 6. Apply dark theme when .dark-theme class is present
+html.dark-theme {
   @include mat.all-component-colors($dark-theme);
 }
 
-// ✅ 7. Base styles
+// ✅ 7. Base styles with Tailwind-compatible variables
 body {
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
+  @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
   margin: 0;
   height: 100%;
 }
 
-// ✅ 8. Custom utilities
+// ✅ 8. Custom utilities that work with both themes
 .btn-primary {
   background-color: var(--mat-sys-primary);
   color: var(--mat-sys-on-primary);
@@ -61,10 +61,5 @@ body {
 }
 
 a {
-  color: var(--mat-sys-primary);
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
+  @apply text-blue-600 dark:text-blue-400 no-underline hover:underline;
 }
