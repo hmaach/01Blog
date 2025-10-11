@@ -38,10 +38,15 @@ For more detailed backend implementation and setup instructions, please check th
 
 ---
 
+## Database Schema
+
+For more detailed, please check the [Database Schema](https://dbdiagram.io/d/01Blog-68c981561ff9c616bdf62bbc).
+
+---
+
 ### Technologies Used:
 
 * **Java**: Spring Boot, Spring Security
 * **SQL**: PostgreSQL
 * **Frontend**: Angular
 * **Docker**
-

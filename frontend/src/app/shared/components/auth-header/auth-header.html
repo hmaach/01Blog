@@ -1,11 +1,14 @@
-<header class="flex justify-between items-center p-4 shadow bg-white dark:bg-gray-800">
-  <h1 class="text-xl font-bold cursor-pointer" routerLink="/feed">01Blog auth</h1>
+<mat-toolbar color="surface" class="flex justify-between items-center p-4 shadow-md">
+  <app-logo></app-logo>
 
   <nav class="flex items-center gap-4">
-    <a routerLink="/feed" routerLinkActive="text-blue-500">Feed</a>
-    <a routerLink="/profile/me" routerLinkActive="text-blue-500">My Block</a>
-    <button mat-button (click)="themeService.toggleDarkMode()">Toggle Theme</button>
-    <button class="btn-primary">Tailwind Button</button>
-    <button mat-raised-button color="primary">Material Button</button>
+    <a mat-button routerLink="/feed" routerLinkActive="mat-primary">Feed</a>
+    <a mat-button routerLink="/profile/me" routerLinkActive="mat-primary">My Block</a>
+
+    <mat-slide-toggle
+      [checked]="themeService.isDarkMode()"
+      (change)="themeService.toggleDarkMode()"
+    >
+    </mat-slide-toggle>
   </nav>
-</header>
+</mat-toolbar>
