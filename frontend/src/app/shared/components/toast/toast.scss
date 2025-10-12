@@ -1,0 +1,29 @@
+.toast-content {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+.toast-icon {
+  font-size: 20px;
+}
+
+.toast-success {
+  background: #4caf50;
+  color: white;
+}
+
+.toast-error {
+  background: #f44336;
+  color: white;
+}
+
+.toast-info {
+  background: #2196f3;
+  color: white;
+}
+
+.toast-warning {
+  background: #ff9800;
+  color: black;
+}

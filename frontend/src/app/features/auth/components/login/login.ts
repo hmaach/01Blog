@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 export class Login {
   hide: boolean = false;
 
+  constructor(private toast: ToastService) {}
+
   onSubmit() {
+    this.toast.show('Registration successful 🎉', 'error');
     console.log('Form submitted');
   }
 }

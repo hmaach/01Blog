@@ -1,5 +1,5 @@
 <mat-card-header class="flex flex-col mb-4">
-  <mat-card-title class="text-primary w-full text-2xl font-medium">
+  <mat-card-title class="text-center text-primary w-full text-2xl font-medium">
     Join our Community!
   </mat-card-title>
 </mat-card-header>
@@ -181,12 +181,12 @@
   </div>
 
   <!-- Google Button -->
-  <button mat-raised-button class="w-full google-btn flex items-center justify-center gap-2">
+  <button matButton="filled" class="w-full google-btn">
     <i class="fa-brands fa-google"></i> Continue with Google
   </button>
 
-  <p class="pt-2 text-center" color="surface">
-    <span color="surface">Already have an account ?</span>
-    <a class="text-blue-500 underline" routerLink="/auth/login">Login</a>
+  <p class="pt-2">
+    <span class="text">Already have an account ? </span>
+    <a class="text-blue-500 underline" routerLink="/auth/login"> Login</a>
   </p>
 </mat-card-content>

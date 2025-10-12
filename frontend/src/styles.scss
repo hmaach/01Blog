@@ -65,7 +65,15 @@ html.dark-theme {
 html.dark-theme .primary {
   @include mat.button-overrides(
     (
-      filled-label-text-color: var(--mat-sys-on-primary),
+      filled-label-text-color: var(--mat-sys-background),
     )
   );
+}
+
+.text {
+  color: mat.get-theme-color($light-theme, on-surface);
+
+  html.dark-theme & {
+    color: mat.get-theme-color($dark-theme, on-surface);
+  }
 }

@@ -61,7 +61,7 @@ html {
   ); /* Variable used for the form field native select option text color */
 
   /* Error palette variables */
-  --mat-sys-error: light-dark(#ba1a1a, #ffb4ab);
+  --mat-sys-error: light-dark(#a30000, #ff1900);
   --mat-sys-on-error: light-dark(#ffffff, #690005);
   --mat-sys-error-container: light-dark(#ffdad6, #93000a);
   --mat-sys-on-error-container: light-dark(#410002, #ffdad6);
