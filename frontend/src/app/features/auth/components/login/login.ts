@@ -1,20 +1,21 @@
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { ToastService } from '../../../../core/services/toast.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -23,15 +24,26 @@ import { ToastService } from '../../../../core/services/toast.service';
     RouterLink,
   ],
   templateUrl: './login.html',
-  styleUrl: './login.scss',
+  styleUrls: ['./login.scss'],
 })
 export class Login {
-  hide: boolean = false;
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private toast = inject(ToastService);
 
-  constructor(private toast: ToastService) {}
+  hide: boolean = true;
+  form = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+  });
 
   onSubmit() {
-    this.toast.show('Registration successful 🎉', 'error');
-    console.log('Form submitted');
+    if (this.form.invalid) {
+      this.toast.show('Please fill out all fields correctly.', 'error');
+      return;
+    }
+
+    const { email, password } = this.form.value;
+    this.authService.login(email!, password!).subscribe();
   }
 }

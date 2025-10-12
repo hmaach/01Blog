@@ -1,15 +1,26 @@
 <mat-card-header class="flex flex-col mb-4">
-  <mat-card-title class="text-center text-primary w-full text-2xl font-medium">Welcome Back!</mat-card-title>
+  <mat-card-title class="text-center text-primary w-full text-2xl font-medium"
+    >Welcome Back!</mat-card-title
+  >
 </mat-card-header>
 
 <mat-card-content>
-  <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="flex flex-col gap-4">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
     <mat-form-field class="w-full">
       <mat-label>Email</mat-label>
-      <input matInput type="email" name="email" ngModel required placeholder="Enter your email" />
+      <input
+        matInput
+        type="email"
+        formControlName="email"
+        required
+        placeholder="Enter your email"
+      />
       <mat-icon matSuffix>email</mat-icon>
-      <mat-error *ngIf="loginForm.submitted && !loginForm.controls['email']?.valid">
+      <mat-error *ngIf="form.get('email')?.hasError('required') && form.get('email')?.touched">
         Email is required
+      </mat-error>
+      <mat-error *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched">
+        Enter a valid email
       </mat-error>
     </mat-form-field>
 
@@ -18,8 +29,7 @@
       <input
         matInput
         [type]="hide ? 'password' : 'text'"
-        name="password"
-        ngModel
+        formControlName="password"
         required
         placeholder="Enter your password"
       />
@@ -32,16 +42,14 @@
       >
         <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
-      <mat-error *ngIf="loginForm.submitted && !loginForm.controls['password']?.valid">
+      <mat-error
+        *ngIf="form.get('password')?.hasError('required') && form.get('password')?.touched"
+      >
         Password is required
       </mat-error>
     </mat-form-field>
 
-    <button matButton="filled" class="primary w-full">Login</button>
-
-    <!-- <mat-card-actions>
-          <a mat-button class="text-primary">Forgot your password?</a>
-        </mat-card-actions> -->
+    <button matButton="filled" class="primary w-full" [disabled]="form.invalid">Login</button>
   </form>
 
   <!-- Horizontal Divider -->
