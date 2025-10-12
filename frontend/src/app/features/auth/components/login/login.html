@@ -1,73 +1,61 @@
-<div class="flex justify-center items-center min-h-screen">
-  <mat-card class="w-full min-w-md p-6">
-    <app-main-logo></app-main-logo>
-    <mat-card-header class="flex flex-col mb-4">
-      <mat-card-title class="text-primary w-full text-2xl font-medium"
-        >Welcome back!</mat-card-title
+<mat-card-header class="flex flex-col mb-4">
+  <mat-card-title class="text-primary w-full text-2xl font-medium">Welcome Back!</mat-card-title>
+</mat-card-header>
+
+<mat-card-content>
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="flex flex-col gap-4">
+    <mat-form-field class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" name="email" ngModel required placeholder="Enter your email" />
+      <mat-icon matSuffix>email</mat-icon>
+      <mat-error *ngIf="loginForm.submitted && !loginForm.controls['email']?.valid">
+        Email is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-full">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [type]="hide ? 'password' : 'text'"
+        name="password"
+        ngModel
+        required
+        placeholder="Enter your password"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        type="button"
+        (click)="hide = !hide"
+        [attr.aria-label]="'Hide password'"
       >
-    </mat-card-header>
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="loginForm.submitted && !loginForm.controls['password']?.valid">
+        Password is required
+      </mat-error>
+    </mat-form-field>
 
-    <mat-card-content>
-      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="flex flex-col gap-4">
-        <mat-form-field class="w-full">
-          <mat-label>Email</mat-label>
-          <input
-            matInput
-            type="email"
-            name="email"
-            ngModel
-            required
-            placeholder="Enter your email"
-          />
-          <mat-icon matSuffix>email</mat-icon>
-          <mat-error *ngIf="loginForm.submitted && !loginForm.controls['email']?.valid">
-            Email is required
-          </mat-error>
-        </mat-form-field>
+    <button matButton="filled" class="primary w-full">Login</button>
 
-        <mat-form-field class="w-full">
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            [type]="hide ? 'password' : 'text'"
-            name="password"
-            ngModel
-            required
-            placeholder="Enter your password"
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-          >
-            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          <mat-error *ngIf="loginForm.submitted && !loginForm.controls['password']?.valid">
-            Password is required
-          </mat-error>
-        </mat-form-field>
-
-        <button matButton="filled" class="primary w-full">Login</button>
-
-        <!-- <mat-card-actions>
+    <!-- <mat-card-actions>
           <a mat-button class="text-primary">Forgot your password?</a>
         </mat-card-actions> -->
+  </form>
 
-        <!-- Horizontal Divider -->
-        <div class="flex items-center my-4">
-          <hr class="flex-grow border-t border-gray-300" />
-          <span class="px-4 text-sm text-gray-500">OR</span>
-          <hr class="flex-grow border-t border-gray-300" />
-        </div>
-
-        <!-- Continue with Google Button -->
-      </form>
-      <button matButton="filled" class="w-full google-btn">
-        <i class="fa-brands fa-google"></i>
-        Continue with Google
-      </button>
-    </mat-card-content>
-  </mat-card>
-</div>
+  <!-- Horizontal Divider -->
+  <div class="flex items-center my-4">
+    <hr class="flex-grow border-t border-gray-300" />
+    <span class="px-4 text-sm text-gray-500">OR</span>
+    <hr class="flex-grow border-t border-gray-300" />
+  </div>
+  <!-- Continue with Google Button -->
+  <button matButton="filled" class="w-full google-btn">
+    <i class="fa-brands fa-google"></i> Continue with Google
+  </button>
+  <p class="pt-4" color="surface">
+    <span color="surface">Already have an account ?</span>
+    <a class="text-blue-500 underline" routerLink="/auth/login">Login</a>
+  </p>
+</mat-card-content>

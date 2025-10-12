@@ -1,1 +1,192 @@
-<p>register works!</p>
+<mat-card-header class="flex flex-col mb-4">
+  <mat-card-title class="text-primary w-full text-2xl font-medium">
+    Join our Community!
+  </mat-card-title>
+</mat-card-header>
+
+<mat-card-content>
+  <mat-stepper [linear]="isLinear" #stepper>
+    <!-- STEP 1 -->
+    <mat-step [stepControl]="firstFormGroup" class="pb-1">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Fill out your name</ng-template>
+
+        <!-- Full Name -->
+        <mat-form-field class="w-full">
+          <mat-label>Full Name</mat-label>
+          <input
+            matInput
+            formControlName="firstCtrl"
+            placeholder="Last name, First name"
+            required
+          />
+          <mat-error *ngIf="firstFormGroup.get('firstCtrl')?.hasError('required')">
+            Full name is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field class="w-full">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="emailCtrl"
+            placeholder="Enter your email"
+            required
+          />
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-error *ngIf="firstFormGroup.get('emailCtrl')?.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="firstFormGroup.get('emailCtrl')?.hasError('email')">
+            Please enter a valid email address
+          </mat-error>
+        </mat-form-field>
+
+        <div class="flex justify-end">
+          <button
+            mat-raised-button
+            color="primary"
+            matStepperNext
+            [disabled]="firstFormGroup.invalid"
+          >
+            Next
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- STEP 2 -->
+    <mat-step [stepControl]="secondFormGroup">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Create your password</ng-template>
+
+        <!-- Password -->
+        <mat-form-field class="w-full">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="pwdHide ? 'password' : 'text'"
+            formControlName="passwordCtrl"
+            required
+          />
+          <button mat-icon-button matSuffix type="button" (click)="pwdHide = !pwdHide">
+            <mat-icon>{{ pwdHide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="secondFormGroup.get('passwordCtrl')?.hasError('required')">
+            Password is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Confirm Password -->
+        <mat-form-field class="w-full">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            [type]="ConfirmPwdHide ? 'password' : 'text'"
+            formControlName="confirmCtrl"
+            required
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="ConfirmPwdHide = !ConfirmPwdHide"
+          >
+            <mat-icon>{{ ConfirmPwdHide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="secondFormGroup.get('confirmCtrl')?.hasError('required')">
+            Please confirm your password
+          </mat-error>
+          <mat-error *ngIf="passwordsDoNotMatch"> Passwords do not match </mat-error>
+        </mat-form-field>
+
+        <div class="flex justify-between mt-4">
+          <button mat-stroked-button matStepperPrevious>Back</button>
+          <button
+            mat-raised-button
+            color="primary"
+            matStepperNext
+            [disabled]="secondFormGroup.invalid || passwordsDoNotMatch"
+          >
+            Next
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- STEP 3 -->
+    <mat-step>
+      <ng-template matStepLabel>Upload Avatar (Optional)</ng-template>
+
+      <div class="flex flex-col items-center text-center">
+        <p class="mb-2">You can upload an avatar or skip this step 🎉</p>
+
+        <!-- Avatar Preview -->
+        <div
+          class="relative w-24 h-24 rounded-full overflow-hidden border border-gray-300 mb-4"
+          *ngIf="avatarPreview; else uploadPlaceholder"
+        >
+          <img [src]="avatarPreview" alt="Avatar Preview" class="w-full h-full object-cover" />
+          <button
+            mat-mini-fab
+            color="warn"
+            class="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3"
+            (click)="removeAvatar()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <!-- Placeholder if no image uploaded -->
+        <ng-template #uploadPlaceholder>
+          <div
+            class="w-24 h-24 flex items-center justify-center rounded-full border border-dashed border-gray-400 text-gray-400 mb-4"
+          >
+            <mat-icon>person</mat-icon>
+          </div>
+        </ng-template>
+
+        <!-- File Input (hidden) -->
+        <input
+          #fileInput
+          type="file"
+          accept="image/*"
+          class="hidden"
+          (change)="onAvatarSelected($event)"
+        />
+
+        <!-- Buttons -->
+        <div class="flex gap-2 mt-2">
+          <button mat-stroked-button color="primary" (click)="fileInput.click()">
+            Upload Avatar
+          </button>
+          <button mat-button color="accent" (click)="stepper.reset()">Skip</button>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-4">
+        <button mat-stroked-button matStepperPrevious>Back</button>
+        <button mat-raised-button color="primary" (click)="finishRegistration()">Finish</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+
+  <!-- Divider -->
+  <div class="flex items-center my-2">
+    <hr class="flex-grow border-t border-gray-300" />
+    <span class="px-4 text-sm text-gray-500">OR</span>
+    <hr class="flex-grow border-t border-gray-300" />
+  </div>
+
+  <!-- Google Button -->
+  <button mat-raised-button class="w-full google-btn flex items-center justify-center gap-2">
+    <i class="fa-brands fa-google"></i> Continue with Google
+  </button>
+
+  <p class="pt-2 text-center" color="surface">
+    <span color="surface">Already have an account ?</span>
+    <a class="text-blue-500 underline" routerLink="/auth/login">Login</a>
+  </p>
+</mat-card-content>

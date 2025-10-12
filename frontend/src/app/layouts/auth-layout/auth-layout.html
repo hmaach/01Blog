@@ -2,6 +2,11 @@
   <app-auth-header></app-auth-header>
 
   <main class="auth-layout flex-1 flex justify-center items-center">
-    <router-outlet></router-outlet>
+    <div class="flex justify-center items-center min-h-screen">
+      <mat-card class="w-full min-w-md p-3 mt-6">
+        <app-main-logo></app-main-logo>
+        <router-outlet></router-outlet>
+      </mat-card>
+    </div>
   </main>
 </div>

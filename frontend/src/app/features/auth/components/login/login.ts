@@ -6,7 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MainLogo } from "../../../../shared/components/main-logo/main-logo";
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-login',
@@ -18,13 +19,13 @@ import { MainLogo } from "../../../../shared/components/main-logo/main-logo";
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MainLogo
-],
+    RouterLink,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
-  hide = true;
+  hide: boolean = false;
 
   onSubmit() {
     console.log('Form submitted');

@@ -4,12 +4,13 @@
 
 @include mat.core();
 
+// Define theme using your existing CSS variables from theme.css
 $light-theme: mat.define-theme(
   (
     color: (
       theme-type: light,
       primary: mat.$orange-palette,
-      tertiary: mat.$blue-palette,
+      tertiary: mat.$yellow-palette,
     ),
   )
 );
@@ -19,21 +20,33 @@ $dark-theme: mat.define-theme(
     color: (
       theme-type: dark,
       primary: mat.$orange-palette,
-      tertiary: mat.$blue-palette,
+      tertiary: mat.$yellow-palette,
     ),
   )
 );
 
+:root {
+  @include mat.stepper-overrides(
+    (
+      container-color: var(--mat-sys-surface-container-low),
+    )
+  );
+}
+
 html {
   @include mat.all-component-themes($light-theme);
-  background: mat.get-theme-color($light-theme, surface);
-  color: mat.get-theme-color($light-theme, on-surface);
+
+  // Override with your custom theme variables
+  background: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
 }
 
 html.dark-theme {
   @include mat.all-component-themes($dark-theme);
-  background: mat.get-theme-color($dark-theme, surface);
-  color: mat.get-theme-color($dark-theme, on-surface);
+
+  // Override with your custom theme variables
+  background: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
 }
 
 .primary {
@@ -52,7 +65,7 @@ html.dark-theme {
 html.dark-theme .primary {
   @include mat.button-overrides(
     (
-      filled-label-text-color: #000,
+      filled-label-text-color: var(--mat-sys-on-primary),
     )
   );
 }
