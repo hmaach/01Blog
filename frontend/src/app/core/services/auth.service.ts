@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of } from 'rxjs';
 import { AuthApiService } from '../../features/auth/services/auth-api.service';
 import { TokenService } from './token.service';
 import { ToastService } from './toast.service';
@@ -36,6 +36,16 @@ export class AuthService {
     );
   }
 
+  isAuthenticated(): Observable<boolean> {
+    const token = this.tokenService.getAccessToken();
+
+    if (!token) {
+      return of(false);
+    }
+
+    return this.authApi.isAuthenticated(token);
+  }
+
   register(data: { name: string; email: string; password: string }): Observable<User> {
     return this.authApi.register(data).pipe(
       tap({
@@ -59,9 +69,5 @@ export class AuthService {
 
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.tokenService.getAccessToken();
   }
 }
