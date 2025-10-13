@@ -1,6 +1,6 @@
 package com.blog.modules.user.infrastructure.adapter.in.web.dto;
 
-import java.util.UUID;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,12 +13,9 @@ public record RegisterUserCommand(
         @NotBlank
         String email,
         @NotBlank
-        @Size(min = 3, max = 20)
-        String username,
-        @NotBlank
         @Size(min = 6)
         String password,
-        UUID avatarMediaId
+        MultipartFile avatar
         ) {
 
 }

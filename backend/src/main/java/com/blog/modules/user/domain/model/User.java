@@ -34,6 +34,24 @@ public class User {
         this.avatarMediaId = avatarMediaId;
     }
 
+    public User(
+            UUID id,
+            String name,
+            String username,
+            String email,
+            String password,
+            String role,
+            Instant createdAt
+    ) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
+
     // Getters
     public UUID getId() {
         return id;

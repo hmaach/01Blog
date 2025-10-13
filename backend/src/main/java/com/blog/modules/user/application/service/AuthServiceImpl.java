@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.AuthService;
@@ -17,7 +18,10 @@ import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
+import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 import com.blog.shared.infrastructure.security.JwtService;
+
+import io.jsonwebtoken.io.IOException;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -31,6 +35,8 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JwtService jwtService;
 
+    private MediaService mediaService;
+
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public AuthServiceImpl(UserRepositoryImpl userRepository) {
@@ -43,18 +49,27 @@ public class AuthServiceImpl implements AuthService {
             throw new EmailAlreadyExistsException(cmd.email());
         }
 
-        UUID id = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+        UUID mediaId;
 
         User user = new User(
-                id,
+                userId,
                 cmd.name(),
+                "username",
                 cmd.email(),
-                cmd.username(),
                 encoder.encode(cmd.password()),
                 "USER",
-                cmd.avatarMediaId(),
                 Instant.now()
         );
+
+        if (cmd.avatar() != null) {
+            try {
+                mediaId = mediaService.uploadAvatar(userId, cmd.avatar());
+                user.changeAvatar(mediaId);
+            } catch (IOException | java.io.IOException | IllegalStateException e) {
+                throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
+            }
+        }
 
         userRepository.save(user);
 

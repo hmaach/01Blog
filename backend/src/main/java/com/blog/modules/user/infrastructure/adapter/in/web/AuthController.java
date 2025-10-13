@@ -1,6 +1,8 @@
 package com.blog.modules.user.infrastructure.adapter.in.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +26,8 @@ public class AuthController {
         this.service = service;
     }
 
-    @PostMapping("/register")
-    public UserResponse register(@RequestBody @Valid RegisterUserCommand cmd) {
+    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UserResponse register(@Valid @ModelAttribute RegisterUserCommand cmd) {
         return service.register(cmd);
     }
 
