@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import com.blog.shared.dto.ErrorResponse;
+import com.blog.shared.infrastructure.adapter.in.web.dto.ErrorResponse;
 import com.blog.shared.infrastructure.exception.BaseException;
 
 @RestControllerAdvice

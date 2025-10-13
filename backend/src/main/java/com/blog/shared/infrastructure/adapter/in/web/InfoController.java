@@ -1,4 +1,4 @@
-package com.blog.shared;
+package com.blog.shared.infrastructure.adapter.in.web;
 
 import java.util.List;
 import java.util.Map;
