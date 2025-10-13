@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, tap, of } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of, catchError } from 'rxjs';
 import { AuthApiService } from '../../features/auth/services/auth-api.service';
 import { TokenService } from './token.service';
 import { ToastService } from './toast.service';
@@ -14,10 +14,13 @@ export class AuthService {
   private tokenService = inject(TokenService);
   private router = inject(Router);
 
+  private isBrowser: boolean;
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
   constructor(private toast: ToastService) {
+    this.isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
     const user = this.tokenService.getUser();
     if (user) this.currentUserSubject.next(user);
   }
@@ -27,7 +30,6 @@ export class AuthService {
       tap({
         next: (token) => {
           this.tokenService.saveTokens(token);
-          //   this.currentUserSubject.next(user);
           this.toast.show('Welcome back', 'success');
           this.router.navigate(['/']);
         },
@@ -37,13 +39,41 @@ export class AuthService {
   }
 
   isAuthenticated(): Observable<boolean> {
+    if (!this.isBrowser) {
+      return of(true);
+    }
+
     const token = this.tokenService.getAccessToken();
 
     if (!token) {
       return of(false);
     }
 
-    return this.authApi.isAuthenticated(token);
+    return of(true);
+  }
+
+  validateToken() {
+    if (!this.isBrowser) return;
+
+    const token = this.tokenService.getAccessToken();
+    if (!token) return;
+
+    this.authApi
+      .isAuthenticated(token)
+      .pipe(
+        tap((isValid) => {
+          if (!isValid) {
+            this.tokenService.clear();
+            this.router.navigate(['/auth/login']);
+          }
+        }),
+        catchError(() => {
+          this.tokenService.clear();
+          this.router.navigate(['/auth/login']);
+          return of(false);
+        })
+      )
+      .subscribe();
   }
 
   register(data: { name: string; email: string; password: string }): Observable<User> {
