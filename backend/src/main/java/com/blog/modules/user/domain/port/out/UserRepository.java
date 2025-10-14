@@ -16,6 +16,12 @@ public interface UserRepository {
 
     Optional<User> findByUsername(String username);
 
+    boolean existsById(UUID userId);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
+
     List<User> findAll();
 
     Optional<UUID> getAvatarId(UUID userId);

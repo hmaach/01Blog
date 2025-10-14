@@ -58,12 +58,13 @@ public class AuthServiceImpl implements AuthService {
         }
 
         UUID userId = UUID.randomUUID();
+        String username = this.generateUniqueUsername(cmd.name(), cmd.email());
         UUID mediaId;
 
         User user = new User(
                 userId,
                 cmd.name(),
-                "username",
+                username,
                 cmd.email(),
                 encoder.encode(cmd.password()),
                 "USER",
@@ -97,6 +98,29 @@ public class AuthServiceImpl implements AuthService {
             return jwtService.generateToken(user);
         }
         return "";
+    }
+
+    @Override
+    public String generateUniqueUsername(String name, String email) {
+        String base = (name.length() > 3)
+                ? name.toLowerCase()
+                : email.split("@")[0].toLowerCase();
+
+        // sanitize
+        base = base.replaceAll("[^a-z0-9]", "");
+
+        if (base.length() < 3) {
+            base = "user" + base;
+        }
+
+        String username = base;
+        int attempt = 0;
+
+        while (userRepository.existsByUsername(username)) {
+            username = base + (++attempt);
+        }
+
+        return username;
     }
 
 }

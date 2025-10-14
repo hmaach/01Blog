@@ -20,20 +20,19 @@ import jakarta.transaction.Transactional;
 public class UserRepositoryImpl implements UserRepository {
 
     private final EntityManager entityManager;
+    private final SpringDataUserRepository jpaRepository;
 
-    public UserRepositoryImpl(EntityManager entityManager) {
+    public UserRepositoryImpl(SpringDataUserRepository jpaRepository, EntityManager entityManager) {
+        this.jpaRepository = jpaRepository;
         this.entityManager = entityManager;
     }
 
     @Override
-    public User save(User user) {
-        UserEntity entity = UserMapper.toEntity(user);
-        if (entity.getId() == null) {
-            entityManager.persist(entity);
-        } else {
-            entity = entityManager.merge(entity);
-        }
-        return UserMapper.toDomain(entity);
+    public List<User> findAll() {
+        TypedQuery<UserEntity> query = entityManager.createQuery("SELECT u FROM UserEntity u", UserEntity.class);
+        return query.getResultList().stream()
+                .map(UserMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -69,11 +68,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() {
-        TypedQuery<UserEntity> query = entityManager.createQuery("SELECT u FROM UserEntity u", UserEntity.class);
-        return query.getResultList().stream()
-                .map(UserMapper::toDomain)
-                .collect(Collectors.toList());
+    public boolean existsById(UUID userId) {
+        return jpaRepository.existsById(userId);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return jpaRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return jpaRepository.existsByUsername(username);
     }
 
     @Override
@@ -99,6 +105,17 @@ public class UserRepositoryImpl implements UserRepository {
         if (updated == 0) {
             throw new EntityNotFoundException("User not found with id: " + userId);
         }
+    }
+
+    @Override
+    public User save(User user) {
+        UserEntity entity = UserMapper.toEntity(user);
+        if (entity.getId() == null) {
+            entityManager.persist(entity);
+        } else {
+            entity = entityManager.merge(entity);
+        }
+        return UserMapper.toDomain(entity);
     }
 
     @Override

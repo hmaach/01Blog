@@ -4,12 +4,11 @@ import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 
-
-
 public interface AuthService {
 
-    public String login(LoginUserCommand cmd);
+    String login(LoginUserCommand cmd);
 
     UserResponse register(RegisterUserCommand command);
 
+    String generateUniqueUsername(String name, String email);
 }
