@@ -15,6 +15,7 @@ import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.AuthService;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
@@ -87,7 +88,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String login(LoginUserCommand cmd) {
+    public LoginResponse login(LoginUserCommand cmd) {
         Authentication auth = authManager.
                 authenticate(new UsernamePasswordAuthenticationToken(cmd.email(), cmd.password()));
 
@@ -97,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
 
             return jwtService.generateToken(user);
         }
-        return "";
+        return null;
     }
 
     @Override

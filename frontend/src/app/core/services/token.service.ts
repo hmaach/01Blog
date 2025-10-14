@@ -4,6 +4,7 @@ import { User } from '../models/user.model';
 @Injectable({ providedIn: 'root' })
 export class TokenService {
   private TOKEN_KEY = 'accessToken';
+  private TOKEN_EXPIRES_KEY = 'tokenExpiresAt';
   private USER_KEY = 'user';
 
   private isBrowser: boolean;
@@ -12,10 +13,10 @@ export class TokenService {
     this.isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
   }
 
-  saveTokens(token: string): void {
+  saveTokens(token: string, expiresAt: string): void {
     if (this.isBrowser && token) {
       localStorage.setItem(this.TOKEN_KEY, token);
-      // localStorage.setItem(this.USER_KEY, JSON.stringify(user));
+      localStorage.setItem('tokenExpiresAt', expiresAt);
     }
   }
 

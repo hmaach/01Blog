@@ -1,5 +1,6 @@
 package com.blog.shared.infrastructure.security;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.blog.modules.user.domain.model.User;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginResponse;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,10 +21,10 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    private final long jwtExpirationMs = 360000000; // 1h
+    private final long jwtExpirationMs = 360000000;
 
-    public String generateToken(User user) {
-        return Jwts.builder()
+    public LoginResponse generateToken(User user) {
+        String token = Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("id", user.getId())
                 .claim("role", user.getRole())
@@ -30,6 +32,16 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+
+        Date expirationDate = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+
+        Instant expiresAt = expirationDate.toInstant();
+
+        return new LoginResponse(token, expiresAt);
     }
 
     public String getEmailFromToken(String token) {

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { User } from '../../../core/models/user.model';
 import { environment } from '../../../../environments/environment';
+import { LoginResponse } from '../../../core/models/login-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApiService {
@@ -10,10 +11,12 @@ export class AuthApiService {
 
   constructor(private http: HttpClient) {}
 
-  login(payload: { email: string; password: string }): Observable<string> {
-    return this.http.post<string>(`${this.apiUrl}/auth/login`, payload, {
-      responseType: 'text' as 'json',
-    });
+  login(payload: { email: string; password: string }): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, payload);
+  }
+
+  register(payload: FormData): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/auth/register`, payload);
   }
 
   isAuthenticated(token: string): Observable<boolean> {
@@ -29,11 +32,5 @@ export class AuthApiService {
           return of(false);
         })
       );
-  }
-
-  register(payload: FormData): Observable<User> {
-    console.log(payload);
-
-    return this.http.post<User>(`${this.apiUrl}/auth/register`, payload);
   }
 }

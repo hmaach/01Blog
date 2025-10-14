@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.modules.user.application.service.AuthServiceImpl;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
@@ -32,7 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody @Valid LoginUserCommand cmd) {
+    public LoginResponse login(@RequestBody @Valid LoginUserCommand cmd) {
         return service.login(cmd);
     }
 }

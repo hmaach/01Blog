@@ -5,6 +5,7 @@ import { AuthApiService } from '../../features/auth/services/auth-api.service';
 import { TokenService } from './token.service';
 import { ToastService } from './toast.service';
 import { User } from '../models/user.model';
+import { LoginResponse } from '../models/login-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,15 +26,31 @@ export class AuthService {
     if (user) this.currentUserSubject.next(user);
   }
 
-  login(email: string, password: string): Observable<string> {
+  login(email: string, password: string): Observable<LoginResponse> {
     return this.authApi.login({ email, password }).pipe(
       tap({
-        next: (token) => {
-          this.tokenService.saveTokens(token);
+        next: (response) => {
+          
+          this.tokenService.saveTokens(response.token, response.expiresAt);
           this.toast.show('Welcome back', 'success');
           this.router.navigate(['/']);
         },
-        error: () => this.toast.show('Invalid credentials', 'error'),
+        error: (e) => this.toast.show(e?.error?.message || 'Unknown Server Error', 'error'),
+      })
+    );
+  }
+
+  register(data: FormData): Observable<User> {
+    return this.authApi.register(data).pipe(
+      tap({
+        next: (user) => {
+          // TODO: pass the email to the login page
+          // this.tokenService.saveTokens(user.token);
+          // this.currentUserSubject.next(user);
+          this.toast.show('Account created successfully', 'success');
+          this.router.navigate(['/']);
+        },
+        error: (e) => this.toast.show(e?.error?.message || 'Unknown Server Error', 'error'),
       })
     );
   }
@@ -44,7 +61,6 @@ export class AuthService {
     }
 
     const token = this.tokenService.getAccessToken();
-
     if (!token) {
       return of(false);
     }
@@ -74,22 +90,6 @@ export class AuthService {
         })
       )
       .subscribe();
-  }
-
-  register(data: FormData): Observable<User> {
-    return this.authApi.register(data).pipe(
-      tap({
-        next: (user) => {
-          this.tokenService.saveTokens(user.token);
-          this.currentUserSubject.next(user);
-          this.toast.show('Account created successfully', 'success');
-          this.router.navigate(['/']);
-        },
-        error: (e) => {
-          this.toast.show(e?.error?.message, 'error');
-        },
-      })
-    );
   }
 
   logout(): void {

@@ -7,7 +7,7 @@ import { map, catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
@@ -17,16 +17,11 @@ export class AuthGuard implements CanActivate {
     return this.authService.isAuthenticated().pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {
-          return true;
-        } else {
-          this.router.navigate(['/auth/login']);
+          this.router.navigate(['/feed']);
           return false;
+        } else {
+          return true;
         }
-      }),
-      catchError((error) => {
-        console.error('Authentication check failed', error);
-        this.router.navigate(['/auth/login']);
-        return [false];
       })
     );
   }
