@@ -1,14 +1,30 @@
-<mat-toolbar color="surface" class="flex justify-between items-center p-4 shadow-md">
+<mat-toolbar
+  color="surface"
+  class="position-absolute d-flex justify-content-between align-items-center p-3 shadow-sm w-100"
+>
   <app-logo></app-logo>
 
-  <nav class="flex items-center gap-4">
-    <a mat-button routerLink="/feed" routerLinkActive="mat-primary">Feed</a>
-    <a mat-button routerLink="/profile/me" routerLinkActive="mat-primary">My Block</a>
-
-    <mat-slide-toggle
-      [checked]="themeService.isDarkMode()"
-      (change)="themeService.toggleDarkMode()"
+  <nav class="d-flex align-items-center gap-3 flex-wrap">
+    <a mat-button routerLink="/feed" routerLinkActive="mat-primary" class="text-decoration-none">
+      Feed
+    </a>
+    <a
+      mat-button
+      routerLink="/profile/me"
+      routerLinkActive="mat-primary"
+      class="text-decoration-none"
     >
-    </mat-slide-toggle>
+      My Block
+    </a>
+
+    <app-switch-mode></app-switch-mode>
+
+    <button matButton [matMenuTriggerFor]="menu">Menu</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <app-switch-mode></app-switch-mode>
+      </button>
+      <button mat-menu-item (click)="logout()">Logout <i class="fa-solid fa-right-from-bracket"></i></button>
+    </mat-menu>
   </nav>
 </mat-toolbar>

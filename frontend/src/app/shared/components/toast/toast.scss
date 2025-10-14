@@ -1,5 +1,6 @@
 .toast-content {
   display: flex;
+  z-index: 1000 !important;
   align-items: center;
   font-size: 15px;
 }

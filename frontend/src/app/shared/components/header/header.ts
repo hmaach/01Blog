@@ -1,31 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Logo } from '../logo/logo';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { ThemeService } from '../../../core/services/theme.service';
-import { Logo } from '../logo/logo';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { SwitchMode } from '../switch-mode/switch-mode';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
+    Logo,
+    SwitchMode,
     RouterLink,
-    RouterLinkActive,
+    MatIconModule,
+    MatMenuModule,
     MatButtonModule,
     MatToolbarModule,
-    Logo,
-    MatSlideToggleModule,
-    MatIconModule,
+    RouterLinkActive,
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
 export class Header {
-  constructor(public themeService: ThemeService) {}
+  private authService = inject(AuthService);
 
   logout() {
-    // TODO: implement logout logic
+    this.authService.logout();
   }
 }

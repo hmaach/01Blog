@@ -16,12 +16,6 @@
     >
       My Block
     </a>
-
-    <mat-slide-toggle
-      [checked]="themeService.isDarkMode()"
-      (change)="themeService.toggleDarkMode()"
-      class="ms-2"
-    >
-    </mat-slide-toggle>
+    <app-switch-mode></app-switch-mode>
   </nav>
 </mat-toolbar>

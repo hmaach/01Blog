@@ -100,7 +100,6 @@ export class AuthService {
 
   logout(): void {
     this.tokenService.clear();
-    this.currentUserSubject.next(null);
     this.toast.show('Logged out', 'info');
     this.router.navigate(['/auth/login']);
   }
