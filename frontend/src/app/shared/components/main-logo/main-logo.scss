@@ -1,0 +1,13 @@
+.logo-img {
+  width: 100px;
+  height: 100px;
+
+  @media (max-width: 768px) {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+.fw-medium {
+  font-weight: 500;
+}

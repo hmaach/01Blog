@@ -10,3 +10,17 @@
   width: 20px;
   height: 20px;
 }
+
+mat-card-title {
+  font-weight: 500;
+}
+
+@media (max-width: 576px) {
+  mat-card-title {
+    font-size: 1.2rem;
+  }
+
+  .google-btn {
+    font-size: 0.9rem;
+  }
+}

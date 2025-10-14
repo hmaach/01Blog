@@ -1,12 +1,12 @@
-<mat-card-header class="flex flex-col mb-4">
-  <mat-card-title class="text-center text-primary w-full text-2xl font-medium"
-    >Welcome Back!</mat-card-title
-  >
+<mat-card-header class="d-flex flex-column mb-4">
+  <mat-card-title class="text-center primary-text w-100 fs-4 fw-medium">
+    Welcome Back!
+  </mat-card-title>
 </mat-card-header>
 
 <mat-card-content>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
-    <mat-form-field class="w-full">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="d-flex flex-column gap-3">
+    <mat-form-field class="w-100">
       <mat-label>Email</mat-label>
       <input
         matInput
@@ -25,7 +25,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="w-full">
+    <mat-form-field class="w-100">
       <mat-label>Password</mat-label>
       <input
         matInput
@@ -50,21 +50,23 @@
       </mat-error>
     </mat-form-field>
 
-    <button matButton="filled" class="primary w-full" [disabled]="form.invalid">Login</button>
+    <button matButton="filled" class="primary" [disabled]="form.invalid">Login</button>
   </form>
 
-  <!-- Horizontal Divider -->
-  <div class="flex items-center my-4">
-    <hr class="flex-grow border-t border-gray-300" />
-    <span class="px-4 text-sm text-gray-500">OR</span>
-    <hr class="flex-grow border-t border-gray-300" />
+  <!-- Divider -->
+  <div class="d-flex align-items-center my-3">
+    <hr class="flex-grow-1 border-secondary" />
+    <span class="px-2 text-muted small">OR</span>
+    <hr class="flex-grow-1 border-secondary" />
   </div>
-  <!-- Continue with Google Button -->
+
   <button matButton="filled" class="w-full google-btn">
-    <i class="fa-brands fa-google"></i> Continue with Google
+    <i class="fa-brands fa-google"></i>
+    Continue with Google
   </button>
-  <p class="pt-4">
-    <span class="text">You don't have an Account? </span>
-    <a class="text-blue-500 underline" routerLink="/auth/register">Register</a>
+
+  <p class="pt-3 text-center">
+    <span>You don't have an account? </span>
+    <a class="primary-text text-decoration-underline" routerLink="/auth/register">Register</a>
   </p>
 </mat-card-content>

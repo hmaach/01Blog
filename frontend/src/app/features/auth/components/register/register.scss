@@ -15,9 +15,42 @@
   margin-top: 8px;
 }
 
-.mat-mdc-form-field {
-  margin-top: 16px;
+.mat-horizontal-content-container {
+  padding-bottom: 0;
 }
-.mat-stepper-vertical, .mat-stepper-horizontal{
+
+.mat-stepper-vertical,
+.mat-stepper-horizontal {
   background-color: transparent;
+}
+
+mat-card-title {
+  font-weight: 500;
+}
+
+.avatar-box,
+.avatar-placeholder {
+  width: 6rem;
+  height: 6rem;
+}
+
+.avatar-placeholder {
+  border-style: dashed;
+  color: #6c757d;
+}
+
+@media (max-width: 576px) {
+  mat-card-title {
+    font-size: 1.2rem;
+  }
+
+  .avatar-box,
+  .avatar-placeholder {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .google-btn {
+    font-size: 0.9rem;
+  }
 }

@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 @use './assets/styles/theme.css';
-@import 'tailwindcss';
+@import 'bootstrap/scss/bootstrap';
 
 @include mat.core();
 
@@ -58,7 +58,7 @@ html.dark-theme {
   );
 }
 
-.text-primary {
+.primary-text {
   color: var(--mat-sys-primary);
 }
 
@@ -76,4 +76,8 @@ html.dark-theme .primary {
   html.dark-theme & {
     color: mat.get-theme-color($dark-theme, on-surface);
   }
+}
+
+.w-full {
+  width: 100%;
 }

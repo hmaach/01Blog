@@ -1,5 +1,5 @@
-<mat-card-header class="flex flex-col mb-4">
-  <mat-card-title class="text-center text-primary w-full text-2xl font-medium">
+<mat-card-header class="d-flex flex-column mb-4">
+  <mat-card-title class="text-center primary-text w-100 fs-4 fw-medium">
     Join our Community!
   </mat-card-title>
 </mat-card-header>
@@ -12,7 +12,7 @@
         <ng-template matStepLabel>Fill out your name</ng-template>
 
         <!-- Full Name -->
-        <mat-form-field class="w-full">
+        <mat-form-field class="w-100 mb-3">
           <mat-label>Full Name</mat-label>
           <input matInput formControlName="nameCtrl" placeholder="Last name, First name" required />
           <mat-error *ngIf="firstFormGroup.get('nameCtrl')?.hasError('required')">
@@ -21,7 +21,7 @@
         </mat-form-field>
 
         <!-- Email -->
-        <mat-form-field class="w-full">
+        <mat-form-field class="w-100 mb-3">
           <mat-label>Email</mat-label>
           <input
             matInput
@@ -39,7 +39,7 @@
           </mat-error>
         </mat-form-field>
 
-        <div class="flex justify-end">
+        <div class="d-flex justify-content-end mt-2">
           <button
             mat-raised-button
             color="primary"
@@ -48,7 +48,6 @@
           >
             Next
           </button>
-          <!-- <button mat-raised-button color="primary" (click)="finishRegistration()">Finish</button> -->
         </div>
       </form>
     </mat-step>
@@ -59,7 +58,7 @@
         <ng-template matStepLabel>Create your password</ng-template>
 
         <!-- Password -->
-        <mat-form-field class="w-full">
+        <mat-form-field class="w-100 mb-3">
           <mat-label>Password</mat-label>
           <input
             matInput
@@ -76,7 +75,7 @@
         </mat-form-field>
 
         <!-- Confirm Password -->
-        <mat-form-field class="w-full">
+        <mat-form-field class="w-100 mb-3">
           <mat-label>Confirm Password</mat-label>
           <input
             matInput
@@ -95,10 +94,10 @@
           <mat-error *ngIf="secondFormGroup.get('confirmCtrl')?.hasError('required')">
             Please confirm your password
           </mat-error>
-          <mat-error *ngIf="passwordsDoNotMatch"> Passwords do not match </mat-error>
+          <mat-error *ngIf="passwordsDoNotMatch">Passwords do not match</mat-error>
         </mat-form-field>
 
-        <div class="flex justify-between mt-4">
+        <div class="d-flex justify-content-between mt-3">
           <button mat-stroked-button matStepperPrevious>Back</button>
           <button
             mat-raised-button
@@ -116,49 +115,46 @@
     <mat-step>
       <ng-template matStepLabel>Upload Avatar (Optional)</ng-template>
 
-      <div class="flex flex-col items-center text-center">
-        <!-- <p class="mb-2">You can upload an avatar (Optional)</p> -->
-
+      <div class="d-flex flex-column align-items-center text-center">
         <!-- Avatar Preview -->
         <div
-          class="relative w-24 h-24 rounded-full overflow-hidden border border-gray-300 mb-4"
+          class="position-relative rounded-circle overflow-hidden border border-secondary mb-3 avatar-box"
           *ngIf="avatarPreview; else uploadPlaceholder"
         >
-          <img [src]="avatarPreview" alt="Avatar Preview" class="w-full h-full object-cover" />
+          <img [src]="avatarPreview" alt="Avatar Preview" class="w-100 h-100 object-fit-cover" />
         </div>
 
         <!-- Placeholder if no image uploaded -->
         <ng-template #uploadPlaceholder>
           <div
-            class="w-24 h-24 flex items-center justify-center rounded-full border border-dashed border-gray-400 text-gray-400 mb-4"
+            class="rounded-circle border border-dashed text-secondary d-flex align-items-center justify-content-center mb-3 avatar-placeholder"
           >
             <mat-icon>person</mat-icon>
           </div>
         </ng-template>
 
-        <!-- File Input (hidden) -->
+        <!-- Hidden File Input -->
         <input
           #fileInput
           type="file"
           accept="image/*"
-          class="hidden"
+          class="d-none"
           (change)="onAvatarSelected($event, fileInput)"
         />
 
         <!-- Buttons -->
-        <div class="flex gap-2 mt-2">
+        <div class="d-flex gap-2 mt-2">
           @if (avatarPreview) {
           <button mat-button color="warn" (click)="removeAvatar(fileInput)">Remove</button>
-          }@else {
+          } @else {
           <button mat-stroked-button color="primary" (click)="fileInput.click()">
             Upload Avatar
           </button>
           }
-
-          <!-- Only show when avatar exists -->
         </div>
       </div>
-      <div class="flex justify-between mt-4">
+
+      <div class="d-flex justify-content-between mt-4">
         <button mat-stroked-button matStepperPrevious>Back</button>
         <button mat-raised-button color="primary" (click)="finishRegistration()">Finish</button>
       </div>
@@ -166,19 +162,19 @@
   </mat-stepper>
 
   <!-- Divider -->
-  <div class="flex items-center my-2">
-    <hr class="flex-grow border-t border-gray-300" />
-    <span class="px-4 text-sm text-gray-500">OR</span>
-    <hr class="flex-grow border-t border-gray-300" />
+  <div class="d-flex align-items-center my-2">
+    <hr class="flex-grow-1 border-secondary" />
+    <span class="px-2 text-muted small">OR</span>
+    <hr class="flex-grow-1 border-secondary" />
   </div>
 
-  <!-- Google Button -->
   <button matButton="filled" class="w-full google-btn">
-    <i class="fa-brands fa-google"></i> Continue with Google
+    <i class="fa-brands fa-google"></i>
+    Continue with Google
   </button>
 
-  <p class="pt-2">
-    <span class="text">Already have an account ? </span>
-    <a class="text-blue-500 underline" routerLink="/auth/login"> Login</a>
+  <p class="pt-3 text-center">
+    <span>Already have an account ? </span>
+    <a class="primary-text text-decoration-underline" routerLink="/auth/login">Login</a>
   </p>
 </mat-card-content>
