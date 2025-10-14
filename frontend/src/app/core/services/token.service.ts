@@ -16,7 +16,7 @@ export class TokenService {
   saveTokens(token: string, expiresAt: string): void {
     if (this.isBrowser && token) {
       localStorage.setItem(this.TOKEN_KEY, token);
-      localStorage.setItem('tokenExpiresAt', expiresAt);
+      localStorage.setItem(this.TOKEN_EXPIRES_KEY, expiresAt);
     }
   }
 
@@ -36,6 +36,7 @@ export class TokenService {
     if (this.isBrowser) {
       localStorage.removeItem(this.TOKEN_KEY);
       localStorage.removeItem(this.USER_KEY);
+      localStorage.removeItem(this.TOKEN_EXPIRES_KEY);
     }
   }
 }

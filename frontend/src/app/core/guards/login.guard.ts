@@ -8,12 +8,18 @@ import { map, catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class LoginGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+  private isBrowser: boolean;
+  constructor(private authService: AuthService, private router: Router) {
+    this.isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
+    if (!this.isBrowser) {
+      return true;
+    }
     return this.authService.isAuthenticated().pipe(
       map((isAuthenticated) => {
         if (isAuthenticated) {

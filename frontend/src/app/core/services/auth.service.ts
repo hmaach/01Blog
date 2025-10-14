@@ -22,15 +22,17 @@ export class AuthService {
 
   constructor(private toast: ToastService) {
     this.isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
-    const user = this.tokenService.getUser();
-    if (user) this.currentUserSubject.next(user);
+    if (this.isBrowser) {
+      window.addEventListener('storage', this.handleTokenChange.bind(this));
+    }
+    // const user = this.tokenService.getUser();
+    // if (user) this.currentUserSubject.next(user);
   }
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.authApi.login({ email, password }).pipe(
       tap({
         next: (response) => {
-          
           this.tokenService.saveTokens(response.token, response.expiresAt);
           this.toast.show('Welcome back', 'success');
           this.router.navigate(['/']);
@@ -66,6 +68,10 @@ export class AuthService {
     }
 
     return of(true);
+  }
+
+  private handleTokenChange(event: StorageEvent): void {
+    this.validateToken();
   }
 
   validateToken() {
