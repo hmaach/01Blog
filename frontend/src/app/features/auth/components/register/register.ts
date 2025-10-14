@@ -42,11 +42,18 @@ export class Register {
 
   firstFormGroup = this._fb.group({
     nameCtrl: ['', Validators.required],
-    emailCtrl: ['', [Validators.required, Validators.email]],
+    emailCtrl: [
+      '',
+      [
+        Validators.required,
+        Validators.email,
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+      ],
+    ],
   });
 
   secondFormGroup = this._fb.group({
-    passwordCtrl: ['', Validators.required],
+    passwordCtrl: ['',  Validators.minLength(6)],
     confirmCtrl: ['', Validators.required],
   });
 
@@ -71,7 +78,6 @@ export class Register {
     const maxSizeMB = 2;
     if (file.size > maxSizeMB * 1024 * 1024) {
       this.toast.show(`File too large. Max size is ${maxSizeMB} MB.`, 'warning');
-
       fileInput.value = '';
       return;
     }
@@ -90,14 +96,21 @@ export class Register {
   }
 
   finishRegistration(): void {
-    const formData: RegisterData = {
-      name: this.firstFormGroup.value.nameCtrl || '',
-      email: this.firstFormGroup.value.emailCtrl || '',
-      password: this.secondFormGroup.value.passwordCtrl || '',
-      avatar: this.avatarPreview || null,
-    };
+    const formData = new FormData();
+    formData.append('name', this.firstFormGroup.value.nameCtrl || '');
+    formData.append('email', this.firstFormGroup.value.emailCtrl || '');
+    formData.append('password', this.secondFormGroup.value.passwordCtrl || '');
 
-    // console.log('Form data:', formData);
+    if (this.avatarPreview) {
+      const byteCharacters = atob(this.avatarPreview.split(',')[1]); // remove base64 header
+      const byteArray = new Uint8Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteArray[i] = byteCharacters.charCodeAt(i);
+      }
+      const blob = new Blob([byteArray], { type: 'image/png' }); // adjust the type if necessary
+      formData.append('avatar', blob, 'avatar.png');
+    }
+
     this.authService.register(formData).subscribe();
   }
 }

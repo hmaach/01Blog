@@ -76,7 +76,7 @@ export class AuthService {
       .subscribe();
   }
 
-  register(data: { name: string; email: string; password: string }): Observable<User> {
+  register(data: FormData): Observable<User> {
     return this.authApi.register(data).pipe(
       tap({
         next: (user) => {
@@ -85,7 +85,9 @@ export class AuthService {
           this.toast.show('Account created successfully', 'success');
           this.router.navigate(['/']);
         },
-        error: () => this.toast.show('Registration failed', 'error'),
+        error: (e) => {
+          this.toast.show(e?.error?.message, 'error');
+        },
       })
     );
   }

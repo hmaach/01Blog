@@ -17,6 +17,7 @@ import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -109,7 +110,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MultipartException.class)
     public ResponseEntity<Map<String, String>> handleMultipartException(MultipartException ex) {
         return ResponseEntity.badRequest()
-                .body(Map.of("error", "Invalid multipart/form-data request"));
+                .body(Map.of("error", "Invalid multipart/form-data request: " + ex.getMessage()));
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, String>> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+                .body(Map.of(
+                        "error", "FILE_TOO_LARGE",
+                        "message", "The uploaded file exceeds the maximum allowed size."
+                ));
     }
 
     @ExceptionHandler(NoSuchFileException.class)

@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.blog.modules.media.application.validation.AvatarMediaValidator;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.domain.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.domain.model.User;
@@ -35,12 +36,19 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private JwtService jwtService;
 
-    private MediaService mediaService;
+    private final MediaService mediaService;
+    private final AvatarMediaValidator avatarMediaValidator;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public AuthServiceImpl(UserRepositoryImpl userRepository) {
+    public AuthServiceImpl(
+            UserRepositoryImpl userRepository,
+            MediaService mediaService,
+            AvatarMediaValidator avatarMediaValidator
+    ) {
         this.userRepository = userRepository;
+        this.mediaService = mediaService;
+        this.avatarMediaValidator = avatarMediaValidator;
     }
 
     @Override
@@ -62,7 +70,10 @@ public class AuthServiceImpl implements AuthService {
                 Instant.now()
         );
 
+        userRepository.save(user);
+
         if (cmd.avatar() != null) {
+            avatarMediaValidator.validate(cmd.avatar());
             try {
                 mediaId = mediaService.uploadAvatar(userId, cmd.avatar());
                 user.changeAvatar(mediaId);
@@ -70,8 +81,6 @@ public class AuthServiceImpl implements AuthService {
                 throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
             }
         }
-
-        userRepository.save(user);
 
         return UserResponse.fromDomain(user);
     }

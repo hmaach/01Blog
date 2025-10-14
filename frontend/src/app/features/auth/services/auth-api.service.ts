@@ -31,7 +31,9 @@ export class AuthApiService {
       );
   }
 
-  register(payload: { name: string; email: string; password: string }): Observable<User> {
+  register(payload: FormData): Observable<User> {
+    console.log(payload);
+
     return this.http.post<User>(`${this.apiUrl}/auth/register`, payload);
   }
 }
