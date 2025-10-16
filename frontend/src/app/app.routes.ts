@@ -18,7 +18,12 @@ export const routes: Routes = [
         loadComponent: () => import('./features/feed/components/feed/feed').then((m) => m.Feed),
       },
       {
-        path: 'profile/:id',
+        path: 'profile/:username',
+        loadComponent: () =>
+          import('./features/profile/components/profile/profile').then((m) => m.Profile),
+      },
+      {
+        path: 'profile/me',
         loadComponent: () =>
           import('./features/profile/components/profile/profile').then((m) => m.Profile),
       },

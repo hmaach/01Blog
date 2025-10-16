@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
         }
       }),
       catchError((error) => {
-        console.error('Authentication check failed', error);
+        // console.error('Authentication check failed', error);
         this.router.navigate(['/auth/login']);
         return [false];
       })

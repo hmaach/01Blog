@@ -47,7 +47,7 @@ html {
   --mat-sys-surface-container: light-dark(#ffeae1, #2a1d17);
   --mat-sys-surface-container-high: light-dark(#fce3d9, #352721);
   --mat-sys-surface-container-highest: light-dark(#f6ded4, #40322b);
-  --mat-sys-on-surface: light-dark(#251913, #f6ded4);
+  --mat-sys-on-surface: light-dark(#0f0b0a, #f6ded4);
   --mat-sys-shadow: light-dark(#000000, #000000);
   --mat-sys-scrim: light-dark(#000000, #000000);
   --mat-sys-surface-tint: light-dark(#a14000, #ffb694);

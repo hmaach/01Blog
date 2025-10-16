@@ -1,0 +1,17 @@
+I'm about to build a blogging platform based on a subject of my school, I will provide you with the subject and based on it make the prompt better, the prompt is for an ai that will create the front end of the paltform
+
+"I want to build a blogging platform like daily.dev, create all fonctionalities and buttons and I will  configr who see what,
+ don't use tailwind CSS, use scss instead, the platform must be responsive
+ , the feed must contains the post cards (title, 100char of the body, total like, total comments, total impressions) just like daily.dev 
+ and when I click on a post a dialog opens that contain all the details of 
+ the post (post content, impressions, comments, and the media preview if exist) and a menu that conatins edit, 
+ delete, hide, and repport when I click report a dialog should appear to submit it with the reason .Also I want 
+ to create a dialg to create a new post that contai: title, body text, and medias with preview (optional),
+  I also want to create profile page that conatin on the right side a card contain details of the authenticated 
+  user just like daily dev and the picture I will provide you with, and in the center on the page there will be two tabs, 
+  the default contain readme.md file of the user, and the second contains  all his posts like in the feed with posibility 
+  to see his posts that was hidden by the admin, add also a button to subscribe/unsubscribe the user, an edit button for the author to edit his profile, 
+  when click it a dialog appear conatain a form to update (name, avatar ). 
+  Also add notifications section, and create a simple admin panel that contains 
+  some simple statistics and table of users each user can be banned, deleted, change his role (admin/user), and table of repports with status (waiting, approved, declined), all this must be 
+  responsive, also add a responsive navbar at the top of the page, the primary color is orange,"
