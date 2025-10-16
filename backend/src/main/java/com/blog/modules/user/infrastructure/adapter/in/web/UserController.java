@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.application.service.UserServiceImpl;
+import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserProfileResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 import com.blog.shared.infrastructure.security.JwtService;
 
@@ -26,10 +29,16 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private final UserServiceImpl userService;
+    private final MediaService mediaService;
     private final JwtService jwtService;
 
-    public UserController(UserServiceImpl userService, JwtService jwtService) {
+    public UserController(
+            UserServiceImpl userService,
+            MediaService mediaService,
+            JwtService jwtService
+    ) {
         this.userService = userService;
+        this.mediaService = mediaService;
         this.jwtService = jwtService;
     }
 
@@ -46,9 +55,18 @@ public class UserController {
                 .toList();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public UserResponse getUserById(@PathVariable UUID id) {
         return UserResponse.fromDomain(userService.findById(id));
+    }
+
+    @GetMapping("/{username}")
+    public UserProfileResponse getUserByUsername(@PathVariable String username) {
+        System.err.println(username);
+        User user = userService.findByUsername(username);
+        String avatarUrl = mediaService.getAvatarUrl(user.getAvatarMediaId());
+
+        return UserProfileResponse.fromDomain(user, avatarUrl, "tt");
     }
 
     @PatchMapping

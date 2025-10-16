@@ -13,6 +13,8 @@ public interface UserService {
 
     public Optional<User> userExist(UUID id);
 
+    User findByUsername(String username);
+
     User findByEmail(String email);
 
     List<User> findAll();
