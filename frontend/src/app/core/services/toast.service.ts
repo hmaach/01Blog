@@ -15,7 +15,7 @@ export class ToastService {
       panelClass: [`toast-${type}`],
     });
 
-    this.playSound(type);
+    // this.playSound(type);
   }
 
   private playSound(type: string) {

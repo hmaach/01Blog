@@ -43,6 +43,17 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    public String getAvatarUrl(UUID mediaId) {
+        if (mediaId == null) {
+            return null;
+        }
+
+        return mediaRepository.findById(mediaId)
+                .map(Media::getUrl)
+                .orElse(null);
+    }
+
+    @Override
     public UUID uploadAvatar(UUID userId, MultipartFile file) throws IOException, java.io.IOException {
         Optional<UUID> avatarId = userRepository.getAvatarId(userId);
 

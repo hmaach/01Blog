@@ -12,6 +12,8 @@ import io.jsonwebtoken.io.IOException;
 
 public interface MediaService {
 
+    String getAvatarUrl(UUID mediaId);
+
     UUID uploadAvatar(UUID currentUserId, MultipartFile file) throws IOException, IllegalStateException, java.io.IOException;
 
     UUID savePostMedia(UUID currentUserId, UUID postId, MultipartFile media) throws IOException, java.io.IOException;
