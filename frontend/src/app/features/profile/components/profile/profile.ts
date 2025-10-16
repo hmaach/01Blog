@@ -34,7 +34,6 @@ export class Profile {
     this.profileService.fetchUserProfile(this.username).subscribe({
       next: (response) => {
         this.user = response;
-        console.log('User:', this.user);
 
         if (this.user?.avatarUrl) {
           this.loadAvatar(this.user.avatarUrl);
@@ -50,7 +49,6 @@ export class Profile {
     this.blobApi.fetch(avatarPath).subscribe({
       next: (blob) => {
         this.avatarUrl = URL.createObjectURL(blob);
-        console.log('Avatar blob loaded:', this.avatarUrl);
       },
       error: (err) => {
         console.error('Failed to fetch avatar blob:', err);

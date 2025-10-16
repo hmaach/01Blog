@@ -28,4 +28,18 @@ export class ProfileApiService {
         })
       );
   }
+
+  fetchUserReadme(userId: string): Observable<string> {
+    const token = this.tokenService.getAccessToken();
+
+    return this.http
+      .get<string>(`${this.apiUrl}/user/${userId}/readme`, {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      })
+      .pipe(
+        tap({
+          error: (e) => this.toast.show(e?.error?.message || 'Unknown Server Error', 'error'),
+        })
+      );
+  }
 }

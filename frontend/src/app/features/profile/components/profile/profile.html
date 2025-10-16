@@ -5,7 +5,7 @@
         <!-- <div class="tabs"> -->
         <mat-tab-group class="tabs">
           <mat-tab label="README">
-            <app-profile-readme></app-profile-readme>
+            <app-profile-readme [userId]="user?.id"></app-profile-readme>
           </mat-tab>
           <mat-tab label="Posts"> Content 2 </mat-tab>
         </mat-tab-group>

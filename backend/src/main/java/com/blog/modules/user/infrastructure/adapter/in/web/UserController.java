@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.application.service.UserServiceImpl;
+import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserProfileResponse;
@@ -62,11 +63,18 @@ public class UserController {
 
     @GetMapping("/{username}")
     public UserProfileResponse getUserByUsername(@PathVariable String username) {
-        System.err.println(username);
         User user = userService.findByUsername(username);
         String avatarUrl = mediaService.getAvatarUrl(user.getAvatarMediaId());
 
         return UserProfileResponse.fromDomain(user, avatarUrl, "tt");
+    }
+
+    @GetMapping("/{userId}/readme")
+    public String getUserReadme(@PathVariable UUID userId) {
+        if (!userService.userExist(userId)) {
+            throw new UserNotFoundException(userId.toString());
+        }
+        return userService.getUserReadme(userId);
     }
 
     @PatchMapping
