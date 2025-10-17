@@ -1,36 +1,37 @@
 import { Component, inject, Input } from '@angular/core';
+import { MarkdownModule } from 'ngx-markdown';
 import { ProfileApiService } from '../../services/profile-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile-readme',
-  imports: [],
+  imports: [MarkdownModule, CommonModule],
   templateUrl: './profile-readme.html',
   styleUrl: './profile-readme.scss',
 })
 export class ProfileReadme {
   @Input() userId?: string;
-  readmaData?: string;
+  readmeData?: string;
   private profileService = inject(ProfileApiService);
   private toast = inject(ToastService);
 
   ngOnInit() {
-    if (this.userId) {
+    // if (this.userId) {
       this.loadReadme();
-    }
+    // }
   }
 
   private loadReadme() {
-    console.log(this.userId);
     this.profileService.fetchUserReadme(this.userId!).subscribe({
       next: (response) => {
         console.log(response);
 
-        this.readmaData = response;
+        this.readmeData = response;
       },
       error: (e) => {
         this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
-        console.error('Failed to fetch user readme:', e);
+        console.log('Failed to fetch user readme:', e);
       },
     });
   }

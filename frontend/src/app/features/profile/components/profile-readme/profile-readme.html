@@ -1,1 +1,7 @@
-<p>profile-readme works!</p>
+<div class="readme-container" *ngIf="readmeData; else loading">
+  <markdown [data]="readmeData"></markdown>
+</div>
+
+<ng-template #loading>
+  <p>Loading README...</p>
+</ng-template>

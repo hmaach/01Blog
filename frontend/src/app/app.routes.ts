@@ -10,7 +10,7 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayout,
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: 'feed', pathMatch: 'full' },
       {

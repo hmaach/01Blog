@@ -8,6 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatCard } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProfileReadme } from "../profile-readme/profile-readme";
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +24,7 @@ export class Profile {
 
   private route = inject(ActivatedRoute);
   private profileService = inject(ProfileApiService);
+  private toast = inject(ToastService);
   private blobApi = inject(BlobApiService);
 
   ngOnInit() {
@@ -40,7 +42,8 @@ export class Profile {
         }
       },
       error: (err) => {
-        console.error('Failed to fetch user profile:', err);
+        console.log('Failed to fetch user profile:', err);
+        this.toast.show('Failed to fetch user profile', 'error');
       },
     });
   }
@@ -51,7 +54,8 @@ export class Profile {
         this.avatarUrl = URL.createObjectURL(blob);
       },
       error: (err) => {
-        console.error('Failed to fetch avatar blob:', err);
+        console.log('Failed to fetch avatar blob:', err);
+        this.toast.show('Failed to fetch avatar', 'error');
       },
     });
   }
