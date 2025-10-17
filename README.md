@@ -151,6 +151,6 @@ Visit `http://localhost:4200` to access the application.
 
 <div align="center">
   
-Made with ❤️ by Talent of ZoneO1 Oujda
+Made with ❤️ by Talent of <a href="https://www.linkedin.com/company/zone01-oujda">ZoneO1 Oujda</a>
 
 </div>
