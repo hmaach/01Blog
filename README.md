@@ -1,52 +1,156 @@
 # 01Blog
 
-## Overview
+<div align="center">
+  
+![01Blog](./docs/assets/main-img.png)
 
-In this project, you will build a social blogging platform called **01Blog**, where students can share their learning experiences, discoveries, and progress throughout their journey. Users can interact with each other’s content, follow one another, and engage in meaningful discussions.
+**A social blogging platform for students to share their learning journey**
 
-You will develop this platform as a fullstack application, using **Java Spring Boot** for the backend and **Angular** for the frontend. The project covers essential features such as REST API development, user authentication, media handling, and more.
+[![Java](https://img.shields.io/badge/Java-Spring%20Boot-green)](https://spring.io/projects/spring-boot)
+[![Angular](https://img.shields.io/badge/Angular-Framework-red)](https://angular.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED)](https://www.docker.com/)
 
-### Key Features:
+</div>
 
-* User registration and secure login
-* Role-based access control (User vs Admin)
-* Media uploads (Images/Video)
-* Real-time post interactions (Likes/Comments)
-* Admin panel for content moderation
+---
 
-## Clean Architecture
+## 📖 Overview
 
-**Clean Architecture** is a software design philosophy that emphasizes separation of concerns, testability, and scalability. It structures your application into layers, each with a specific responsibility, making it easier to maintain and extend.
+**01Blog** is a fullstack social blogging platform designed for students to document and share their learning experiences, discoveries, and progress. The platform fosters a collaborative environment where users can interact with content, follow peers, and engage in meaningful educational discussions.
 
-* **Entities**: Core business logic, independent of any external dependencies.
-* **Use Cases**: Application-specific business rules.
-* **Interface Adapters**: Converts data from external sources into a format that can be understood by the use cases and entities.
-* **Frameworks & Drivers**: External agents such as databases, web frameworks, or UI components.
+Built with modern technologies, 01Blog combines a robust **Java Spring Boot** backend with a dynamic **Angular** frontend to deliver a seamless user experience.
 
+---
 
-[Read more about Clean Architecture](https://medium.com/@souzaluis/applying-clean-architecture-in-java-with-spring-boot-framework-part-iv-a3cb82d5421a)
+## Key Features
 
+- **Secure Authentication** - User registration and login with JWT-based security
+- **Role-Based Access Control** - Distinct permissions for Users and Administrators
+- **Rich Content Creation** - Create and publish blog posts with formatting options
+- **Media Support** - Upload and embed images and videos in posts
+- **Social Interactions** - Like, comment, and share posts with the community
+- **User Profiles** - Follow other users and build your network
+- **Admin Panel** - Comprehensive content moderation and user management tools
+- **Responsive Design** - Optimized experience across all devices
 
+---
+
+## 🛠️ Technologies Used
+
+### Backend
+- **Java Spring Boot** - RESTful API development
+- **Spring Security** - Authentication and authorization
+- **PostgreSQL** - Relational database management
+- **Docker** - Containerization and deployment
+
+### Frontend
+- **Angular** - Component-based UI framework
+- **Angular Material** - Modern UI components
+- **SCSS** - Enhanced styling capabilities
+- **TypeScript** - Type-safe development
+
+---
+
+## 🏗️ Architecture
+
+01Blog follows **Clean Architecture** principles, ensuring maintainability, testability, and scalability through clear separation of concerns.
 
 ![Clean Architecture Diagram](./docs/assets/clean_architecture.png)
 
+### Architecture Layers
+
+1. **Entities** - Core business logic, independent of external dependencies
+2. **Use Cases** - Application-specific business rules and workflows
+3. **Interface Adapters** - Data transformation layer between external sources and business logic
+4. **Frameworks & Drivers** - External integrations (database, web framework, UI)
+
+This architectural approach provides:
+- Independence from frameworks and external tools
+- Highly testable business logic
+- Flexibility to swap implementations
+- Clear dependency flow (inward only)
+
+[Learn more about Clean Architecture →](https://medium.com/@souzaluis/applying-clean-architecture-in-java-with-spring-boot-framework-part-iv-a3cb82d5421a)
+
 ---
 
-## Backend Documentation
+## 📊 Database Schema
 
-For more detailed backend implementation and setup instructions, please check the [Backend Documentation](./docs/README-backend.md).
+View the complete database schema and relationships:
 
----
-
-## Database Schema
-
-For more detailed, please check the [Database Schema](https://dbdiagram.io/d/01Blog-68c981561ff9c616bdf62bbc).
+**[View Database Schema on dbdiagram.io →](https://dbdiagram.io/d/01Blog-68c981561ff9c616bdf62bbc)**
 
 ---
 
-### Technologies Used:
+## 📚 Documentation
 
-* **Java**: Spring Boot, Spring Security
-* **SQL**: PostgreSQL
-* **Frontend**: Angular
-* **Docker**
+### Backend Documentation
+Comprehensive backend setup, API endpoints, and implementation details:
+
+**[Backend Documentation →](./docs/README-backend.md)**
+
+Topics covered:
+- Installation and setup
+- API endpoints and usage
+- Security configuration
+- Database migrations
+- Testing strategies
+
+### Frontend Documentation
+Frontend architecture, components, and development guide:
+
+**[Frontend Documentation →](./docs/README-frontend.md)**
+
+Topics covered:
+- Installation and setup
+- Project structure
+- Component architecture
+- State management
+- Styling guidelines
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Java 17 or higher
+- Node.js 18+ and npm
+- PostgreSQL 14+
+- Docker (optional)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/hmaach/01blog.git
+   cd 01blog
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   ./mvnw spring-boot:run
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd frontend
+   npm install
+   ng serve
+   ```
+
+4. **Using Docker**
+   ```bash
+   docker-compose up
+   ```
+
+Visit `http://localhost:4200` to access the application.
+
+---
+
+<div align="center">
+  
+Made with ❤️ by Talent of ZoneO1 Oujda
+
+</div>
