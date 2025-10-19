@@ -1,30 +1,35 @@
-<mat-toolbar
-  color="surface"
-  class="position-absolute d-flex justify-content-between align-items-center p-3 shadow-sm w-100"
->
+<mat-toolbar color="surface"
+  class="position-absolute d-flex justify-content-between align-items-center p-3 shadow-sm w-100">
   <app-logo></app-logo>
 
   <nav class="d-flex align-items-center gap-3 flex-wrap">
     <a mat-button routerLink="/feed" routerLinkActive="mat-primary" class="text-decoration-none">
-      Feed
+      <mat-icon>home</mat-icon>
+      <span>Feed</span>
     </a>
-    <a
-      mat-button
-      routerLink="/profile/me"
-      routerLinkActive="mat-primary"
-      class="text-decoration-none"
-    >
-      My Block
+
+    <a mat-button routerLink="/explore" routerLinkActive="mat-primary" class="text-decoration-none">
+      <mat-icon>explore</mat-icon>
+      <span>Explore</span>
     </a>
+
+
 
     <app-switch-mode></app-switch-mode>
 
     <button matButton [matMenuTriggerFor]="menu">Menu</button>
     <mat-menu #menu="matMenu">
+      <a mat-button routerLink="/profile/me" routerLinkActive="mat-primary" class="text-decoration-none">
+        <mat-icon>person</mat-icon>
+        <span>Account</span>
+      </a>
       <button mat-menu-item>
         <app-switch-mode></app-switch-mode>
       </button>
-      <button mat-menu-item (click)="logout()">Logout <i class="fa-solid fa-right-from-bracket"></i></button>
+      <button mat-button (click)="logout()" class="text-decoration-none w-full">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
     </mat-menu>
   </nav>
 </mat-toolbar>

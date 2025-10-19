@@ -20,7 +20,6 @@ export class PostCard {
   constructor(private dialog: MatDialog) { }
 
   openPostDetail(post: Post): void {
-    console.log('Opening post detail for:', post);
     this.dialog.open(PostDetail, {
       data: { post },
       width: '800px',

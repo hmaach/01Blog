@@ -7,7 +7,9 @@
           <mat-tab label="README">
             <app-profile-readme [userId]="user?.id"></app-profile-readme>
           </mat-tab>
-          <mat-tab label="Posts"> Content 2 </mat-tab>
+          <mat-tab label="Posts">
+            <app-profile-block></app-profile-block>
+          </mat-tab>
         </mat-tab-group>
         <!-- <button
                 class={`$tab ${activeTab === "readme" ? styles.active : ""}`}

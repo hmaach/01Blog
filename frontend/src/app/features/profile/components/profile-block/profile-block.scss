@@ -1,12 +1,12 @@
 .page {
-  padding-top: 50px;
+  // padding-top: 50px;
   min-height: 100vh;
   background-color: var(--mat-sys-background);
   color: var(--mat-sys-on-background);
 }
 
 .main {
-  padding: var(--spacing-xl) 0;
+  padding: 0 var(--spacing-xl) var(--spacing-xl);
 }
 
 .container {
@@ -31,4 +31,3 @@
   font-size: 1.125rem;
   color: var(--text-dark-secondary);
 }
-

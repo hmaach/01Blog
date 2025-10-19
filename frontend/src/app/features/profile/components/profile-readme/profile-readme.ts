@@ -25,8 +25,6 @@ export class ProfileReadme {
   private loadReadme() {
     this.profileService.fetchUserReadme(this.userId!).subscribe({
       next: (response) => {
-        console.log(response);
-
         this.readmeData = response;
       },
       error: (e) => {

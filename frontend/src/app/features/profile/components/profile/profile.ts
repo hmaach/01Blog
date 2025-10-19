@@ -9,11 +9,12 @@ import { MatCard } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProfileReadme } from "../profile-readme/profile-readme";
 import { ToastService } from '../../../../core/services/toast.service';
+import { ProfileBlock } from '../profile-block/profile-block';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, MatIcon, MatCard, MatTabsModule, ProfileReadme],
+  imports: [CommonModule, MatIcon, MatCard, MatTabsModule, ProfileReadme, ProfileBlock],
   templateUrl: './profile.html',
   styleUrls: ['./profile.scss'],
 })

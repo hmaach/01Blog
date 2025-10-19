@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { mockPosts } from '../../../../shared/lib/mock-data';
 import { Post } from '../../../posts/models/post-model';
-import { CommonModule } from '@angular/common';
 import { PostList } from '../../../posts/components/post-list/post-list';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-feed',
+  selector: 'app-explore-feed',
   imports: [CommonModule, PostList],
-  templateUrl: './feed.html',
-  styleUrl: './feed.scss'
+  templateUrl: './explore-feed.html',
+  styleUrl: './explore-feed.scss'
 })
-export class Feed {
-  posts?: Post[] = mockPosts;
 
+export class ExploreFeed {
+  posts?: Post[] = mockPosts;
 }
