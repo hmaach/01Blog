@@ -1,1 +1,18 @@
-<p>feed works!</p>
+<div class="page">
+  <main class="main">
+    <div class="container">
+      <div class="feedHeader">
+        <h1 class="feedTitle">Your Feed</h1>
+        <p class="feedSubtitle">Discover what students are learning today</p>
+      </div>
+
+      <div class="postsGrid">
+        @for (post of posts; track post.id) {
+        <app-post-card [post]="post"></app-post-card>
+        } @empty {
+        <li>No posts found.</li>
+        }
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,1 +1,128 @@
-<p>post-detail works!</p>
+<div class="modalOverlay" (click)="closeDialog()">
+  <mat-card class="modalContent" (click)="stopPropagation($event)">
+    <!-- HEADER -->
+    <div class="modalHeader">
+      <div class="headerLeft">
+        <img [src]="post.author.avatar || '/assets/images/default-avatar.jpg'" [alt]="post.author.displayName"
+          class="authorAvatar" />
+        <div class="authorInfo">
+          <h3>{{ post.author.displayName }}</h3>
+          <p>@{{ post.author.username }} · {{ formatDate(post.createdAt) }}</p>
+        </div>
+      </div>
+
+      <div class="headerActions">
+        <div class="menuContainer">
+          <!-- Trigger button -->
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+          <!-- Menu -->
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+
+            <button mat-menu-item>
+              <mat-icon>visibility_off</mat-icon>
+              <span>Hide</span>
+            </button>
+
+            <button mat-menu-item>
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Delete</span>
+            </button>
+
+            <button mat-menu-item (click)="openReportModal()">
+              <mat-icon color="warn">report</mat-icon>
+              <span>Report</span>
+            </button>
+          </mat-menu>
+
+        </div>
+
+        <button mat-icon-button (click)="closeDialog()">
+          <mat-icon>close</mat-icon>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="modalBody">
+      <h1 class="postTitle">{{ post.title }}</h1>
+      <div class="postContent">{{ post.body }}</div>
+      <div *ngIf="post.media && post.media.length > 0" class="postMedias">
+        <img *ngFor="let m of post.media" [src]="m.url" [alt]="post.title" class="postMedia" />
+      </div>
+
+
+      <div class="postMetrics">
+        <div class="metric">
+          <mat-icon>favorite</mat-icon>
+          <span>{{ post.likesCount || 0 }}</span>
+        </div>
+        <div class="metric">
+          <mat-icon>comment</mat-icon>
+          <span>{{ post.commentsCount || 0 }}</span>
+        </div>
+        <div class="metric">
+          <mat-icon>visibility</mat-icon>
+          <span>{{ post.impressionsCount || 0 }}</span>
+        </div>
+      </div>
+
+      <!-- COMMENTS -->
+      <div class="commentsSection">
+        <h2 class="commentsHeader">Comments ({{ comments.length }})</h2>
+
+        <div class="commentsList">
+          <div *ngFor="let comment of comments" class="comment">
+            <img [src]="comment.author.avatar || '/assets/images/default-avatar.jpg'" [alt]="comment.author.displayName"
+              class="commentAvatar" />
+            <div class="commentContent">
+              <div class="commentAuthor">{{ comment.author.displayName }}</div>
+              <div class="commentText">{{ comment.content }}</div>
+              <div class="commentDate">{{ formatDate(comment.createdAt) }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="commentForm">
+          <textarea [(ngModel)]="commentText" class="commentInput" placeholder="Write a comment..."></textarea>
+          <button matButton="filled" class="primary" (click)="handleComment()"
+            [disabled]="!commentText.trim()">Post</button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="reportModal" *ngIf="reportModalOpen" (click)="reportModalOpen = false">
+  <div class="reportContent" (click)="stopPropagation($event)">
+    <h2 class="reportTitle">Report Post</h2>
+
+    <div class="formGroup">
+      <label>Category</label>
+      <select [(ngModel)]="reportCategory">
+        <option value="spam">Spam</option>
+        <option value="offensive">Offensive Content</option>
+        <option value="inappropriate">Inappropriate</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div class="formGroup">
+      <label>Reason</label>
+      <textarea [(ngModel)]="reportReason" placeholder="Please describe why you're reporting this post..."></textarea>
+    </div>
+
+    <div class="reportActions">
+      <button class="cancelButton" (click)="reportModalOpen = false">Cancel</button>
+      <button class="submitButton" (click)="handleReport()" [disabled]="!reportReason.trim()">Submit Report</button>
+    </div>
+  </div>
+</div>

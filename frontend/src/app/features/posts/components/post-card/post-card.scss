@@ -1,0 +1,132 @@
+.postCard {
+  // background-color: var(--bg-dark-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.postCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--mat-sys-primary) ;
+  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15);
+}
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.authorAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.authorInfo {
+  flex: 1;
+}
+
+.authorName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  // color: var(--text-dark);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.postDate {
+  font-size: 0.75rem;
+  color: var(--text-dark-secondary);
+}
+
+.postBody{
+  min-height: 314px;
+}
+
+.postTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  // color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.4;
+}
+
+.postExcerpt {
+  font-size: 0.875rem;
+  // color: var(--text-dark-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.excerpt-with-media {
+  font-size: 0.8rem;
+  -webkit-line-clamp: 1; // show 1 line if media exists
+}
+
+.excerpt-without-media {
+  font-size: 0.9rem;
+  -webkit-line-clamp: 9; // show 4 lines otherwise
+}
+
+.postMedia {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  margin-bottom: var(--spacing-md);
+}
+
+.postTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.tag {
+  padding: 4px 12px;
+  background-color: var(--bg-dark-tertiary);
+  color: var(--text-dark-secondary);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.tag:hover {
+  background-color: rgba(255, 107, 53, 0.1);
+  color: var(--primary-orange);
+}
+
+.postFooter {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--text-dark-secondary);
+}
+
+.metric {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--text-dark-secondary);
+}
+
+.metric svg {
+  width: 18px;
+  height: 18px;
+}
+
+.metric:hover {
+  color: var(--primary-orange);
+}

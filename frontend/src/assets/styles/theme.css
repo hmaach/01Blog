@@ -39,7 +39,7 @@ html {
   /* Neutral palette variables */
   --mat-sys-background: light-dark(#fff8f6, #1c110b);
   --mat-sys-on-background: light-dark(#251913, #f6ded4);
-  --mat-sys-surface: light-dark(#fff8f6, #1c110b);
+  --mat-sys-surface: light-dark(#fff1ec, #1c110b);
   --mat-sys-surface-dim: light-dark(#edd5cc, #1c110b);
   --mat-sys-surface-bright: light-dark(#fff8f6, #45362f);
   --mat-sys-surface-container-low: light-dark(#fff1ec, #251913);

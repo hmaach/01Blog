@@ -1,0 +1,39 @@
+<mat-card class="postCard" (click)="openPostDetail(post)">
+  <div class="postHeader">
+    <img [src]="post.author.avatar || '/assets/images/default-avatar.jpg'" [alt]="post.author.displayName"
+      class="authorAvatar" />
+    <div class="authorInfo">
+      <span class="authorName">{{ post.author.displayName }}</span>
+      <span class="postDate">{{ post.createdAt | date: 'mediumDate' }}</span>
+    </div>
+  </div>
+
+  <div class="postBody">
+    <h2 class="postTitle">{{ post.title }}</h2>
+    <p class="postExcerpt" [ngClass]="{
+    'excerpt-with-media': post.media && post.media.length > 0,
+    'excerpt-without-media': !post.media || post.media.length === 0
+  }">
+      {{ post.body }}
+    </p>
+
+    <div *ngIf="post.media && post.media.length > 0">
+      <img [src]="post.media[0].url" [alt]="post.title" class="postMedia" />
+    </div>
+  </div>
+
+  <div class="postFooter">
+    <div class="metric">
+      <mat-icon>favorite</mat-icon>
+      <span>{{ post.likesCount || 0 }}</span>
+    </div>
+    <div class="metric">
+      <mat-icon>comment</mat-icon>
+      <span>{{ post.commentsCount || 0 }}</span>
+    </div>
+    <div class="metric">
+      <mat-icon>visibility</mat-icon>
+      <span>{{ post.impressionsCount || 0 }}</span>
+    </div>
+  </div>
+</mat-card>
