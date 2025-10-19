@@ -19,7 +19,7 @@ html {
   /* Secondary palette variables */
   --mat-sys-secondary: light-dark(#8f4d2b, #ffb694);
   --mat-sys-on-secondary: light-dark(#ffffff, #552003);
-  --mat-sys-secondary-container: light-dark(#ffdbcc, #723616);
+  --mat-sys-secondary-container: light-dark(#ffb563, #723616);
   --mat-sys-on-secondary-container: light-dark(#351000, #ffdbcc);
   --mat-sys-secondary-fixed: light-dark(#ffdbcc, #ffdbcc);
   --mat-sys-secondary-fixed-dim: light-dark(#ffb694, #ffb694);

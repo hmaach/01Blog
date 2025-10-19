@@ -5,52 +5,49 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Comment } from '../../../../core/models/comment-model';
 import { mockComments } from '../../../../shared/lib/mock-data';
 import { MatIconModule } from '@angular/material/icon';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterLink } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
+import { ReportForm } from '../report-form/report-form';
 
 @Component({
   selector: 'app-post-detail',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatInputModule,
     MatIconModule,
     MatMenuModule,
     MatCardModule,
-    MatButtonModule,
+    CommonModule,
+    FormsModule,
   ],
   templateUrl: './post-detail.html',
   styleUrls: ['./post-detail.scss']
 })
 export class PostDetail {
-  // @Input() post!: Post;
   @Input() comments: Comment[] = mockComments;
   @Output() close = new EventEmitter<void>();
+
   post!: Post;
+  menuOpen = false;
+  commentText = '';
 
   constructor(
     private dialogRef: MatDialogRef<PostDetail>,
-    @Inject(MAT_DIALOG_DATA) public data: { post: Post }
+    @Inject(MAT_DIALOG_DATA) public data: { post: Post },
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    console.log('Received post:', this.data.post);
     this.post = this.data?.post;
   }
-
-
-  menuOpen = false;
-  reportModalOpen = false;
-  reportCategory = 'spam';
-  reportReason = '';
-  commentText = '';
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
@@ -61,16 +58,12 @@ export class PostDetail {
     this.menuOpen = !this.menuOpen;
   }
 
-  openReportModal(): void {
-    this.reportModalOpen = true;
-    this.menuOpen = false;
-  }
-
-  handleReport(): void {
-    console.log('Report submitted:', { category: this.reportCategory, reason: this.reportReason });
-    this.reportModalOpen = false;
-    this.reportCategory = 'spam';
-    this.reportReason = '';
+  openReportDialog(): void {
+    this.dialog.open(ReportForm, {
+      data: { postId: this.post.id },
+      maxHeight: '90vh',
+      panelClass: 'post-report-dialog'
+    });
   }
 
   handleComment(): void {

@@ -141,19 +141,19 @@ html.dark-theme .primary {
 
   /* Scroll thumb */
   ::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb, var(--primary-orange));
+    background-color: var(--scrollbar-thumb-hover);
     border-radius: 8px;
     border: 2px solid transparent; /* gap effect without background */
     transition: background 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover, var(--primary-orange-hover));
+    background-color: var(--scrollbar-thumb);
   }
 
   /* Firefox support */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb, var(--primary-orange)) transparent;
+    scrollbar-color: var(--scrollbar-thumb-hover) transparent;
   }
 }
