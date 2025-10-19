@@ -4,7 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
-import { Post } from '../../../../core/models/post-model';
+import { Post } from '../../models/post-model';
 import { PostDetail } from '../post-detail/post-detail';
 
 @Component({
@@ -20,7 +20,7 @@ export class PostCard {
   constructor(private dialog: MatDialog) { }
 
   openPostDetail(post: Post): void {
-    console.log('Opening post detail for:', post); 
+    console.log('Opening post detail for:', post);
     this.dialog.open(PostDetail, {
       data: { post },
       width: '800px',

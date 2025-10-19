@@ -1,7 +1,7 @@
 // Mock data for development - will be replaced with API calls
 
-import { Comment } from "../../core/models/comment-model"
-import { Post } from "../../core/models/post-model"
+import { Comment } from "../../features/posts/models/comment-model"
+import { Post } from "../../features/posts/models/post-model"
 
 
 

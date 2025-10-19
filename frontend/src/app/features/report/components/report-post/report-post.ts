@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Inject, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -8,9 +8,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ReportApiService } from '../../services/report-api.service';
+import { ReportPostPayload } from '../../models/report-post.model';
 
 @Component({
-  selector: 'app-report-form',
+  selector: 'app-report-post',
   standalone: true,
   imports: [
     CommonModule,
@@ -22,19 +24,22 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     MatSelectModule,
     MatIconModule
   ],
-  templateUrl: './report-form.html',
-  styleUrl: './report-form.scss'
+  templateUrl: './report-post.html',
+  styleUrl: './report-post.scss'
 })
-export class ReportForm {
+
+export class ReportPost {
   @Output() close = new EventEmitter<void>();
   @Output() submit = new EventEmitter<{ category: string; reason: string }>();
+
+  private reportApi = inject(ReportApiService);
 
   postId!: string;
   reportCategory = 'spam';
   reportReason = '';
 
   constructor(
-    private dialogRef: MatDialogRef<ReportForm>,
+    private dialogRef: MatDialogRef<ReportPost>,
     @Inject(MAT_DIALOG_DATA) public data: { postId: string }
   ) { }
 
@@ -51,8 +56,14 @@ export class ReportForm {
   }
 
   handleSubmit(): void {
-    console.log('Report submitted:', { postId: this.postId, category: this.reportCategory, reason: this.reportReason });
+    const payload: ReportPostPayload = {
+      postId: this.postId,
+      category: this.reportCategory,
+      reason: this.reportReason
+    };
+
+    // console.log('Report submitted:', payload);
+    this.reportApi.reportPost(payload).subscribe();
     this.closeDialog()
   }
-
 }

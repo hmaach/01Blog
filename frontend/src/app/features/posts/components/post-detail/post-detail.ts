@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { Post } from '../../../../core/models/post-model';
+import { Post } from '../../models/post-model';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Comment } from '../../../../core/models/comment-model';
+import { Comment } from '../../models/comment-model';
 import { mockComments } from '../../../../shared/lib/mock-data';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { ReportForm } from '../report-form/report-form';
+import { ReportPost } from '../../../report/components/report-post/report-post';
 
 @Component({
   selector: 'app-post-detail',
@@ -59,7 +59,7 @@ export class PostDetail {
   }
 
   openReportDialog(): void {
-    this.dialog.open(ReportForm, {
+    this.dialog.open(ReportPost, {
       data: { postId: this.post.id },
       maxHeight: '90vh',
       panelClass: 'post-report-dialog'

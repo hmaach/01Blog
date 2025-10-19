@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { mockPosts } from '../../../../shared/lib/mock-data';
-import { Post } from '../../../../core/models/post-model';
+import { Post } from '../../../posts/models/post-model';
 import { CommonModule } from '@angular/common';
 import { PostCard } from '../../../posts/components/post-card/post-card';
 
