@@ -8,6 +8,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { SwitchMode } from '../switch-mode/switch-mode';
 import { AuthService } from '../../../core/services/auth.service';
 import { CreatePostButton } from '../create-post-button/create-post-button';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDialog } from '@angular/material/dialog';
+import { Notifications } from '../notifications/notifications';
 
 @Component({
   selector: 'app-header',
@@ -22,12 +25,22 @@ import { CreatePostButton } from '../create-post-button/create-post-button';
     MatToolbarModule,
     RouterLinkActive,
     CreatePostButton,
+    MatBadgeModule,
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
+
 export class Header {
   private authService = inject(AuthService);
+
+  constructor(private dialog: MatDialog) { }
+
+  openNotificationsDialog() {
+    this.dialog.open(Notifications, {
+      panelClass: 'media-preview-dialog'
+    });
+  }
 
   logout() {
     this.authService.logout();
