@@ -63,7 +63,7 @@ $dark-theme: mat.define-theme((color: (theme-type: dark,
   --modal-header-bg: var(--mat-sys-surface);
   --modal-header-border: rgba(0, 0, 0, 0.1);
 
-    --scrollbar-thumb: var(--primary-orange);
+  --scrollbar-thumb: var(--primary-orange);
   --scrollbar-thumb-hover: var(--primary-orange-hover);
 }
 
@@ -94,13 +94,18 @@ html.dark-theme {
   /* semi-transparent dark */
   --modal-header-border: rgba(255, 255, 255, 0.1);
 
-    --scrollbar-thumb: var(--text-dark-secondary);
+  --scrollbar-thumb: var(--text-dark-secondary);
   --scrollbar-thumb-hover: var(--text-dark);
 }
 
 .primary {
   @include mat.button-overrides((filled-container-color: var(--mat-sys-primary),
       filled-label-text-color: var(--mat-sys-on-primary),
+    ));
+
+  @include mat.button-overrides((outlined-outline-color: var(--mat-sys-primary),
+      outlined-label-text-color: var(--mat-sys-primary),
+      outlined-ripple-color:var(--mat-sys-primary),
     ));
 }
 
@@ -127,6 +132,7 @@ html.dark-theme .primary {
 
 
 @layer base {
+
   /* Scrollbar for modern browsers */
   ::-webkit-scrollbar {
     width: 10px;
@@ -143,7 +149,8 @@ html.dark-theme .primary {
   ::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar-thumb-hover);
     border-radius: 8px;
-    border: 2px solid transparent; /* gap effect without background */
+    border: 2px solid transparent;
+    /* gap effect without background */
     transition: background 0.3s ease;
   }
 

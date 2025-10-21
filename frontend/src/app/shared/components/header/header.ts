@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { SwitchMode } from '../switch-mode/switch-mode';
 import { AuthService } from '../../../core/services/auth.service';
+import { CreatePostButton } from '../create-post-button/create-post-button';
 
 @Component({
   selector: 'app-header',
@@ -20,6 +21,7 @@ import { AuthService } from '../../../core/services/auth.service';
     MatButtonModule,
     MatToolbarModule,
     RouterLinkActive,
+    CreatePostButton,
   ],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],

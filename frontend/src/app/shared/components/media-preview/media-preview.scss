@@ -1,0 +1,14 @@
+.preview-dialog {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+img,
+video {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 8px;
+}

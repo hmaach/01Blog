@@ -1,0 +1,4 @@
+<div class="preview-dialog">
+  <img *ngIf="isImage()" [src]="data.media" alt="Preview" />
+  <video *ngIf="isVideo()" controls [src]="data.media"></video>
+</div>

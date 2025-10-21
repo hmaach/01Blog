@@ -1,0 +1,228 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--spacing-lg);
+  animation: fadeIn var(--transition-normal);
+}
+
+.modalContent {
+  // background-color: var(--bg-dark-secondary);
+  // border: 1px solid var(--text-dark-secondary);
+  color: var(--mat-sys-on-background);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp var(--transition-slow);
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--text-dark-secondary);
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  // color: var(--text-dark);
+  margin: 0;
+}
+
+.labelIcon {
+  color: var(--mat-sys-primary);
+  font-size: 1rem !important;
+  margin-right: 5px;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: transparent;
+  color: var(--text-dark-secondary);
+  border-radius: var(--radius-md);
+}
+
+.closeButton:hover {
+  background-color: var(--bg-dark-tertiary);
+  // color: var(--text-dark);
+}
+
+.closeButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.modalBody {
+  padding: var(--spacing-lg);
+}
+
+.formGroup {
+  margin-bottom: var(--spacing-xsm);
+}
+
+.formGroup label,
+.mediaUpload label {
+  // display: block;
+  display: flex !important;
+  align-items: center;
+  gap: 5px;
+  // justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  // color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+// .formGroup input,
+// .formGroup textarea {
+//   width: 100%;
+//   padding: var(--spacing-md);
+//   // background-color: var(--bg-dark-tertiary);
+//   border: 1px solid var(--text-dark-secondary);
+//   border-radius: var(--radius-lg);
+//   // color: var(--text-dark);
+//   font-size: 0.875rem;
+// }
+
+// .formGroup input::placeholder,
+// .formGroup textarea::placeholder {
+//   color: var(--text-dark-secondary);
+// }
+
+// .formGroup input:focus,
+// .formGroup textarea:focus {
+//   border-color: var(--primary-orange);
+//   outline: none;
+// }
+
+.formGroup input {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.formGroup textarea {
+  resize: vertical;
+  min-height: 180px;
+  line-height: 1.6;
+}
+
+.mediaUpload {
+  margin-bottom: var(--spacing-sm);
+}
+
+.uploadButton {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  padding: var(--spacing-xl);
+  // background-color: var(--bg-dark-tertiary);
+  border: 2px dashed var(--text-dark-secondary);
+  border-radius: var(--radius-lg);
+  color: var(--text-dark-secondary);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.uploadButton:hover {
+  border-color: var(--primary-orange);
+  color: var(--primary-orange);
+}
+
+.uploadButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mediaPreview {
+  margin-top: var(--spacing-md);
+  position: relative;
+}
+
+.previewImage {
+  width: 90px;
+  max-height: 300px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--text-dark-secondary);
+  object-fit: cover;
+}
+
+.removeMedia {
+  position: absolute;
+  top: 3px;
+  left: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: var(--radius-full);
+}
+
+.removeMedia:hover {
+  background-color: var(--error);
+}
+
+.removeMedia svg {
+  width: 18px;
+  height: 18px;
+}
+
+.modalFooter {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--text-dark-secondary);
+}
+
+.cancelButton {
+  padding: var(--spacing-md) var(--spacing-xl);
+  background-color: transparent;
+  color: var(--text-dark-secondary);
+  border: 1px solid var(--text-dark-secondary);
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.cancelButton:hover {
+  background-color: var(--bg-dark-tertiary);
+  color: var(--text-dark);
+}
+
+.submitButton {
+  padding: var(--spacing-md) var(--spacing-xl);
+  background-color: var(--primary-orange);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.submitButton:hover {
+  background-color: var(--primary-orange-hover);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

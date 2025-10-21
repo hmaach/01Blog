@@ -1,0 +1,36 @@
+.mediaGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mediaItem {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid #555;
+  transition: transform 0.2s ease;
+}
+
+.mediaItem:hover {
+  transform: scale(1.03);
+}
+
+.mediaItem img,
+.mediaItem video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+}
