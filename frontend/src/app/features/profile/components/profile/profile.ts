@@ -4,17 +4,19 @@ import { ProfileApiService } from '../../services/profile-api.service';
 import { UserResponse } from '../../models/user-response.model';
 import { CommonModule } from '@angular/common';
 import { BlobApiService } from '../../../../core/services/blob-api.service';
-import { MatIcon } from '@angular/material/icon';
-import { MatCard } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ProfileReadme } from "../profile-readme/profile-readme";
+import { ProfileReadme } from '../profile-readme/profile-readme';
 import { ToastService } from '../../../../core/services/toast.service';
 import { ProfileBlock } from '../profile-block/profile-block';
+import { ProfileCard } from '../profile-card/profile-card';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ProfileNotFound } from '../profile-not-found/profile-not-found';
+import { Spinner } from "../../../../shared/components/spinner/spinner";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, MatIcon, MatCard, MatTabsModule, ProfileReadme, ProfileBlock],
+  imports: [CommonModule, MatTabsModule, ProfileReadme, ProfileBlock, ProfileCard, ProfileNotFound, Spinner],
   templateUrl: './profile.html',
   styleUrls: ['./profile.scss'],
 })
@@ -22,6 +24,8 @@ export class Profile {
   username!: string;
   user?: UserResponse;
   avatarUrl?: string;
+  notFound: boolean = false;
+  isLoading: boolean = true;
 
   private route = inject(ActivatedRoute);
   private profileService = inject(ProfileApiService);
@@ -41,10 +45,17 @@ export class Profile {
         if (this.user?.avatarUrl) {
           this.loadAvatar(this.user.avatarUrl);
         }
+
+        this.isLoading = false;
       },
-      error: (err) => {
-        console.log('Failed to fetch user profile:', err);
-        this.toast.show('Failed to fetch user profile', 'error');
+      error: (err: HttpErrorResponse) => {
+        if (err.status == 404) {
+          this.notFound = true;
+        } else {
+          console.log('Failed to fetch user profile:', err);
+          this.toast.show('Failed to fetch user profile', 'error');
+        }
+        this.isLoading = false;
       },
     });
   }

@@ -1,5 +1,7 @@
-<mat-toolbar color="surface"
-  class="position-absolute d-flex justify-content-between align-items-center p-3 shadow-sm w-100">
+<mat-toolbar
+  color="surface"
+  class="position-absolute d-flex justify-content-between align-items-center p-3 shadow-sm w-100"
+>
   <app-logo></app-logo>
 
   <nav class="d-flex align-items-center gap-3 flex-wrap">
@@ -21,19 +23,32 @@
 
     <app-switch-mode></app-switch-mode>
 
-    <button matButton [matMenuTriggerFor]="menu">Menu</button>
-    <mat-menu #menu="matMenu">
-      <a mat-button routerLink="/profile/me" routerLinkActive="mat-primary" class="text-decoration-none">
-        <mat-icon>person</mat-icon>
-        <span>Account</span>
+    <button
+      matIconButton
+      [matMenuTriggerFor]="menu"
+      class="d-flex justify-content-center align-items-center"
+    >
+      <img src="/assets/images/default-avatar.jpg" alt="displayName" class="avatar" />
+    </button>
+    <mat-menu #menu="matMenu" class="d-flex flex-column">
+      <a class="dropdownHeader" routerLink="/profile/me">
+        <img src="/assets/images/default-avatar.jpg" alt="displayName" class="avatar" />
+        <div class="dropdownUserInfo">
+          <span class="dropdownUserName">displayName</span>
+          <span class="dropdownUsername">@username</span>
+        </div>
       </a>
-      <button mat-menu-item>
+      <!-- <button mat-menu-item>
         <app-switch-mode></app-switch-mode>
-      </button>
-      <button mat-button (click)="logout()" class="text-decoration-none w-full">
+      </button> -->
+      <a mat-button class="w-full">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </a>
+      <a mat-button (click)="logout()" class="w-full">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
-      </button>
+      </a>
     </mat-menu>
   </nav>
 </mat-toolbar>

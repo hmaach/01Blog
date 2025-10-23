@@ -1,122 +1,29 @@
 <div class="page">
+  @if (isLoading) {
+  <app-spinner></app-spinner>
+  } @else if (notFound) {
+  <app-profile-not-found [username]="username"></app-profile-not-found>
+  } @else if (user) {
   <main class="main">
     <div class="container">
       <div class="mainContent">
-        <!-- <div class="tabs"> -->
         <mat-tab-group class="tabs">
           <mat-tab label="README">
-            <app-profile-readme [userId]="user?.id"></app-profile-readme>
+            <app-profile-readme [userId]="user.id"></app-profile-readme>
           </mat-tab>
           <mat-tab label="Posts">
             <app-profile-block></app-profile-block>
           </mat-tab>
         </mat-tab-group>
-        <!-- <button
-                class={`$tab ${activeTab === "readme" ? styles.active : ""}`}
-                onClick={() => setActiveTab("readme")}
-              >
-                README
-              </button>
-              <button
-                class={`$tab ${activeTab === "posts" ? styles.active : ""}`}
-                onClick={() => setActiveTab("posts")}
-              >
-                Posts ({userPosts.length})
-              </button> -->
-        <!-- </div> -->
-
-        <!-- {activeTab === "readme" && (
-              <div class=readmeContent>
-                <ReactMarkdown>readme|| "No README yet."}</ReactMarkdown>
-              </div>
-            )} -->
-
-        <!-- {activeTab === "posts" && (
-              <div class=postsGrid>
-                {userPosts.map((post) => (
-                  <PostCard key={post.id} post={post} onClick={() => setSelectedPost(post)} />
-                ))}
-              </div>
-            )} -->
       </div>
 
-      <aside class="sidebar">
-        <mat-card class="profileCard" *ngIf="user; else loading">
-          <div class="profileHeader" *ngIf="user; else loading">
-            <ng-container *ngIf="avatarUrl; else defaultAvatar">
-              <img [src]="avatarUrl" [alt]="user.name || user.username" class="profileAvatar" />
-            </ng-container>
-            <ng-template #defaultAvatar>
-              <div class="profileAvatar">
-                <mat-icon>person</mat-icon>
-              </div>
-            </ng-template>
-            <h1 class="profileName text">{{ user.name || user.username }}</h1>
-            <p class="profileUsername">@{{ user.username }}</p>
-          </div>
-
-          <div class="profileStats">
-            <div class="stat">
-              <span class="statValue">{{ user.postsCount || 0 }}</span>
-              <span class="statLabel">Posts</span>
-            </div>
-            <div class="stat">
-              <span class="statValue">{{ user.subscribersCount || 0 }}</span>
-              <span class="statLabel">Subscribers</span>
-            </div>
-            <div class="stat">
-              <span class="statValue">{{ user.impressionsCount || 0 }}</span>
-              <span class="statLabel">Impressions</span>
-            </div>
-          </div>
-          <div class="profileActions"></div>
-        </mat-card>
-
-        <ng-template class="sidebar" #loading>
-          <div class="loading">
-            <p>Loading profile...</p>
-          </div>
-        </ng-template>
-      </aside>
+      <app-profile-card
+        class="sidebar"
+        [username]="username"
+        [user]="user"
+        [isDialog]="false"
+      ></app-profile-card>
     </div>
   </main>
-
-  <!-- {selectedPost && <PostDetailModal post={selectedPost} onClose={() => setSelectedPost(null)} />} -->
-
-  <!-- {editModalOpen && (
-        <div class=editModal onClick={() => setEditModalOpen(false)}>
-          <div class=editContent onClick={(e) => e.stopPropagation()}>
-            <h2 class=editTitle>Edit Profile</h2>
-
-            <div class=formGroup>
-              <label>Display Name</label>
-              <input type="text" value={editName} onChange={(e) => setEditName(e.target.value)} />
-            </div>
-
-            <div class=formGroup>
-              <label>Avatar</label>
-              <div class=avatarUpload>
-                <img
-                  src={editAvatar || "/placeholder-user.jpg"}
-                  alt="Avatar preview"
-                  class=avatarPreview
-                />
-                <label class=uploadLabel>
-                  Choose new avatar
-                  <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: "none" }} />
-                </label>
-              </div>
-            </div>
-
-            <div class=editActions>
-              <button class=cancelButton onClick={() => setEditModalOpen(false)}>
-                Cancel
-              </button>
-              <button class=saveButton onClick={handleSaveProfile}>
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )} -->
+  }
 </div>

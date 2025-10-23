@@ -49,12 +49,12 @@ mat-toolbar {
   gap: var(--spacing-sm);
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-dark);
+  // color: var(--text-dark);
   text-decoration: none;
 }
 
 .logo:hover {
-  color: var(--text-dark);
+  // color: var(--text-dark);
 }
 
 .logoIcon {
@@ -63,9 +63,9 @@ mat-toolbar {
   justify-content: center;
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, var(--primary-orange), var(--primary-orange-hover));
+  background: linear-gradient(135deg, var(--mat-sys-primary), var(--mat-sys-primary-hover));
   border-radius: var(--radius-md);
-  color: white;
+  // color: white;
   font-weight: 700;
   font-size: 0.875rem;
 }
@@ -89,7 +89,7 @@ mat-toolbar {
   background-color: var(--bg-dark-secondary);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
-  color: var(--text-dark);
+  // color: var(--text-dark);
   font-size: 0.875rem;
 }
 
@@ -98,7 +98,7 @@ mat-toolbar {
 }
 
 .searchInput:focus {
-  border-color: var(--primary-orange);
+  border-color: var(--mat-sys-primary);
   outline: none;
 }
 
@@ -160,23 +160,6 @@ mat-toolbar {
   height: 20px;
 }
 
-.notificationBadge {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 4px;
-  background-color: var(--primary-orange);
-  color: white;
-  border-radius: var(--radius-full);
-  font-size: 10px;
-  font-weight: 700;
-}
-
 .avatar {
   width: 32px;
   height: 32px;
@@ -184,10 +167,11 @@ mat-toolbar {
   object-fit: cover;
   cursor: pointer;
   border: 2px solid transparent;
+  transition: var(--transition-normal);
 }
 
 .avatar:hover {
-  border-color: var(--primary-orange);
+  border-color: var(--mat-sys-primary);
 }
 
 .mobileMenuButton {
@@ -240,7 +224,7 @@ mat-toolbar {
 
 .mobileNavButton:hover {
   background-color: var(--bg-dark-secondary);
-  color: var(--text-dark);
+  // color: var(--text-dark);
 }
 
 .mobileNavButton svg {
@@ -266,9 +250,11 @@ mat-toolbar {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  padding: var(--spacing-md);
-  border-bottom: 1px solid var(--border-dark);
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid var(--text-dark-secondary);
   margin-bottom: var(--spacing-sm);
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .dropdownUserInfo {
@@ -279,42 +265,10 @@ mat-toolbar {
 .dropdownUserName {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--mat-sys-on-background);
 }
 
 .dropdownUsername {
   font-size: 0.75rem;
   color: var(--text-dark-secondary);
-}
-
-.dropdownItem {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: transparent;
-  color: var(--text-dark);
-  border-radius: var(--radius-md);
-  text-align: left;
-  font-size: 0.875rem;
-}
-
-.dropdownItem:hover {
-  background-color: var(--bg-dark-tertiary);
-}
-
-.dropdownItem svg {
-  width: 16px;
-  height: 16px;
-}
-
-.dropdownItem.danger {
-  color: var(--error);
-}
-
-.dropdownSeparator {
-  height: 1px;
-  background-color: var(--border-dark);
-  margin: var(--spacing-sm) 0;
 }

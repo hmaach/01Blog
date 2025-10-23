@@ -1,0 +1,40 @@
+<aside class="sidebar">
+  <mat-card class="profileCard">
+    @if (user) {
+    <div class="profileHeader">
+      <ng-container>
+        <img
+          [src]="this.avatarUrl || '/assets/images/default-avatar.jpg'"
+          [alt]="user.name || user.username"
+          class="profileAvatar"
+        />
+      </ng-container>
+
+      <h1 class="profileName text">{{ user.name || user.username }}</h1>
+      <p class="profileUsername">@{{ user.username }}</p>
+    </div>
+
+    <div class="profileStats">
+      <div class="stat">
+        <span class="statValue">{{ user.postsCount || 0 }}</span>
+        <span class="statLabel">Posts</span>
+      </div>
+      <div class="stat">
+        <span class="statValue">{{ user.subscribersCount || 0 }}</span>
+        <span class="statLabel">Subscribers</span>
+      </div>
+      <div class="stat">
+        <span class="statValue">{{ user.impressionsCount || 0 }}</span>
+        <span class="statLabel">Impressions</span>
+      </div>
+    </div>
+    <div class="profileActions"></div>
+    }@else{
+    <ng-template  #loading>
+      <div class="loading">
+        <p>Loading profile...</p>
+      </div>
+    </ng-template>
+    }
+  </mat-card>
+</aside>

@@ -11,6 +11,7 @@ import { CreatePostButton } from '../create-post-button/create-post-button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialog } from '@angular/material/dialog';
 import { Notifications } from '../notifications/notifications';
+import { ProfileDialog } from '../../../features/profile/components/profile-dialog/profile-dialog';
 
 @Component({
   selector: 'app-header',
@@ -30,15 +31,14 @@ import { Notifications } from '../notifications/notifications';
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
-
 export class Header {
   private authService = inject(AuthService);
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) {}
 
   openNotificationsDialog() {
     this.dialog.open(Notifications, {
-      panelClass: 'media-preview-dialog'
+      panelClass: 'media-preview-dialog',
     });
   }
 

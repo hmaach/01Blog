@@ -20,11 +20,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     provideClientHydration(withEventReplay()),
     provideMarkdown(),
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: (authService: AuthService) => () => authService.validateToken(),
-    //   deps: [AuthService],
-    //   multi: true,
-    // },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (authService: AuthService) => () => authService.validateToken(),
+      deps: [AuthService],
+      multi: true,
+    },
   ],
 };

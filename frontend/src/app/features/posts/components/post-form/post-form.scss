@@ -106,7 +106,7 @@
 
 // .formGroup input:focus,
 // .formGroup textarea:focus {
-//   border-color: var(--primary-orange);
+//   border-color: var(--mat-sys-primary);
 //   outline: none;
 // }
 
@@ -141,8 +141,8 @@
 }
 
 .uploadButton:hover {
-  border-color: var(--primary-orange);
-  color: var(--primary-orange);
+  border-color: var(--mat-sys-primary);
+  color: var(--mat-sys-primary);
 }
 
 .uploadButton svg {
@@ -211,7 +211,7 @@
 
 .submitButton {
   padding: var(--spacing-md) var(--spacing-xl);
-  background-color: var(--primary-orange);
+  background-color: var(--mat-sys-primary);
   color: white;
   border-radius: var(--radius-lg);
   font-weight: 600;
@@ -219,7 +219,7 @@
 }
 
 .submitButton:hover {
-  background-color: var(--primary-orange-hover);
+  background-color: var(--mat-sys-primary-hover);
 }
 
 .submitButton:disabled {
