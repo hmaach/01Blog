@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { ReportPost } from '../../../report/components/report-post/report-post';
+import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
 
 @Component({
   selector: 'app-post-detail',
@@ -29,7 +30,7 @@ import { ReportPost } from '../../../report/components/report-post/report-post';
     FormsModule,
   ],
   templateUrl: './post-detail.html',
-  styleUrls: ['./post-detail.scss']
+  styleUrls: ['./post-detail.scss'],
 })
 export class PostDetail {
   @Input() comments: Comment[] = mockComments;
@@ -43,7 +44,7 @@ export class PostDetail {
     private dialogRef: MatDialogRef<PostDetail>,
     @Inject(MAT_DIALOG_DATA) public data: { post: Post },
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.post = this.data?.post;
@@ -58,11 +59,18 @@ export class PostDetail {
     this.menuOpen = !this.menuOpen;
   }
 
+  openUserCardDialog(username: string) {
+    this.dialog.open(ProfileDialog, {
+      data: { username },
+      panelClass: 'user-card-dialog',
+    });
+  }
+
   openReportDialog(): void {
     this.dialog.open(ReportPost, {
       data: { postId: this.post.id },
       maxHeight: '90vh',
-      panelClass: 'post-report-dialog'
+      panelClass: 'post-report-dialog',
     });
   }
 

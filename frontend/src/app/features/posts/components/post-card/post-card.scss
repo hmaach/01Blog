@@ -9,7 +9,7 @@
 
 .postCard:hover {
   transform: translateY(-2px);
-  border-color: var(--mat-sys-primary) ;
+  border-color: var(--mat-sys-primary);
   box-shadow: 0 8px 24px rgba(255, 107, 53, 0.15);
 }
 
@@ -23,8 +23,15 @@
 .authorAvatar {
   width: 40px;
   height: 40px;
+  cursor: pointer;
   border-radius: var(--radius-full);
   object-fit: cover;
+  border: 2px solid transparent;
+  transition: var(--transition-normal);
+}
+
+.authorAvatar:hover {
+  border-color: var(--mat-sys-primary);
 }
 
 .authorInfo {
@@ -36,7 +43,13 @@
   font-weight: 600;
   // color: var(--text-dark);
   display: block;
+  cursor: pointer;
   margin-bottom: 2px;
+  transition: var(--transition-normal);
+}
+
+.authorName:hover {
+  text-decoration: underline;
 }
 
 .postDate {
@@ -44,7 +57,7 @@
   color: var(--text-dark-secondary);
 }
 
-.postBody{
+.postBody {
   min-height: 314px;
 }
 
@@ -103,7 +116,7 @@
 
 .tag:hover {
   background-color: rgba(255, 107, 53, 0.1);
-  color: var(--primary-orange);
+  color: var(--mat-sys-primary);
 }
 
 .postFooter {
@@ -128,5 +141,5 @@
 }
 
 .metric:hover {
-  color: var(--primary-orange);
+  color: var(--mat-sys-primary);
 }

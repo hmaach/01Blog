@@ -2,10 +2,14 @@
   <mat-card class="modalContent" (click)="stopPropagation($event)">
     <div class="modalHeader">
       <div class="headerLeft">
-        <img [src]="post.author.avatar || '/assets/images/default-avatar.jpg'" [alt]="post.author.displayName"
-          class="authorAvatar" />
+        <img
+          [src]="post.author.avatar || '/assets/images/default-avatar.jpg'"
+          [alt]="post.author.displayName"
+          (click)="openUserCardDialog(post.author.username)"
+          class="authorAvatar"
+        />
         <div class="authorInfo">
-          <h3>{{ post.author.displayName }}</h3>
+          <h3 (click)="openUserCardDialog(post.author.username)">{{ post.author.displayName }}</h3>
           <p>@{{ post.author.username }} · {{ formatDate(post.createdAt) }}</p>
         </div>
       </div>
@@ -37,13 +41,11 @@
               <span>Report</span>
             </button>
           </mat-menu>
-
         </div>
 
         <button mat-icon-button (click)="closeDialog()">
           <mat-icon>close</mat-icon>
         </button>
-
       </div>
     </div>
 
@@ -53,7 +55,6 @@
       <div *ngIf="post.media && post.media.length > 0" class="postMedias">
         <img *ngFor="let m of post.media" [src]="m.url" [alt]="post.title" class="postMedia" />
       </div>
-
 
       <div class="postMetrics">
         <div class="metric">
@@ -75,8 +76,11 @@
 
         <div class="commentsList">
           <div *ngFor="let comment of comments" class="comment">
-            <img [src]="comment.author.avatar || '/assets/images/default-avatar.jpg'" [alt]="comment.author.displayName"
-              class="commentAvatar" />
+            <img
+              [src]="comment.author.avatar || '/assets/images/default-avatar.jpg'"
+              [alt]="comment.author.displayName"
+              class="commentAvatar"
+            />
             <div class="commentContent">
               <div class="commentAuthor">{{ comment.author.displayName }}</div>
               <div class="commentText">{{ comment.content }}</div>
@@ -86,9 +90,19 @@
         </div>
 
         <div class="commentForm">
-          <textarea [(ngModel)]="commentText" class="commentInput" placeholder="Write a comment..."></textarea>
-          <button matButton="filled" class="primary" (click)="handleComment()"
-            [disabled]="!commentText.trim()">Post</button>
+          <textarea
+            [(ngModel)]="commentText"
+            class="commentInput"
+            placeholder="Write a comment..."
+          ></textarea>
+          <button
+            matButton="filled"
+            class="primary"
+            (click)="handleComment()"
+            [disabled]="!commentText.trim()"
+          >
+            Post
+          </button>
         </div>
       </div>
     </div>

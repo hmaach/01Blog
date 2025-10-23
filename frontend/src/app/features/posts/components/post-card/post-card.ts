@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Post } from '../../models/post-model';
 import { PostDetail } from '../post-detail/post-detail';
+import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
 
 @Component({
   selector: 'app-post-card',
@@ -17,14 +18,26 @@ import { PostDetail } from '../post-detail/post-detail';
 export class PostCard {
   @Input() post!: Post;
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) {}
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+
+  openUserCardDialog(username: string) {
+    this.dialog.open(ProfileDialog, {
+      data: { username },
+      panelClass: 'user-card-dialog',
+    });
+  }
 
   openPostDetail(post: Post): void {
     this.dialog.open(PostDetail, {
       data: { post },
       width: '800px',
       maxHeight: '90vh',
-      panelClass: 'post-detail-dialog'
+      panelClass: 'post-detail-dialog',
     });
   }
 }
