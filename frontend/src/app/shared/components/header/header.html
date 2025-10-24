@@ -21,6 +21,12 @@
       <mat-icon matBadge="15" aria-hidden="false">notifications</mat-icon>
     </button>
 
+    @if (isAdmin) {
+    <button matIconButton>
+      <mat-icon>admin_panel_settings</mat-icon>
+    </button>
+    }
+
     <app-switch-mode></app-switch-mode>
 
     <button

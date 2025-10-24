@@ -11,7 +11,7 @@ import { CreatePostButton } from '../create-post-button/create-post-button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialog } from '@angular/material/dialog';
 import { Notifications } from '../notifications/notifications';
-import { ProfileDialog } from '../../../features/profile/components/profile-dialog/profile-dialog';
+import { StorageService } from '../../../core/services/storage.service';
 
 @Component({
   selector: 'app-header',
@@ -33,6 +33,9 @@ import { ProfileDialog } from '../../../features/profile/components/profile-dial
 })
 export class Header {
   private authService = inject(AuthService);
+  private storageService = inject(StorageService);
+
+  isAdmin: boolean = this.storageService.getUserRole() === 'ADMIN';
 
   constructor(private dialog: MatDialog) {}
 
