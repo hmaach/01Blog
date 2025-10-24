@@ -3,9 +3,13 @@ package com.blog.modules.post.infrastructure.adapter.out.persistence.post;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.blog.modules.user.infrastructure.adapter.out.persistence.UserEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,6 +18,10 @@ public class PostEntity {
 
     @Id
     private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private UserEntity user;
 
     @Column(name = "title")
     private String title;
@@ -48,8 +56,7 @@ public class PostEntity {
             int likesCount,
             int commentsCount,
             int impressionsCount,
-            Instant createdAt
-    ) {
+            Instant createdAt) {
         this.id = id;
         this.title = title;
         this.body = body;

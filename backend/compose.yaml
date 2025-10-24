@@ -1,16 +1,4 @@
 services:
-  mongodb:
-    image: mongo
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
-    volumes:
-      - mongodb_data:/data/db
-
   postgres:
     image: postgres:16-alpine 
     container_name: postgres
@@ -35,6 +23,5 @@ services:
       - pgadmin_data:/var/lib/pgadmin
 
 volumes:
-  mongodb_data:
   postgres_data:
   pgadmin_data:

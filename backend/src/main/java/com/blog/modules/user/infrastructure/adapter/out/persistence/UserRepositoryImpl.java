@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import com.blog.modules.post.infrastructure.adapter.out.persistence.post.PostEntity;
+import com.blog.modules.post.infrastructure.adapter.out.persistence.post.PostMapper;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.out.UserRepository;
 
@@ -44,8 +46,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findByEmail(String email) {
         TypedQuery<UserEntity> query = entityManager.createQuery(
-                "SELECT u FROM UserEntity u WHERE u.email = :email", UserEntity.class
-        );
+                "SELECT u FROM UserEntity u WHERE u.email = :email", UserEntity.class);
         query.setParameter("email", email);
         List<UserEntity> result = query.getResultList();
         if (result.isEmpty()) {
@@ -57,8 +58,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findByUsername(String username) {
         TypedQuery<UserEntity> query = entityManager.createQuery(
-                "SELECT u FROM UserEntity u WHERE u.username = :username", UserEntity.class
-        );
+                "SELECT u FROM UserEntity u WHERE u.username = :username", UserEntity.class);
         query.setParameter("username", username);
         List<UserEntity> result = query.getResultList();
         if (result.isEmpty()) {
@@ -86,8 +86,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<UUID> getAvatarId(UUID userId) {
 
         TypedQuery<UUID> query = entityManager.createQuery(
-                "SELECT u.avatarMediaId FROM UserEntity u WHERE u.id = :userId", UUID.class
-        );
+                "SELECT u.avatarMediaId FROM UserEntity u WHERE u.id = :userId", UUID.class);
         query.setParameter("userId", userId);
         UUID avatarId = query.getSingleResult();
         return Optional.ofNullable(avatarId);
@@ -96,8 +95,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void updateAvatarId(UUID userId, UUID avatarId) {
         int updated = entityManager.createQuery(
-                "UPDATE UserEntity u SET u.avatarMediaId = :avatarId WHERE u.id = :userId"
-        )
+                "UPDATE UserEntity u SET u.avatarMediaId = :avatarId WHERE u.id = :userId")
                 .setParameter("avatarId", avatarId)
                 .setParameter("userId", userId)
                 .executeUpdate();
@@ -110,12 +108,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User save(User user) {
         UserEntity entity = UserMapper.toEntity(user);
-        if (entity.getId() == null) {
-            entityManager.persist(entity);
-        } else {
-            entity = entityManager.merge(entity);
-        }
-        return UserMapper.toDomain(entity);
+        return UserMapper.toDomain(jpaRepository.save(entity));
     }
 
     @Override
