@@ -1,7 +1,4 @@
-<div class="readme-container" *ngIf="readmeData; else loading">
-  <markdown [data]="readmeData"></markdown>
+<div class="readme-container">
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <markdown *ngIf="!isLoading" [data]="readmeData"></markdown>
 </div>
-
-<ng-template #loading>
-  <p>Loading README...</p>
-</ng-template>
