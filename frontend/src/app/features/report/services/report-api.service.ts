@@ -5,13 +5,13 @@ import { environment } from '../../../../environments/environment';
 import { ReportUserPayload } from '../models/report-user.model';
 import { ReportPostPayload } from '../models/report-post.model';
 import { ReportCommentPayload } from '../models/report-comment.model';
-import { TokenService } from '../../../core/services/token.service';
+import { StorageService } from '../../../core/services/storage.service';
 import { ToastService } from '../../../core/services/toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class ReportApiService {
   private readonly apiUrl = `${environment.apiUrl}`;
-  private tokenService = inject(TokenService);
+  private tokenService = inject(StorageService);
   private toast = inject(ToastService);
 
   constructor(private http: HttpClient) { }

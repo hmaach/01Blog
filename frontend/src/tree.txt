@@ -1,0 +1,261 @@
+.
+├── app
+│   ├── app.config.server.ts
+│   ├── app.config.ts
+│   ├── app.html
+│   ├── app.routes.server.ts
+│   ├── app.routes.ts
+│   ├── app.scss
+│   ├── app.spec.ts
+│   ├── app.ts
+│   ├── core
+│   │   ├── guards
+│   │   │   ├── admin.guard.ts
+│   │   │   ├── auth.guard.ts
+│   │   │   └── login.guard.ts
+│   │   ├── interceptors
+│   │   │   ├── auth.interceptor.ts
+│   │   │   ├── error.interceptor.ts
+│   │   │   └── loading.interceptor.ts
+│   │   ├── models
+│   │   │   ├── api-response.model.ts
+│   │   │   ├── error-response.model.ts
+│   │   │   ├── login-response.model.ts
+│   │   │   ├── register-data.model.ts
+│   │   │   └── user.model.ts
+│   │   └── services
+│   │       ├── blob-api.service.ts
+│   │       ├── cache.service.ts
+│   │       ├── storage.service.ts
+│   │       ├── theme.service.ts
+│   │       ├── toast.service.ts
+│   │       └── websocket.service.ts
+│   ├── features
+│   │   ├── admin
+│   │   │   ├── admin.module.ts
+│   │   │   ├── components
+│   │   │   └── services
+│   │   │       └── admin-api.service.ts
+│   │   ├── auth
+│   │   │   ├── auth.module.ts
+│   │   │   ├── components
+│   │   │   │   ├── login
+│   │   │   │   │   ├── login.html
+│   │   │   │   │   ├── login.scss
+│   │   │   │   │   ├── login.spec.ts
+│   │   │   │   │   └── login.ts
+│   │   │   │   └── register
+│   │   │   │       ├── register.html
+│   │   │   │       ├── register.scss
+│   │   │   │       ├── register.spec.ts
+│   │   │   │       └── register.ts
+│   │   │   └── services
+│   │   │       ├── auth-api.service.ts
+│   │   │       └── auth.service.ts
+│   │   ├── feed
+│   │   │   ├── components
+│   │   │   │   ├── explore-feed
+│   │   │   │   │   ├── explore-feed.html
+│   │   │   │   │   ├── explore-feed.scss
+│   │   │   │   │   ├── explore-feed.spec.ts
+│   │   │   │   │   └── explore-feed.ts
+│   │   │   │   └── feed
+│   │   │   │       ├── feed.html
+│   │   │   │       ├── feed.scss
+│   │   │   │       ├── feed.spec.ts
+│   │   │   │       └── feed.ts
+│   │   │   ├── feed.module.ts
+│   │   │   └── services
+│   │   │       └── feed-api.service.ts
+│   │   ├── notifications
+│   │   │   ├── components
+│   │   │   ├── notifications.module.ts
+│   │   │   └── services
+│   │   │       ├── notification-api.service.ts
+│   │   │       └── notification.service.ts
+│   │   ├── posts
+│   │   │   ├── components
+│   │   │   │   ├── post-card
+│   │   │   │   │   ├── post-card.html
+│   │   │   │   │   ├── post-card.scss
+│   │   │   │   │   ├── post-card.spec.ts
+│   │   │   │   │   └── post-card.ts
+│   │   │   │   ├── post-detail
+│   │   │   │   │   ├── post-detail.html
+│   │   │   │   │   ├── post-detail.scss
+│   │   │   │   │   ├── post-detail.spec.ts
+│   │   │   │   │   └── post-detail.ts
+│   │   │   │   ├── post-form
+│   │   │   │   │   ├── media-grid
+│   │   │   │   │   │   ├── media-grid.html
+│   │   │   │   │   │   ├── media-grid.scss
+│   │   │   │   │   │   ├── media-grid.spec.ts
+│   │   │   │   │   │   └── media-grid.ts
+│   │   │   │   │   ├── post-form.html
+│   │   │   │   │   ├── post-form.scss
+│   │   │   │   │   ├── post-form.spec.ts
+│   │   │   │   │   └── post-form.ts
+│   │   │   │   └── post-list
+│   │   │   │       ├── post-list.html
+│   │   │   │       ├── post-list.scss
+│   │   │   │       ├── post-list.spec.ts
+│   │   │   │       └── post-list.ts
+│   │   │   ├── models
+│   │   │   │   ├── comment-model.ts
+│   │   │   │   └── post-model.ts
+│   │   │   ├── posts.module.ts
+│   │   │   └── services
+│   │   │       ├── post-api.service.ts
+│   │   │       ├── post-state.service.ts
+│   │   │       └── post-validator.service.ts
+│   │   ├── profile
+│   │   │   ├── components
+│   │   │   │   ├── profile
+│   │   │   │   │   ├── profile.html
+│   │   │   │   │   ├── profile.scss
+│   │   │   │   │   ├── profile.spec.ts
+│   │   │   │   │   └── profile.ts
+│   │   │   │   ├── profile-block
+│   │   │   │   │   ├── profile-block.html
+│   │   │   │   │   ├── profile-block.scss
+│   │   │   │   │   ├── profile-block.spec.ts
+│   │   │   │   │   └── profile-block.ts
+│   │   │   │   ├── profile-card
+│   │   │   │   │   ├── profile-card.html
+│   │   │   │   │   ├── profile-card.scss
+│   │   │   │   │   ├── profile-card.spec.ts
+│   │   │   │   │   └── profile-card.ts
+│   │   │   │   ├── profile-dialog
+│   │   │   │   │   ├── profile-dialog.html
+│   │   │   │   │   ├── profile-dialog.scss
+│   │   │   │   │   ├── profile-dialog.spec.ts
+│   │   │   │   │   └── profile-dialog.ts
+│   │   │   │   ├── profile-not-found
+│   │   │   │   │   ├── profile-not-found.html
+│   │   │   │   │   ├── profile-not-found.scss
+│   │   │   │   │   ├── profile-not-found.spec.ts
+│   │   │   │   │   └── profile-not-found.ts
+│   │   │   │   └── profile-readme
+│   │   │   │       ├── profile-readme.html
+│   │   │   │       ├── profile-readme.scss
+│   │   │   │       ├── profile-readme.spec.ts
+│   │   │   │       └── profile-readme.ts
+│   │   │   ├── models
+│   │   │   │   └── user-response.model.ts
+│   │   │   ├── profile.module.ts
+│   │   │   └── services
+│   │   │       └── profile-api.service.ts
+│   │   └── report
+│   │       ├── components
+│   │       │   ├── report-comment
+│   │       │   │   ├── report-comment.html
+│   │       │   │   ├── report-comment.scss
+│   │       │   │   ├── report-comment.spec.ts
+│   │       │   │   └── report-comment.ts
+│   │       │   ├── report-post
+│   │       │   │   ├── report-post.html
+│   │       │   │   ├── report-post.scss
+│   │       │   │   ├── report-post.spec.ts
+│   │       │   │   └── report-post.ts
+│   │       │   └── report-user
+│   │       │       ├── report-user.html
+│   │       │       ├── report-user.scss
+│   │       │       ├── report-user.spec.ts
+│   │       │       └── report-user.ts
+│   │       ├── models
+│   │       │   ├── report-comment.model.ts
+│   │       │   ├── report-post.model.ts
+│   │       │   └── report-user.model.ts
+│   │       ├── report.module.ts
+│   │       └── services
+│   │           └── report-api.service.ts
+│   ├── layouts
+│   │   ├── admin-layout
+│   │   │   ├── admin-layout.html
+│   │   │   ├── admin-layout.scss
+│   │   │   ├── admin-layout.spec.ts
+│   │   │   └── admin-layout.ts
+│   │   ├── auth-layout
+│   │   │   ├── auth-layout.html
+│   │   │   ├── auth-layout.scss
+│   │   │   ├── auth-layout.spec.ts
+│   │   │   └── auth-layout.ts
+│   │   └── main-layout
+│   │       ├── main-layout.html
+│   │       ├── main-layout.scss
+│   │       ├── main-layout.spec.ts
+│   │       └── main-layout.ts
+│   └── shared
+│       ├── components
+│       │   ├── auth-header
+│       │   │   ├── auth-header.html
+│       │   │   ├── auth-header.scss
+│       │   │   ├── auth-header.spec.ts
+│       │   │   └── auth-header.ts
+│       │   ├── create-post-button
+│       │   │   ├── create-post-button.html
+│       │   │   ├── create-post-button.scss
+│       │   │   ├── create-post-button.spec.ts
+│       │   │   └── create-post-button.ts
+│       │   ├── header
+│       │   │   ├── header.html
+│       │   │   ├── header.scss
+│       │   │   ├── header.spec.ts
+│       │   │   └── header.ts
+│       │   ├── logo
+│       │   │   ├── logo.html
+│       │   │   ├── logo.scss
+│       │   │   ├── logo.spec.ts
+│       │   │   └── logo.ts
+│       │   ├── main-logo
+│       │   │   ├── main-logo.html
+│       │   │   ├── main-logo.scss
+│       │   │   ├── main-logo.spec.ts
+│       │   │   └── main-logo.ts
+│       │   ├── media-preview
+│       │   │   ├── media-preview.html
+│       │   │   ├── media-preview.scss
+│       │   │   ├── media-preview.spec.ts
+│       │   │   └── media-preview.ts
+│       │   ├── not-found
+│       │   │   ├── not-found.html
+│       │   │   ├── not-found.scss
+│       │   │   ├── not-found.spec.ts
+│       │   │   └── not-found.ts
+│       │   ├── notifications
+│       │   │   ├── notifications.html
+│       │   │   ├── notifications.scss
+│       │   │   ├── notifications.spec.ts
+│       │   │   └── notifications.ts
+│       │   ├── spinner
+│       │   │   ├── spinner.html
+│       │   │   ├── spinner.scss
+│       │   │   ├── spinner.spec.ts
+│       │   │   └── spinner.ts
+│       │   ├── switch-mode
+│       │   │   ├── switch-mode.html
+│       │   │   ├── switch-mode.scss
+│       │   │   ├── switch-mode.spec.ts
+│       │   │   └── switch-mode.ts
+│       │   └── toast
+│       │       ├── toast.html
+│       │       ├── toast.scss
+│       │       ├── toast.spec.ts
+│       │       └── toast.ts
+│       ├── lib
+│       │   └── mock-data.ts
+│       └── shared.module.ts
+├── assets
+│   └── styles
+│       └── theme.css
+├── environments
+│   ├── environment.prod.ts
+│   └── environment.ts
+├── index.html
+├── main.server.ts
+├── main.ts
+├── server.ts
+├── styles.scss
+└── tree.txt
+
+70 directories, 188 files

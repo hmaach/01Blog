@@ -11,12 +11,20 @@ import { ProfileBlock } from '../profile-block/profile-block';
 import { ProfileCard } from '../profile-card/profile-card';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ProfileNotFound } from '../profile-not-found/profile-not-found';
-import { Spinner } from "../../../../shared/components/spinner/spinner";
+import { Spinner } from '../../../../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, MatTabsModule, ProfileReadme, ProfileBlock, ProfileCard, ProfileNotFound, Spinner],
+  imports: [
+    CommonModule,
+    MatTabsModule,
+    ProfileReadme,
+    ProfileBlock,
+    ProfileCard,
+    ProfileNotFound,
+    Spinner,
+  ],
   templateUrl: './profile.html',
   styleUrls: ['./profile.scss'],
 })

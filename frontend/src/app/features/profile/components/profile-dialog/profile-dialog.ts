@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ProfileCard } from "../profile-card/profile-card";
+import { ProfileCard } from '../profile-card/profile-card';
 
 @Component({
   selector: 'app-profile-dialog',

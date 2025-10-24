@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { TokenService } from './token.service';
+import { StorageService } from './storage.service';
 import { environment } from '../../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -10,7 +10,7 @@ import { ToastService } from './toast.service';
 })
 export class BlobApiService {
   private readonly apiUrl = `${environment.apiUrl}`;
-  private tokenService = inject(TokenService);
+  private tokenService = inject(StorageService);
   private toast = inject(ToastService);
 
   constructor(private http: HttpClient) {}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
-export class TokenService {
+export class StorageService {
   private TOKEN_KEY = 'accessToken';
   private TOKEN_EXPIRES_KEY = 'tokenExpiresAt';
   private USER_KEY = 'user';

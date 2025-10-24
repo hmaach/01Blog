@@ -3,12 +3,12 @@ import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { UserResponse } from '../models/user-response.model';
-import { TokenService } from '../../../core/services/token.service';
+import { StorageService } from '../../../core/services/storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileApiService {
   private readonly apiUrl = `${environment.apiUrl}`;
-  private tokenService = inject(TokenService);
+  private tokenService = inject(StorageService);
 
   constructor(private http: HttpClient) {}
 
