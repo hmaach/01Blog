@@ -8,12 +8,12 @@ import { StorageService } from '../../../core/services/storage.service';
 @Injectable({ providedIn: 'root' })
 export class ProfileApiService {
   private readonly apiUrl = `${environment.apiUrl}`;
-  private tokenService = inject(StorageService);
+  private storageService = inject(StorageService);
 
   constructor(private http: HttpClient) {}
 
   fetchUserProfile(username: string): Observable<UserResponse> {
-    const token = this.tokenService.getAccessToken();
+    const token = this.storageService.getAccessToken();
 
     return this.http.get<UserResponse>(`${this.apiUrl}/user/${username}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
@@ -21,7 +21,7 @@ export class ProfileApiService {
   }
 
   fetchUserReadme(userId: string): Observable<string> {
-    // const token = this.tokenService.getAccessToken();
+    // const token = this.storageService.getAccessToken();
 
     // return this.http
     //   .get<string>(`${this.apiUrl}/user/${userId}/readme`, {

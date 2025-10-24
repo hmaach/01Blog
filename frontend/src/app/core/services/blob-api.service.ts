@@ -10,13 +10,13 @@ import { ToastService } from './toast.service';
 })
 export class BlobApiService {
   private readonly apiUrl = `${environment.apiUrl}`;
-  private tokenService = inject(StorageService);
+  private storageService = inject(StorageService);
   private toast = inject(ToastService);
 
   constructor(private http: HttpClient) {}
 
   fetch(url: string): Observable<Blob> {
-    const token = this.tokenService.getAccessToken();
+    const token = this.storageService.getAccessToken();
     return this.http
       .get(`${this.apiUrl}/media/${url}`, {
         responseType: 'blob',

@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, tap, of, catchError } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of, catchError, switchMap } from 'rxjs';
 import { AuthApiService } from './auth-api.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { ToastService } from '../../../core/services/toast.service';
-import { User } from '../../../core/models/user.model';
+import { CurrentUserInfo, User } from '../../../core/models/user.model';
 import { LoginResponse } from '../../../core/models/login-response.model';
 
 @Injectable({
@@ -12,7 +12,7 @@ import { LoginResponse } from '../../../core/models/login-response.model';
 })
 export class AuthService {
   private authApi = inject(AuthApiService);
-  private tokenService = inject(StorageService);
+  private storageService = inject(StorageService);
   private router = inject(Router);
 
   private isBrowser: boolean;
@@ -25,19 +25,41 @@ export class AuthService {
     if (this.isBrowser) {
       window.addEventListener('storage', this.handleTokenChange.bind(this));
     }
-    // const user = this.tokenService.getUser();
-    // if (user) this.currentUserSubject.next(user);
   }
 
-  login(email: string, password: string): Observable<LoginResponse> {
+  private handleTokenChange(event: StorageEvent): void {
+    this.validateToken();
+
+    const token = this.storageService.getAccessToken();
+    if (token) {
+      this.authApi.getCurrentUser(token).subscribe({
+        next: (user: CurrentUserInfo) => {
+
+          this.storageService.saveUser(user);
+        },
+        error: () => {
+          this.storageService.clear();
+          this.router.navigate(['/auth/login']);
+        },
+      });
+    }
+  }
+
+  login(email: string, password: string): Observable<CurrentUserInfo> {
     return this.authApi.login({ email, password }).pipe(
+      switchMap((response) => {
+        this.storageService.saveTokens(response.token, response.expiresAt);
+        return this.authApi.getCurrentUser(response.token);
+      }),
       tap({
-        next: (response) => {
-          this.tokenService.saveTokens(response.token, response.expiresAt);
-          this.toast.show('Welcome back', 'success');
+        next: (user) => {
+          this.storageService.saveUser(user);
+          this.toast.show(`Welcome back, ${user.username}!`, 'success');
           this.router.navigate(['/']);
         },
-        error: (e) => this.toast.show(e?.error?.message || 'Unknown Server Error', 'error'),
+        error: (e) => {
+          this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        },
       })
     );
   }
@@ -59,7 +81,7 @@ export class AuthService {
       return of(true);
     }
 
-    const token = this.tokenService.getAccessToken();
+    const token = this.storageService.getAccessToken();
     if (!token) {
       return of(false);
     }
@@ -67,14 +89,10 @@ export class AuthService {
     return of(true);
   }
 
-  private handleTokenChange(event: StorageEvent): void {
-    this.validateToken();
-  }
-
   validateToken() {
     if (!this.isBrowser) return;
 
-    const token = this.tokenService.getAccessToken();
+    const token = this.storageService.getAccessToken();
     if (!token) return;
 
     this.authApi
@@ -82,12 +100,12 @@ export class AuthService {
       .pipe(
         tap((isValid) => {
           if (!isValid) {
-            this.tokenService.clear();
+            this.storageService.clear();
             this.router.navigate(['/auth/login']);
           }
         }),
         catchError(() => {
-          this.tokenService.clear();
+          this.storageService.clear();
           this.router.navigate(['/auth/login']);
           return of(false);
         })
@@ -96,7 +114,7 @@ export class AuthService {
   }
 
   logout(): void {
-    this.tokenService.clear();
+    this.storageService.clear();
     this.toast.show('Logged out', 'info');
     this.router.navigate(['/auth/login']);
   }

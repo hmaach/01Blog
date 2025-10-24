@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { User } from '../models/user.model';
+import { CurrentUserInfo, User } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
   private TOKEN_KEY = 'accessToken';
   private TOKEN_EXPIRES_KEY = 'tokenExpiresAt';
   private USER_KEY = 'user';
+  private AVATAR_KEY = 'avatarUrl';
+  private ROLE_KEY = 'role';
 
   private isBrowser: boolean;
 
@@ -32,10 +34,40 @@ export class StorageService {
     return null;
   }
 
+  getUserAvatarUrl(): string | null {
+    if (this.isBrowser) {
+      const role = localStorage.getItem(this.AVATAR_KEY);
+      return role || null;
+    }
+    return null;
+  }
+
+  getUserRole(): string | null {
+    if (this.isBrowser) {
+      const role = localStorage.getItem(this.ROLE_KEY);
+      return role || null;
+    }
+    return null;
+  }
+
+  saveUser(user: CurrentUserInfo) {
+    const userData = {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+    };
+
+    localStorage.setItem(this.USER_KEY, JSON.stringify(userData));
+    localStorage.setItem(this.AVATAR_KEY, user.avatarUrl ?? '');
+    localStorage.setItem(this.ROLE_KEY, user.role ?? '');
+  }
+
   clear(): void {
     if (this.isBrowser) {
       localStorage.removeItem(this.TOKEN_KEY);
       localStorage.removeItem(this.USER_KEY);
+      localStorage.removeItem(this.AVATAR_KEY);
+      localStorage.removeItem(this.ROLE_KEY);
       localStorage.removeItem(this.TOKEN_EXPIRES_KEY);
     }
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, Observable, of, tap } from 'rxjs';
-import { User } from '../../../core/models/user.model';
+import { CurrentUserInfo, User } from '../../../core/models/user.model';
 import { environment } from '../../../../environments/environment';
 import { LoginResponse } from '../../../core/models/login-response.model';
 
@@ -32,5 +32,11 @@ export class AuthApiService {
           return of(false);
         })
       );
+  }
+
+  getCurrentUser(token: string): Observable<CurrentUserInfo> {
+    return this.http.get<CurrentUserInfo>(`${this.apiUrl}/user`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
   }
 }

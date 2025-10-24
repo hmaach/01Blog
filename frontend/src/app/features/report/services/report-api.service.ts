@@ -11,13 +11,13 @@ import { ToastService } from '../../../core/services/toast.service';
 @Injectable({ providedIn: 'root' })
 export class ReportApiService {
   private readonly apiUrl = `${environment.apiUrl}`;
-  private tokenService = inject(StorageService);
+  private storageService = inject(StorageService);
   private toast = inject(ToastService);
 
   constructor(private http: HttpClient) { }
 
   reportUser(payload: ReportUserPayload): Observable<void> {
-    const token = this.tokenService.getAccessToken();
+    const token = this.storageService.getAccessToken();
 
     return this.http.post<void>(`${this.apiUrl}/report/user/${payload.userId}`, payload, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
@@ -30,7 +30,7 @@ export class ReportApiService {
   }
 
   reportPost(payload: ReportPostPayload): Observable<void> {
-    const token = this.tokenService.getAccessToken();
+    const token = this.storageService.getAccessToken();
 
     return this.http.post<void>(`${this.apiUrl}/report/post/${payload.postId}`, payload, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
@@ -43,7 +43,7 @@ export class ReportApiService {
   }
 
   reportComment(payload: ReportCommentPayload): Observable<void> {
-    const token = this.tokenService.getAccessToken();
+    const token = this.storageService.getAccessToken();
 
     return this.http.post<void>(`${this.apiUrl}/report/comment/${payload.commentId}`, payload, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
