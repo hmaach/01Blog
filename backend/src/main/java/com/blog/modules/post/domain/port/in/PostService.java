@@ -32,4 +32,6 @@ public interface PostService {
     void decrementLikesCount(UUID postId);
 
     void incrementImpressionsCount(List<UUID> postIds);
+
+    List<Post> findByUserUsername(String username, Pageable pageable);
 }

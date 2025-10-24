@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID> {
 
     Page<PostEntity> findByUserId(UUID userId, Pageable pageable);
+
+    Page<PostEntity> findByUserUsername(String username, Pageable pageable);
 }

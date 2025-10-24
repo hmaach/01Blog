@@ -70,6 +70,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> findByUserUsername(String username, Pageable pageable) {
+        if (!userService.userExistByUsername(username)) {
+            throw new UserNotFoundException(username);
+        }
+        return postRepository.findByUserUsername(username, pageable);
+    }
+
+    @Override
     public Post findById(UUID postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));

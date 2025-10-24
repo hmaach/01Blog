@@ -8,45 +8,31 @@ import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.infrastructure.adapter.in.web.dto.MediaResponse;
 import com.blog.modules.post.domain.model.Post;
 
-public record PostResponse(
+public record PostResponse2(
         UUID id,
-        AuthorResponse author,
         String title,
         String body,
+        UUID userId,
         String status,
         int likesCount,
         int commentsCount,
         int impressionsCount,
         Instant createdAt,
-        Boolean isOwner,
-        Boolean isLiked,
         List<MediaResponse> media
         ) {
 
-
-
-    public static PostResponse fromDomain(
-            Post post,
-            AuthorResponse author,
-            Boolean isOwner,
-            Boolean isLiked,
-            List<Media> mediaList
-    ) {
-        return new PostResponse(
+    public static PostResponse2 fromDomain(Post post, List<Media> mediaList) {
+        return new PostResponse2(
                 post.getId(),
-                author,
                 post.getTitle(),
                 post.getBody(),
+                post.getUserId(),
                 post.getStatus(),
                 post.getLikesCount(),
                 post.getCommentsCount(),
                 post.getImpressionsCount(),
                 post.getCreatedAt(),
-                isOwner,
-                isLiked,
-                mediaList.stream()
-                        .map(MediaResponse::fromDomain)
-                        .toList()
+                mediaList.stream().map(MediaResponse::fromDomain).toList()
         );
     }
 }

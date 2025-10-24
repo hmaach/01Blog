@@ -42,6 +42,14 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public List<Post> findByUserUsername(String username, Pageable pageable) {
+        return jpaRepository.findByUserUsername(username, pageable)
+                .stream()
+                .map(PostMapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public Optional<Post> findById(UUID id) {
         return jpaRepository.findById(id).map(PostMapper::toDomain);
     }

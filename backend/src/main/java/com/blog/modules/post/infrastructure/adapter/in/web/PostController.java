@@ -27,9 +27,13 @@ import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.PostService;
+import com.blog.modules.post.infrastructure.adapter.in.web.dto.AuthorResponse;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse;
+import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse2;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand;
+import com.blog.modules.user.domain.model.User;
+import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.shared.infrastructure.security.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,24 +44,28 @@ import jakarta.validation.Valid;
 public class PostController {
 
     private final PostService postService;
+    private final UserService userService;
     private final JwtService jwtService;
     private final MediaService mediaService;
     private final PostMediaValidator mediaValidator;
 
     public PostController(
             PostService postService,
+            UserService userService,
             JwtService jwtService,
             MediaService mediaService,
             PostMediaValidator mediaValidator
     ) {
         this.postService = postService;
+        this.userService = userService;
         this.jwtService = jwtService;
         this.mediaService = mediaService;
         this.mediaValidator = mediaValidator;
     }
 
-    @GetMapping
+    @GetMapping("/explore")
     public ResponseEntity<List<PostResponse>> getAllPosts(
+            HttpServletRequest request,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy
@@ -66,45 +74,111 @@ public class PostController {
         Sort sort = Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+
         List<Post> posts = postService.findAll(pageable);
+
         List<PostResponse> responses = posts.stream()
                 .map(post -> {
+                    User postUser = userService.findById(post.getUserId());
+                    String avatarUrl = mediaService.getAvatarUrl(postUser.getAvatarMediaId());
                     List<Media> mediaList = mediaService.findByPostId(post.getId());
-                    return PostResponse.fromDomain(post, mediaList);
+                    Boolean isOwner = currUserId.equals(post.getUserId());
+                    AuthorResponse author = AuthorResponse.fromDomain(postUser, avatarUrl);
+
+                    return PostResponse.fromDomain(
+                            post,
+                            author,
+                            isOwner,
+                            true,
+                            mediaList
+                    );
                 })
                 .toList();
+
         return ResponseEntity.ok(responses);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<PostResponse>> getPostByUser(
-            @PathVariable UUID userId,
+    // @GetMapping("/user/{userId}")
+    // public ResponseEntity<List<PostResponse>> getPostByUserId(
+    //         HttpServletRequest request,
+    //         @PathVariable UUID userId,
+    //         @RequestParam(defaultValue = "0") int page,
+    //         @RequestParam(defaultValue = "10") int size,
+    //         @RequestParam(defaultValue = "createdAt") String sortBy
+    // ) {
+
+    //     Sort sort = Sort.by(sortBy).descending();
+    //     Pageable pageable = PageRequest.of(page, size, sort);
+
+    //     UUID currUserId = jwtService.extractUserIdFromRequest(request);
+
+    //     List<Post> posts = postService.findByUserId(userId, pageable);
+
+    //     List<PostResponse> responses = posts.stream()
+    //             .map(post -> {
+    //                 User postUser = userService.findById(post.getUserId());
+    //                 String avatarUrl = mediaService.getAvatarUrl(postUser.getAvatarMediaId());
+    //                 List<Media> mediaList = mediaService.findByPostId(post.getId());
+    //                 Boolean isOwner = currUserId.equals(post.getUserId());
+    //                 AuthorResponse author = AuthorResponse.fromDomain(postUser, avatarUrl);
+
+    //                 return PostResponse.fromDomain(
+    //                         post,
+    //                         author,
+    //                         isOwner,
+    //                         true,
+    //                         mediaList
+    //                 );
+    //             })
+    //             .toList();
+    //     return ResponseEntity.ok(responses);
+    // }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<List<PostResponse>> getPostByUserUsername(
+            HttpServletRequest request,
+            @PathVariable String username,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy
     ) {
-
         Sort sort = Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        List<Post> posts = postService.findByUserId(userId, pageable);
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+
+        List<Post> posts = postService.findByUserUsername(username, pageable);
+
         List<PostResponse> responses = posts.stream()
                 .map(post -> {
+                    User postUser = userService.findById(post.getUserId());
+                    String avatarUrl = mediaService.getAvatarUrl(postUser.getAvatarMediaId());
                     List<Media> mediaList = mediaService.findByPostId(post.getId());
-                    return PostResponse.fromDomain(post, mediaList);
+                    Boolean isOwner = currUserId.equals(post.getUserId());
+                    AuthorResponse author = AuthorResponse.fromDomain(postUser, avatarUrl);
+
+                    return PostResponse.fromDomain(
+                            post,
+                            author,
+                            isOwner,
+                            true,
+                            mediaList
+                    );
                 })
                 .toList();
+
         return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{postId}")
-    public PostResponse getPost(@PathVariable UUID postId, HttpServletRequest request) {
+    public PostResponse2 getPost(@PathVariable UUID postId, HttpServletRequest request) {
         List<Media> mediaList = mediaService.findByPostId(postId);
-        return PostResponse.fromDomain(postService.findById(postId), mediaList);
+        return PostResponse2.fromDomain(postService.findById(postId), mediaList);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostResponse> createPost(
+    public ResponseEntity<PostResponse2> createPost(
             HttpServletRequest request,
             @Valid @ModelAttribute CreatePostCommand cmd
     ) {
@@ -119,11 +193,11 @@ public class PostController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(PostResponse.fromDomain(createdPost, mediaList));
+                .body(PostResponse2.fromDomain(createdPost, mediaList));
     }
 
     @PatchMapping("/{postId}")
-    public ResponseEntity<PostResponse> updatePost(
+    public ResponseEntity<PostResponse2> updatePost(
             @RequestBody @Valid UpdatePostCommand cmd,
             HttpServletRequest request,
             @PathVariable UUID postId
@@ -134,7 +208,7 @@ public class PostController {
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(PostResponse.fromDomain(post, mediaList));
+                .body(PostResponse2.fromDomain(post, mediaList));
     }
 
     @PostMapping("/like/{postId}")

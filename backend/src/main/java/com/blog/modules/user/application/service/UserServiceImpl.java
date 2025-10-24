@@ -45,9 +45,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).isPresent();
     }
 
-@Override
-public String getUserReadme(UUID userId) {
-    return """
+    @Override
+    public boolean userExistByUsername(String username) {
+        return userRepository.findByUsername(username).isPresent();
+    }
+
+    @Override
+    public String getUserReadme(UUID userId) {
+        return """
              # Welcome to My Profile!
 
              Hello! 👋 I'm [Your Name], a passionate [Your Profession].
@@ -73,8 +78,7 @@ public String getUserReadme(UUID userId) {
         Thanks for visiting my profile! Feel free to connect with me.
             
              """;
-}
-
+    }
 
     @Override
     public User findByUsername(String username) {

@@ -35,4 +35,6 @@ public interface PostRepository {
     void hidePostById(UUID postId);
 
     Boolean existsById(UUID postId);
+
+    List<Post> findByUserUsername(String username, Pageable pageable);
 }

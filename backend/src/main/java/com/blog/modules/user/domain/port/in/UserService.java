@@ -23,4 +23,6 @@ public interface UserService {
     User updateUser(UUID id, UpdateUserCommand command);
 
     void deleteUser(UUID id);
+
+    boolean userExistByUsername(String username);
 }
