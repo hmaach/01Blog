@@ -26,7 +26,7 @@ export class StorageService {
     return this.isBrowser ? localStorage.getItem(this.TOKEN_KEY) : null;
   }
 
-  getUser(): User | null {
+  getCurrentUserInfo(): CurrentUserInfo | null {
     if (this.isBrowser) {
       const data = localStorage.getItem(this.USER_KEY);
       return data ? JSON.parse(data) : null;
@@ -58,8 +58,10 @@ export class StorageService {
     };
 
     localStorage.setItem(this.USER_KEY, JSON.stringify(userData));
-    localStorage.setItem(this.AVATAR_KEY, user.avatarUrl ?? '');
     localStorage.setItem(this.ROLE_KEY, user.role ?? '');
+    if (user.avatarUrl) {
+      localStorage.setItem(this.AVATAR_KEY, user.avatarUrl);
+    }
   }
 
   clear(): void {

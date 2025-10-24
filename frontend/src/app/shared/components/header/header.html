@@ -34,19 +34,24 @@
       [matMenuTriggerFor]="menu"
       class="d-flex justify-content-center align-items-center"
     >
-      <img src="/assets/images/default-avatar.jpg" alt="displayName" class="avatar" />
+      <img
+        src="{{ avatarUrl || '/assets/images/default-avatar.jpg' }}"
+        alt="displayName"
+        class="avatar"
+      />
     </button>
     <mat-menu #menu="matMenu" class="d-flex flex-column">
-      <a class="dropdownHeader" routerLink="/profile/me">
-        <img src="/assets/images/default-avatar.jpg" alt="displayName" class="avatar" />
+      <a class="dropdownHeader" routerLink="/profile/{{ user?.username }}">
+        <img
+          src="{{ avatarUrl || '/assets/images/default-avatar.jpg' }}"
+          alt="displayName"
+          class="avatar"
+        />
         <div class="dropdownUserInfo">
-          <span class="dropdownUserName">displayName</span>
-          <span class="dropdownUsername">@username</span>
+          <span class="dropdownUserName">{{ user?.name }}</span>
+          <span class="dropdownUsername">@{{ user?.username }}</span>
         </div>
       </a>
-      <!-- <button mat-menu-item>
-        <app-switch-mode></app-switch-mode>
-      </button> -->
       <a mat-button class="w-full">
         <mat-icon>settings</mat-icon>
         <span>Settings</span>

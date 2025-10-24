@@ -17,6 +17,7 @@ import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.application.service.UserServiceImpl;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.model.User;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.CurrentUserResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserProfileResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
@@ -44,9 +45,11 @@ public class UserController {
     }
 
     @GetMapping
-    public UserResponse getCurrentUser(HttpServletRequest request) {
+    public CurrentUserResponse getCurrentUser(HttpServletRequest request) {
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
-        return UserResponse.fromDomain(userService.findById(currUserId));
+        User user = userService.findById(currUserId);
+        String avatarUrl = mediaService.getAvatarUrl(user.getAvatarMediaId());
+        return CurrentUserResponse.fromDomain(user, avatarUrl);
     }
 
     @GetMapping("/all")

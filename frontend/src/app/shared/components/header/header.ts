@@ -12,6 +12,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialog } from '@angular/material/dialog';
 import { Notifications } from '../notifications/notifications';
 import { StorageService } from '../../../core/services/storage.service';
+import { BlobService } from '../../../core/services/blob.service';
+import { CurrentUserInfo } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -33,11 +35,24 @@ import { StorageService } from '../../../core/services/storage.service';
 })
 export class Header {
   private authService = inject(AuthService);
+  private blobService = inject(BlobService);
   private storageService = inject(StorageService);
 
   isAdmin: boolean = this.storageService.getUserRole() === 'ADMIN';
+  user: CurrentUserInfo | null = this.storageService.getCurrentUserInfo();
+  
+  avatarUrl?: string;
 
   constructor(private dialog: MatDialog) {}
+
+  ngOnInit() {
+    const avatar: string | null = this.storageService.getUserAvatarUrl();
+    if (avatar) {
+      this.blobService.loadBlob(avatar).subscribe({
+        next: (url) => (this.avatarUrl = url),
+      });
+    }
+  }
 
   openNotificationsDialog() {
     this.dialog.open(Notifications, {
