@@ -16,6 +16,8 @@ public interface UserRepository {
 
     Optional<User> findByUsername(String username);
 
+    String getUserReadme(UUID userId);
+
     boolean existsById(UUID userId);
 
     boolean existsByEmail(String email);

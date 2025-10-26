@@ -20,6 +20,7 @@ public class UserMapper {
                 user.getPostsCount(),
                 user.getSubscribersCount(),
                 user.getImpressionsCount(),
+                user.getReadme(),
                 user.getCreatedAt()
         );
     }
@@ -41,6 +42,7 @@ public class UserMapper {
                 entity.getSubscribersCount(),
                 entity.getImpressionsCount(),
                 entity.getAvatarMediaId(),
+                entity.getReadme(),
                 entity.getCreatedAt()
         );
     }

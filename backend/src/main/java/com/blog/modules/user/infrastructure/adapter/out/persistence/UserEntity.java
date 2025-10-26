@@ -45,6 +45,9 @@ public class UserEntity {
     @Column(name = "avatar_media_id")
     private UUID avatarMediaId;
 
+    @Column(name = "readme")
+    private String readme;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -59,6 +62,7 @@ public class UserEntity {
             int postsCount,
             int subscribersCount,
             int impressionsCount,
+            String readme,
             Instant createdAt
     ) {
         this.id = id;
@@ -71,6 +75,7 @@ public class UserEntity {
         this.postsCount = postsCount;
         this.subscribersCount = subscribersCount;
         this.impressionsCount = impressionsCount;
+        this.readme = readme;
         this.createdAt = createdAt;
     }
 
@@ -163,5 +168,13 @@ public class UserEntity {
 
     public void setAvatarMediaId(UUID avatarMediaId) {
         this.avatarMediaId = avatarMediaId;
+    }
+
+    public String getReadme() {
+        return readme;
+    }
+
+    public void setReadme(String readme) {
+        this.readme = readme;
     }
 }

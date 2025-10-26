@@ -66,6 +66,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public String getUserReadme(UUID userId) {
+        return jpaRepository.findReadmeById(userId);
+    }
+
+    @Override
     public boolean existsById(UUID userId) {
         return jpaRepository.existsById(userId);
     }

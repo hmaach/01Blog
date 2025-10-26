@@ -12,11 +12,13 @@ public class User {
     private String role;
     private String status;
     private int postsCount;
+
     private int subscribersCount;
     private int impressionsCount;
     private String password;
-    private final Instant createdAt;
     private UUID avatarMediaId;
+    private String readme;
+    private final Instant createdAt;
 
     public User(
             UUID id,
@@ -30,6 +32,7 @@ public class User {
             int subscribersCount,
             int impressionsCount,
             UUID avatarMediaId,
+            String readme,
             Instant createdAt
     ) {
         this.id = id;
@@ -42,8 +45,9 @@ public class User {
         this.postsCount = postsCount;
         this.subscribersCount = subscribersCount;
         this.impressionsCount = impressionsCount;
-        this.createdAt = createdAt;
         this.avatarMediaId = avatarMediaId;
+        this.readme = readme;
+        this.createdAt = createdAt;
     }
 
     public User(
@@ -54,6 +58,7 @@ public class User {
             String password,
             String role,
             String status,
+            String readme,
             Instant createdAt
     ) {
         this.id = id;
@@ -63,6 +68,7 @@ public class User {
         this.password = password;
         this.role = role;
         this.status = status;
+        this.readme = readme;
         this.createdAt = createdAt;
     }
 
@@ -115,6 +121,14 @@ public class User {
         return avatarMediaId;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getReadme() {
+        return readme;
+    }
+
     // Domain actions
     public void changeName(String name) {
         this.name = name;
@@ -138,5 +152,9 @@ public class User {
 
     public void changeAvatar(UUID avatarMediaId) {
         this.avatarMediaId = avatarMediaId;
+    }
+
+    public void changeReadme(String readme) {
+        this.readme = readme;
     }
 }

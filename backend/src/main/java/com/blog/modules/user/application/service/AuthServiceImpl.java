@@ -22,6 +22,7 @@ import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 import com.blog.shared.infrastructure.security.JwtService;
+import com.blog.utils.MarkdownUtils;
 
 import io.jsonwebtoken.io.IOException;
 
@@ -58,8 +59,10 @@ public class AuthServiceImpl implements AuthService {
             throw new EmailAlreadyExistsException(cmd.email());
         }
 
+        Instant now = Instant.now();
         UUID userId = UUID.randomUUID();
         String username = this.generateUniqueUsername(cmd.name(), cmd.email());
+        String readme = MarkdownUtils.generateDefaultReadme(cmd.name(), username, now);
         UUID mediaId;
 
         User user = new User(
@@ -70,7 +73,8 @@ public class AuthServiceImpl implements AuthService {
                 encoder.encode(cmd.password()),
                 "USER",
                 "active",
-                Instant.now()
+                readme,
+                now
         );
 
         userRepository.save(user);
