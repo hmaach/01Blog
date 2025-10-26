@@ -9,6 +9,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ToastService } from '../../../../core/services/toast.service';
 import { AuthService } from '../../services/auth.service';
+import { trimValidator } from '../../../../shared/lib/validators';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +35,7 @@ export class Login {
   hide: boolean = true;
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
+    password: ['', [Validators.required, trimValidator]],
   });
 
   onSubmit() {
@@ -44,6 +45,6 @@ export class Login {
     }
 
     const { email, password } = this.form.value;
-    this.authService.login(email!, password!).subscribe();
+    this.authService.login(email?.trim()!, password?.trim()!).subscribe();
   }
 }

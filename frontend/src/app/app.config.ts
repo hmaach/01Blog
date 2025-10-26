@@ -8,7 +8,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthService } from './features/auth/services/auth.service';
 import { provideMarkdown } from 'ngx-markdown';
 
@@ -20,6 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptorsFromDi()),
     provideClientHydration(withEventReplay()),
     provideMarkdown(),
+    provideHttpClient(withFetch()),
     {
       provide: APP_INITIALIZER,
       useFactory: (authService: AuthService) => () => authService.validateToken(),

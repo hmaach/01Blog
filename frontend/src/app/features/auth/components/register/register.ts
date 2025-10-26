@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ToastService } from '../../../../core/services/toast.service';
 import { AuthService } from '../../services/auth.service';
+import { trimValidator } from '../../../../shared/lib/validators';
 
 @Component({
   selector: 'app-register',
@@ -41,7 +42,7 @@ export class Register {
   private authService = inject(AuthService);
 
   firstFormGroup = this._fb.group({
-    nameCtrl: ['', Validators.required],
+    nameCtrl: ['', [Validators.required, trimValidator]],
     emailCtrl: [
       '',
       [
@@ -53,8 +54,8 @@ export class Register {
   });
 
   secondFormGroup = this._fb.group({
-    passwordCtrl: ['',  Validators.minLength(6)],
-    confirmCtrl: ['', Validators.required],
+    passwordCtrl: ['', [Validators.minLength(6), trimValidator]],
+    confirmCtrl: ['', [Validators.required, trimValidator]],
   });
 
   get passwordsDoNotMatch(): boolean {
@@ -97,9 +98,9 @@ export class Register {
 
   finishRegistration(): void {
     const formData = new FormData();
-    formData.append('name', this.firstFormGroup.value.nameCtrl || '');
-    formData.append('email', this.firstFormGroup.value.emailCtrl || '');
-    formData.append('password', this.secondFormGroup.value.passwordCtrl || '');
+    formData.append('name', this.firstFormGroup.value.nameCtrl?.trim() || '');
+    formData.append('email', this.firstFormGroup.value.emailCtrl?.trim() || '');
+    formData.append('password', this.secondFormGroup.value.passwordCtrl?.trim() || '');
 
     if (this.avatarPreview) {
       const byteCharacters = atob(this.avatarPreview.split(',')[1]); // remove base64 header

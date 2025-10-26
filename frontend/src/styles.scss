@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 @use './assets/styles/theme.css';
-@import 'bootstrap/scss/bootstrap';
+@use 'bootstrap/scss/bootstrap';
 
 @include mat.core();
 
@@ -63,7 +63,7 @@ $dark-theme: mat.define-theme((color: (theme-type: dark,
   --modal-header-bg: var(--mat-sys-surface);
   --modal-header-border: rgba(0, 0, 0, 0.1);
 
-  --scrollbar-thumb: var(--primary-orange);
+  --scrollbar-thumb: var(--mat-sys-primary);
   --scrollbar-thumb-hover: var(--primary-orange-hover);
 }
 
