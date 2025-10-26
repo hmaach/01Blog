@@ -5,6 +5,8 @@ import { ProfileApiService } from '../../services/profile-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { BlobService } from '../../../../core/services/blob.service';
 import { UserResponse } from '../../models/user-response.model';
+import { MediaPreview } from '../../../../shared/components/media-preview/media-preview';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profile-card',
@@ -24,11 +26,15 @@ export class ProfileCard implements OnInit {
 
   avatarUrl?: string;
 
+  constructor(private dialog: MatDialog) {}
+
   ngOnInit() {
     if (this.user) {
       if (this.user.avatarUrl) {
         this.blobService.loadBlob(this.user.avatarUrl).subscribe({
-          next: (url) => (this.avatarUrl = url),
+          next: (url) => {
+            this.avatarUrl = url;
+          },
         });
       }
     } else if (this.username) {
@@ -50,6 +56,15 @@ export class ProfileCard implements OnInit {
         console.error('Failed to fetch user profile:', err);
         this.toast.show('Failed to fetch user profile', 'error');
       },
+    });
+  }
+
+  preview(media: string) {
+    // console.log(media);
+
+    this.dialog.open(MediaPreview, {
+      data: { media },
+      panelClass: 'media-preview-dialog',
     });
   }
 }

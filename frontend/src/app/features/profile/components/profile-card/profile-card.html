@@ -3,11 +3,22 @@
     @if (user) {
     <div class="profileHeader">
       <ng-container>
+        @if (avatarUrl) {
         <img
-          [src]="this.avatarUrl || '/assets/images/default-avatar.jpg'"
+          (click)="preview(avatarUrl)"
+          [src]="avatarUrl || '/assets/images/default-avatar.jpg'"
+          [alt]="user.name || user.username"
+          class="profileAvatar"
+          style="cursor: pointer;"
+        />
+        }@else {
+
+        <img
+          [src]="'/assets/images/default-avatar.jpg'"
           [alt]="user.name || user.username"
           class="profileAvatar"
         />
+        }
       </ng-container>
 
       <h1 class="profileName text">{{ user.name || user.username }}</h1>
@@ -30,7 +41,7 @@
     </div>
     <div class="profileActions"></div>
     }@else{
-    <ng-template  #loading>
+    <ng-template #loading>
       <div class="loading">
         <p>Loading profile...</p>
       </div>
