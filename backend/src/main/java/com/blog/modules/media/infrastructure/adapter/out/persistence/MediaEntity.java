@@ -23,6 +23,9 @@ public class MediaEntity {
     @Column(name = "media_type", nullable = false)
     private String mediaType;
 
+    @Column(name = "size", nullable = false)
+    private long size;
+
     @Column(nullable = false)
     private String url;
 
@@ -62,6 +65,14 @@ public class MediaEntity {
 
     public void setMediaType(String mediaType) {
         this.mediaType = mediaType;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
     }
 
     public String getUrl() {

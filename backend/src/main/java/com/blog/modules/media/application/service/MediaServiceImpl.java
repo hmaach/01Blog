@@ -76,6 +76,7 @@ public class MediaServiceImpl implements MediaService {
         Media media = new Media();
         media.setUserId(userId);
         media.setMediaType("IMAGE");
+        media.setSize(file.getSize());
         media.setUrl(relativePath);
         media.setUploadedAt(Instant.now());
 

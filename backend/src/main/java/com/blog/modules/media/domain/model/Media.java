@@ -9,12 +9,14 @@ public class Media {
     private UUID userId;
     private String type;
     private String url;
+    private long size;
     private Instant uploadedAt;
 
-    public Media(UUID id, UUID userId, String url, String type, Instant uploadedAt) {
+    public Media(UUID id, UUID userId, String url, String type, long size, Instant uploadedAt) {
         this.id = id;
         this.userId = userId;
         this.type = type;
+        this.size = size;
         this.url = url;
         this.uploadedAt = uploadedAt;
     }
@@ -48,6 +50,14 @@ public class Media {
 
     public UUID getUserId() {
         return userId;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
     }
 
     public void setUserId(UUID userId) {

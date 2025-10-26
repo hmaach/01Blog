@@ -10,6 +10,7 @@ public class MediaMapper {
                 entity.getUserId(),
                 entity.getUrl(),
                 entity.getMediaType(),
+                entity.getSize(),
                 entity.getUploadedAt()
         );
     }
@@ -21,6 +22,7 @@ public class MediaMapper {
         entity.setUserId(media.getUserId());
         entity.setUrl(media.getUrl());
         entity.setMediaType(media.getType());
+        entity.setSize(media.getSize());
         entity.setUploadedAt(media.getUploadedAt());
         return entity;
     }
