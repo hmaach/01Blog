@@ -19,7 +19,8 @@ export const routes: Routes = [
       },
       {
         path: 'explore',
-        loadComponent: () => import('./features/feed/components/explore-feed/explore-feed').then((m) => m.ExploreFeed),
+        loadComponent: () =>
+          import('./features/feed/components/explore-feed/explore-feed').then((m) => m.ExploreFeed),
       },
       {
         path: 'profile/:username',
@@ -27,14 +28,9 @@ export const routes: Routes = [
           import('./features/profile/components/profile/profile').then((m) => m.Profile),
       },
       {
-        path: 'profile/me',
+        path: 'settings',
         loadComponent: () =>
-          import('./features/profile/components/profile/profile').then((m) => m.Profile),
-      },
-      {
-        path: 'post/:id',
-        loadComponent: () =>
-          import('./features/posts/components/post-detail/post-detail').then((m) => m.PostDetail),
+          import('./features/settings/components/settings/settings').then((m) => m.Settings),
       },
     ],
   },

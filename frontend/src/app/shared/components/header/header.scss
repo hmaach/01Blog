@@ -163,7 +163,7 @@ mat-toolbar {
 .avatar {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   object-fit: cover;
   cursor: pointer;
   border: 2px solid transparent;
@@ -176,6 +176,19 @@ mat-toolbar {
 
 .mobileMenuButton {
   display: none;
+}
+
+.mat-mdc-menu-item .mat-icon {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mode-toggle-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 @media (max-width: 768px) {
