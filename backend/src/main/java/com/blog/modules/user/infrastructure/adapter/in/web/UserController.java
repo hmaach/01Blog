@@ -65,11 +65,21 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public UserProfileResponse getUserByUsername(@PathVariable String username) {
+    public UserProfileResponse getUserByUsername(HttpServletRequest request, @PathVariable String username) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        String relation;
+
         User user = userService.findByUsername(username);
         String avatarUrl = mediaService.getAvatarUrl(user.getAvatarMediaId());
 
-        return UserProfileResponse.fromDomain(user, avatarUrl, "tt");
+        if (currUserId.equals(user.getId())) {
+            relation = "owner";
+        } else {
+            // TODO: check if the currunt user follow this user
+            relation = "subscribed";
+        }
+
+        return UserProfileResponse.fromDomain(user, avatarUrl, relation);
     }
 
     @GetMapping("/{userId}/readme")

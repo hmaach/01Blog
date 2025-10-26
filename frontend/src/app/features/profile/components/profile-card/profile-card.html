@@ -6,13 +6,12 @@
         @if (avatarUrl) {
         <img
           (click)="preview(avatarUrl)"
-          [src]="avatarUrl || '/assets/images/default-avatar.jpg'"
+          [src]="avatarUrl"
           [alt]="user.name || user.username"
           class="profileAvatar"
-          style="cursor: pointer;"
+          style="cursor: pointer"
         />
-        }@else {
-
+        } @else {
         <img
           [src]="'/assets/images/default-avatar.jpg'"
           [alt]="user.name || user.username"
@@ -27,25 +26,45 @@
 
     <div class="profileStats">
       <div class="stat">
-        <span class="statValue">{{ user.postsCount || 0 }}</span>
+        <span class="statValue">
+          <mat-icon>article</mat-icon>
+          {{ formatNumber(user.postsCount) || 0 }}
+        </span>
         <span class="statLabel">Posts</span>
       </div>
+
       <div class="stat">
-        <span class="statValue">{{ user.subscribersCount || 0 }}</span>
+        <span class="statValue">
+          <mat-icon>group</mat-icon>
+          {{ formatNumber(user.subscribersCount) || 0 }}
+        </span>
         <span class="statLabel">Subscribers</span>
       </div>
+
       <div class="stat">
-        <span class="statValue">{{ user.impressionsCount || 0 }}</span>
+        <span class="statValue">
+          <mat-icon>visibility</mat-icon>
+          {{ formatNumber(user.impressionsCount) || 0 }}
+        </span>
         <span class="statLabel">Impressions</span>
       </div>
     </div>
-    <div class="profileActions"></div>
-    }@else{
-    <ng-template #loading>
-      <div class="loading">
-        <p>Loading profile...</p>
-      </div>
-    </ng-template>
+
+    <div class="profileActions">
+      @if (user.relation === 'owner') {
+      <button mat-stroked-button routerLink="/settings" color="warn">
+        <mat-icon>edit</mat-icon> Edit Profile
+      </button>
+      } @else if (user.relation === 'subscribed') {
+      <button mat-stroked-button color="warn">
+        <mat-icon>person_remove</mat-icon> Unsubscribe
+      </button>
+      } @else {
+      <button mat-flat-button color="primary"><mat-icon>person_add</mat-icon> Subscribe</button>
+      }
+    </div>
+    } @else {
+    <app-spinner></app-spinner>
     }
   </mat-card>
 </aside>

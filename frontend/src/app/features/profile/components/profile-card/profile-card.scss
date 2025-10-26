@@ -54,7 +54,10 @@
 }
 
 .statValue {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--mat-sys-primary);

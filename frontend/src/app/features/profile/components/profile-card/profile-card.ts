@@ -7,11 +7,16 @@ import { BlobService } from '../../../../core/services/blob.service';
 import { UserResponse } from '../../models/user-response.model';
 import { MediaPreview } from '../../../../shared/components/media-preview/media-preview';
 import { MatDialog } from '@angular/material/dialog';
+import { Spinner } from '../../../../shared/components/spinner/spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { formatNumber } from '../../../../shared/lib/format';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatCardModule, Spinner, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './profile-card.html',
   styleUrls: ['./profile-card.scss'],
 })
@@ -25,6 +30,7 @@ export class ProfileCard implements OnInit {
   @Input() isDialog!: boolean;
 
   avatarUrl?: string;
+  formatNumber = formatNumber;
 
   constructor(private dialog: MatDialog) {}
 
@@ -53,7 +59,7 @@ export class ProfileCard implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Failed to fetch user profile:', err);
+        console.error('Card: Failed to fetch user profile:', err);
         this.toast.show('Failed to fetch user profile', 'error');
       },
     });
