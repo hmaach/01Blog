@@ -27,8 +27,6 @@
     </button>
     }
 
-    <app-switch-mode></app-switch-mode>
-
     <button
       matIconButton
       [matMenuTriggerFor]="menu"
@@ -52,11 +50,21 @@
           <span class="dropdownUsername">@{{ user?.username }}</span>
         </div>
       </a>
-      <a mat-button class="w-full">
+      <a mat-menu-item class="w-full" (click)="themeService.toggleDarkMode()">
+        <mat-icon>mode_night</mat-icon>
+        <div class="mode-toggle-item">
+          <span>Dark Mode</span>
+          <app-switch-mode
+            (click)="themeService.toggleDarkMode()"
+            style="margin-left: 40px"
+          ></app-switch-mode>
+        </div>
+      </a>
+      <a mat-menu-item class="w-full" routerLink="/settings">
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
       </a>
-      <a mat-button (click)="logout()" class="w-full">
+      <a mat-menu-item (click)="logout()" class="w-full">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
       </a>

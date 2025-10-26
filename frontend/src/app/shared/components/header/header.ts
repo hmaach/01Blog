@@ -14,6 +14,7 @@ import { Notifications } from '../notifications/notifications';
 import { StorageService } from '../../../core/services/storage.service';
 import { BlobService } from '../../../core/services/blob.service';
 import { CurrentUserInfo } from '../../../core/models/user.model';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -40,10 +41,9 @@ export class Header {
 
   isAdmin: boolean = this.storageService.getUserRole() === 'ADMIN';
   user: CurrentUserInfo | null = this.storageService.getCurrentUserInfo();
-  
-  avatarUrl?: string;
 
-  constructor(private dialog: MatDialog) {}
+  avatarUrl?: string;
+  constructor(private dialog: MatDialog, public themeService: ThemeService) {}
 
   ngOnInit() {
     const avatar: string | null = this.storageService.getUserAvatarUrl();

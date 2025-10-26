@@ -5,17 +5,25 @@
 @include mat.core();
 
 // Define theme using your existing CSS variables from theme.css
-$light-theme: mat.define-theme((color: (theme-type: light,
-        primary: mat.$orange-palette,
-        tertiary: mat.$yellow-palette,
-      ),
-    ));
+$light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$orange-palette,
+      tertiary: mat.$yellow-palette,
+    ),
+  )
+);
 
-$dark-theme: mat.define-theme((color: (theme-type: dark,
-        primary: mat.$orange-palette,
-        tertiary: mat.$yellow-palette,
-      ),
-    ));
+$dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$orange-palette,
+      tertiary: mat.$yellow-palette,
+    ),
+  )
+);
 
 :root {
   /* Colors - Orange primary theme */
@@ -68,8 +76,19 @@ $dark-theme: mat.define-theme((color: (theme-type: dark,
 }
 
 :root {
-  @include mat.stepper-overrides((container-color: var(--mat-sys-surface-container-low),
-    ));
+  @include mat.stepper-overrides(
+    (
+      container-color: var(--mat-sys-surface-container-low),
+    )
+  );
+  @include mat.menu-overrides(
+    (
+      container-shape: 12px,
+      divider-color: red,
+      item-icon-size: 1rem,
+      item-label-text-size: 0.7rem,
+    )
+  );
 }
 
 html {
@@ -99,14 +118,20 @@ html.dark-theme {
 }
 
 .primary {
-  @include mat.button-overrides((filled-container-color: var(--mat-sys-primary),
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--mat-sys-primary),
       filled-label-text-color: var(--mat-sys-on-primary),
-    ));
+    )
+  );
 
-  @include mat.button-overrides((outlined-outline-color: var(--mat-sys-primary),
+  @include mat.button-overrides(
+    (
+      outlined-outline-color: var(--mat-sys-primary),
       outlined-label-text-color: var(--mat-sys-primary),
-      outlined-ripple-color:var(--mat-sys-primary),
-    ));
+      outlined-ripple-color: var(--mat-sys-primary),
+    )
+  );
 }
 
 .primary-text {
@@ -114,8 +139,11 @@ html.dark-theme {
 }
 
 html.dark-theme .primary {
-  @include mat.button-overrides((filled-label-text-color: var(--mat-sys-background),
-    ));
+  @include mat.button-overrides(
+    (
+      filled-label-text-color: var(--mat-sys-background),
+    )
+  );
 }
 
 .text {
@@ -130,9 +158,7 @@ html.dark-theme .primary {
   width: 100%;
 }
 
-
 @layer base {
-
   /* Scrollbar for modern browsers */
   ::-webkit-scrollbar {
     width: 10px;
