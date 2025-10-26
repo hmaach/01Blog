@@ -9,6 +9,7 @@ CREATE TABLE users (
     status VARCHAR NOT NULL DEFAULT 'active',
     role VARCHAR NOT NULL,
     avatar_media_id UUID,
+    subscribers_count INT DEFAULT 0,
     impressions_count INT DEFAULT 0,
     posts_count INT DEFAULT 0,
     readme TEXT,

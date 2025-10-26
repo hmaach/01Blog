@@ -28,6 +28,17 @@ public class UserEntity {
     @Column(nullable = false)
     private String role;
 
+    private String status;
+
+    @Column(name = "posts_count")
+    private int postsCount;
+
+    @Column(name = "subscribers_count")
+    private int subscribersCount;
+
+    @Column(name = "impressions_count")
+    private int impressionsCount;
+
     @Column(nullable = false)
     private String password;
 
@@ -44,6 +55,10 @@ public class UserEntity {
             String email,
             String password,
             String role,
+            String status,
+            int postsCount,
+            int subscribersCount,
+            int impressionsCount,
             Instant createdAt
     ) {
         this.id = id;
@@ -52,6 +67,10 @@ public class UserEntity {
         this.email = email;
         this.password = password;
         this.role = role;
+        this.status = status;
+        this.postsCount = postsCount;
+        this.subscribersCount = subscribersCount;
+        this.impressionsCount = impressionsCount;
         this.createdAt = createdAt;
     }
 
@@ -92,6 +111,38 @@ public class UserEntity {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getPostsCount() {
+        return postsCount;
+    }
+
+    public void setPostsCount(int postsCount) {
+        this.postsCount = postsCount;
+    }
+
+    public int getSubscribersCount() {
+        return subscribersCount;
+    }
+
+    public void setSubscribersCount(int subscribersCount) {
+        this.subscribersCount = subscribersCount;
+    }
+
+    public int getImpressionsCount() {
+        return impressionsCount;
+    }
+
+    public void setImpressionsCount(int impressionsCount) {
+        this.impressionsCount = impressionsCount;
     }
 
     public Instant getCreatedAt() {

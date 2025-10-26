@@ -10,11 +10,11 @@ public record UserProfileResponse(
         String name,
         String username,
         String role,
-        String relation,
         String status,
         int postsCount,
         int subscribersCount,
         int impressionsCount,
+        String relation,
         String avatarUrl,
         Instant createdAt
         ) {
@@ -25,11 +25,11 @@ public record UserProfileResponse(
                 user.getName(),
                 user.getUsername(),
                 user.getRole(),
+                user.getStatus(),
+                user.getPostsCount(),
+                user.getSubscribersCount(),
+                user.getImpressionsCount(),
                 relation,
-                "",
-                0,
-                0,
-                0,
                 avatarUrl,
                 user.getCreatedAt()
         );

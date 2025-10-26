@@ -14,6 +14,7 @@ import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
 import com.blog.modules.media.domain.port.out.MediaRepository;
+import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.out.PostRepository;
 import com.blog.modules.user.domain.exception.UserNotFoundException;
@@ -152,7 +153,7 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public void deleteMediaFromPost(UUID currentUserId, UUID postId, UUID mediaId) throws IOException, java.io.IOException {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new UserNotFoundException(postId.toString()));
+                .orElseThrow(() -> new PostNotFoundException(postId.toString()));
 
         if (!currentUserId.equals(post.getUserId())) {
             throw new ForbiddenException();

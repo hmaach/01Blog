@@ -16,6 +16,10 @@ public class UserMapper {
                 user.getEmail(),
                 user.getPassword(),
                 user.getRole(),
+                user.getStatus(),
+                user.getPostsCount(),
+                user.getSubscribersCount(),
+                user.getImpressionsCount(),
                 user.getCreatedAt()
         );
     }
@@ -32,6 +36,10 @@ public class UserMapper {
                 entity.getEmail(),
                 entity.getPassword(),
                 entity.getRole(),
+                entity.getStatus(),
+                entity.getPostsCount(),
+                entity.getSubscribersCount(),
+                entity.getImpressionsCount(),
                 entity.getAvatarMediaId(),
                 entity.getCreatedAt()
         );

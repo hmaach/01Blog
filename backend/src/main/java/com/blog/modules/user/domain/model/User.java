@@ -10,6 +10,10 @@ public class User {
     private String email;
     private String username;
     private String role;
+    private String status;
+    private int postsCount;
+    private int subscribersCount;
+    private int impressionsCount;
     private String password;
     private final Instant createdAt;
     private UUID avatarMediaId;
@@ -21,6 +25,10 @@ public class User {
             String email,
             String password,
             String role,
+            String status,
+            int postsCount,
+            int subscribersCount,
+            int impressionsCount,
             UUID avatarMediaId,
             Instant createdAt
     ) {
@@ -30,6 +38,10 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.status = status;
+        this.postsCount = postsCount;
+        this.subscribersCount = subscribersCount;
+        this.impressionsCount = impressionsCount;
         this.createdAt = createdAt;
         this.avatarMediaId = avatarMediaId;
     }
@@ -41,6 +53,7 @@ public class User {
             String email,
             String password,
             String role,
+            String status,
             Instant createdAt
     ) {
         this.id = id;
@@ -49,6 +62,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.status = status;
         this.createdAt = createdAt;
     }
 
@@ -75,6 +89,22 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public int getPostsCount() {
+        return postsCount;
+    }
+
+    public int getSubscribersCount() {
+        return subscribersCount;
+    }
+
+    public int getImpressionsCount() {
+        return impressionsCount;
     }
 
     public Instant getCreatedAt() {

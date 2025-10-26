@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import com.blog.modules.post.infrastructure.adapter.out.persistence.post.PostEntity;
-import com.blog.modules.post.infrastructure.adapter.out.persistence.post.PostMapper;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.out.UserRepository;
 
