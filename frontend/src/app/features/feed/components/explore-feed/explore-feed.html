@@ -5,9 +5,11 @@
         <h1 class="feedTitle">Exlore Community</h1>
         <p class="feedSubtitle">Discover what students are learning today</p>
       </div>
-
+      @if (isLoading) {
+      <app-spinner></app-spinner>
+      }@else{
       <app-post-list [posts]="posts"></app-post-list>
-
+      }
     </div>
   </main>
 </div>
