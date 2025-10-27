@@ -1,5 +1,6 @@
 package com.blog.modules.post.infrastructure.adapter.in.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,6 +64,42 @@ public class PostController {
         this.mediaValidator = mediaValidator;
     }
 
+    @GetMapping("/feed")
+    public ResponseEntity<List<PostResponse>> getFeedPosts(
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy
+    ) {
+
+        Sort sort = Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+
+        List<Post> posts = postService.findAll(pageable);
+
+        List<PostResponse> responses = posts.stream()
+                .map(post -> {
+                    User postUser = userService.findById(post.getUserId());
+                    String avatarUrl = mediaService.getAvatarUrl(postUser.getAvatarMediaId());
+                    List<Media> mediaList = mediaService.findByPostId(post.getId());
+                    Boolean isOwner = currUserId.equals(post.getUserId());
+                    AuthorResponse author = AuthorResponse.fromDomain(postUser, avatarUrl);
+
+                    return PostResponse.fromDomain(
+                            post,
+                            author,
+                            isOwner,
+                            true,
+                            mediaList
+                    );
+                })
+                .toList();
+
+        return ResponseEntity.ok(responses);
+    }
+
     @GetMapping("/explore")
     public ResponseEntity<List<PostResponse>> getAllPosts(
             HttpServletRequest request,
@@ -98,42 +135,6 @@ public class PostController {
 
         return ResponseEntity.ok(responses);
     }
-
-    // @GetMapping("/user/{userId}")
-    // public ResponseEntity<List<PostResponse>> getPostByUserId(
-    //         HttpServletRequest request,
-    //         @PathVariable UUID userId,
-    //         @RequestParam(defaultValue = "0") int page,
-    //         @RequestParam(defaultValue = "10") int size,
-    //         @RequestParam(defaultValue = "createdAt") String sortBy
-    // ) {
-
-    //     Sort sort = Sort.by(sortBy).descending();
-    //     Pageable pageable = PageRequest.of(page, size, sort);
-
-    //     UUID currUserId = jwtService.extractUserIdFromRequest(request);
-
-    //     List<Post> posts = postService.findByUserId(userId, pageable);
-
-    //     List<PostResponse> responses = posts.stream()
-    //             .map(post -> {
-    //                 User postUser = userService.findById(post.getUserId());
-    //                 String avatarUrl = mediaService.getAvatarUrl(postUser.getAvatarMediaId());
-    //                 List<Media> mediaList = mediaService.findByPostId(post.getId());
-    //                 Boolean isOwner = currUserId.equals(post.getUserId());
-    //                 AuthorResponse author = AuthorResponse.fromDomain(postUser, avatarUrl);
-
-    //                 return PostResponse.fromDomain(
-    //                         post,
-    //                         author,
-    //                         isOwner,
-    //                         true,
-    //                         mediaList
-    //                 );
-    //             })
-    //             .toList();
-    //     return ResponseEntity.ok(responses);
-    // }
 
     @GetMapping("/user/{username}")
     public ResponseEntity<List<PostResponse>> getPostByUserUsername(
@@ -183,13 +184,15 @@ public class PostController {
             @Valid @ModelAttribute CreatePostCommand cmd
     ) {
         UUID userId = jwtService.extractUserIdFromRequest(request);
-
-        for (MultipartFile file : cmd.files()) {
-            mediaValidator.validate(file);
-        }
-
         Post createdPost = postService.createPost(cmd, userId);
-        List<Media> mediaList = mediaService.findByPostId(createdPost.getId());
+        List<Media> mediaList = new ArrayList<>();
+
+        if (cmd.files() != null) {
+            for (MultipartFile file : cmd.files()) {
+                mediaValidator.validate(file);
+            }
+            mediaList = mediaService.findByPostId(createdPost.getId());
+        }
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
