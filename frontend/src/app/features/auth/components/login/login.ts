@@ -38,6 +38,15 @@ export class Login {
     password: ['', [Validators.required, trimValidator]],
   });
 
+  ngOnInit(): void {
+    const stateData = history.state;
+    console.log('stateData: ', stateData);
+
+    if (stateData && stateData.email) {
+      this.form.get('email')?.setValue(stateData.email);
+    }
+  }
+
   onSubmit() {
     if (this.form.invalid) {
       this.toast.show('Please fill out all fields correctly.', 'error');

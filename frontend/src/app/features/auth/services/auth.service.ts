@@ -34,7 +34,6 @@ export class AuthService {
     if (token) {
       this.authApi.getCurrentUser(token).subscribe({
         next: (user: CurrentUserInfo) => {
-
           this.storageService.saveUser(user);
         },
         error: () => {
@@ -69,7 +68,7 @@ export class AuthService {
       tap({
         next: () => {
           this.toast.show('Account created successfully', 'success');
-          this.router.navigate(['/']);
+          this.router.navigateByUrl('/auth/login', { state: { email: data.get('email') } });
         },
         error: (e) => this.toast.show(e?.error?.message || 'Unknown Server Error', 'error'),
       })
