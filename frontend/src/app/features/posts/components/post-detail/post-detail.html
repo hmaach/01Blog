@@ -4,12 +4,12 @@
       <div class="headerLeft">
         <img
           [src]="post.author.avatar || '/assets/images/default-avatar.jpg'"
-          [alt]="post.author.displayName"
+          [alt]="post.author.name"
           (click)="openUserCardDialog(post.author.username)"
           class="authorAvatar"
         />
         <div class="authorInfo">
-          <h3 (click)="openUserCardDialog(post.author.username)">{{ post.author.displayName }}</h3>
+          <h3 (click)="openUserCardDialog(post.author.username)">{{ post.author.name }}</h3>
           <p>@{{ post.author.username }} · {{ formatDate(post.createdAt) }}</p>
         </div>
       </div>
@@ -78,11 +78,11 @@
           <div *ngFor="let comment of comments" class="comment">
             <img
               [src]="comment.author.avatar || '/assets/images/default-avatar.jpg'"
-              [alt]="comment.author.displayName"
+              [alt]="comment.author.name"
               class="commentAvatar"
             />
             <div class="commentContent">
-              <div class="commentAuthor">{{ comment.author.displayName }}</div>
+              <div class="commentAuthor">{{ comment.author.name }}</div>
               <div class="commentText">{{ comment.content }}</div>
               <div class="commentDate">{{ formatDate(comment.createdAt) }}</div>
             </div>

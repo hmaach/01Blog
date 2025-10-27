@@ -14,10 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 export class MediaPreview {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { media: string }) {}
 
-  ngOnInit() {
-    console.log('Media preview source:', this.data.media);
-  }
-
   isImage(): boolean {
     const media = this.data.media;
     return (

@@ -4,7 +4,7 @@ export interface Comment {
   author: {
     id: string
     username: string
-    displayName: string
+    name: string
     avatar?: string
   }
   content: string

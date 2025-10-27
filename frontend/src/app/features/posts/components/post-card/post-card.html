@@ -3,14 +3,14 @@
     <img
       (click)="openUserCardDialog(post.author.username); $event.stopPropagation()"
       [src]="post.author.avatar || '/assets/images/default-avatar.jpg'"
-      [alt]="post.author.displayName"
+      [alt]="post.author.name"
       class="authorAvatar"
     />
     <div class="authorInfo">
       <span
         (click)="openUserCardDialog(post.author.username); $event.stopPropagation()"
         class="authorName"
-        >{{ post.author.displayName }}</span
+        >{{ post.author.name }}</span
       >
       <span class="postDate">@{{ post.author.username }} · {{ formatDate(post.createdAt) }}</span>
     </div>

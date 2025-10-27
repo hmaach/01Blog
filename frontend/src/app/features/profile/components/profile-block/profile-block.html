@@ -1,11 +1,9 @@
-<div class="page">
-  <main class="main">
-    <div class="container">
-      @if (isLoading) {
-      <app-spinner></app-spinner>
-      }@else{
-      <app-post-list [posts]="posts"></app-post-list>
-      }
-    </div>
-  </main>
-</div>
+<main class="main">
+  <div class="container">
+    @if (isLoading) {
+    <app-spinner></app-spinner>
+    }@else{
+    <app-post-list [posts]="posts"></app-post-list>
+    }
+  </div>
+</main>

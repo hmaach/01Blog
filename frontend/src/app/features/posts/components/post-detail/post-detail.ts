@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { ReportPost } from '../../../report/components/report-post/report-post';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
+import { MediaPreview } from '../../../../shared/components/media-preview/media-preview';
 
 @Component({
   selector: 'app-post-detail',

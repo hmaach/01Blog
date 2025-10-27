@@ -66,8 +66,6 @@ export class ProfileCard implements OnInit {
   }
 
   preview(media: string) {
-    // console.log(media);
-
     this.dialog.open(MediaPreview, {
       data: { media },
       panelClass: 'media-preview-dialog',

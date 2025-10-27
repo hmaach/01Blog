@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { Post } from '../../models/post-model';
 import { PostDetail } from '../post-detail/post-detail';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
+import { Media } from '../../models/media-model';
+import { BlobService } from '../../../../core/services/blob.service';
 
 @Component({
   selector: 'app-post-card',
@@ -18,7 +20,21 @@ import { ProfileDialog } from '../../../profile/components/profile-dialog/profil
 export class PostCard {
   @Input() post!: Post;
 
+  private blobService = inject(BlobService);
+
   constructor(private dialog: MatDialog) {}
+
+  ngOnInit() {
+    if (this.post.media) {
+      this.post.media.forEach((media) => {
+        this.blobService.loadBlob(media.url).subscribe({
+          next: (url) => {
+            media.url = url;
+          },
+        });
+      });
+    }
+  }
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);

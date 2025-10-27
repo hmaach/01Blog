@@ -1,21 +1,19 @@
+import { Media } from './media-model';
+
 export interface Post {
-  id: string
-  title: string
-  body: string
-  likesCount: number
-  commentsCount: number
-  impressionsCount: number
+  id: string;
+  title: string;
+  body: string;
+  likesCount: number;
+  commentsCount: number;
+  impressionsCount: number;
   author: {
-    id: string
-    username: string
-    displayName: string
-    avatar?: string
-  }
-  media?: {
-    type: "image" | "video"
-    url: string
-    thumbnail?: string
-  }[]
-  createdAt: string
-  isHidden?: boolean
+    id: string;
+    username: string;
+    name: string;
+    avatar?: string;
+  };
+  media?: Media[];
+  createdAt: string;
+  isHidden?: boolean;
 }
