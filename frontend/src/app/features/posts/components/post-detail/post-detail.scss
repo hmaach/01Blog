@@ -305,3 +305,10 @@
 .menuItem.danger {
   color: var(--error);
 }
+
+.mat-mdc-menu-item .mat-icon {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

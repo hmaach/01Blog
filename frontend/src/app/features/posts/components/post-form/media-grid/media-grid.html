@@ -1,15 +1,12 @@
 <div class="mediaGrid">
   <div
     *ngFor="let media of mediaFiles; index as i"
-    class="mediaItem"
+    class="mediaItem {{ isLoading ? 'disabled' : '' }}"
     (click)="preview(media.src)"
   >
     <img *ngIf="media.src.startsWith('data:image')" [src]="media.src" />
-    <video
-      *ngIf="media.src.startsWith('data:video')"
-      [src]="media.src"
-      muted
-    ></video>
+    <video *ngIf="media.src.startsWith('data:video')" [src]="media.src" muted></video>
+    @if (!isLoading) {
     <button
       mat-icon-button
       color="warn"
@@ -18,5 +15,6 @@
     >
       <mat-icon>delete</mat-icon>
     </button>
+    }
   </div>
 </div>

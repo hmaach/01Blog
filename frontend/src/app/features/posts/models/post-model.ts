@@ -1,3 +1,4 @@
+import { Author } from './author-model';
 import { Media } from './media-model';
 
 export interface Post {
@@ -7,13 +8,10 @@ export interface Post {
   likesCount: number;
   commentsCount: number;
   impressionsCount: number;
-  author: {
-    id: string;
-    username: string;
-    name: string;
-    avatar?: string;
-  };
+  author: Author;
   media?: Media[];
   createdAt: string;
   isHidden?: boolean;
+  isOwner: boolean;
+  isLiked: boolean;
 }

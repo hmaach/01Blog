@@ -1,10 +1,11 @@
 <div class="modalOverlay" (click)="onClose()">
   <mat-card class="modalContent" (click)="stopPropagation($event)">
+    @if (isLoading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
     <div class="modalHeader">
-      <h2 class="modalTitle">
-        <mat-icon color="primary">edit_note</mat-icon> Craft Your Post
-      </h2>
-      <button mat-icon-button (click)="onClose()">
+      <h2 class="modalTitle"><mat-icon color="primary">edit_note</mat-icon> Craft Your Post</h2>
+      <button mat-icon-button (click)="onClose()" [disabled]="isLoading">
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -13,39 +14,67 @@
       <!-- Title -->
       <mat-form-field appearance="fill" class="w-full">
         <label><mat-icon class="labelIcon">title</mat-icon> Title</label>
-        <input matInput [(ngModel)]="title" maxlength="{{ maxTitleChars }}" placeholder="Enter your post title..." />
+        <input
+          matInput
+          [(ngModel)]="title"
+          maxlength="{{ maxTitleChars }}"
+          placeholder="Enter your post title..."
+          [disabled]="isLoading"
+        />
         <mat-hint align="end">{{ title.length }}/{{ maxTitleChars }}</mat-hint>
       </mat-form-field>
 
       <!-- Body -->
       <mat-form-field appearance="fill" class="w-full">
         <label><mat-icon class="labelIcon">description</mat-icon> Content</label>
-        <textarea matInput [(ngModel)]="body" rows="5" maxlength="{{ maxBodyChars }}"
-          placeholder="Share your thoughts..."></textarea>
+        <textarea
+          matInput
+          [(ngModel)]="body"
+          rows="5"
+          maxlength="{{ maxBodyChars }}"
+          placeholder="Share your thoughts..."
+          [disabled]="isLoading"
+        ></textarea>
         <mat-hint align="end">{{ body.length }}/{{ maxBodyChars }}</mat-hint>
       </mat-form-field>
 
       <!-- Media Upload -->
       <div class="mediaUpload">
         <label class="uploadLabel">
-          <mat-icon class="labelIcon" style="margin: 0;">perm_media</mat-icon> Media (up to {{ maxMediaCount }})
+          <mat-icon class="labelIcon" style="margin: 0">perm_media</mat-icon> Media (up to
+          {{ maxMediaCount }})
         </label>
 
-        <label class="uploadButton" *ngIf="mediaFiles.length < maxMediaCount">
+        <label
+          class="uploadButton {{ isLoading ? 'disabledUploadButton' : '' }}"
+          *ngIf="mediaFiles.length < maxMediaCount"
+        >
           <mat-icon>cloud_upload</mat-icon>
           <span>Upload images or videos</span>
-          <input type="file" accept="image/*,video/*" multiple (change)="handleMediaUpload($event)" hidden />
+          <input
+            type="file"
+            accept="image/*,video/*"
+            multiple
+            (change)="handleMediaUpload($event)"
+            hidden
+            [disabled]="isLoading"
+          />
         </label>
 
-        <app-media-grid [mediaFiles]="mediaFiles" (remove)="removeMedia($event)"></app-media-grid>
+        <app-media-grid [mediaFiles]="mediaFiles" (remove)="removeMedia($event)" [isLoading]="isLoading"></app-media-grid>
       </div>
     </div>
 
     <div class="modalFooter">
-      <button mat-stroked-button color="warn" (click)="onClose()">
+      <button mat-stroked-button color="warn" (click)="onClose()" [disabled]="isLoading">
         <mat-icon>cancel</mat-icon> Cancel
       </button>
-      <button mat-flat-button color="primary" (click)="handleSubmit()" [disabled]="!title.trim() || !body.trim()">
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="handleSubmit()"
+        [disabled]="!title.trim() || !body.trim() || isLoading"
+      >
         <mat-icon>publish</mat-icon> Publish
       </button>
     </div>

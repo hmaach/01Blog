@@ -15,8 +15,6 @@
       <span>Explore</span>
     </a>
 
-    <app-create-post-button></app-create-post-button>
-
     <button matIconButton (click)="openNotificationsDialog()">
       <mat-icon matBadge="15" aria-hidden="false">notifications</mat-icon>
     </button>
@@ -32,11 +30,7 @@
       [matMenuTriggerFor]="menu"
       class="d-flex justify-content-center align-items-center"
     >
-      <img
-        src="{{ avatarUrl || '/assets/images/default-avatar.jpg' }}"
-        alt="name"
-        class="avatar"
-      />
+      <img src="{{ avatarUrl || '/assets/images/default-avatar.jpg' }}" alt="name" class="avatar" />
     </button>
     <mat-menu #menu="matMenu" class="d-flex flex-column">
       <a class="dropdownHeader" routerLink="/profile/{{ user?.username }}">

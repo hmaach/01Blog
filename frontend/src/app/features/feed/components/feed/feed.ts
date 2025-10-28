@@ -18,7 +18,8 @@ export class Feed {
   postApi = inject(PostApiService);
   private toast = inject(ToastService);
 
-  ngOnInit() {
+
+  ngOnInit(): void {
     this.loadPosts();
   }
 

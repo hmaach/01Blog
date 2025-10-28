@@ -88,28 +88,6 @@
   margin-bottom: var(--spacing-sm);
 }
 
-// .formGroup input,
-// .formGroup textarea {
-//   width: 100%;
-//   padding: var(--spacing-md);
-//   // background-color: var(--bg-dark-tertiary);
-//   border: 1px solid var(--text-dark-secondary);
-//   border-radius: var(--radius-lg);
-//   // color: var(--text-dark);
-//   font-size: 0.875rem;
-// }
-
-// .formGroup input::placeholder,
-// .formGroup textarea::placeholder {
-//   color: var(--text-dark-secondary);
-// }
-
-// .formGroup input:focus,
-// .formGroup textarea:focus {
-//   border-color: var(--mat-sys-primary);
-//   outline: none;
-// }
-
 .formGroup input {
   font-size: 1rem;
   font-weight: 600;
@@ -143,6 +121,15 @@
 .uploadButton:hover {
   border-color: var(--mat-sys-primary);
   color: var(--mat-sys-primary);
+}
+
+.disabledUploadButton {
+  cursor: not-allowed;
+}
+
+.disabledUploadButton:hover {
+  border-color: var(--text-dark-secondary) !important;
+  color: var(--text-dark-secondary) !important;
 }
 
 .uploadButton svg {

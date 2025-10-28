@@ -1,7 +1,28 @@
+<button matButton="outlined" color="primary" [matMenuTriggerFor]="menu" class="create-post-button">
+  <mat-icon>add_circle</mat-icon>
+  Create Post
+</button>
+
+<mat-menu #menu="matMenu" class="createPostMenu">
+  <button mat-menu-item (click)="openCreatePostDialog()">
+    <mat-icon class="menuIcon" color="accent">chat_bubble_outline</mat-icon>
+    <div class="menuText">
+      <span class="menuTitle">Simple Post</span>
+      <span class="menuDesc">Quick thoughts, updates, or media shares</span>
+    </div>
+  </button>
+
+  <button mat-menu-item>
+    <mat-icon class="menuIcon" color="accent">article</mat-icon>
+    <div class="menuText">
+      <span class="menuTitle">Blog Post</span>
+      <span class="menuDesc">Long-form writing with formatting & markdown</span>
+    </div>
+  </button>
+</mat-menu>
+
 <div class="postsGrid">
   @for (post of posts; track post.id) {
   <app-post-card [post]="post"></app-post-card>
-  } @empty {
-  <p>No posts found.</p>
   }
 </div>

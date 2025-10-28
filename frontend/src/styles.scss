@@ -132,6 +132,12 @@ html.dark-theme {
       outlined-ripple-color: var(--mat-sys-primary),
     )
   );
+
+  @include mat.icon-button-overrides(
+    (
+      icon-color: var(--mat-sys-primary),
+    )
+  );
 }
 
 .primary-text {

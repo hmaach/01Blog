@@ -7,8 +7,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { Post } from '../../models/post-model';
 import { PostDetail } from '../post-detail/post-detail';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
-import { Media } from '../../models/media-model';
 import { BlobService } from '../../../../core/services/blob.service';
+import { formatDate } from '../../../../shared/lib/date';
 
 @Component({
   selector: 'app-post-card',
@@ -21,6 +21,7 @@ export class PostCard {
   @Input() post!: Post;
 
   private blobService = inject(BlobService);
+  formatDate = formatDate;
 
   constructor(private dialog: MatDialog) {}
 
@@ -34,11 +35,14 @@ export class PostCard {
         });
       });
     }
-  }
 
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    if (this.post.author.avatarUrl) {
+      this.blobService.loadBlob(this.post.author.avatarUrl).subscribe({
+        next: (url) => {
+          this.post.author.avatarUrl = url;
+        },
+      });
+    }
   }
 
   openUserCardDialog(username: string) {

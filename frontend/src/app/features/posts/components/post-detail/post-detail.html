@@ -3,7 +3,7 @@
     <div class="modalHeader">
       <div class="headerLeft">
         <img
-          [src]="post.author.avatar || '/assets/images/default-avatar.jpg'"
+          [src]="post.author.avatarUrl || '/assets/images/default-avatar.jpg'"
           [alt]="post.author.name"
           (click)="openUserCardDialog(post.author.username)"
           class="authorAvatar"
@@ -21,25 +21,27 @@
           </button>
 
           <mat-menu #menu="matMenu">
+            @if (post.isOwner || isAdmin) { @if (post.isOwner) {
             <button mat-menu-item>
               <mat-icon>edit</mat-icon>
               <span>Edit</span>
             </button>
-
+            } @if (isAdmin ) {
             <button mat-menu-item>
               <mat-icon>visibility_off</mat-icon>
               <span>Hide</span>
             </button>
-
+            } @if (isAdmin || post.isOwner) {
             <button mat-menu-item>
               <mat-icon color="warn">delete</mat-icon>
               <span>Delete</span>
             </button>
-
+            }}@else {
             <button mat-menu-item (click)="openReportDialog()">
               <mat-icon color="warn">report</mat-icon>
               <span>Report</span>
             </button>
+            }
           </mat-menu>
         </div>
 
@@ -57,8 +59,14 @@
       </div>
 
       <div class="postMetrics">
-        <div class="metric">
-          <mat-icon>favorite</mat-icon>
+        <div class="metric" style="gap: 0">
+          <button matIconButton class="{{ post.isLiked ? 'primary' : '' }}" (click)="toggleLike()">
+            @if (post.isLiked) {
+            <mat-icon>favorite</mat-icon>
+            }@else {
+            <mat-icon>favorite_border</mat-icon>
+            }
+          </button>
           <span>{{ post.likesCount || 0 }}</span>
         </div>
         <div class="metric">

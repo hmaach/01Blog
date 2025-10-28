@@ -91,7 +91,7 @@ public class PostController {
                             post,
                             author,
                             isOwner,
-                            true,
+                            false,
                             mediaList
                     );
                 })
@@ -127,7 +127,7 @@ public class PostController {
                             post,
                             author,
                             isOwner,
-                            true,
+                            false,
                             mediaList
                     );
                 })
@@ -163,7 +163,7 @@ public class PostController {
                             post,
                             author,
                             isOwner,
-                            true,
+                            false,
                             mediaList
                     );
                 })
@@ -179,12 +179,13 @@ public class PostController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostResponse2> createPost(
+    public ResponseEntity<PostResponse> createPost(
             HttpServletRequest request,
             @Valid @ModelAttribute CreatePostCommand cmd
     ) {
-        UUID userId = jwtService.extractUserIdFromRequest(request);
-        Post createdPost = postService.createPost(cmd, userId);
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+
+        Post createdPost = postService.createPost(cmd, currUserId);
         List<Media> mediaList = new ArrayList<>();
 
         if (cmd.files() != null) {
@@ -196,7 +197,13 @@ public class PostController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(PostResponse2.fromDomain(createdPost, mediaList));
+                .body(PostResponse.fromDomain(
+                        createdPost,
+                        null,
+                        true,
+                        false,
+                        mediaList
+                ));
     }
 
     @PatchMapping("/{postId}")

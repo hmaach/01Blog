@@ -50,6 +50,14 @@ export class StorageService {
     return null;
   }
 
+  isAdmin(): boolean {
+    if (this.isBrowser) {
+      const role = localStorage.getItem(this.ROLE_KEY);
+      return role === 'ADMIN';
+    }
+    return false;
+  }
+
   saveUser(user: CurrentUserInfo) {
     const userData = {
       id: user.id,

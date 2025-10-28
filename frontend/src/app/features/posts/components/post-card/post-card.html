@@ -2,7 +2,7 @@
   <div class="postHeader">
     <img
       (click)="openUserCardDialog(post.author.username); $event.stopPropagation()"
-      [src]="post.author.avatar || '/assets/images/default-avatar.jpg'"
+      [src]="post.author.avatarUrl || '/assets/images/default-avatar.jpg'"
       [alt]="post.author.name"
       class="authorAvatar"
     />

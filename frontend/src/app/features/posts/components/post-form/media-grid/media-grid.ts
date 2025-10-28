@@ -10,20 +10,22 @@ import { MediaPreview } from '../../../../../shared/components/media-preview/med
   standalone: true,
   imports: [CommonModule, MatIconModule, MatButtonModule],
   templateUrl: './media-grid.html',
-  styleUrl: './media-grid.scss'
+  styleUrl: './media-grid.scss',
 })
 export class MediaGrid {
-
+  @Input() isLoading!: boolean;
 
   @Input() mediaFiles: { src: string; file: File }[] = [];
   @Output() remove = new EventEmitter<number>();
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) {}
 
   preview(media: string) {
-    this.dialog.open(MediaPreview, {
-      data: { media },
-      panelClass: 'media-preview-dialog'
-    });
+    if (!this.isLoading) {
+      this.dialog.open(MediaPreview, {
+        data: { media },
+        panelClass: 'media-preview-dialog',
+      });
+    }
   }
 }

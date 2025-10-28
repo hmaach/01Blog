@@ -98,6 +98,8 @@ export const mockPosts: Post[] = [
     commentsCount: 8,
     impressionsCount: 234,
     createdAt: '2025-10-15T10:30:00Z',
+    isOwner: false,
+    isLiked: true,
   },
   {
     id: '2',
@@ -113,6 +115,8 @@ export const mockPosts: Post[] = [
     commentsCount: 12,
     impressionsCount: 456,
     createdAt: '2025-10-14T14:20:00Z',
+    isOwner: false,
+    isLiked: true,
   },
   {
     id: '3',
@@ -122,7 +126,7 @@ export const mockPosts: Post[] = [
       id: '3',
       username: 'mikejohnson',
       name: 'Mike Johnson',
-      avatar: 'https://avatar.iran.liara.run/public',
+      avatarUrl: 'https://avatar.iran.liara.run/public',
     },
     media: [
       {
@@ -136,6 +140,8 @@ export const mockPosts: Post[] = [
     commentsCount: 15,
     impressionsCount: 678,
     createdAt: '2025-10-13T09:15:00Z',
+    isOwner: false,
+    isLiked: true,
   },
   {
     id: '4',
@@ -145,12 +151,14 @@ export const mockPosts: Post[] = [
       id: '4',
       username: 'emilypark',
       name: 'Emily Park',
-      avatar: 'https://avatar.iran.liara.run/public',
+      avatarUrl: 'https://avatar.iran.liara.run/public',
     },
     likesCount: 54,
     commentsCount: 9,
     impressionsCount: 345,
     createdAt: '2025-10-12T16:45:00Z',
+    isOwner: false,
+    isLiked: true,
   },
   {
     id: '5',
@@ -160,7 +168,7 @@ export const mockPosts: Post[] = [
       id: '5',
       username: 'alexrivera',
       name: 'Alex Rivera',
-      avatar: 'https://avatar.iran.liara.run/public',
+      avatarUrl: 'https://avatar.iran.liara.run/public',
     },
     media: [
       {
@@ -174,6 +182,8 @@ export const mockPosts: Post[] = [
     commentsCount: 11,
     impressionsCount: 521,
     createdAt: '2025-10-11T11:30:00Z',
+    isOwner: false,
+    isLiked: true,
   },
   {
     id: '6',
@@ -183,12 +193,14 @@ export const mockPosts: Post[] = [
       id: '1',
       username: 'johndoe',
       name: 'John Doe',
-      avatar: 'https://avatar.iran.liara.run/public',
+      avatarUrl: 'https://avatar.iran.liara.run/public',
     },
     likesCount: 38,
     commentsCount: 6,
     impressionsCount: 289,
     createdAt: '2025-10-10T13:20:00Z',
+    isOwner: false,
+    isLiked: true,
   },
 ];
 

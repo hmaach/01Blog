@@ -20,6 +20,14 @@
   transform: scale(1.03);
 }
 
+.disabled {
+  cursor: not-allowed;
+}
+
+.disabled:hover {
+  transform: scale(1);
+}
+
 .mediaItem img,
 .mediaItem video {
   width: 100%;

@@ -2,14 +2,18 @@
   <main class="main">
     <div class="container">
       <div class="feedHeader">
-        <h1 class="feedTitle">Exlore Community</h1>
+        <h1 class="feedTitle">Explore Community</h1>
         <p class="feedSubtitle">Discover what students are learning today</p>
       </div>
+
       @if (isLoading) {
       <app-spinner></app-spinner>
-      }@else{
+      } @else if (posts && posts.length > 0) {
       <app-post-list [posts]="posts"></app-post-list>
+      } @else if (!isLoading && posts && posts.length === 0) {
+      <p>No posts found.</p>
       }
+      
     </div>
   </main>
 </div>

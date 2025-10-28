@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { SwitchMode } from '../switch-mode/switch-mode';
 import { AuthService } from '../../../features/auth/services/auth.service';
-import { CreatePostButton } from '../create-post-button/create-post-button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialog } from '@angular/material/dialog';
 import { Notifications } from '../notifications/notifications';
@@ -28,7 +27,6 @@ import { ThemeService } from '../../../core/services/theme.service';
     MatButtonModule,
     MatToolbarModule,
     RouterLinkActive,
-    CreatePostButton,
     MatBadgeModule,
   ],
   templateUrl: './header.html',

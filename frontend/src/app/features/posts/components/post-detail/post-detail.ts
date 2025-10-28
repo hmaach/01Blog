@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Inject, Input, Output } from '@angular/core';
 import { Post } from '../../models/post-model';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Comment } from '../../models/comment-model';
 import { mockComments } from '../../../../shared/lib/mock-data';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { ReportPost } from '../../../report/components/report-post/report-post';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
-import { MediaPreview } from '../../../../shared/components/media-preview/media-preview';
+import { StorageService } from '../../../../core/services/storage.service';
+import { formatDate } from '../../../../shared/lib/date';
 
 @Component({
   selector: 'app-post-detail',
@@ -37,9 +38,13 @@ export class PostDetail {
   @Input() comments: Comment[] = mockComments;
   @Output() close = new EventEmitter<void>();
 
+  private storageService = inject(StorageService);
+  formatDate = formatDate;
+
   post!: Post;
   menuOpen = false;
   commentText = '';
+  isAdmin: boolean = this.storageService.isAdmin();
 
   constructor(
     private dialogRef: MatDialogRef<PostDetail>,
@@ -51,13 +56,18 @@ export class PostDetail {
     this.post = this.data?.post;
   }
 
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  }
-
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+  }
+
+  toggleLike() {
+    if (this.post.isLiked) {
+      this.post.isLiked = false;
+      this.post.likesCount -= 1;
+    } else {
+      this.post.isLiked = true;
+      this.post.likesCount += 1;
+    }
   }
 
   openUserCardDialog(username: string) {
