@@ -31,6 +31,7 @@ export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private toast = inject(ToastService);
+  private isBrowser: boolean;
 
   hide: boolean = true;
   form = this.fb.group({
@@ -38,12 +39,17 @@ export class Login {
     password: ['', [Validators.required, trimValidator]],
   });
 
-  ngOnInit(): void {
-    const stateData = history.state;
-    console.log('stateData: ', stateData);
+  constructor() {
+    this.isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  }
 
-    if (stateData && stateData.email) {
-      this.form.get('email')?.setValue(stateData.email);
+  ngOnInit(): void {
+    if (this.isBrowser) {
+      const stateData = history.state;
+
+      if (stateData && stateData.email) {
+        this.form.get('email')?.setValue(stateData.email);
+      }
     }
   }
 
