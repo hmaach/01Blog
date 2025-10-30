@@ -1,7 +1,6 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.like;
 
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,15 +20,11 @@ public class LikeEntity {
     @EmbeddedId
     private LikeKey id;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
     public LikeEntity() {
     }
 
-    public LikeEntity(UUID userId, UUID postId, Instant createdAt) {
+    public LikeEntity(UUID userId, UUID postId) {
         this.id = new LikeKey(userId, postId);
-        this.createdAt = createdAt;
     }
 
     public LikeKey getId() {
@@ -38,14 +33,6 @@ public class LikeEntity {
 
     public void setId(LikeKey id) {
         this.id = id;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
     }
 
     @Embeddable

@@ -15,7 +15,7 @@ import { PostApiService } from '../../../posts/services/post-api.service';
 export class ExploreFeed {
   posts?: Post[];
   isLoading: boolean = true;
-  postApi = inject(PostApiService);
+  private postApi = inject(PostApiService);
   private toast = inject(ToastService);
 
   ngOnInit() {

@@ -19,8 +19,6 @@ export class BlobService {
     return this.fetch(avatarPath).pipe(
       map((blob) => URL.createObjectURL(blob)),
       catchError((err) => {
-        console.error('Failed to fetch avatar blob:', err);
-        this.toast.show('Failed to fetch avatar', 'error');
         return throwError(() => err);
       })
     );

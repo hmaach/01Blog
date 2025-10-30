@@ -12,11 +12,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { formatNumber } from '../../../../shared/lib/format';
 import { RouterLink } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-profile-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, Spinner, MatIconModule, MatButtonModule, RouterLink],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule,  MatProgressSpinnerModule],
   templateUrl: './profile-card.html',
   styleUrls: ['./profile-card.scss'],
 })

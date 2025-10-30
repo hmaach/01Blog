@@ -1,10 +1,11 @@
-
-
 .profileCard {
   // background-color: var(--bg-dark-secondary);
   // border: 1px solid var(--mat-sys-on-background);
   border-radius: var(--radius-lg);
   padding: var(--spacing-xl);
+  min-width: 340px;
+  // max-height: 471px;
+  min-height: 471px;
 }
 
 .profileHeader {
@@ -99,4 +100,20 @@
 
 .actionButton.secondary:hover {
   background-color: var(--bg-dark-tertiary);
+}
+
+.spinner-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+@media (max-width: 378px) {
+  .profileCard {
+    padding: var(--spacing-md);
+    min-width: 287px;
+  }
 }

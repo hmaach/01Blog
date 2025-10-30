@@ -1,6 +1,5 @@
 package com.blog.modules.post.application.service;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -34,7 +33,7 @@ public class LikeServiceImpl implements LikeService {
         boolean exists = likeRepository.existsByUserIdAndPostId(userId, postId);
 
         if (!exists) {
-            likeRepository.save(new LikeEntity(userId, postId, Instant.now()));
+            likeRepository.save(new LikeEntity(userId, postId));
             eventPublisher.publishEvent(new PostLikedEvent(postId));
         } else {
             likeRepository.delete(userId, postId);

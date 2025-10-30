@@ -16,6 +16,8 @@ import { ReportPost } from '../../../report/components/report-post/report-post';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
 import { StorageService } from '../../../../core/services/storage.service';
 import { formatDate } from '../../../../shared/lib/date';
+import { PostApiService } from '../../services/post-api.service';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -39,6 +41,8 @@ export class PostDetail {
   @Output() close = new EventEmitter<void>();
 
   private storageService = inject(StorageService);
+  private postApi = inject(PostApiService);
+  private toast = inject(ToastService);
   formatDate = formatDate;
 
   post!: Post;
@@ -61,12 +65,22 @@ export class PostDetail {
   }
 
   toggleLike() {
-    if (this.post.isLiked) {
-      this.post.isLiked = false;
-      this.post.likesCount -= 1;
-    } else {
-      this.post.isLiked = true;
-      this.post.likesCount += 1;
+    if (this.post.id) {
+      this.postApi.likePost(this.post.id).subscribe({
+        next: () => {
+          if (this.post.isLiked) {
+            this.post.isLiked = false;
+            this.post.likesCount -= 1;
+          } else {
+            this.post.isLiked = true;
+            this.post.likesCount += 1;
+          }
+        },
+        error: (e) => {
+          this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+          console.log('Failed to like post:', e);
+        },
+      });
     }
   }
 

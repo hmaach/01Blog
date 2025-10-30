@@ -36,7 +36,7 @@ public class PostEntity {
     private String status;
 
     @Column(name = "likes_count")
-    private int likesCount = 0;
+    private int likesCount;
 
     @Column(name = "comments_count")
     private int commentsCount;

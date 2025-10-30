@@ -22,7 +22,7 @@ public class PostLikedEventListener {
     public void handlePostLiked(PostLikedEvent event) {
         postService.incrementLikesCount(event.postId());
     }
-
+    
     @Async
     @EventListener
     public void handlePostUnliked(PostUnlikedEvent event) {

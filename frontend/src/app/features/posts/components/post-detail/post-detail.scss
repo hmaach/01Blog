@@ -37,7 +37,7 @@
   z-index: 10;
 
   /* Blur background based on theme */
-  background-color: ar(--mat-sys-surface);
+  background-color: inherit;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--modal-header-border, rgba(0, 0, 0, 0.1));
