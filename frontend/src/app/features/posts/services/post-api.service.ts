@@ -12,28 +12,31 @@ export class PostApiService {
 
   constructor(private http: HttpClient) {}
 
-  fetchFeedPosts(): Observable<Post[]> {
+  fetchFeedPosts(page: number, limit: number): Observable<Post[]> {
     const token = this.storageService.getAccessToken();
 
-    return this.http.get<Post[]>(`${this.apiUrl}/posts/feed`, {
+    return this.http.get<Post[]>(`${this.apiUrl}/posts/feed?page=${page}&&size=${limit}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }
 
-  fetchExplorePosts(): Observable<Post[]> {
+  fetchExplorePosts(page: number, limit: number): Observable<Post[]> {
     const token = this.storageService.getAccessToken();
 
-    return this.http.get<Post[]>(`${this.apiUrl}/posts/explore`, {
+    return this.http.get<Post[]>(`${this.apiUrl}/posts/explore?page=${page}&&size=${limit}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }
 
-  fetchUserPosts(username: string): Observable<Post[]> {
+  fetchUserPosts(username: string, page: number, limit: number): Observable<Post[]> {
     const token = this.storageService.getAccessToken();
 
-    return this.http.get<Post[]>(`${this.apiUrl}/posts/user/${username}`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.get<Post[]>(
+      `${this.apiUrl}/posts/user/${username}?page=${page}&&size=${limit}`,
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      }
+    );
   }
 
   createPost(post: FormData): Observable<Post> {

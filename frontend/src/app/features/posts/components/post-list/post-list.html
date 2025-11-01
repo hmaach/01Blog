@@ -26,3 +26,10 @@
   <app-post-card [post]="post"></app-post-card>
   }
 </div>
+<div class="postsFooter">
+  @if (noMorePosts) {
+  <p>no more posts</p>
+  } @else if (isLoadingMore) {
+  <app-spinner class="spinner-sm"></app-spinner>
+  }
+</div>

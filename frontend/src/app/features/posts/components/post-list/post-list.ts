@@ -9,15 +9,28 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { StorageService } from '../../../../core/services/storage.service';
 import { Author } from '../../models/author-model';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Spinner } from '../../../../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-post-list',
-  imports: [PostCard, CommonModule, MatMenuModule, MatIconModule, MatDialogModule, MatButtonModule],
+  imports: [
+    PostCard,
+    Spinner,
+    CommonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatProgressBarModule,
+  ],
   templateUrl: './post-list.html',
   styleUrl: './post-list.scss',
 })
 export class PostList {
   @Input() posts?: Post[];
+  @Input() isLoadingMore?: boolean;
+  @Input() noMorePosts?: boolean;
 
   private storageService = inject(StorageService);
 

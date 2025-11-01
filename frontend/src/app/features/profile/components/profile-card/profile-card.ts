@@ -11,13 +11,20 @@ import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { formatNumber } from '../../../../shared/lib/format';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-profile-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule,  MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    RouterModule,
+  ],
   templateUrl: './profile-card.html',
   styleUrls: ['./profile-card.scss'],
 })
@@ -29,6 +36,7 @@ export class ProfileCard implements OnInit {
   @Input() username?: string;
   @Input() user?: UserResponse;
   @Input() isDialog!: boolean;
+  @Input() closeDialog?: () => void;
 
   avatarUrl?: string;
   formatNumber = formatNumber;

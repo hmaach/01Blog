@@ -52,7 +52,12 @@
 
     <div class="profileActions">
       @if (user.relation === 'owner') {
-      <button mat-stroked-button routerLink="/settings" color="warn">
+      <button
+        mat-stroked-button
+        routerLink="/settings"
+        color="warn"
+        (click)="closeDialog && closeDialog()"
+      >
         <mat-icon>edit</mat-icon> Edit Profile
       </button>
       } @else if (user.relation === 'subscribed') {
@@ -61,6 +66,17 @@
       </button>
       } @else {
       <button mat-flat-button color="primary"><mat-icon>person_add</mat-icon> Subscribe</button>
+      } @if (isDialog) {
+      <button
+        mat-stroked-button
+        routerLink="/profile/{{ username }}"
+        color="warn"
+        (click)="closeDialog && closeDialog()"
+      >
+        <mat-icon>person</mat-icon>
+        View Profile
+      </button>
+
       }
     </div>
     } @else {

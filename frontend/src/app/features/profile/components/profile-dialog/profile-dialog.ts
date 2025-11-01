@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProfileCard } from '../profile-card/profile-card';
 
 @Component({
@@ -10,9 +10,16 @@ import { ProfileCard } from '../profile-card/profile-card';
 })
 export class ProfileDialog {
   username?: string;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { username: string }) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { username: string },
+    private dialogRef: MatDialogRef<ProfileDialog>
+  ) {}
 
   ngOnInit() {
     this.username = this.data.username;
   }
+
+  closeDialog = (): void => {
+    this.dialogRef.close();
+  };
 }

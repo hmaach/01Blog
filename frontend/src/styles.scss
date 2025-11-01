@@ -140,6 +140,10 @@ html.dark-theme {
   );
 }
 
+.spinner-sm .mat-mdc-progress-spinner {
+  width: 50px !important;
+}
+
 .primary-text {
   color: var(--mat-sys-primary);
 }

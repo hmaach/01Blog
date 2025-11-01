@@ -9,11 +9,10 @@
       @if (isLoading) {
       <app-spinner></app-spinner>
       } @else if (posts && posts.length > 0) {
-      <app-post-list [posts]="posts"></app-post-list>
+      <app-post-list [posts]="posts" [isLoadingMore]="isLoadingMore"></app-post-list>
       } @else if (!isLoading && posts && posts.length === 0) {
       <p>No posts found.</p>
       }
-      
     </div>
   </main>
 </div>
