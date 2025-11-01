@@ -65,23 +65,23 @@ export class PostDetail {
   }
 
   toggleLike() {
-    if (this.post.id) {
-      this.postApi.likePost(this.post.id).subscribe({
-        next: () => {
-          if (this.post.isLiked) {
-            this.post.isLiked = false;
-            this.post.likesCount -= 1;
-          } else {
-            this.post.isLiked = true;
-            this.post.likesCount += 1;
-          }
-        },
-        error: (e) => {
-          this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
-          console.log('Failed to like post:', e);
-        },
-      });
-    }
+    if (!this.post.id) return;
+
+    const previousLiked = this.post.isLiked;
+    const previousLikesCount = this.post.likesCount;
+
+    this.post.isLiked = !this.post.isLiked;
+    this.post.likesCount += this.post.isLiked ? 1 : -1;
+
+    this.postApi.likePost(this.post.id).subscribe({
+      error: (e) => {
+        this.post.isLiked = previousLiked;
+        this.post.likesCount = previousLikesCount;
+
+        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        console.error('Failed to like post:', e);
+      },
+    });
   }
 
   openUserCardDialog(username: string) {
