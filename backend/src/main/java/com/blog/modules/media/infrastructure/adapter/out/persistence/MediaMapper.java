@@ -11,10 +11,10 @@ public class MediaMapper {
                 entity.getUrl(),
                 entity.getMediaType(),
                 entity.getSize(),
+                entity.getRelatedTo(),
                 entity.getUploadedAt()
         );
     }
-
 
     public static MediaEntity toEntity(Media media) {
         MediaEntity entity = new MediaEntity();
@@ -23,6 +23,7 @@ public class MediaMapper {
         entity.setUrl(media.getUrl());
         entity.setMediaType(media.getType());
         entity.setSize(media.getSize());
+        entity.setRelatedTo(media.getRelatedTo());
         entity.setUploadedAt(media.getUploadedAt());
         return entity;
     }

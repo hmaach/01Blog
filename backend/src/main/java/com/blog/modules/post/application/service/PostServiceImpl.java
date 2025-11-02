@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.modules.media.domain.exception.MediaStorageException;
 import com.blog.modules.media.domain.model.Media;
@@ -116,15 +115,15 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(post);
 
-        if (cmd.files() != null && !cmd.files().isEmpty()) {
-            for (MultipartFile file : cmd.files()) {
-                try {
-                    mediaService.savePostMedia(userId, postId, file);
-                } catch (java.io.IOException e) {
-                    throw new MediaStorageException("Failed to store media: " + e.getMessage());
-                }
-            }
-        }
+        // if (cmd.files() != null && !cmd.files().isEmpty()) {
+        //     for (MultipartFile file : cmd.files()) {
+        //         try {
+        //             mediaService.savePostMedia(userId, postId, file);
+        //         } catch (java.io.IOException e) {
+        //             throw new MediaStorageException("Failed to store media: " + e.getMessage());
+        //         }
+        //     }
+        // }
 
         return post;
     }

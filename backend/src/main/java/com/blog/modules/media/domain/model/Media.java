@@ -10,14 +10,24 @@ public class Media {
     private String type;
     private String url;
     private long size;
+    private String relatedTo;
     private Instant uploadedAt;
 
-    public Media(UUID id, UUID userId, String url, String type, long size, Instant uploadedAt) {
+    public Media(
+            UUID id,
+            UUID userId,
+            String url,
+            String type,
+            long size,
+            String relatedTo,
+            Instant uploadedAt
+    ) {
         this.id = id;
         this.userId = userId;
         this.type = type;
         this.size = size;
         this.url = url;
+        this.relatedTo = relatedTo;
         this.uploadedAt = uploadedAt;
     }
 
@@ -70,6 +80,14 @@ public class Media {
 
     public void setUploadedAt(Instant uploadedAt) {
         this.uploadedAt = uploadedAt;
+    }
+
+    public String getRelatedTo() {
+        return relatedTo;
+    }
+
+    public void setRelatedTo(String relatedTo) {
+        this.relatedTo = relatedTo;
     }
 
 }

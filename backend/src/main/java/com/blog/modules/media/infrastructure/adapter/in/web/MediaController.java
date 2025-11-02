@@ -19,8 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.modules.media.application.validation.AvatarMediaValidator;
 import com.blog.modules.media.application.validation.PostMediaValidator;
+import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
+import com.blog.modules.media.infrastructure.adapter.in.web.dto.MediaResponse;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
@@ -81,7 +83,8 @@ public class MediaController {
     @PostMapping("/avatar")
     public ResponseEntity<UUID> uploadAvatar(
             HttpServletRequest request,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file
+    ) {
 
         avatarMediaValidator.validate(file);
         UUID userId = jwtService.extractUserIdFromRequest(request);
@@ -116,19 +119,17 @@ public class MediaController {
                 .body(new ByteArrayResource(fileBytes));
     }
 
-    @PostMapping("/posts/{postId}")
-    public ResponseEntity<UUID> addMediaToPost(
+    @PostMapping("/posts")
+    public ResponseEntity<MediaResponse> uploadPostMedia(
             HttpServletRequest request,
-            @PathVariable UUID postId,
             @RequestParam("file") MultipartFile file
     ) {
         postMediaValidator.validate(file);
-        Post post = postService.findById(postId);
         UUID userId = jwtService.extractUserIdFromRequest(request);
 
         try {
-            UUID mediaId = mediaService.savePostMedia(userId, post.getId(), file);
-            return ResponseEntity.ok(mediaId);
+            Media media = mediaService.uploadPostMedia(userId, file);
+            return ResponseEntity.ok(MediaResponse.fromDomain(media));
         } catch (IOException | java.io.IOException | IllegalStateException e) {
             throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
         }

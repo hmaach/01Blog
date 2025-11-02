@@ -16,7 +16,7 @@ public interface MediaService {
 
     UUID uploadAvatar(UUID currentUserId, MultipartFile file) throws IOException, IllegalStateException, java.io.IOException;
 
-    UUID savePostMedia(UUID currentUserId, UUID postId, MultipartFile media) throws IOException, java.io.IOException;
+    Media uploadPostMedia(UUID currentUserId, MultipartFile media) throws IOException, java.io.IOException;
 
     void deleteMedia(Media media) throws IOException, java.io.IOException;
 

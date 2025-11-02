@@ -17,7 +17,6 @@ import com.blog.modules.media.domain.port.out.MediaRepository;
 import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.out.PostRepository;
-import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.out.UserRepository;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
@@ -79,6 +78,7 @@ public class MediaServiceImpl implements MediaService {
         media.setMediaType("IMAGE");
         media.setSize(file.getSize());
         media.setUrl(relativePath);
+        media.setRelatedTo("profile");
         media.setUploadedAt(Instant.now());
 
         Media savedMedia = mediaRepository.save(media);
@@ -112,31 +112,24 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public UUID savePostMedia(UUID currentUserId, UUID postId, MultipartFile file)
+    public Media uploadPostMedia(UUID currentUserId, MultipartFile file)
             throws IOException, java.io.IOException {
 
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new UserNotFoundException(postId.toString()));
-        if (!currentUserId.equals(post.getUserId())) {
-            throw new ForbiddenException();
-        }
-
-        String filename = generateMediaFilename(postId, file);
+        String filename = generateMediaFilename(currentUserId, file);
         String relativePath = "posts/" + filename;
 
         fileStorage.store(file, relativePath);
 
         Media media = new Media();
         media.setUserId(currentUserId);
-        media.setMediaType("IMAGE");
+        media.setMediaType(getMediaType(filename).toString());
         media.setUrl(relativePath);
+        media.setRelatedTo("nothing");
         media.setUploadedAt(Instant.now());
 
         Media savedMedia = mediaRepository.save(media);
 
-        postRepository.attachMediaToPost(postId, savedMedia.getId());
-
-        return savedMedia.getId();
+        return savedMedia;
     }
 
     @Override

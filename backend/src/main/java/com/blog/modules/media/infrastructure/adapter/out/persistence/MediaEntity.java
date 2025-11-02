@@ -29,14 +29,25 @@ public class MediaEntity {
     @Column(nullable = false)
     private String url;
 
+    @Column(name = "related_to", nullable = false)
+    private String relatedTo;
+
     @Column(name = "uploaded_at", nullable = false)
     private Instant uploadedAt;
 
-    public MediaEntity(UUID id, UUID userId, String mediaType, String url, Instant uploadedAt) {
+    public MediaEntity(
+            UUID id,
+            UUID userId,
+            String mediaType,
+            String url,
+            String relatedTo,
+            Instant uploadedAt
+    ) {
         this.id = id;
         this.userId = userId;
         this.mediaType = mediaType;
         this.url = url;
+        this.relatedTo = relatedTo;
         this.uploadedAt = uploadedAt;
     }
 
@@ -89,6 +100,14 @@ public class MediaEntity {
 
     public void setUploadedAt(Instant uploadedAt) {
         this.uploadedAt = uploadedAt;
+    }
+
+    public String getRelatedTo() {
+        return relatedTo;
+    }
+
+    public void setRelatedTo(String relatedTo) {
+        this.relatedTo = relatedTo;
     }
 
 }
