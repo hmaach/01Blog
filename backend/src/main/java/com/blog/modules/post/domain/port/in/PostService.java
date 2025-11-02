@@ -1,5 +1,6 @@
 package com.blog.modules.post.domain.port.in;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,7 +12,11 @@ import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand
 
 public interface PostService {
 
-    List<Post> findAll(Pageable pageable);
+    List<Post> findAll(Instant before, int size);
+
+    List<Post> findFeedPosts(Instant before, int size);
+
+    List<Post> findByUserUsername(String username, Pageable pageable);
 
     List<Post> findByUserId(UUID id, Pageable pageable);
 
@@ -33,5 +38,4 @@ public interface PostService {
 
     void incrementImpressionsCount(List<UUID> postIds);
 
-    List<Post> findByUserUsername(String username, Pageable pageable);
 }

@@ -24,6 +24,7 @@ export class ProfileBlock {
   private scrollDistance: number = 0.8;
   private isThrottled: boolean = false;
   private throttle: number = 300;
+  private lastPostTime: string | null = null;
 
   private postApi = inject(PostApiService);
   private toast = inject(ToastService);
@@ -57,8 +58,9 @@ export class ProfileBlock {
   }
 
   private loadPosts() {
-    this.postApi.fetchUserPosts(this.username, this.page, this.limit).subscribe({
+    this.postApi.fetchUserPosts(this.username, this.lastPostTime, this.limit).subscribe({
       next: (response) => {
+        this.lastPostTime = response.at(-1)?.createdAt ?? null;
         this.posts = response;
         this.isLoading = false;
       },

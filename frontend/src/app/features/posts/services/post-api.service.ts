@@ -12,31 +12,40 @@ export class PostApiService {
 
   constructor(private http: HttpClient) {}
 
-  fetchFeedPosts(page: number, limit: number): Observable<Post[]> {
+  fetchFeedPosts(lastPostTime: string | null, limit: number): Observable<Post[]> {
     const token = this.storageService.getAccessToken();
+    const params = new URLSearchParams();
 
-    return this.http.get<Post[]>(`${this.apiUrl}/posts/feed?page=${page}&&size=${limit}`, {
+    params.append('size', limit.toString());
+    if (lastPostTime) params.append('before', lastPostTime);
+
+    return this.http.get<Post[]>(`${this.apiUrl}/posts/feed?${params.toString()}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }
 
-  fetchExplorePosts(page: number, limit: number): Observable<Post[]> {
+  fetchExplorePosts(lastPostTime: string | null, limit: number): Observable<Post[]> {
     const token = this.storageService.getAccessToken();
+    const params = new URLSearchParams();
 
-    return this.http.get<Post[]>(`${this.apiUrl}/posts/explore?page=${page}&&size=${limit}`, {
+    params.append('size', limit.toString());
+    if (lastPostTime) params.append('before', lastPostTime);
+
+    return this.http.get<Post[]>(`${this.apiUrl}/posts/explore?${params.toString()}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }
 
-  fetchUserPosts(username: string, page: number, limit: number): Observable<Post[]> {
+  fetchUserPosts(username: string, lastPostTime: string | null, limit: number): Observable<Post[]> {
     const token = this.storageService.getAccessToken();
+    const params = new URLSearchParams();
 
-    return this.http.get<Post[]>(
-      `${this.apiUrl}/posts/user/${username}?page=${page}&&size=${limit}`,
-      {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-      }
-    );
+    params.append('size', limit.toString());
+    if (lastPostTime) params.append('before', lastPostTime);
+
+    return this.http.get<Post[]>(`${this.apiUrl}/posts/user/${username}?${params.toString()}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
   }
 
   createPost(post: FormData): Observable<Post> {

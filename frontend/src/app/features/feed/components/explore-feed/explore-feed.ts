@@ -19,10 +19,11 @@ export class ExploreFeed {
   noMorePosts = false;
 
   private page: number = 0;
-  private limit: number = 8;
+  private limit: number = 9;
   private scrollDistance = 0.8;
   private throttle: number = 300;
   private isThrottled = false;
+  private lastPostTime: string | null = null;
 
   private postApi = inject(PostApiService);
   private toast = inject(ToastService);
@@ -54,7 +55,7 @@ export class ExploreFeed {
   }
 
   private loadPosts() {
-    this.postApi.fetchExplorePosts(this.page, this.limit).subscribe({
+    this.postApi.fetchExplorePosts(this.lastPostTime, this.limit).subscribe({
       next: (response) => {
         if (response.length === 0) {
           this.noMorePosts = true;
@@ -62,6 +63,8 @@ export class ExploreFeed {
           this.isLoadingMore = false;
           return;
         }
+
+        this.lastPostTime = response.at(-1)?.createdAt ?? null;
         this.posts.push(...response);
         this.isLoading = false;
         this.isLoadingMore = false;
@@ -73,5 +76,13 @@ export class ExploreFeed {
         this.isLoadingMore = false;
       },
     });
+  }
+
+  resetExplore() {
+    this.posts = [];
+    this.lastPostTime = null;
+    this.noMorePosts = false;
+    this.isLoading = true;
+    this.loadPosts();
   }
 }

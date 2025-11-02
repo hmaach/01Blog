@@ -1,5 +1,6 @@
 package com.blog.modules.post.infrastructure.adapter.in.web;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -7,6 +8,7 @@ import java.util.UUID;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -67,17 +69,12 @@ public class PostController {
     @GetMapping("/feed")
     public ResponseEntity<List<PostResponse>> getFeedPosts(
             HttpServletRequest request,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "createdAt") String sortBy
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
+            @RequestParam(defaultValue = "10") int size
     ) {
-
-        Sort sort = Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
 
-        List<Post> posts = postService.findAll(pageable);
+        List<Post> posts = postService.findAll(before, size);
 
         List<PostResponse> responses = posts.stream()
                 .map(post -> {
@@ -103,17 +100,13 @@ public class PostController {
     @GetMapping("/explore")
     public ResponseEntity<List<PostResponse>> getAllPosts(
             HttpServletRequest request,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "createdAt") String sortBy
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
+            @RequestParam(defaultValue = "10") int size
     ) {
-
-        Sort sort = Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
 
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
 
-        List<Post> posts = postService.findAll(pageable);
+        List<Post> posts = postService.findAll(before, size);
 
         List<PostResponse> responses = posts.stream()
                 .map(post -> {

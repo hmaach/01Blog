@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +15,6 @@ import com.blog.modules.media.domain.exception.MediaStorageException;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.post.domain.event.PostFetchedEvent;
-import com.blog.modules.post.domain.event.PostsFetchedEvent;
 import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.CommentService;
@@ -55,10 +56,20 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findAll(Pageable pageable) {
-        List<Post> posts = postRepository.findAll(pageable);
-        eventPublisher.publishEvent(new PostsFetchedEvent(posts));
-        return posts;
+    public List<Post> findAll(Instant before, int size) {
+
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(0, size, sort);
+
+        return postRepository.findAll(before, pageable);
+    }
+
+    @Override
+    public List<Post> findFeedPosts(Instant before, int size) {
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(0, size, sort);
+
+        return postRepository.findAll(before, pageable);
     }
 
     @Override

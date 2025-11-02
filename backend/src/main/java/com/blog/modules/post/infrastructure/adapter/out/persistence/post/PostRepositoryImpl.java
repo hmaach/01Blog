@@ -26,11 +26,19 @@ public class PostRepositoryImpl implements PostRepository {
 
     // --- CRUD operations ---
     @Override
-    public List<Post> findAll(Pageable pageable) {
-        return jpaRepository.findAll(pageable)
-                .stream()
-                .map(PostMapper::toDomain)
-                .toList();
+    public List<Post> findAll(Instant before, Pageable pageable) {
+
+        if (before == null) {
+            return jpaRepository.findAll(pageable)
+                    .stream()
+                    .map(PostMapper::toDomain)
+                    .toList();
+        } else {
+            return jpaRepository.findPostsBefore(before, pageable)
+                    .stream()
+                    .map(PostMapper::toDomain)
+                    .toList();
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.blog.modules.post.domain.port.out;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import com.blog.modules.post.domain.model.Post;
 
 public interface PostRepository {
 
-    List<Post> findAll(Pageable pageable);
+    List<Post> findAll(Instant before, Pageable pageable);
 
     List<Post> findByUserId(UUID id, Pageable pageable);
 
