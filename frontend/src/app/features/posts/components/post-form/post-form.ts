@@ -13,7 +13,6 @@ import { MediaGrid } from './media-grid/media-grid';
 import { Post } from '../../models/post-model';
 import { PostApiService } from '../../services/post-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
-import { Router } from '@angular/router';
 import { UploadedMedia } from '../../models/media-model';
 
 @Component({
@@ -37,7 +36,6 @@ import { UploadedMedia } from '../../models/media-model';
 export class PostForm {
   private postApi = inject(PostApiService);
   private toast = inject(ToastService);
-  private router = inject(Router);
 
   title = '';
   body = '';
@@ -77,6 +75,9 @@ export class PostForm {
       };
       reader.readAsDataURL(file);
     });
+
+    // Reset the input file after handling the files so the same file can be uploaded again.
+    input.value = '';
   }
 
   removeMedia(index: number): void {
