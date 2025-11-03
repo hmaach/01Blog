@@ -42,3 +42,37 @@
   background: rgba(0, 0, 0, 0.6);
   color: white;
 }
+
+.loading {
+  border: 1px solid #ccc;
+  cursor: not-allowed;
+}
+
+.loading .mediaItem img,
+.loading .mediaItem video {
+  filter: grayscale(1);
+}
+
+.loadingOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(128, 128, 128, 0.5);
+  z-index: 2;
+}
+
+.failed {
+  border: 2px solid red;
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.failed .mediaItem img,
+.failed .mediaItem video {
+  filter: grayscale(0.5) contrast(2);
+}
+
+.failed .removeBtn {
+  background: rgba(255, 0, 0, 0.6);
+}

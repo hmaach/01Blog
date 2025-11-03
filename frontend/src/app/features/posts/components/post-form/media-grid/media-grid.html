@@ -1,13 +1,23 @@
 <div class="mediaGrid">
   <div
     *ngFor="let media of mediaFiles; index as i"
-    class="mediaItem {{ isLoading ? 'disabled' : '' }}"
-    (click)="preview(media.src)"
+    class="mediaItem {{
+      isLoading || media.status === 'loading'
+        ? 'loading'
+        : media.status === 'failed'
+        ? 'failed'
+        : ''
+    }}"
+    (click)="
+      !(isLoading || media.status === 'loading' || media.status === 'failed') && preview(media.url)
+    "
   >
-    <img *ngIf="media.src.startsWith('data:image')" [src]="media.src" />
-    <video *ngIf="media.src.startsWith('data:video')" [src]="media.src" muted></video>
-    @if (!isLoading) {
+    <div *ngIf="media.status === 'loading'" class="loadingOverlay"></div>
+    <mat-progress-bar *ngIf="media.status === 'loading'" mode="query"></mat-progress-bar>
+    <img *ngIf="media.url.startsWith('data:image')" [src]="media.url" />
+    <video *ngIf="media.url.startsWith('data:video')" [src]="media.url" muted></video>
     <button
+      *ngIf="!isLoading && media.status !== 'loading'"
       mat-icon-button
       color="warn"
       class="removeBtn"
@@ -15,6 +25,5 @@
     >
       <mat-icon>delete</mat-icon>
     </button>
-    }
   </div>
 </div>

@@ -1,6 +1,13 @@
 export interface Media {
   id: string;
   url: string;
-  mediaType: "IMAGE" | "VIDEO";
+  mediaType: 'IMAGE' | 'VIDEO';
   uploadedAt: string;
+}
+
+export interface UploadedMedia {
+  id?: string;
+  url: string;
+  file: File;
+  status: 'loading' | 'uploaded' | 'failed';
 }

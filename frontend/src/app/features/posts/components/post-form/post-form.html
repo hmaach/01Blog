@@ -61,7 +61,11 @@
           />
         </label>
 
-        <app-media-grid [mediaFiles]="mediaFiles" (remove)="removeMedia($event)" [isLoading]="isLoading"></app-media-grid>
+        <app-media-grid
+          [mediaFiles]="mediaFiles"
+          (remove)="removeMedia($event)"
+          [isLoading]="isLoading"
+        ></app-media-grid>
       </div>
     </div>
 
@@ -73,7 +77,7 @@
         mat-flat-button
         color="primary"
         (click)="handleSubmit()"
-        [disabled]="!title.trim() || !body.trim() || isLoading"
+        [disabled]="!title.trim() || !body.trim() || isLoading || hasInvalidMedia"
       >
         <mat-icon>publish</mat-icon> Publish
       </button>

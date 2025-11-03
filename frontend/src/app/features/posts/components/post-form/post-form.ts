@@ -14,6 +14,7 @@ import { Post } from '../../models/post-model';
 import { PostApiService } from '../../services/post-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { Router } from '@angular/router';
+import { UploadedMedia } from '../../models/media-model';
 
 @Component({
   selector: 'app-post-form',
@@ -40,7 +41,7 @@ export class PostForm {
 
   title = '';
   body = '';
-  mediaFiles: { src: string; file: File }[] = [];
+  mediaFiles: UploadedMedia[] = [];
 
   maxTitleChars = 100;
   maxBodyChars = 1000;
@@ -67,7 +68,12 @@ export class PostForm {
     selected.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        this.mediaFiles.push({ src: reader.result as string, file });
+        const media: UploadedMedia = {
+          url: reader.result as string,
+          status: 'failed',
+          file,
+        };
+        this.mediaFiles.push(media);
       };
       reader.readAsDataURL(file);
     });
@@ -99,6 +105,10 @@ export class PostForm {
         this.isLoading = false;
       },
     });
+  }
+
+  get hasInvalidMedia(): boolean {
+    return this.mediaFiles.some((m) => m.status === 'loading' || m.status === 'failed');
   }
 
   stopPropagation(event: Event): void {
