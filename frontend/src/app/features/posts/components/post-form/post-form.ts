@@ -14,6 +14,7 @@ import { Post } from '../../models/post-model';
 import { PostApiService } from '../../services/post-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { UploadedMedia } from '../../models/media-model';
+import { BlobService } from '../../../../core/services/blob.service';
 
 @Component({
   selector: 'app-post-form',
@@ -35,6 +36,7 @@ import { UploadedMedia } from '../../models/media-model';
 })
 export class PostForm {
   private postApi = inject(PostApiService);
+  private blobService = inject(BlobService);
   private toast = inject(ToastService);
 
   title = '';
@@ -68,10 +70,22 @@ export class PostForm {
       reader.onloadend = () => {
         const media: UploadedMedia = {
           url: reader.result as string,
-          status: 'failed',
+          status: 'loading',
           file,
         };
         this.mediaFiles.push(media);
+        const formData: FormData = new FormData();
+        formData.append('file', media.file);
+        this.blobService.uploadPostMedia(formData).subscribe({
+          next: (response) => {
+            media.id = response.id;
+            media.status = 'uploaded';
+          },
+          error: (e) => {
+            this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+            media.status = 'failed';
+          },
+        });
       };
       reader.readAsDataURL(file);
     });
@@ -91,7 +105,7 @@ export class PostForm {
     formData.append('body', this.body);
 
     this.mediaFiles.forEach((media) => {
-      formData.append('files', media.file);
+      media.id && formData.append('medias', media.id);
     });
 
     this.isLoading = true;

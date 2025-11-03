@@ -115,15 +115,11 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(post);
 
-        // if (cmd.files() != null && !cmd.files().isEmpty()) {
-        //     for (MultipartFile file : cmd.files()) {
-        //         try {
-        //             mediaService.savePostMedia(userId, postId, file);
-        //         } catch (java.io.IOException e) {
-        //             throw new MediaStorageException("Failed to store media: " + e.getMessage());
-        //         }
-        //     }
-        // }
+        if (cmd.medias() != null && !cmd.medias().isEmpty()) {
+            for (UUID mediaId : cmd.medias()) {
+                postRepository.attachMediaToPost(postId, mediaId);
+            }
+        }
 
         return post;
     }
