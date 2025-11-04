@@ -118,6 +118,7 @@ public class PostServiceImpl implements PostService {
         if (cmd.medias() != null && !cmd.medias().isEmpty()) {
             for (UUID mediaId : cmd.medias()) {
                 postRepository.attachMediaToPost(postId, mediaId);
+                mediaService.linkMediaToPost(mediaId);
             }
         }
 

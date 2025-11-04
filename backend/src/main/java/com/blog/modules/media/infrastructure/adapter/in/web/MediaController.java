@@ -23,7 +23,6 @@ import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
 import com.blog.modules.media.infrastructure.adapter.in.web.dto.MediaResponse;
-import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 import com.blog.shared.infrastructure.security.JwtService;
@@ -146,6 +145,21 @@ public class MediaController {
 
         try {
             mediaService.deleteMediaFromPost(currentUserId, postId, mediaId);
+        } catch (IOException | IllegalStateException | java.io.IOException e) {
+            throw new InternalServerErrorException("Failed to delete media from the post: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{mediaId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMedia(
+            HttpServletRequest request,
+            @PathVariable UUID mediaId
+    ) {
+        UUID currentUserId = jwtService.extractUserIdFromRequest(request);
+
+        try {
+            mediaService.deleteMedia(currentUserId, mediaId);
         } catch (IOException | IllegalStateException | java.io.IOException e) {
             throw new InternalServerErrorException("Failed to delete media from the post: " + e.getMessage());
         }

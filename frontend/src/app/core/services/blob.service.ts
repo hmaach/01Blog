@@ -51,4 +51,17 @@ export class BlobService {
         })
       );
   }
+
+  deleteMedia(mediaId: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
+    return this.http
+      .delete<void>(`${this.apiUrl}/media/${mediaId}`, {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      })
+      .pipe(
+        tap({
+          error: (e) => this.toast.show(e?.error?.message || 'Unknown Server Error', 'error'),
+        })
+      );
+  }
 }

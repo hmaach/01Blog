@@ -24,6 +24,10 @@ public interface MediaService {
 
     List<Media> findByPostId(UUID postId);
 
+    void linkMediaToPost(UUID mediaId);
+
     void deleteMediaFromPost(UUID currentUserId, UUID postId, UUID mediaId) throws IOException, java.io.IOException;
+
+    void deleteMedia(UUID currentUserId, UUID mediaId) throws IOException, java.io.IOException;
 
 }

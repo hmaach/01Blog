@@ -22,6 +22,7 @@ import com.blog.shared.infrastructure.exception.ForbiddenException;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 
 import io.jsonwebtoken.io.IOException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class MediaServiceImpl implements MediaService {
@@ -54,6 +55,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    @Transactional
     public UUID uploadAvatar(UUID userId, MultipartFile file) throws IOException, java.io.IOException {
         Optional<UUID> avatarId = userRepository.getAvatarId(userId);
 
@@ -75,7 +77,7 @@ public class MediaServiceImpl implements MediaService {
 
         Media media = new Media();
         media.setUserId(userId);
-        media.setMediaType("IMAGE");
+        media.setMediaType(getMediaType(filename).toString());
         media.setSize(file.getSize());
         media.setUrl(relativePath);
         media.setRelatedTo("profile");
@@ -96,10 +98,16 @@ public class MediaServiceImpl implements MediaService {
         if (path.endsWith(".jpg") || path.endsWith(".jpeg")) {
             return MediaType.IMAGE_JPEG;
         }
+        if (path.endsWith(".gif")) {
+            return MediaType.IMAGE_GIF;
+        }
         if (path.endsWith(".mp4")) {
             return MediaType.valueOf("video/mp4");
         }
-        return MediaType.APPLICATION_OCTET_STREAM;
+        if (path.endsWith(".webm")) {
+            return MediaType.valueOf("video/webm");
+        }
+        return MediaType.valueOf("Unkown");
     }
 
     private String generateMediaFilename(UUID relatedId, MultipartFile file) {
@@ -112,6 +120,7 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    @Transactional
     public Media uploadPostMedia(UUID currentUserId, MultipartFile file)
             throws IOException, java.io.IOException {
 
@@ -123,6 +132,7 @@ public class MediaServiceImpl implements MediaService {
         Media media = new Media();
         media.setUserId(currentUserId);
         media.setMediaType(getMediaType(filename).toString());
+        media.setSize(file.getSize());
         media.setUrl(relativePath);
         media.setRelatedTo("nothing");
         media.setUploadedAt(Instant.now());
@@ -138,12 +148,19 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    public void linkMediaToPost(UUID mediaId) {
+        mediaRepository.linkMediaToPost(mediaId);
+    }
+
+    @Override
+    @Transactional
     public void deleteMedia(Media media) throws IOException, java.io.IOException {
         fileStorage.delete(media.getUrl());
         mediaRepository.deleteById(media.getId());
     }
 
     @Override
+    @Transactional
     public void deleteMediaFromPost(UUID currentUserId, UUID postId, UUID mediaId) throws IOException, java.io.IOException {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
@@ -154,6 +171,20 @@ public class MediaServiceImpl implements MediaService {
 
         Media media = mediaRepository.findById(mediaId)
                 .orElseThrow(() -> new MediaNotFoundException(mediaId.toString()));
+
+        fileStorage.delete(media.getUrl());
+        mediaRepository.deleteById(media.getId());
+    }
+
+    @Override
+    @Transactional
+    public void deleteMedia(UUID currentUserId, UUID mediaId) throws IOException, java.io.IOException {
+        Media media = mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new MediaNotFoundException(mediaId.toString()));
+
+        if (!currentUserId.equals(media.getUserId())) {
+            throw new ForbiddenException();
+        }
 
         fileStorage.delete(media.getUrl());
         mediaRepository.deleteById(media.getId());

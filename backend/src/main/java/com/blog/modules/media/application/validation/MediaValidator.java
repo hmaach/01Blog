@@ -3,13 +3,16 @@ package com.blog.modules.media.application.validation;
 import java.util.Arrays;
 import java.util.List;
 
-import com.blog.modules.media.domain.exception.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.blog.modules.media.domain.exception.EmptyMediaFileException;
+import com.blog.modules.media.domain.exception.InvalidMediaTypeException;
+import com.blog.modules.media.domain.exception.TooLargeMediaFileException;
 
 public abstract class MediaValidator {
 
     protected static final List<String> IMAGE_TYPES = List.of("image/jpeg", "image/png", "image/jpg");
-    protected static final List<String> VIDEO_TYPES = List.of("video/mp4", "video/quicktime", "video/x-msvideo");
+    protected static final List<String> VIDEO_TYPES = List.of("video/mp4", "video/webm");
 
     protected void validateNotEmpty(MultipartFile file) {
         if (file.isEmpty()) {

@@ -15,4 +15,6 @@ public interface MediaRepository {
     public List<Media> findByPostId(UUID postId);
 
     void deleteById(UUID id);
+
+    void linkMediaToPost(UUID mediaId);
 }

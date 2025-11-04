@@ -29,7 +29,11 @@
     </p>
 
     <div *ngIf="post.media && post.media.length > 0">
+      @if(post.media[0].mediaType.startsWith("video")){
+      <video [src]="post.media[0].url" muted class="postMedia"></video>
+      }@else {
       <img [src]="post.media[0].url" [alt]="post.title" class="postMedia" />
+      }
     </div>
   </div>
 

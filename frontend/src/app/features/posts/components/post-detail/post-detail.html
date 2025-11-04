@@ -54,8 +54,13 @@
     <div class="modalBody">
       <h1 class="postTitle">{{ post.title }}</h1>
       <div class="postContent">{{ post.body }}</div>
-      <div *ngIf="post.media && post.media.length > 0" class="postMedias">
-        <img *ngFor="let m of post.media" [src]="m.url" [alt]="post.title" class="postMedia" />
+
+      <div class="postMedias">
+        @for (m of post.media; track post.id) { @if(m.mediaType.startsWith("video")){
+        <video [src]="m.url" controls class="postMedia"></video>
+        }@else {
+        <img [src]="m.url" [alt]="post.title" class="postMedia" />
+        } }
       </div>
 
       <div class="postMetrics">

@@ -10,10 +10,8 @@ import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.out.MediaRepository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 
 @Repository
-@Transactional
 public class MediaRepositoryImpl implements MediaRepository {
 
     private final EntityManager entityManager;
@@ -23,7 +21,6 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
-    @Transactional
     public Media save(Media media) {
         MediaEntity entity = MediaMapper.toEntity(media);
 
@@ -34,6 +31,13 @@ public class MediaRepositoryImpl implements MediaRepository {
         }
 
         return MediaMapper.toDomain(entity);
+    }
+
+    @Override
+    public void linkMediaToPost(UUID mediaId) {
+        MediaEntity entity = entityManager.find(MediaEntity.class, mediaId);
+        entity.setRelatedTo("post");
+        entityManager.persist(entity);
     }
 
     @Override
@@ -60,7 +64,6 @@ public class MediaRepositoryImpl implements MediaRepository {
     }
 
     @Override
-    @Transactional
     public void deleteById(UUID id) {
         entityManager.createQuery("""
         DELETE FROM PostMediaEntity pm

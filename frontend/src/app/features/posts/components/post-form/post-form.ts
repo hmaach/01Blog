@@ -53,6 +53,11 @@ export class PostForm {
 
   onClose(): void {
     if (!this.isLoading) {
+      if (this.mediaFiles.length > 0) {
+        this.mediaFiles.forEach((media) => {
+          this.blobService.deleteMedia(media.id).subscribe();
+        });
+      }
       this.dialogRef.close();
     }
   }
@@ -69,6 +74,7 @@ export class PostForm {
       const reader = new FileReader();
       reader.onloadend = () => {
         const media: UploadedMedia = {
+          id: 'default_id',
           url: reader.result as string,
           status: 'loading',
           file,
@@ -95,6 +101,7 @@ export class PostForm {
   }
 
   removeMedia(index: number): void {
+    this.blobService.deleteMedia(this.mediaFiles[index].id).subscribe();
     this.mediaFiles.splice(index, 1);
   }
 
@@ -104,9 +111,11 @@ export class PostForm {
     formData.append('title', this.title);
     formData.append('body', this.body);
 
-    this.mediaFiles.forEach((media) => {
-      media.id && formData.append('medias', media.id);
-    });
+    this.mediaFiles.map((media) => formData.append('medias', media.id));
+
+    // this.mediaFiles.forEach((media) => {
+    //   media.id && formData.append('medias', media.id);
+    // });
 
     this.isLoading = true;
 
