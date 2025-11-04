@@ -67,4 +67,12 @@ export class PostApiService {
       }
     );
   }
+
+  deletePost(postId: string) {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.delete(`${this.apiUrl}/posts/${postId}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
 }

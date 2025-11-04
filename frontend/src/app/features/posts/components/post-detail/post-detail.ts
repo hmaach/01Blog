@@ -18,6 +18,7 @@ import { StorageService } from '../../../../core/services/storage.service';
 import { formatDate } from '../../../../shared/lib/date';
 import { PostApiService } from '../../services/post-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
+import { Confirmation } from '../../../../shared/components/confirmation/confirmation';
 
 @Component({
   selector: 'app-post-detail',
@@ -110,5 +111,26 @@ export class PostDetail {
 
   closeDialog(): void {
     this.dialogRef.close();
+  }
+
+  handleDelete() {
+    const dialogRef = this.dialog.open(Confirmation, {
+      data: { message: 'Are you sure you want to delete?' },
+      panelClass: 'post-report-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.postApi.deletePost(this.post.id).subscribe({
+          next: () => {
+            this.toast.show('Post deleted seccufully!', 'success');
+          },
+          error: (e) => {
+            this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+            console.error('Failed to delete post:', e);
+          },
+        });
+      }
+    });
   }
 }

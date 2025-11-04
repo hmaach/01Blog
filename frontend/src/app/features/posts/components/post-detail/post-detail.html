@@ -32,7 +32,7 @@
               <span>Hide</span>
             </button>
             } @if (isAdmin || post.isOwner) {
-            <button mat-menu-item>
+            <button mat-menu-item (click)="handleDelete()">
               <mat-icon color="warn">delete</mat-icon>
               <span>Delete</span>
             </button>
@@ -56,7 +56,7 @@
       <div class="postContent">{{ post.body }}</div>
 
       <div class="postMedias">
-        @for (m of post.media; track post.id) { @if(m.mediaType.startsWith("video")){
+        @for (m of post.media; track m.id) { @if(m.mediaType.startsWith("video")){
         <video [src]="m.url" controls class="postMedia"></video>
         }@else {
         <img [src]="m.url" [alt]="post.title" class="postMedia" />
