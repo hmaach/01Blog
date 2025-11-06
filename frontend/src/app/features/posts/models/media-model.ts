@@ -8,6 +8,7 @@ export interface Media {
 export interface UploadedMedia {
   id: string;
   url: string;
-  file: File;
+  file?: File;
+  mediaType?: string;
   status: 'loading' | 'uploaded' | 'failed';
 }

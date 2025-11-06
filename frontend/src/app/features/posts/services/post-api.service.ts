@@ -56,6 +56,14 @@ export class PostApiService {
     });
   }
 
+  updatePost(postId: string, formData: FormData): Observable<Post> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.patch<Post>(`${this.apiUrl}/posts/${postId}`, formData, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
+
   likePost(postId: string) {
     const token = this.storageService.getAccessToken();
 

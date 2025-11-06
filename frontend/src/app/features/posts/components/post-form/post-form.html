@@ -4,7 +4,11 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     }
     <div class="modalHeader">
-      <h2 class="modalTitle"><mat-icon color="primary">edit_note</mat-icon> Craft Your Post</h2>
+      @if (this.data.action === "create") {
+      <h2 class="modalTitle"><mat-icon color="primary">edit_note</mat-icon> Create new Post</h2>
+      }@else if (this.data.action === "edit") {
+      <h2 class="modalTitle"><mat-icon color="primary">edit_note</mat-icon> Edit Your Post</h2>
+      }
       <button mat-icon-button (click)="onClose()" [disabled]="isLoading">
         <mat-icon>close</mat-icon>
       </button>
@@ -79,7 +83,9 @@
         (click)="handleSubmit()"
         [disabled]="!title.trim() || !body.trim() || isLoading || hasInvalidMedia"
       >
-        <mat-icon>publish</mat-icon> Publish
+        @if (this.data.action === "create") {
+        <mat-icon>publish</mat-icon> Publish }@else if (this.data.action === "edit") {
+        <mat-icon>publish</mat-icon> Update }
       </button>
     </div>
   </mat-card>

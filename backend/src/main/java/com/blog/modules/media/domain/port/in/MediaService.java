@@ -18,6 +18,8 @@ public interface MediaService {
 
     Media uploadPostMedia(UUID currentUserId, MultipartFile media) throws IOException, java.io.IOException;
 
+    Media uploadMediaToPost(UUID userId, UUID postId, MultipartFile file) throws IOException, java.io.IOException;
+
     void deleteMedia(Media media) throws IOException, java.io.IOException;
 
     MediaType getMediaType(String filename);

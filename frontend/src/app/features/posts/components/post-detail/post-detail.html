@@ -22,7 +22,7 @@
 
           <mat-menu #menu="matMenu">
             @if (post.isOwner || isAdmin) { @if (post.isOwner) {
-            <button mat-menu-item>
+            <button mat-menu-item (click)="openEditPostDialog()">
               <mat-icon>edit</mat-icon>
               <span>Edit</span>
             </button>

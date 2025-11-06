@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,7 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MediaGrid } from './media-grid/media-grid';
 import { Post } from '../../models/post-model';
 import { PostApiService } from '../../services/post-api.service';
@@ -42,6 +42,7 @@ export class PostForm {
   title = '';
   body = '';
   mediaFiles: UploadedMedia[] = [];
+  deletedMedias: string[] = [];
 
   maxTitleChars = 100;
   maxBodyChars = 1000;
@@ -49,7 +50,29 @@ export class PostForm {
 
   isLoading: boolean = false;
 
-  constructor(private dialogRef: MatDialogRef<PostForm>) {}
+  constructor(
+    private dialogRef: MatDialogRef<PostForm>,
+    @Inject(MAT_DIALOG_DATA) public data: { action: string; post?: Post }
+  ) {}
+
+  ngOnInit(): void {
+    const editedPost: Post | undefined = this.data.post;
+
+    if (editedPost) {
+      this.title = editedPost.title;
+      this.body = editedPost.body;
+      if (editedPost.media) {
+        editedPost.media.forEach((media) => {
+          this.mediaFiles.push({
+            id: media.id,
+            url: media.url,
+            mediaType: media.mediaType,
+            status: 'uploaded',
+          });
+        });
+      }
+    }
+  }
 
   onClose(): void {
     if (!this.isLoading) {
@@ -81,8 +104,8 @@ export class PostForm {
         };
         this.mediaFiles.push(media);
         const formData: FormData = new FormData();
-        formData.append('file', media.file);
-        this.blobService.uploadPostMedia(formData).subscribe({
+        media.file && formData.append('file', media.file);
+        this.blobService.uploadPostMedia(this.data.post?.id, formData).subscribe({
           next: (response) => {
             media.id = response.id;
             media.status = 'uploaded';
@@ -99,25 +122,35 @@ export class PostForm {
     // Reset the input file after handling the files so the same file can be uploaded again.
     input.value = '';
   }
-
+  // TODO:dd
   removeMedia(index: number): void {
-    this.blobService.deleteMedia(this.mediaFiles[index].id).subscribe();
+    switch (this.data.action) {
+      case 'create':
+        this.blobService.deleteMedia(this.mediaFiles[index].id).subscribe();
+        break;
+      case 'edit':
+        this.deletedMedias.push(this.mediaFiles[index].id);
+        break;
+    }
     this.mediaFiles.splice(index, 1);
   }
 
-  handleSubmit(): void {
-    const formData = new FormData();
+  get hasInvalidMedia(): boolean {
+    return this.mediaFiles.some((m) => m.status === 'loading' || m.status === 'failed');
+  }
 
+  stopPropagation(event: Event): void {
+    event.stopPropagation();
+  }
+
+  handleCreatePost(): void {
+    this.isLoading = true;
+
+    const formData = new FormData();
     formData.append('title', this.title);
     formData.append('body', this.body);
 
     this.mediaFiles.map((media) => formData.append('medias', media.id));
-
-    // this.mediaFiles.forEach((media) => {
-    //   media.id && formData.append('medias', media.id);
-    // });
-
-    this.isLoading = true;
 
     this.postApi.createPost(formData).subscribe({
       next: (response) => {
@@ -131,11 +164,34 @@ export class PostForm {
     });
   }
 
-  get hasInvalidMedia(): boolean {
-    return this.mediaFiles.some((m) => m.status === 'loading' || m.status === 'failed');
+  handleUpdatePost(): void {
+    if (!this.data.post) return;
+    this.isLoading = true;
+
+    const formData = new FormData();
+    this.data.post?.title !== this.title && formData.append('title', this.title);
+    this.data.post?.body !== this.body && formData.append('body', this.body);
+
+    this.deletedMedias.length > 0 &&
+      this.deletedMedias.map((media) => formData.append('deletedMedias', media));
+
+    this.postApi.updatePost(this.data.post.id, formData).subscribe({
+      next: (response) => {
+        const updatedPost: Post = response;
+        this.dialogRef.close(updatedPost);
+      },
+      error: (e) => {
+        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.isLoading = false;
+      },
+    });
   }
 
-  stopPropagation(event: Event): void {
-    event.stopPropagation();
+  handleSubmit(): void {
+    if (this.data.action === 'create') {
+      this.handleCreatePost();
+    } else if (this.data.action === 'edit') {
+      this.handleUpdatePost();
+    }
   }
 }

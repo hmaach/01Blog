@@ -1,14 +1,11 @@
 package com.blog.modules.post.infrastructure.adapter.in.web.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class UpdatePostCommand {
 
-    @NotBlank(message = "Title cannot be blank")
-    @Size(max = 255, message = "Title must be less than 255 characters")
+    @Size(max = 100, message = "Title must be less than 100 characters")
     String title;
-    @NotBlank(message = "Body cannot be blank")
     @Size(max = 5000, message = "Body must be less than 5000 characters")
     String body;
 

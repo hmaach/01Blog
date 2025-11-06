@@ -44,6 +44,11 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
+    public List<Media> findByPostId(UUID postID) {
+        return mediaRepository.findByPostId(postID);
+    }
+
+    @Override
     public String getAvatarUrl(UUID mediaId) {
         if (mediaId == null) {
             return null;
@@ -143,11 +148,35 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public List<Media> findByPostId(UUID postID) {
-        return mediaRepository.findByPostId(postID);
+    @Transactional
+    public Media uploadMediaToPost(UUID currentUserId, UUID postId, MultipartFile file)
+            throws IOException, java.io.IOException {
+
+        String filename = generateMediaFilename(currentUserId, file);
+        String relativePath = "posts/" + filename;
+
+        fileStorage.store(file, relativePath);
+
+        UUID mediaId = UUID.randomUUID();
+
+        Media media = new Media();
+        media.setId(mediaId);
+        media.setUserId(currentUserId);
+        media.setMediaType(getMediaType(filename).toString());
+        media.setSize(file.getSize());
+        media.setUrl(relativePath);
+        media.setRelatedTo("post");
+        media.setUploadedAt(Instant.now());
+
+        Media savedMedia = mediaRepository.save(media);
+
+        postRepository.attachMediaToPost(postId, mediaId);
+
+        return savedMedia;
     }
 
     @Override
+    @Transactional
     public void linkMediaToPost(UUID mediaId) {
         mediaRepository.linkMediaToPost(mediaId);
     }

@@ -12,13 +12,15 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./media-preview.scss'],
 })
 export class MediaPreview {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { media: string }) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { media: string; mediaType: string | undefined }
+  ) {}
 
   isImage(): boolean {
     const media = this.data.media;
     return (
       media.startsWith('data:image') || // base64 image
-      media.startsWith('blob:') || // blob URL
+      this.data.mediaType?.startsWith('image') ||
       /\.(png|jpe?g|gif|webp|bmp)$/i.test(media) // URL ending with image extension
     );
   }
@@ -27,6 +29,7 @@ export class MediaPreview {
     const media = this.data.media;
     return (
       media.startsWith('data:video') ||
+      this.data.mediaType?.startsWith('video') ||
       (media.startsWith('blob:') && media.includes('video')) ||
       /\.mp4$/i.test(media)
     );

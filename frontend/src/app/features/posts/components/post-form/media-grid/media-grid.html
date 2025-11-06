@@ -9,13 +9,21 @@
         : ''
     }}"
     (click)="
-      !(isLoading || media.status === 'loading' || media.status === 'failed') && preview(media.url)
+      !(isLoading || media.status === 'loading' || media.status === 'failed') &&
+        preview(media.url, media.mediaType)
     "
   >
     <div *ngIf="media.status === 'loading'" class="loadingOverlay"></div>
     <mat-progress-bar *ngIf="media.status === 'loading'" mode="query"></mat-progress-bar>
-    <img *ngIf="media.url.startsWith('data:image')" [src]="media.url" />
-    <video *ngIf="media.url.startsWith('data:video')" [src]="media.url" muted></video>
+    <img
+      *ngIf="media.url.startsWith('data:image') || media.mediaType?.startsWith('image')"
+      [src]="media.url"
+    />
+    <video
+      *ngIf="media.url.startsWith('data:video') || media.mediaType?.startsWith('video')"
+      [src]="media.url"
+      muted
+    ></video>
     <button
       *ngIf="!isLoading && media.status !== 'loading'"
       mat-icon-button

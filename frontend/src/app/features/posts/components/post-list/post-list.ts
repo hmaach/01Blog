@@ -38,6 +38,7 @@ export class PostList {
 
   openCreatePostDialog(): void {
     const dialogRef = this.dialog.open(PostForm, {
+      data: { action: 'create' },
       width: '800px',
       maxHeight: '90vh',
       panelClass: 'post-form-dialog',

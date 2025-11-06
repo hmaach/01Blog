@@ -19,6 +19,8 @@ import { formatDate } from '../../../../shared/lib/date';
 import { PostApiService } from '../../services/post-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { Confirmation } from '../../../../shared/components/confirmation/confirmation';
+import { PostForm } from '../post-form/post-form';
+import { BlobService } from '../../../../core/services/blob.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -44,6 +46,7 @@ export class PostDetail {
   private storageService = inject(StorageService);
   private postApi = inject(PostApiService);
   private toast = inject(ToastService);
+  private blobService = inject(BlobService);
   formatDate = formatDate;
 
   post!: Post;
@@ -97,6 +100,36 @@ export class PostDetail {
       data: { postId: this.post.id },
       maxHeight: '90vh',
       panelClass: 'post-report-dialog',
+    });
+  }
+
+  // TODO: remove uploaded medias when cancel
+  // TODO: remove the deleted medias on the modification 
+  openEditPostDialog(): void {
+    const dialogRef = this.dialog.open(PostForm, {
+      data: { action: 'edit', post: this.post },
+      maxHeight: '90vh',
+      panelClass: 'post-report-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((post: Post) => {
+      if (post) {
+        this.post.title = post.title;
+        this.post.body = post.body;
+        this.post.isLiked = post.isLiked;
+        this.post.likesCount = post.likesCount;
+        this.post.commentsCount = post.commentsCount;
+        this.post.impressionsCount = post.impressionsCount;
+        post.media &&
+          post.media.map((media) => {
+            this.blobService.loadBlob(media.url).subscribe({
+              next: (url) => {
+                media.url = url;
+                this.post.media?.push(media);
+              },
+            });
+          });
+      }
     });
   }
 

@@ -15,22 +15,17 @@ import jakarta.persistence.EntityManager;
 public class MediaRepositoryImpl implements MediaRepository {
 
     private final EntityManager entityManager;
+    private final SpringDataMediaRepository jpaRepository;
 
-    public MediaRepositoryImpl(EntityManager entityManager) {
+    public MediaRepositoryImpl(SpringDataMediaRepository jpaRepository, EntityManager entityManager) {
+        this.jpaRepository = jpaRepository;
         this.entityManager = entityManager;
     }
 
     @Override
     public Media save(Media media) {
         MediaEntity entity = MediaMapper.toEntity(media);
-
-        if (entity.getId() == null) {
-            entityManager.persist(entity);
-        } else {
-            entity = entityManager.merge(entity);
-        }
-
-        return MediaMapper.toDomain(entity);
+        return MediaMapper.toDomain(jpaRepository.save(entity));
     }
 
     @Override

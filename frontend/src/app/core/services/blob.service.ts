@@ -39,10 +39,16 @@ export class BlobService {
       );
   }
 
-  uploadPostMedia(payload: FormData): Observable<UploadedMedia> {
+  uploadPostMedia(postId: string | undefined, payload: FormData): Observable<UploadedMedia> {
     const token = this.storageService.getAccessToken();
+
+    let endPoint: string = `${this.apiUrl}/media/posts`;
+    if (postId) {
+      endPoint += `/${postId}`;
+    }
+
     return this.http
-      .post<UploadedMedia>(`${this.apiUrl}/media/posts`, payload, {
+      .post<UploadedMedia>(endPoint, payload, {
         headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
       })
       .pipe(

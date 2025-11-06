@@ -22,10 +22,10 @@ export class MediaGrid {
 
   constructor(private dialog: MatDialog) {}
 
-  preview(media: string) {
+  preview(media: string, mediaType: string | undefined) {
     if (!this.isLoading) {
       this.dialog.open(MediaPreview, {
-        data: { media },
+        data: { media, mediaType },
         panelClass: 'media-preview-dialog',
       });
     }
