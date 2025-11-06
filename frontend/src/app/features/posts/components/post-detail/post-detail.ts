@@ -124,6 +124,7 @@ export class PostDetail {
         this.postApi.deletePost(this.post.id).subscribe({
           next: () => {
             this.toast.show('Post deleted seccufully!', 'success');
+            this.dialogRef.close({ action: 'delete', postId: this.post.id });
           },
           error: (e) => {
             this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');

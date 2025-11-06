@@ -23,7 +23,7 @@
 
 <div class="postsGrid">
   @for (post of posts; track post.id) {
-  <app-post-card [post]="post"></app-post-card>
+  <app-post-card [post]="post" (postDeleted)="removePost($event)"></app-post-card>
   }
 </div>
 <div class="postsFooter">

@@ -57,4 +57,9 @@ export class PostList {
       }
     });
   }
+
+  removePost(postId: string) {
+    if (!this.posts) return;
+    this.posts = this.posts.filter((p) => p.id !== postId);
+  }
 }

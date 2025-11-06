@@ -11,12 +11,6 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './confirmation.html',
   styleUrl: './confirmation.scss',
 })
-@Component({
-  selector: 'app-confirmation',
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
-  templateUrl: './confirmation.html',
-  styleUrl: './confirmation.scss',
-})
 export class Confirmation {
   message!: string;
 
