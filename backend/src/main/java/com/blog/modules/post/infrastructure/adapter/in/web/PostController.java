@@ -193,7 +193,7 @@ public class PostController {
     }
 
     @PatchMapping("/{postId}")
-    public ResponseEntity<PostResponse2> updatePost(
+    public ResponseEntity<PostResponse> updatePost(
             @Valid UpdatePostCommand cmd,
             HttpServletRequest request,
             @PathVariable UUID postId
@@ -204,7 +204,13 @@ public class PostController {
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
-                .body(PostResponse2.fromDomain(post, mediaList));
+                .body(PostResponse.fromDomain(
+                        post,
+                        null,
+                        true,
+                        false,
+                        mediaList
+                ));
     }
 
     @PostMapping("/like/{postId}")

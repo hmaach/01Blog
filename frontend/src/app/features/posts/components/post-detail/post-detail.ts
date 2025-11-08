@@ -103,8 +103,6 @@ export class PostDetail {
     });
   }
 
-  // TODO: remove uploaded medias when cancel
-  // TODO: remove the deleted medias on the modification 
   openEditPostDialog(): void {
     const dialogRef = this.dialog.open(PostForm, {
       data: { action: 'edit', post: this.post },

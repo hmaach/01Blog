@@ -25,7 +25,9 @@ import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand
 import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
+import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 
+import io.jsonwebtoken.io.IOException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -145,6 +147,25 @@ public class PostServiceImpl implements PostService {
             post.updateBody(cmd.getBody());
             updated = true;
         }
+        if (cmd.getAddedMedias() != null && !cmd.getAddedMedias().isEmpty()) {
+            for (UUID mediaId : cmd.getAddedMedias()) {
+                postRepository.attachMediaToPost(postId, mediaId);
+                mediaService.linkMediaToPost(mediaId);
+            }
+        }
+
+        if (cmd.getDeletedMedias() != null && !cmd.getDeletedMedias().isEmpty()) {
+            if (cmd.getDeletedMedias() != null && !cmd.getDeletedMedias().isEmpty()) {
+                for (UUID mediaId : cmd.getDeletedMedias()) {
+                    try {
+                        mediaService.deleteMediaFromPost(currentUserId, postId, mediaId);
+                    } catch (IOException | java.io.IOException | IllegalStateException e) {
+                        throw new InternalServerErrorException("Failed to delete media from post: " + e.getMessage());
+                    }
+                }
+            }
+        }
+
         if (updated) {
             postRepository.save(post);
         }

@@ -135,6 +135,8 @@ public class MediaServiceImpl implements MediaService {
         fileStorage.store(file, relativePath);
 
         Media media = new Media();
+        UUID mediaId = UUID.randomUUID();
+        media.setId(mediaId);
         media.setUserId(currentUserId);
         media.setMediaType(getMediaType(filename).toString());
         media.setSize(file.getSize());
@@ -147,34 +149,26 @@ public class MediaServiceImpl implements MediaService {
         return savedMedia;
     }
 
-    @Override
-    @Transactional
-    public Media uploadMediaToPost(UUID currentUserId, UUID postId, MultipartFile file)
-            throws IOException, java.io.IOException {
-
-        String filename = generateMediaFilename(currentUserId, file);
-        String relativePath = "posts/" + filename;
-
-        fileStorage.store(file, relativePath);
-
-        UUID mediaId = UUID.randomUUID();
-
-        Media media = new Media();
-        media.setId(mediaId);
-        media.setUserId(currentUserId);
-        media.setMediaType(getMediaType(filename).toString());
-        media.setSize(file.getSize());
-        media.setUrl(relativePath);
-        media.setRelatedTo("post");
-        media.setUploadedAt(Instant.now());
-
-        Media savedMedia = mediaRepository.save(media);
-
-        postRepository.attachMediaToPost(postId, mediaId);
-
-        return savedMedia;
-    }
-
+    // @Override
+    // @Transactional
+    // public Media uploadMediaToPost(UUID currentUserId, UUID postId, MultipartFile file)
+    //         throws IOException, java.io.IOException {
+    //     String filename = generateMediaFilename(currentUserId, file);
+    //     String relativePath = "posts/" + filename;
+    //     fileStorage.store(file, relativePath);
+    //     UUID mediaId = UUID.randomUUID();
+    //     Media media = new Media();
+    //     media.setId(mediaId);
+    //     media.setUserId(currentUserId);
+    //     media.setMediaType(getMediaType(filename).toString());
+    //     media.setSize(file.getSize());
+    //     media.setUrl(relativePath);
+    //     media.setRelatedTo("post");
+    //     media.setUploadedAt(Instant.now());
+    //     Media savedMedia = mediaRepository.save(media);
+    //     postRepository.attachMediaToPost(postId, mediaId);
+    //     return savedMedia;
+    // }
     @Override
     @Transactional
     public void linkMediaToPost(UUID mediaId) {

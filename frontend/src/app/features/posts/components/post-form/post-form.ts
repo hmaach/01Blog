@@ -42,6 +42,7 @@ export class PostForm {
   title = '';
   body = '';
   mediaFiles: UploadedMedia[] = [];
+  addedMedias: string[] = [];
   deletedMedias: string[] = [];
 
   maxTitleChars = 100;
@@ -105,8 +106,9 @@ export class PostForm {
         this.mediaFiles.push(media);
         const formData: FormData = new FormData();
         media.file && formData.append('file', media.file);
-        this.blobService.uploadPostMedia(this.data.post?.id, formData).subscribe({
+        this.blobService.uploadPostMedia(formData).subscribe({
           next: (response) => {
+            this.addedMedias.push(response.id);
             media.id = response.id;
             media.status = 'uploaded';
           },
@@ -174,6 +176,9 @@ export class PostForm {
 
     this.deletedMedias.length > 0 &&
       this.deletedMedias.map((media) => formData.append('deletedMedias', media));
+
+    this.addedMedias.length > 0 &&
+      this.addedMedias.map((media) => formData.append('addedMedias', media));
 
     this.postApi.updatePost(this.data.post.id, formData).subscribe({
       next: (response) => {

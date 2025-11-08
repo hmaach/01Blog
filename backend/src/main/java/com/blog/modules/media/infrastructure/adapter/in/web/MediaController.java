@@ -134,22 +134,22 @@ public class MediaController {
         }
     }
 
-    @PostMapping("/posts/{postId}")
-    public ResponseEntity<MediaResponse> uploadMediaToPost(
-            HttpServletRequest request,
-            @PathVariable UUID postId,
-            @RequestParam("file") MultipartFile file
-    ) {
-        postMediaValidator.validate(file);
-        UUID userId = jwtService.extractUserIdFromRequest(request);
+    // @PostMapping("/posts/{postId}")
+    // public ResponseEntity<MediaResponse> uploadMediaToPost(
+    //         HttpServletRequest request,
+    //         @PathVariable UUID postId,
+    //         @RequestParam("file") MultipartFile file
+    // ) {
+    //     postMediaValidator.validate(file);
+    //     UUID userId = jwtService.extractUserIdFromRequest(request);
 
-        try {
-            Media media = mediaService.uploadMediaToPost(userId, postId, file);
-            return ResponseEntity.ok(MediaResponse.fromDomain(media));
-        } catch (IOException | java.io.IOException | IllegalStateException e) {
-            throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
-        }
-    }
+    //     try {
+    //         Media media = mediaService.uploadMediaToPost(userId, postId, file);
+    //         return ResponseEntity.ok(MediaResponse.fromDomain(media));
+    //     } catch (IOException | java.io.IOException | IllegalStateException e) {
+    //         throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
+    //     }
+    // }
 
     @DeleteMapping("/posts/{postId}/{mediaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
