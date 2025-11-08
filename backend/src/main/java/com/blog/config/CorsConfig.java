@@ -1,4 +1,4 @@
-package com.blog.shared.infrastructure.config;
+package com.blog.config;
 
 import java.util.List;
 
