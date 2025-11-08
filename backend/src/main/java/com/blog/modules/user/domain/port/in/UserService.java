@@ -30,4 +30,6 @@ public interface UserService {
 
     void deleteUser(UUID id);
 
+    void incrementImpressionsCount(List<UUID> of);
+
 }

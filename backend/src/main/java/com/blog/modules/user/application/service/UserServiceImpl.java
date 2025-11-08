@@ -139,4 +139,10 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    @Override
+    public void incrementImpressionsCount(List<UUID> of) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'incrementImpressionsCount'");
+    }
+
 }
