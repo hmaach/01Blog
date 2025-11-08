@@ -5,8 +5,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.blog.modules.admin.domain.port.in.AdminPostService;
-import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.infrastructure.adapter.out.persistence.post.PostRepositoryImpl;
+import com.blog.modules.post.infrastructure.exception.PostNotFoundException;
 
 public class AdminPostServiceImpl implements AdminPostService {
 

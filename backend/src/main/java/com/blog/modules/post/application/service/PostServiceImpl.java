@@ -10,11 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.blog.modules.media.domain.exception.MediaStorageException;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
+import com.blog.modules.media.infrastructure.exception.MediaStorageException;
 import com.blog.modules.post.domain.event.PostFetchedEvent;
-import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.CommentService;
 import com.blog.modules.post.domain.port.in.LikeService;
@@ -22,8 +21,9 @@ import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.domain.port.out.PostRepository;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand;
-import com.blog.modules.user.domain.exception.UserNotFoundException;
+import com.blog.modules.post.infrastructure.exception.PostNotFoundException;
 import com.blog.modules.user.domain.port.in.UserService;
+import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 

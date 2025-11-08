@@ -7,11 +7,11 @@ import java.util.UUID;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.blog.modules.post.domain.exception.CommentNotFoundException;
 import com.blog.modules.post.domain.model.Comment;
 import com.blog.modules.post.domain.port.in.CommentService;
 import com.blog.modules.post.domain.port.out.CommentRepository;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreateCommentCommand;
+import com.blog.modules.post.infrastructure.exception.CommentNotFoundException;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
 
 @Service

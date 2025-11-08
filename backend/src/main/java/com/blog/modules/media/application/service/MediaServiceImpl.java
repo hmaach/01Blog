@@ -9,14 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blog.modules.media.domain.exception.MediaNotFoundException;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
 import com.blog.modules.media.domain.port.out.MediaRepository;
-import com.blog.modules.post.domain.exception.PostNotFoundException;
+import com.blog.modules.media.infrastructure.exception.MediaNotFoundException;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.out.PostRepository;
+import com.blog.modules.post.infrastructure.exception.PostNotFoundException;
 import com.blog.modules.user.domain.port.out.UserRepository;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;

@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blog.modules.media.domain.exception.EmptyMediaFileException;
-import com.blog.modules.media.domain.exception.InvalidMediaTypeException;
-import com.blog.modules.media.domain.exception.TooLargeMediaFileException;
+import com.blog.modules.media.infrastructure.exception.EmptyMediaFileException;
+import com.blog.modules.media.infrastructure.exception.InvalidMediaTypeException;
+import com.blog.modules.media.infrastructure.exception.TooLargeMediaFileException;
 
 public abstract class MediaValidator {
 

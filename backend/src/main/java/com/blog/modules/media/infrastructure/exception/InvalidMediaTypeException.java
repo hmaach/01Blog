@@ -1,4 +1,4 @@
-package com.blog.modules.media.domain.exception;
+package com.blog.modules.media.infrastructure.exception;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.blog.modules.post.domain.exception;
+package com.blog.modules.post.infrastructure.exception;
 
 import org.springframework.http.HttpStatus;
 

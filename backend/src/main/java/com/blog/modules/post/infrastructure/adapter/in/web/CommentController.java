@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.modules.post.domain.exception.PostNotFoundException;
 import com.blog.modules.post.domain.model.Comment;
 import com.blog.modules.post.domain.port.in.CommentService;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CommentResponse;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreateCommentCommand;
+import com.blog.modules.post.infrastructure.exception.PostNotFoundException;
 import com.blog.shared.infrastructure.security.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;

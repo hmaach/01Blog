@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.application.service.UserServiceImpl;
-import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.CurrentUserResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserProfileResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
+import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 import com.blog.shared.infrastructure.security.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;

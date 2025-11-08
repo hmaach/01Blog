@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.blog.modules.admin.domain.port.in.AdminUserService;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.UpdateUserRoleCommand;
-import com.blog.modules.user.domain.exception.UserNotFoundException;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
+import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
