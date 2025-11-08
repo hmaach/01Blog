@@ -1,6 +1,5 @@
 package com.blog.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,10 +23,7 @@ import com.blog.shared.infrastructure.security.JwtFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
     private final JwtFilter jwtFilter;
-
-    @Autowired
     private final CustomUserDetailsService userDetailsService;
 
     public SecurityConfig(JwtFilter jwtFilter, CustomUserDetailsService userDetailsService) {

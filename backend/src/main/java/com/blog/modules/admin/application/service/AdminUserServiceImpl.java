@@ -2,22 +2,20 @@ package com.blog.modules.admin.application.service;
 
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blog.modules.admin.domain.port.in.AdminUserService;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.UpdateUserRoleCommand;
 import com.blog.modules.user.domain.model.User;
-import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
+import com.blog.modules.user.domain.port.out.UserRepository;
 import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
 
-    @Autowired
-    private final UserRepositoryImpl userRepository;
+    private final UserRepository userRepository;
 
-    public AdminUserServiceImpl(UserRepositoryImpl userRepository) {
+    public AdminUserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

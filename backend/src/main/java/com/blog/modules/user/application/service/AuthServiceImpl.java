@@ -14,23 +14,21 @@ import com.blog.modules.media.application.validation.AvatarMediaValidator;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.AuthService;
+import com.blog.modules.user.domain.port.out.UserRepository;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
-import com.blog.modules.user.infrastructure.adapter.out.persistence.UserRepositoryImpl;
 import com.blog.modules.user.infrastructure.exception.EmailAlreadyExistsException;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 import com.blog.shared.infrastructure.security.JwtService;
 import com.blog.utils.MarkdownUtils;
 
 import io.jsonwebtoken.io.IOException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
-    @Autowired
-    private final UserRepositoryImpl userRepository;
 
     @Autowired
     AuthenticationManager authManager;
@@ -40,11 +38,12 @@ public class AuthServiceImpl implements AuthService {
 
     private final MediaService mediaService;
     private final AvatarMediaValidator avatarMediaValidator;
+    private final UserRepository userRepository;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public AuthServiceImpl(
-            UserRepositoryImpl userRepository,
+            UserRepository userRepository,
             MediaService mediaService,
             AvatarMediaValidator avatarMediaValidator
     ) {
@@ -54,6 +53,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public UserResponse register(RegisterUserCommand cmd) {
         if (!userRepository.findByEmail(cmd.email()).isEmpty()) {
             throw new EmailAlreadyExistsException(cmd.email());

@@ -12,6 +12,8 @@ public interface UserService {
 
     Boolean userExist(UUID id);
 
+    boolean userExistByUsername(String username);
+
     User findByUsername(String username);
 
     User findByEmail(String email);
@@ -22,7 +24,10 @@ public interface UserService {
 
     User updateUser(UUID id, UpdateUserCommand command);
 
+    void subscribeToUser(UUID currUserId, UUID targetUserId);
+
+    void unsubscribeToUser(UUID currUserId, UUID targetUserId);
+
     void deleteUser(UUID id);
 
-    boolean userExistByUsername(String username);
 }

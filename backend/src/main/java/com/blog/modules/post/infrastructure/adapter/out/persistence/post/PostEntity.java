@@ -3,7 +3,7 @@ package com.blog.modules.post.infrastructure.adapter.out.persistence.post;
 import java.time.Instant;
 import java.util.UUID;
 
-import com.blog.modules.user.infrastructure.adapter.out.persistence.UserEntity;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.user.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

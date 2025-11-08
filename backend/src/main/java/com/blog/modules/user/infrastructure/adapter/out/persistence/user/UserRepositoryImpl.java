@@ -1,0 +1,94 @@
+package com.blog.modules.user.infrastructure.adapter.out.persistence.user;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.stereotype.Repository;
+
+import com.blog.modules.user.domain.model.User;
+import com.blog.modules.user.domain.port.out.UserRepository;
+
+@Repository
+public class UserRepositoryImpl implements UserRepository {
+
+    private final SpringDataUserRepository jpaRepository;
+
+    public UserRepositoryImpl(SpringDataUserRepository jpaRepository) {
+        this.jpaRepository = jpaRepository;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return jpaRepository.findAll()
+                .stream()
+                .map(UserMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return jpaRepository.findById(id).map(UserMapper::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return jpaRepository.findByEmail(email).map(UserMapper::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return jpaRepository.findByUsername(username).map(UserMapper::toDomain);
+    }
+
+    @Override
+    public String getUserReadme(UUID userId) {
+        return jpaRepository.findReadmeById(userId);
+    }
+
+    @Override
+    public boolean existsById(UUID userId) {
+        return jpaRepository.existsById(userId);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return jpaRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return jpaRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Optional<UUID> getAvatarId(UUID userId) {
+        return jpaRepository.findAvatarMediaIdById(userId);
+    }
+
+    @Override
+    public void updateAvatarId(UUID userId, UUID avatarId) {
+        jpaRepository.updateAvatarId(userId, avatarId);
+    }
+
+    @Override
+    public User save(User user) {
+        return UserMapper.toDomain(jpaRepository.save(UserMapper.toEntity(user)));
+    }
+
+    @Override
+    public void ban(UUID userId) {
+        jpaRepository.ban(userId);
+    }
+
+    @Override
+    public void unban(UUID userId) {
+        jpaRepository.unban(userId);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        jpaRepository.deleteById(id);
+    }
+
+}

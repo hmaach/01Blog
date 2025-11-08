@@ -1,4 +1,4 @@
-package com.blog.modules.user.infrastructure.adapter.out.persistence;
+package com.blog.modules.user.infrastructure.adapter.out.persistence.user;
 
 import java.time.Instant;
 import java.util.UUID;

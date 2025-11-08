@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -94,6 +95,20 @@ public class UserController {
     public UserResponse updateUser(HttpServletRequest request, @Valid @RequestBody UpdateUserCommand cmd) {
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
         return UserResponse.fromDomain(userService.updateUser(currUserId, cmd));
+    }
+
+    @PostMapping("/subscribe/{targetUserId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void subscribeToUser(HttpServletRequest request, @PathVariable UUID targetUserId) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        userService.subscribeToUser(currUserId, targetUserId);
+    }
+
+    @DeleteMapping("/subscribe/{targetUserId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void unsubscribeToUser(HttpServletRequest request, @PathVariable UUID targetUserId) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        userService.unsubscribeToUser(currUserId, targetUserId);
     }
 
     @DeleteMapping
