@@ -49,6 +49,7 @@ The backend follows a modular Clean Architecture approach with four distinct lay
 ### Layer Responsibilities
 
 #### 1. **Domain Layer** (`domain/`)
+
 - **Purpose**: Pure business logic, framework-independent
 - **Contains**:
   - Domain models (entities)
@@ -58,6 +59,7 @@ The backend follows a modular Clean Architecture approach with four distinct lay
 - **Dependencies**: None (fully isolated)
 
 #### 2. **Application Layer** (`application/`)
+
 - **Purpose**: Orchestrates business workflows
 - **Contains**:
   - Service implementations
@@ -67,6 +69,7 @@ The backend follows a modular Clean Architecture approach with four distinct lay
 - **Dependencies**: Domain layer only
 
 #### 3. **Infrastructure Layer** (`infrastructure/`)
+
 - **Purpose**: External integrations and technical concerns
 - **Contains**:
   - **Inbound Adapters** (`adapter/in/web/`):
@@ -135,7 +138,7 @@ src/main/java/com/blog/
 │   │   └── model/BaseEntity.java
 │   └── infrastructure/
 │       ├── adapter/in/web/
-│       │   ├── InfoController.java     
+│       │   ├── InfoController.java
 │       │   └── IntegrityController.java
 │       ├── config/
 │       │   ├── SecurityConfig.java
@@ -148,7 +151,7 @@ src/main/java/com/blog/
 │       │   └── CustomUserDetailsService.java
 │       └── exception/                  # Base exceptions
 │
-├── utils/                           # Helper utilities
+├── utils/                              # Helper utilities
 └── BlogApplication.java                # Main application
 ```
 
@@ -157,25 +160,32 @@ src/main/java/com/blog/
 ## Modules
 
 ### User Module
+
 **Purpose**: Authentication, authorization, and user profile management
 
 **Key Features**:
+
 - User registration with validation
 - JWT-based authentication
 - Profile management (bio, avatar)
 - Password encryption (BCrypt)
 
 **Main Components**:
+
 - `AuthService`: Login, token generation
 - `UserService`: CRUD operations, profile updates
 - `UserController`: `/api/auth/*`, `/api/users/*`
 
+**[User Module Documentation →](https://github.com/hmaach/01Blog/tree/main/backend/src/main/java/com/blog/modules/user/README.md)**
+
 ---
 
 ### Post Module
+
 **Purpose**: Content creation, engagement, and social interactions
 
 **Key Features**:
+
 - Create, read, update, delete posts
 - Rich text content support
 - Comments and nested replies
@@ -183,22 +193,28 @@ src/main/java/com/blog/
 - Post statistics tracking
 
 **Main Components**:
+
 - `PostService`: Post lifecycle management
 - `CommentService`: Comment operations
 - `LikeService`: Engagement tracking
 - Event-driven architecture for notifications
 
 **Domain Events**:
+
 - `PostLikedEvent`: Triggered on likes
 - `PostCommentedEvent`: Triggered on comments
 - `PostFetchedEvent`: View count tracking
 
+**[Post Module Documentation →](https://github.com/hmaach/01Blog/tree/main/backend/src/main/java/com/blog/modules/post/README.md)**
+
 ---
 
 ### Media Module
+
 **Purpose**: File upload, storage, and management
 
 **Key Features**:
+
 - Multi-file upload support
 - Image and video validation
 - Multiple storage backends (local/cloud)
@@ -206,50 +222,52 @@ src/main/java/com/blog/
 - Secure file serving
 
 **Storage Implementations**:
+
 - `LocalFileStorage`: Filesystem storage
 - `CloudFileStorage`: Cloud provider integration (S3, etc.)
 
 **Validators**:
+
 - `AvatarMediaValidator`: Profile pictures (max 2MB, JPG/PNG)
 - `PostMediaValidator`: Post attachments (max 10MB, images/videos)
+
+**[User Module Documentation →](https://github.com/hmaach/01Blog/tree/main/backend/src/main/java/com/blog/modules/media/README.md)**
 
 ---
 
 ### Admin Module
+
 **Purpose**: Platform moderation and management
 
 **Key Features**:
+
 - User management (block/unblock, role assignment)
 - Content moderation (remove posts/comments)
 - Report management
 - Platform statistics
 
 **Main Components**:
+
 - `AdminUserService`: User administration
 - `AdminPostService`: Content moderation
 - `AdminReportService`: Report handling
 
+**[Admin Module Documentation →](https://github.com/hmaach/01Blog/tree/main/backend/src/main/java/com/blog/modules/admin/README.md)**
+
 ---
 
 ### Report Module
+
 **Purpose**: Content reporting and community safety
 
 **Key Features**:
+
 - Report posts, comments, users
 - Report categorization
 - Report status tracking
 - Admin review workflow
 
----
-
-### Notification Module
-**Purpose**: Real-time user notifications
-
-**Key Features**:
-- Event-driven notifications
-- Multiple notification types (likes, comments, follows)
-- Notification preferences
-- Read/unread status
+**[Report Module Documentation →](https://github.com/hmaach/01Blog/tree/main/backend/src/main/java/com/blog/modules/report/README.md)**
 
 ---
 
@@ -276,14 +294,13 @@ TODO...
 
 ## API Documentation
 
-**[API Documentation →](./README-api.md)**
+**[API Documentation →](https://github.com/hmaach/01Blog/tree/main/docs/README-api.md)**
 
 ---
 
-##  Database
+## Database
 
-**[Database Documentation →](./README-database.md)**
----
+**[Database Documentation →](https://github.com/hmaach/01Blog/tree/main/docs/README-database.md)**
 
 ## Security
 
@@ -296,7 +313,7 @@ TODO...
 5. `JwtFilter` validates token on each request
 6. User principal injected into security context
 
-**[Security Documentation →](./README-security.md)**
+**[Security Documentation →](https://github.com/hmaach/01Blog/tree/main/docs/README-security.md)**
 
 ---
 

@@ -2,7 +2,7 @@
 
 <div align="center">
   
-![01Blog](./docs/assets/main-img.png)
+![01Blog](https://raw.githubusercontent.com/hmaach/01Blog/main/docs/assets/main-img.png)
 
 **A social blogging platform for students to share their learning journey**
 
@@ -56,7 +56,7 @@ Built with modern technologies, 01Blog combines a robust **Java Spring Boot** ba
 
 01Blog follows **Clean Architecture** principles, ensuring maintainability, testability, and scalability through clear separation of concerns.
 
-![Clean Architecture Diagram](./docs/assets/clean_architecture.png)
+![Clean Architecture Diagram](https://raw.githubusercontent.com/hmaach/01Blog/main/docs/assets/clean_architecture.png)
 
 ### Architecture Layers
 
@@ -88,7 +88,7 @@ View the complete database schema and relationships:
 ### Backend Documentation
 Comprehensive backend setup, API endpoints, and implementation details:
 
-**[Backend Documentation →](./docs/README-backend.md)**
+**[Backend Documentation →](https://github.com/hmaach/01Blog/tree/main/backend/README.md)**
 
 Topics covered:
 - Installation and setup
@@ -100,7 +100,7 @@ Topics covered:
 ### Frontend Documentation
 Frontend architecture, components, and development guide:
 
-**[Frontend Documentation →](./docs/README-frontend.md)**
+**[Frontend Documentation →](https://github.com/hmaach/01Blog/tree/main/frontend/README.md)**
 
 Topics covered:
 - Installation and setup
