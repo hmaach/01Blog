@@ -22,6 +22,8 @@ import com.blog.modules.post.domain.port.out.PostRepository;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand;
 import com.blog.modules.post.infrastructure.exception.PostNotFoundException;
+import com.blog.modules.user.domain.event.UserCreatedPostEvent;
+import com.blog.modules.user.domain.event.UserDeletedPostEvent;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
@@ -36,8 +38,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserService userService;
     private final MediaService mediaService;
-    private CommentService commentService;
-    private LikeService likeService;
+    private final CommentService commentService;
+    private final LikeService likeService;
     private final ApplicationEventPublisher eventPublisher;
 
     public PostServiceImpl(
@@ -104,12 +106,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Post createPost(CreatePostCommand cmd, UUID userId) {
+    public Post createPost(CreatePostCommand cmd, UUID currentUserId) {
         UUID postId = UUID.randomUUID();
 
         Post post = new Post(
                 postId,
-                userId,
+                currentUserId,
                 cmd.title(),
                 cmd.body(),
                 Instant.now()
@@ -123,7 +125,7 @@ public class PostServiceImpl implements PostService {
                 mediaService.linkMediaToPost(mediaId);
             }
         }
-
+        eventPublisher.publishEvent(new UserCreatedPostEvent(currentUserId));
         return post;
     }
 
@@ -217,5 +219,6 @@ public class PostServiceImpl implements PostService {
             }
         }
         postRepository.deleteById(postId);
+        eventPublisher.publishEvent(new UserDeletedPostEvent(currentUserId));
     }
 }

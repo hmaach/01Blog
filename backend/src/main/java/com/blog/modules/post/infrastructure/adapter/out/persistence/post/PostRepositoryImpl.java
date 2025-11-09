@@ -10,21 +10,21 @@ import org.springframework.stereotype.Repository;
 
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.out.PostRepository;
-
-import jakarta.persistence.EntityManager;
+import com.blog.modules.post.infrastructure.adapter.out.persistence.postmedia.PostMediaEntity;
+import com.blog.modules.post.infrastructure.adapter.out.persistence.postmedia.SpringDataPostMediaRepository;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
 
     private final SpringDataPostRepository jpaRepository;
-    private final EntityManager entityManager;
+    private final SpringDataPostMediaRepository postMediaJpaRepository;
 
-    public PostRepositoryImpl(SpringDataPostRepository jpaRepository, EntityManager entityManager) {
+    public PostRepositoryImpl(SpringDataPostRepository jpaRepository,
+            SpringDataPostMediaRepository postMediaJpaRepository) {
         this.jpaRepository = jpaRepository;
-        this.entityManager = entityManager;
+        this.postMediaJpaRepository = postMediaJpaRepository;
     }
 
-    // --- CRUD operations ---
     @Override
     public List<Post> findAll(Instant before, Pageable pageable) {
 
@@ -58,8 +58,8 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Optional<Post> findById(UUID id) {
-        return jpaRepository.findById(id).map(PostMapper::toDomain);
+    public Optional<Post> findById(UUID postId) {
+        return jpaRepository.findById(postId).map(PostMapper::toDomain);
     }
 
     @Override
@@ -74,73 +74,34 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void deleteById(UUID id) {
-        jpaRepository.deleteById(id);
-    }
-
-    // --- Custom operations ---
-    @Override
     public void attachMediaToPost(UUID postId, UUID mediaId) {
         PostMediaEntity entity = new PostMediaEntity(postId, mediaId, Instant.now());
-        entityManager.persist(entity);
+        postMediaJpaRepository.save(entity);
     }
 
     @Override
     public void incrementLikesCount(UUID postId) {
-        entityManager.createQuery("""
-            UPDATE PostEntity p
-            SET p.likesCount = p.likesCount + 1
-            WHERE p.id = :postId
-        """)
-                .setParameter("postId", postId)
-                .executeUpdate();
+        jpaRepository.incrementLikesCount(postId);
     }
 
     @Override
     public void decrementLikesCount(UUID postId) {
-        entityManager.createQuery("""
-            UPDATE PostEntity p
-            SET p.likesCount = p.likesCount - 1
-            WHERE p.id = :postId
-        """)
-                .setParameter("postId", postId)
-                .executeUpdate();
+        jpaRepository.decrementLikesCount(postId);
     }
 
     @Override
     public void incrementImpressionsCount(List<UUID> postIds) {
-        entityManager.createQuery("""
-        UPDATE PostEntity p
-        SET p.impressionsCount = p.impressionsCount + 1
-        WHERE p.id IN :postIds
-    """)
-                .setParameter("postIds", postIds)
-                .executeUpdate();
-    }
-
-    @Override
-    public void deletePostMediaLinks(UUID postId) {
-        entityManager.createQuery("""
-        DELETE FROM PostMediaEntity pm
-        WHERE pm.id.postId = :postId
-    """)
-                .setParameter("postId", postId)
-                .executeUpdate();
-    }
-
-    @Override
-    public void deleteMediaLinks(UUID mediaId) {
-        entityManager.createQuery("""
-                    DELETE FROM PostMediaEntity pm
-                    WHERE pm.id.mediaId = :mediaId
-                """)
-                .setParameter("mediaId", mediaId)
-                .executeUpdate();
+        jpaRepository.incrementImpressionsCount(postIds);
     }
 
     @Override
     public void hidePostById(UUID postId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'hidePostById'");
+        jpaRepository.hidePostById(postId);
     }
+
+    @Override
+    public void deleteById(UUID postId) {
+        jpaRepository.deleteById(postId);
+    }
+
 }

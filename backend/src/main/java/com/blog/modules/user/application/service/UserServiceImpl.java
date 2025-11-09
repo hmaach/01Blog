@@ -3,9 +3,13 @@ package com.blog.modules.user.application.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.blog.modules.user.domain.event.UserFetchedEvent;
+import com.blog.modules.user.domain.event.UserWasSubscribedEvent;
+import com.blog.modules.user.domain.event.UserWasUnsubscribedEvent;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.domain.port.out.SubscriptionRepository;
@@ -23,12 +27,16 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public UserServiceImpl(UserRepository userRepository, SubscriptionRepository subscriptionRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+            SubscriptionRepository subscriptionRepository,
+            ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.subscriptionRepository = subscriptionRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -37,16 +45,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id.toString()));
+    public User findById(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
         return user;
     }
 
     // TODO : implement userExist
     @Override
-    public Boolean userExist(UUID id) {
-        return userRepository.findById(id).isPresent();
+    public Boolean userExist(UUID userId) {
+        return userRepository.findById(userId).isPresent();
     }
 
     @Override
@@ -55,8 +63,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getUserReadme(UUID userId) {
-        return userRepository.getUserReadme(userId);
+    public String getUserReadme(UUID currentUserId, UUID userId) {
+        String readme = userRepository.getUserReadme(userId);
+        if (!currentUserId.equals(userId)) { // prevent increment impressions if the user consulted his own profile 
+            eventPublisher.publishEvent(new UserFetchedEvent(userId));
+        }
+        return readme;
     }
 
     @Override
@@ -108,6 +120,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void deleteUser(UUID userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
+        userRepository.deleteById(userId);
+    }
+
+    @Override
+    @Transactional
     public void subscribeToUser(UUID currUserId, UUID targetUserId) {
         if (currUserId.equals(targetUserId)) {
             throw new ConflictException("You can't subscribe to youself.");
@@ -117,6 +137,7 @@ public class UserServiceImpl implements UserService {
         }
 
         subscriptionRepository.subscribe(currUserId, targetUserId);
+        eventPublisher.publishEvent(new UserWasSubscribedEvent(targetUserId));
     }
 
     @Override
@@ -129,20 +150,38 @@ public class UserServiceImpl implements UserService {
             throw new ConflictException("You must be already subscribed to this user");
         }
         subscriptionRepository.unsubscribe(currUserId, targetUserId);
+        eventPublisher.publishEvent(new UserWasUnsubscribedEvent(targetUserId));
+    }
+
+    // counters
+    @Override
+    @Transactional
+    public void incrementImpressionsCount(UUID userId) {
+        userRepository.incrementImpressionsCount(userId);
     }
 
     @Override
     @Transactional
-    public void deleteUser(UUID id) {
-        userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id.toString()));
-        userRepository.deleteById(id);
+    public void incrementSubscriptionsCount(UUID userId) {
+        userRepository.incrementSubscriptionsCount(userId);
     }
 
     @Override
-    public void incrementImpressionsCount(List<UUID> of) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'incrementImpressionsCount'");
+    @Transactional
+    public void decrementSubscriptionsCount(UUID userId) {
+        userRepository.decrementSubscriptionsCount(userId);
+    }
+
+    @Override
+    @Transactional
+    public void incrementPostsCount(UUID userId) {
+        userRepository.incrementPostsCount(userId);
+    }
+
+    @Override
+    @Transactional
+    public void decrementPostsCount(UUID userId) {
+        userRepository.decrementPostsCount(userId);
     }
 
 }

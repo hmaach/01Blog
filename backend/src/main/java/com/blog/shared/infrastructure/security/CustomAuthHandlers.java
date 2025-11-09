@@ -7,7 +7,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.blog.shared.infrastructure.exception.UnauthorizedException;
-import com.blog.utils.JsonResponseWriter;
+import com.blog.shared.utils.JsonResponseWriter;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

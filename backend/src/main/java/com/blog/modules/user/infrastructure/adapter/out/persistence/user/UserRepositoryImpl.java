@@ -87,6 +87,33 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void incrementImpressionsCount(UUID userId) {
+        jpaRepository.incrementImpressionsCount(userId);
+    }
+
+    @Override
+    public void incrementSubscriptionsCount(UUID userId) {
+        jpaRepository.incrementSubscriptionsCount(userId);
+    }
+
+    @Override
+    public void decrementSubscriptionsCount(UUID userId) {
+        jpaRepository.decrementSubscriptionsCount(userId);
+    }
+
+    @Override
+    public void incrementPostsCount(UUID userId) {
+
+        System.err.println("------------------- " + userId);
+        jpaRepository.incrementPostsCount(userId);
+    }
+
+    @Override
+    public void decrementPostsCount(UUID userId) {
+        jpaRepository.decrementPostsCount(userId);
+    }
+
+    @Override
     public void deleteById(UUID id) {
         jpaRepository.deleteById(id);
     }

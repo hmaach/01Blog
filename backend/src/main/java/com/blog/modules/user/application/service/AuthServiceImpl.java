@@ -22,7 +22,7 @@ import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 import com.blog.modules.user.infrastructure.exception.EmailAlreadyExistsException;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 import com.blog.shared.infrastructure.security.JwtService;
-import com.blog.utils.MarkdownUtils;
+import com.blog.shared.utils.MarkdownUtils;
 
 import io.jsonwebtoken.io.IOException;
 import jakarta.transaction.Transactional;

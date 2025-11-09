@@ -1,4 +1,4 @@
-package com.blog.utils;
+package com.blog.shared.utils;
 
 public class ValidationUtils {
 

@@ -1,4 +1,4 @@
-package com.blog.utils;
+package com.blog.shared.utils;
 
 import java.time.Instant;
 import java.time.ZoneId;

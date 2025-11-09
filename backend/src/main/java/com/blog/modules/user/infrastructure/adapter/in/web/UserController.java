@@ -84,11 +84,12 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/readme")
-    public String getUserReadme(@PathVariable UUID userId) {
+    public String getUserReadme(HttpServletRequest request, @PathVariable UUID userId) {
         if (!userService.userExist(userId)) {
             throw new UserNotFoundException(userId.toString());
         }
-        return userService.getUserReadme(userId);
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        return userService.getUserReadme(currUserId, userId);
     }
 
     @PatchMapping

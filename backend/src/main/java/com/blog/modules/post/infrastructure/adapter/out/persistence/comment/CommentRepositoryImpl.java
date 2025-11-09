@@ -10,18 +10,13 @@ import org.springframework.stereotype.Repository;
 import com.blog.modules.post.domain.model.Comment;
 import com.blog.modules.post.domain.port.out.CommentRepository;
 
-import jakarta.persistence.EntityManager;
-
 @Repository
 public class CommentRepositoryImpl implements CommentRepository {
 
     private final SpringDataCommentRepository jpaRepository;
-    @SuppressWarnings("unused")
-    private final EntityManager entityManager;
 
-    public CommentRepositoryImpl(SpringDataCommentRepository jpaRepository, EntityManager entityManager) {
+    public CommentRepositoryImpl(SpringDataCommentRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
-        this.entityManager = entityManager;
     }
 
     @Override

@@ -34,5 +34,15 @@ public interface UserRepository {
 
     void unban(UUID userId);
 
+    void incrementImpressionsCount(UUID userId);
+
+    void incrementSubscriptionsCount(UUID userId);
+
+    void decrementSubscriptionsCount(UUID userId);
+
+    void incrementPostsCount(UUID userId);
+
+    void decrementPostsCount(UUID userId);
+
     void deleteById(UUID id);
 }

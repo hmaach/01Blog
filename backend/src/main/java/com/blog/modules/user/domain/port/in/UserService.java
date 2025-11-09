@@ -8,9 +8,9 @@ import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand
 
 public interface UserService {
 
-    User findById(UUID id);
+    User findById(UUID userId);
 
-    Boolean userExist(UUID id);
+    Boolean userExist(UUID userId);
 
     boolean userExistByUsername(String username);
 
@@ -20,16 +20,24 @@ public interface UserService {
 
     List<User> findAll();
 
-    String getUserReadme(UUID userId);
+    String getUserReadme(UUID currentUserId, UUID userId);
 
-    User updateUser(UUID id, UpdateUserCommand command);
+    User updateUser(UUID userId, UpdateUserCommand command);
 
     void subscribeToUser(UUID currUserId, UUID targetUserId);
 
     void unsubscribeToUser(UUID currUserId, UUID targetUserId);
 
-    void deleteUser(UUID id);
+    void incrementImpressionsCount(UUID userId);
 
-    void incrementImpressionsCount(List<UUID> of);
+    void incrementSubscriptionsCount(UUID userId);
+
+    void decrementSubscriptionsCount(UUID userId);
+
+    void incrementPostsCount(UUID userId);
+
+    void decrementPostsCount(UUID userId);
+
+    void deleteUser(UUID userId);
 
 }

@@ -1,4 +1,6 @@
-package com.blog.modules.post.infrastructure.adapter.out.persistence.post;
+package com.blog.modules.post.infrastructure.adapter.out.persistence.postmedia;
+
+
 
 import java.io.Serializable;
 import java.time.Instant;
