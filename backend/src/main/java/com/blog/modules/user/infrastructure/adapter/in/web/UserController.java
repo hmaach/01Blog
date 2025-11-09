@@ -76,8 +76,11 @@ public class UserController {
         if (currUserId.equals(user.getId())) {
             relation = "owner";
         } else {
-            // TODO: check if the currunt user follow this user
-            relation = "subscribed";
+            if (userService.isSubscribed(currUserId, user.getId())) {
+                relation = "subscribed";
+            } else {
+                relation = "unsubscribed";
+            }
         }
 
         return UserProfileResponse.fromDomain(user, avatarUrl, relation);

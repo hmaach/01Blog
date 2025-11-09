@@ -86,6 +86,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isSubscribed(UUID currUserId, UUID targetUserId) {
+        return subscriptionRepository.isSubscribed(currUserId, targetUserId);
+    }
+
+    @Override
     @Transactional
     public User updateUser(UUID id, UpdateUserCommand cmd) {
         User user = userRepository.findById(id)

@@ -1,6 +1,13 @@
 <aside class="sidebar">
   <mat-card class="profileCard">
-    @if (user) {
+    @if (user) { @if (user.relation !== 'owner') {
+    <div class="reportContainer" (click)="openReportDialog()">
+      <button matIconButton>
+        <mat-icon style="margin-bottom: 2px">report</mat-icon>
+      </button>
+      <span>report</span>
+    </div>
+    }
     <div class="profileHeader">
       <ng-container>
         @if (avatarUrl) {

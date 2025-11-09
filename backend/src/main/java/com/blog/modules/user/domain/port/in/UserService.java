@@ -40,4 +40,6 @@ public interface UserService {
 
     void deleteUser(UUID userId);
 
+    boolean isSubscribed(UUID currUserId, UUID targetUserId);
+
 }

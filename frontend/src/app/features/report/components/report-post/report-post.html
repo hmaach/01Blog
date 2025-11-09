@@ -1,43 +1,6 @@
-<!-- <div class="reportModal" (click)="closeDialog()">
-  <mat-card class="reportContent" (click)="stopPropagation($event)">
-    <h2 class="reportTitle">Report Post</h2>
-
-    <mat-form-field appearance="fill" class="w-full">
-      <mat-label>Category</mat-label>
-      <mat-select [(ngModel)]="reportCategory">
-        <mat-option value="spam">Spam</mat-option>
-        <mat-option value="offensive">Offensive Content</mat-option>
-        <mat-option value="inappropriate">Inappropriate</mat-option>
-        <mat-option value="other">Other</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="w-full">
-      <mat-label>Reason</mat-label>
-      <textarea
-        matInput
-        [(ngModel)]="reportReason"
-        placeholder="Please describe why you're reporting this post...">
-      </textarea>
-    </mat-form-field>
-
-    <div class="reportActions">
-      <button mat-stroked-button color="warn" (click)="closeDialog()">Cancel</button>
-      <button
-        mat-flat-button
-        color="primary"
-        (click)="handleSubmit()"
-        [disabled]="!reportReason.trim()">
-        Submit Report
-      </button>
-    </div>
-  </mat-card>
-</div> -->
-
-
 <div class="reportModal" (click)="closeDialog()">
   <mat-card class="reportContent" (click)="stopPropagation($event)">
-    <h2 class="reportTitle">Report Post</h2>
+    <h2 class="reportTitle">Report {{ reported }}</h2>
 
     <div class="formGroup">
       <label>Category</label>
@@ -55,15 +18,24 @@
     <div class="formGroup">
       <label>Reason</label>
       <mat-form-field appearance="fill" class="w-full">
-        <textarea matInput [(ngModel)]="reportReason"
-          placeholder="Please describe why you're reporting this post..."></textarea>
+        <textarea
+          matInput
+          [(ngModel)]="reportReason"
+          placeholder="Please describe why you're reporting this {{ reported }}..."
+        ></textarea>
       </mat-form-field>
     </div>
 
     <div class="reportActions">
       <button matButton (click)="closeDialog()">Cancel</button>
-      <button matButton="filled" class="primary" (click)="handleSubmit()" [disabled]="!reportReason.trim()">Submit
-        Report</button>
+      <button
+        matButton="filled"
+        class="primary"
+        (click)="handleSubmit()"
+        [disabled]="!reportReason.trim()"
+      >
+        Submit Report
+      </button>
     </div>
   </mat-card>
 </div>

@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ReportApiService } from '../../services/report-api.service';
-import { ReportPostPayload } from '../../models/report-post.model';
+import { ReportPayload } from '../../models/report-post.model';
 
 @Component({
   selector: 'app-report-post',
@@ -22,29 +22,34 @@ import { ReportPostPayload } from '../../models/report-post.model';
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './report-post.html',
-  styleUrl: './report-post.scss'
+  styleUrl: './report-post.scss',
 })
-
 export class ReportPost {
   @Output() close = new EventEmitter<void>();
   @Output() submit = new EventEmitter<{ category: string; reason: string }>();
 
   private reportApi = inject(ReportApiService);
 
-  postId!: string;
   reportCategory = 'spam';
   reportReason = '';
+  reported!: string;
 
   constructor(
     private dialogRef: MatDialogRef<ReportPost>,
-    @Inject(MAT_DIALOG_DATA) public data: { postId: string }
-  ) { }
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      reported: string;
+      userId: string;
+      postId: string | undefined;
+      commentId: string | undefined;
+    }
+  ) {}
 
   ngOnInit(): void {
-    this.postId = this.data.postId;
+    this.reported = this.data.reported;
   }
 
   stopPropagation(event: Event): void {
@@ -56,14 +61,16 @@ export class ReportPost {
   }
 
   handleSubmit(): void {
-    const payload: ReportPostPayload = {
-      postId: this.postId,
+    const payload: ReportPayload = {
+      userId: this.data.userId,
+      postId: this.data.postId,
+      reported: this.data.reported,
       category: this.reportCategory,
-      reason: this.reportReason
+      reason: this.reportReason,
     };
 
-    // console.log('Report submitted:', payload);
-    this.reportApi.reportPost(payload).subscribe();
-    this.closeDialog()
+    console.log('Report submitted:', payload);
+    // this.reportApi.reportPost(payload).subscribe();
+    this.closeDialog();
   }
 }

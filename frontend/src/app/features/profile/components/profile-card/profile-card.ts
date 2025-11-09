@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { formatNumber } from '../../../../shared/lib/format';
 import { RouterLink, RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ReportPost } from '../../../report/components/report-post/report-post';
 
 @Component({
   selector: 'app-profile-card',
@@ -71,6 +72,14 @@ export class ProfileCard implements OnInit {
         console.error('Card: Failed to fetch user profile:', err);
         this.toast.show('Failed to fetch user profile', 'error');
       },
+    });
+  }
+
+  openReportDialog(): void {
+    this.dialog.open(ReportPost, {
+      data: { reported: 'user', userId: this.user?.id },
+      maxHeight: '90vh',
+      panelClass: 'post-report-dialog',
     });
   }
 

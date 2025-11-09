@@ -97,7 +97,7 @@ export class PostDetail {
 
   openReportDialog(): void {
     this.dialog.open(ReportPost, {
-      data: { postId: this.post.id },
+      data: { reported: 'post', userId: this.post.id, postId: this.post.id },
       maxHeight: '90vh',
       panelClass: 'post-report-dialog',
     });

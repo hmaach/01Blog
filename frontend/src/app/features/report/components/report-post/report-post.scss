@@ -28,6 +28,7 @@
   font-weight: 700;
   // color: var(--text-dark);
   margin-bottom: var(--spacing-lg);
+  text-transform: capitalize;
 }
 
 .formGroup {
@@ -38,25 +39,12 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 600;
-  // color: var(--text-dark);
   margin-bottom: var(--spacing-sm);
 }
-
-// .formGroup select,
-// .formGroup textarea {
-//   width: 100%;
-//   padding: var(--spacing-md);
-//   // background-color: var(--bg-dark-tertiary);
-//   border: 1px solid var(--border-dark);
-//   border-radius: var(--radius-lg);
-//   // color: var(--text-dark);
-//   font-size: 0.875rem;
-// }
 
 .formGroup select:focus,
 .formGroup textarea:focus {
   border-color: var(--mat-sys-primary);
-  // outline: none;
 }
 
 .formGroup textarea {
