@@ -29,37 +29,23 @@ export class ProfileApiService {
     });
   }
 
-  // fetchUserReadme(userId: string): Observable<string> {
-  //   const token = this.storageService.getAccessToken();
+  subscribe(targetUserId: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
 
-  //   return this.http.get<string>(`${this.apiUrl}/user/${userId}/readme`, {
-  //     headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-  //     responseType: 'text',
-  //   });
+    return this.http.post<void>(
+      `${this.apiUrl}/user/subscribe/${targetUserId}`,
+      {},
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      }
+    );
+  }
 
-  // return of(`
-  //   # Welcome to My Profile!
+  unsubscribe(targetUserId: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
 
-  //     Hello! 👋 I'm [Your Name], a passionate [Your Profession].
-
-  //     ## About Me
-  //     I specialize in [mention your skills, experience, or areas of interest]. I love working on [types of projects], and I'm always open to learning new technologies.
-  //     - 🔭 Currently working on: [Current Project]
-  //     - 🌱 Currently learning: [Skills you're currently learning]
-  //     - 💬 Ask me about: [Topics you're open to discuss]
-  //     - 📫 How to reach me: [Your Contact Information]
-
-  //     ## Skills
-  //     - 🖥️ [Skill 1]
-  //     - 🔧 [Skill 2]
-  //     - 🎨 [Skill 3]
-
-  //     ## Projects
-  //     Check out some of my awesome work below:
-
-  //     - [Project 1 Name](#) – Brief description of the project.
-  //     - [Project 2 Name](#) – Brief description of the project.
-
-  //     Thanks for visiting my profile! Feel free to connect with me.`);
-  // }
+    return this.http.delete<void>(`${this.apiUrl}/user/subscribe/${targetUserId}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
 }

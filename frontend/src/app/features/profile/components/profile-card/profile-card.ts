@@ -38,12 +38,15 @@ export class ProfileCard implements OnInit {
   @Input() isDialog!: boolean;
   @Input() closeDialog?: () => void;
 
+  isLoading: boolean = false;
   avatarUrl?: string;
   formatNumber = formatNumber;
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
+    console.log(this.user?.relation);
+
     if (this.user) {
       if (this.user.avatarUrl) {
         this.blobService.loadBlob(this.user.avatarUrl).subscribe({
@@ -68,7 +71,6 @@ export class ProfileCard implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Card: Failed to fetch user profile:', err);
         this.toast.show('Failed to fetch user profile', 'error');
       },
     });
@@ -80,6 +82,38 @@ export class ProfileCard implements OnInit {
       maxHeight: '90vh',
       panelClass: 'post-report-dialog',
     });
+  }
+
+  toggleSubscription() {
+    if (this.user?.id) {
+      this.isLoading = true;
+      switch (this.user?.relation) {
+        case 'unsubscribed':
+          this.profileService.subscribe(this.user.id).subscribe({
+            next: () => {
+              if (this.user) this.user.relation = 'subscribed';
+              this.isLoading = false;
+            },
+            error: (e) => {
+              this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+              this.isLoading = false;
+            },
+          });
+          break;
+        case 'subscribed':
+          this.profileService.unsubscribe(this.user.id).subscribe({
+            next: () => {
+              if (this.user) this.user.relation = 'unsubscribed';
+              this.isLoading = false;
+            },
+            error: (e) => {
+              this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+              this.isLoading = false;
+            },
+          });
+          break;
+      }
+    }
   }
 
   preview(media: string) {

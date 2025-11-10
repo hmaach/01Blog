@@ -22,7 +22,7 @@ public class SubscriptionRepositoryImpl implements SubscriptionRepository {
 
     @Override
     public void subscribe(UUID currUserId, UUID targetUserId) {
-        jpaRepository.save(new SubscriptionEntity(currUserId, targetUserId));
+        jpaRepository.executeInsertQuery(currUserId, targetUserId);
     }
 
     @Override

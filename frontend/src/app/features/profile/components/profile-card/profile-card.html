@@ -72,11 +72,13 @@
         <mat-icon>edit</mat-icon> Edit Profile
       </button>
       } @else if (user.relation === 'subscribed') {
-      <button mat-stroked-button color="warn">
+      <button mat-stroked-button color="warn" [disabled]="isLoading" (click)="toggleSubscription()">
         <mat-icon>person_remove</mat-icon> Unsubscribe
       </button>
       } @else {
-      <button mat-flat-button color="primary"><mat-icon>person_add</mat-icon> Subscribe</button>
+      <button mat-flat-button color="primary" [disabled]="isLoading" (click)="toggleSubscription()">
+        <mat-icon>person_add</mat-icon> Subscribe
+      </button>
       } @if (isDialog) {
       <button
         mat-stroked-button
