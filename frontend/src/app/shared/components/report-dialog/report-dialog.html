@@ -1,41 +1,57 @@
 <div class="reportModal" (click)="closeDialog()">
   <mat-card class="reportContent" (click)="stopPropagation($event)">
-    <h2 class="reportTitle">Report {{ reported }}</h2>
-
-    <div class="formGroup">
-      <label>Category</label>
-      <mat-form-field appearance="fill" class="w-full">
-        <!-- <mat-label>Category</mat-label> -->
-        <mat-select [(ngModel)]="reportCategory">
-          <mat-option value="spam">Spam</mat-option>
-          <mat-option value="offensive">Offensive Content</mat-option>
-          <mat-option value="inappropriate">Inappropriate</mat-option>
-          <mat-option value="other">Other</mat-option>
-        </mat-select>
-      </mat-form-field>
+    @if (isLoading) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+    <div class="modalHeader">
+      <h2 class="reportTitle">
+        @if (reported === "user") {
+        <mat-icon class="icon" color="primary">report_problem</mat-icon>
+        }@else if (reported === "post") {
+        <mat-icon class="icon" color="primary">bug_report</mat-icon>
+        }@else if (reported === "comment") {
+        <mat-icon class="icon" color="primary">comment</mat-icon>
+        } Report {{ reported }}
+      </h2>
     </div>
 
-    <div class="formGroup">
-      <label>Reason</label>
-      <mat-form-field appearance="fill" class="w-full">
-        <textarea
-          matInput
-          [(ngModel)]="reportReason"
-          placeholder="Please describe why you're reporting this {{ reported }}..."
-        ></textarea>
-      </mat-form-field>
-    </div>
+    <div class="modalBody">
+      <div class="formGroup">
+        <label>Category</label>
+        <mat-form-field appearance="fill" class="w-full">
+          <!-- <mat-label>Category</mat-label> -->
+          <mat-select [(ngModel)]="reportCategory" [disabled]="isLoading">
+            <mat-option value="spam">Spam</mat-option>
+            <mat-option value="offensive">Offensive Content</mat-option>
+            <mat-option value="inappropriate">Inappropriate</mat-option>
+            <mat-option value="other">Other</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-    <div class="reportActions">
-      <button matButton (click)="closeDialog()">Cancel</button>
-      <button
-        matButton="filled"
-        class="primary"
-        (click)="handleSubmit()"
-        [disabled]="!reportReason.trim()"
-      >
-        Submit Report
-      </button>
+      <div class="formGroup">
+        <label>Reason</label>
+        <mat-form-field appearance="fill" class="w-full">
+          <textarea
+            matInput
+            [(ngModel)]="reportReason"
+            placeholder="Please describe why you're reporting this {{ reported }}..."
+            [disabled]="isLoading"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="reportActions">
+        <button matButton (click)="closeDialog()">Cancel</button>
+        <button
+          matButton="filled"
+          class="primary"
+          (click)="handleSubmit()"
+          [disabled]="!reportReason.trim() || isLoading"
+        >
+          Submit Report
+        </button>
+      </div>
     </div>
   </mat-card>
 </div>

@@ -19,8 +19,46 @@
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 500px;
-  padding: var(--spacing-xl);
+  // padding: var(--spacing-xl);
   animation: slideUp var(--transition-slow);
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--text-dark-secondary);
+}
+
+.modalHeader h2 {
+  margin-bottom: 0;
+}
+
+.reportTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  // color: var(--text-dark);
+  margin: 0;
+}
+
+.reportTitle .icon {
+  // color: red;
+  font-size: 2rem;
+  width: 32px;
+  height: 27px;
+  margin-right: 4px;
+}
+
+.labelIcon {
+  color: var(--mat-sys-primary);
+  font-size: 1rem !important;
+  margin-right: 5px;
+}
+
+.modalBody {
+  padding: var(--spacing-xl);
 }
 
 .reportTitle {

@@ -1,4 +1,10 @@
-.reportActions {
+.confirmationCard {
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  transition: all var(--transition-normal);
+}
+
+.confirmationActions {
   display: flex;
   gap: var(--spacing-md);
   justify-content: flex-end;

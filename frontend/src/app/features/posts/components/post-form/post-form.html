@@ -5,9 +5,13 @@
     }
     <div class="modalHeader">
       @if (this.data.action === "create") {
-      <h2 class="modalTitle"><mat-icon color="primary">edit_note</mat-icon> Create new Post</h2>
+      <h2 class="modalTitle">
+        <mat-icon class="icon" color="primary">edit_note</mat-icon> Create new Post
+      </h2>
       }@else if (this.data.action === "edit") {
-      <h2 class="modalTitle"><mat-icon color="primary">edit_note</mat-icon> Edit Your Post</h2>
+      <h2 class="modalTitle">
+        <mat-icon class="icon" color="primary">edit_note</mat-icon> Edit Your Post
+      </h2>
       }
       <button mat-icon-button (click)="onClose()" [disabled]="isLoading">
         <mat-icon>close</mat-icon>

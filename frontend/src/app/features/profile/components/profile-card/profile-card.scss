@@ -8,10 +8,17 @@
   min-height: 471px;
 }
 
-.reportContainer {
+.closeButton {
   position: absolute;
   top: 4px;
   right: 12px;
+  color: var(--mat-sys-on-background);
+}
+
+.reportContainer {
+  position: absolute;
+  top: 4px;
+  left: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
