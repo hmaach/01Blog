@@ -28,6 +28,10 @@ public class Report {
         this.createdAt = createdAt;
     }
 
+    public Report() {
+        //TODO Auto-generated constructor stub
+    }
+
     public UUID getId() {
         return id;
     }

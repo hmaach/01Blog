@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ProfileApiService } from '../../services/profile-api.service';
@@ -7,13 +7,12 @@ import { BlobService } from '../../../../core/services/blob.service';
 import { UserResponse } from '../../models/user-response.model';
 import { MediaPreview } from '../../../../shared/components/media-preview/media-preview';
 import { MatDialog } from '@angular/material/dialog';
-import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { formatNumber } from '../../../../shared/lib/format';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ReportPost } from '../../../report/components/report-post/report-post';
+import { ReportDialog } from '../../../../shared/components/report-dialog/report-dialog';
 
 @Component({
   selector: 'app-profile-card',
@@ -76,8 +75,8 @@ export class ProfileCard implements OnInit {
   }
 
   openReportDialog(): void {
-    this.dialog.open(ReportPost, {
-      data: { reported: 'user', userId: this.user?.id },
+    this.dialog.open(ReportDialog, {
+      data: { reportType: 'user', reportedUserId: this.user?.id },
       maxHeight: '90vh',
       panelClass: 'post-report-dialog',
     });

@@ -12,7 +12,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { ReportPost } from '../../../report/components/report-post/report-post';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
 import { StorageService } from '../../../../core/services/storage.service';
 import { formatDate } from '../../../../shared/lib/date';
@@ -21,6 +20,7 @@ import { ToastService } from '../../../../core/services/toast.service';
 import { Confirmation } from '../../../../shared/components/confirmation/confirmation';
 import { PostForm } from '../post-form/post-form';
 import { BlobService } from '../../../../core/services/blob.service';
+import { ReportDialog } from '../../../../shared/components/report-dialog/report-dialog';
 
 @Component({
   selector: 'app-post-detail',
@@ -96,8 +96,14 @@ export class PostDetail {
   }
 
   openReportDialog(): void {
-    this.dialog.open(ReportPost, {
-      data: { reported: 'post', userId: this.post.id, postId: this.post.id },
+    console.log(this.post.author);
+
+    this.dialog.open(ReportDialog, {
+      data: {
+        reportType: 'post',
+        reportedUserId: this.post.author.id,
+        reportedPostId: this.post.id,
+      },
       maxHeight: '90vh',
       panelClass: 'post-report-dialog',
     });

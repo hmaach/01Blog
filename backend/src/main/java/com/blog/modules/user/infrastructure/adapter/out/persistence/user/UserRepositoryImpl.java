@@ -103,8 +103,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void incrementPostsCount(UUID userId) {
-
-        System.err.println("------------------- " + userId);
         jpaRepository.incrementPostsCount(userId);
     }
 

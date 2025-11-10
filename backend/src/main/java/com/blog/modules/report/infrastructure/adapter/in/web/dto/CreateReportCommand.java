@@ -1,13 +1,23 @@
 package com.blog.modules.report.infrastructure.adapter.in.web.dto;
 
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record CreateReportCommand(
-        UUID reported,
+        @NotNull(message = "Reported user ID cannot be null")
         UUID reportedUserId,
         UUID reportedPostId,
         UUID reportedCommentId,
+        @NotNull
+        @NotBlank
+        @Size(max = 100, message = "Category must be less than 100 characters")
         String category,
+        @NotNull
+        @NotBlank
+        @Size(max = 250, message = "Comment must be less than 250 characters")
         String reason
         ) {
 

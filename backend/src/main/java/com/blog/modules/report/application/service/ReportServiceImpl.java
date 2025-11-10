@@ -9,27 +9,41 @@ import com.blog.modules.report.domain.model.Report;
 import com.blog.modules.report.domain.port.in.ReportService;
 import com.blog.modules.report.domain.port.out.ReportRepository;
 import com.blog.modules.report.infrastructure.adapter.in.web.dto.CreateReportCommand;
-import com.blog.modules.report.infrastructure.adapter.out.persistence.ReportEntity;
+import com.blog.modules.user.domain.port.in.UserService;
+import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
+import com.blog.shared.infrastructure.exception.ConflictException;
 
 @Service
 public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
+    private final UserService userService;
 
-    public ReportServiceImpl(ReportRepository reportRepository) {
+    public ReportServiceImpl(ReportRepository reportRepository, UserService userService) {
         this.reportRepository = reportRepository;
+        this.userService = userService;
     }
 
     @Override
     public Report createReport(UUID currentUserId, CreateReportCommand cmd) {
-        ReportEntity entity = new ReportEntity();
-        entity.setReporterId(currentUserId);
-        entity.setCategory(cmd.category());
-        entity.setReason(cmd.reason());
-        entity.setCreatedAt(Instant.now());
-        entity.setReportedPostId(cmd.reportedPostId());
-        entity.setReportedCommentId(cmd.reportedCommentId());
+        if (currentUserId.equals(cmd.reportedUserId())) {
+            throw new ConflictException("You can't report yourself.");
+        }
+        if (!userService.userExist(cmd.reportedUserId())) {
+            throw new UserNotFoundException(cmd.reportedUserId().toString());
+        }
 
-        return reportRepository.save(entity);
+        Report report = new Report();
+
+        report.setReporterId(currentUserId);
+        report.setReportedUserId(cmd.reportedUserId());
+        report.setReportedPostId(cmd.reportedPostId());
+        report.setReportedCommentId(cmd.reportedCommentId());
+        report.setCategory(cmd.category());
+        report.setReason(cmd.reason());
+        report.setStatus("pending");
+        report.setCreatedAt(Instant.now());
+
+        return reportRepository.save(report);
     }
 }

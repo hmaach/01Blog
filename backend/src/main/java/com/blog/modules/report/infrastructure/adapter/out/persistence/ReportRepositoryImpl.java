@@ -17,7 +17,8 @@ public class ReportRepositoryImpl implements ReportRepository {
     }
 
     @Override
-    public Report save(ReportEntity entity) {
+    public Report save(Report report) {
+        ReportEntity entity = ReportMapper.toEntity(report);
         if (entity == null) {
             throw new IllegalArgumentException("Entity cannot be null");
         }
