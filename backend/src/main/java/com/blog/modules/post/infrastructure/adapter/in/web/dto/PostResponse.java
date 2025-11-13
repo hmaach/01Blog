@@ -23,18 +23,13 @@ public record PostResponse(
         List<MediaResponse> media
         ) {
 
-
-
     public static PostResponse fromDomain(
             Post post,
-            AuthorResponse author,
-            Boolean isOwner,
-            Boolean isLiked,
-            List<Media> mediaList
+            Boolean isOwner
     ) {
         return new PostResponse(
                 post.getId(),
-                author,
+                AuthorResponse.fromDomain(post.getUser()),
                 post.getTitle(),
                 post.getBody(),
                 post.getStatus(),
@@ -43,7 +38,26 @@ public record PostResponse(
                 post.getImpressionsCount(),
                 post.getCreatedAt(),
                 isOwner,
-                isLiked,
+                post.isLiked(),
+                post.getMedias().stream()
+                        .map(MediaResponse::fromDomain)
+                        .toList()
+        );
+    }
+
+    public static PostResponse fromDomain(Post createdPost, boolean isOwner, List<Media> mediaList) {
+        return new PostResponse(
+                createdPost.getId(),
+                null,
+                createdPost.getTitle(),
+                createdPost.getBody(),
+                createdPost.getStatus(),
+                createdPost.getLikesCount(),
+                createdPost.getCommentsCount(),
+                createdPost.getImpressionsCount(),
+                createdPost.getCreatedAt(),
+                isOwner,
+                false,
                 mediaList.stream()
                         .map(MediaResponse::fromDomain)
                         .toList()

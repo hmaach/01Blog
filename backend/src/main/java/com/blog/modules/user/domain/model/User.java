@@ -6,17 +6,21 @@ import java.util.UUID;
 public class User {
 
     private final UUID id;
+
     private String name;
     private String email;
     private String username;
+
     private String role;
     private String status;
-    private int postsCount;
+    private String password;
 
+    private int postsCount;
     private int subscribersCount;
     private int impressionsCount;
-    private String password;
+
     private UUID avatarMediaId;
+    private String avatarUrl;
     private String readme;
     private final Instant createdAt;
 
@@ -32,6 +36,7 @@ public class User {
             int subscribersCount,
             int impressionsCount,
             UUID avatarMediaId,
+            String avatarUrl,
             String readme,
             Instant createdAt
     ) {
@@ -46,6 +51,7 @@ public class User {
         this.subscribersCount = subscribersCount;
         this.impressionsCount = impressionsCount;
         this.avatarMediaId = avatarMediaId;
+        this.avatarUrl = avatarUrl;
         this.readme = readme;
         this.createdAt = createdAt;
     }
@@ -156,5 +162,13 @@ public class User {
 
     public void changeReadme(String readme) {
         this.readme = readme;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

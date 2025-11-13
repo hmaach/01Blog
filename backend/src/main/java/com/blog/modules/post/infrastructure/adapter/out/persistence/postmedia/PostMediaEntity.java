@@ -1,16 +1,19 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.postmedia;
 
-
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.blog.modules.media.infrastructure.adapter.out.persistence.MediaEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +22,10 @@ public class PostMediaEntity {
 
     @EmbeddedId
     private PostMediaKey id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "media_id", referencedColumnName = "id")
+    private MediaEntity mediaEntity;
 
     @Column(name = "created_at")
     private Instant createdAt;
@@ -47,13 +54,21 @@ public class PostMediaEntity {
         this.createdAt = createdAt;
     }
 
+    public MediaEntity getMediaEntity() {
+        return mediaEntity != null ? mediaEntity : new MediaEntity();
+    }
+
+    public void setMediaEntity(MediaEntity mediaEntity) {
+        this.mediaEntity = mediaEntity;
+    }
+
     @Embeddable
     public static class PostMediaKey implements Serializable {
 
         @Column(name = "post_id", nullable = false)
         private UUID postId;
 
-        @Column(name = "media_id", nullable = false)
+        @Column(name = "media_id", nullable = false, insertable = false, updatable = false)
         private UUID mediaId;
 
         public PostMediaKey() {

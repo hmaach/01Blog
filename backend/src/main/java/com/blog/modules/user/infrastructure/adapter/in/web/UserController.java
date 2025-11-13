@@ -49,8 +49,8 @@ public class UserController {
     public CurrentUserResponse getCurrentUser(HttpServletRequest request) {
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
         User user = userService.findById(currUserId);
-        String avatarUrl = mediaService.getAvatarUrl(user.getAvatarMediaId());
-        return CurrentUserResponse.fromDomain(user, avatarUrl);
+        // String avatarUrl = mediaService.getAvatarUrl(user.getAvatarMediaId());
+        return CurrentUserResponse.fromDomain(user);
     }
 
     @GetMapping("/all")
@@ -71,7 +71,6 @@ public class UserController {
         String relation;
 
         User user = userService.findByUsername(username);
-        String avatarUrl = mediaService.getAvatarUrl(user.getAvatarMediaId());
 
         if (currUserId.equals(user.getId())) {
             relation = "owner";
@@ -83,7 +82,7 @@ public class UserController {
             }
         }
 
-        return UserProfileResponse.fromDomain(user, avatarUrl, relation);
+        return UserProfileResponse.fromDomain(user, relation);
     }
 
     @GetMapping("/{userId}/readme")

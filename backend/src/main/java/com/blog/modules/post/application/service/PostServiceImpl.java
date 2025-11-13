@@ -68,11 +68,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findFeedPosts(Instant before, int size) {
+    public List<Post> findFeedPosts(UUID currUserId, Instant before, int size) {
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(0, size, sort);
 
-        return postRepository.findAll(before, pageable);
+        return postRepository.findFeedPosts(currUserId, before, pageable);
     }
 
     @Override

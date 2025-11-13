@@ -142,7 +142,6 @@ public class MediaController {
     // ) {
     //     postMediaValidator.validate(file);
     //     UUID userId = jwtService.extractUserIdFromRequest(request);
-
     //     try {
     //         Media media = mediaService.uploadMediaToPost(userId, postId, file);
     //         return ResponseEntity.ok(MediaResponse.fromDomain(media));
@@ -150,7 +149,6 @@ public class MediaController {
     //         throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
     //     }
     // }
-
     @DeleteMapping("/posts/{postId}/{mediaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMediaFromPost(

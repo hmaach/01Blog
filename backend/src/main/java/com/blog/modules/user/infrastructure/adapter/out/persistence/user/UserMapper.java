@@ -41,7 +41,9 @@ public class UserMapper {
                 entity.getPostsCount(),
                 entity.getSubscribersCount(),
                 entity.getImpressionsCount(),
-                entity.getAvatarMediaId(),
+                // entity.getAvatarMediaId(),
+                null,
+                entity.getAvatar().getUrl(),
                 entity.getReadme(),
                 entity.getCreatedAt()
         );

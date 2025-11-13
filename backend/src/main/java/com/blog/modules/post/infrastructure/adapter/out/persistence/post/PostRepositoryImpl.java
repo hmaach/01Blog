@@ -1,9 +1,11 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.post;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -26,19 +28,19 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public List<Post> findAll(Instant before, Pageable pageable) {
+    public List<Post> findFeedPosts(UUID currUserId, Instant before, Pageable pageable) {
 
-        if (before == null) {
-            return jpaRepository.findAll(pageable)
-                    .stream()
-                    .map(PostMapper::toDomain)
-                    .toList();
-        } else {
-            return jpaRepository.findPostsBefore(before, pageable)
-                    .stream()
-                    .map(PostMapper::toDomain)
-                    .toList();
-        }
+        List<PostEntity> posts = new ArrayList<>();
+
+        // if (before == null) {
+        // posts = jpaRepository.findFeedPosts(currUserId, pageable);
+        // } else {
+        //     posts = jpaRepository.findFeedPostsBefore(currUserId, before, pageable);
+        // }
+
+        return posts.stream()
+                .map(PostMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -102,6 +104,12 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public void deleteById(UUID postId) {
         jpaRepository.deleteById(postId);
+    }
+
+    @Override
+    public List<Post> findAll(Instant before, Pageable pageable) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
 }

@@ -14,7 +14,7 @@ public interface PostService {
 
     List<Post> findAll(Instant before, int size);
 
-    List<Post> findFeedPosts(Instant before, int size);
+    List<Post> findFeedPosts(UUID currUserId, Instant before, int size);
 
     List<Post> findByUserUsername(String username, Pageable pageable);
 

@@ -34,4 +34,6 @@ public interface PostRepository {
     Boolean existsById(UUID postId);
 
     List<Post> findByUserUsername(String username, Pageable pageable);
+
+    List<Post> findFeedPosts(UUID currUserId, Instant before, Pageable pageable);
 }

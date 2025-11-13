@@ -12,6 +12,16 @@ public record CurrentUserResponse(
         String avatarUrl
         ) {
 
+    public static CurrentUserResponse fromDomain(User user) {
+        return new CurrentUserResponse(
+                user.getId(),
+                user.getName(),
+                user.getUsername(),
+                user.getRole(),
+                user.getAvatarUrl()
+        );
+    }
+
     public static CurrentUserResponse fromDomain(User user, String avatarUrl) {
         return new CurrentUserResponse(
                 user.getId(),

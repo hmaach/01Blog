@@ -3,9 +3,14 @@ package com.blog.modules.user.infrastructure.adapter.out.persistence.user;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.blog.modules.media.infrastructure.adapter.out.persistence.MediaEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -42,8 +47,12 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "avatar_media_id")
-    private UUID avatarMediaId;
+    // @Column(name = "avatar_media_id")
+    // private UUID avatarMediaId;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "avatar_media_id", referencedColumnName = "id")
+    private MediaEntity avatar;
 
     @Column(name = "readme")
     private String readme;
@@ -162,13 +171,13 @@ public class UserEntity {
         this.username = username;
     }
 
-    public UUID getAvatarMediaId() {
-        return avatarMediaId;
-    }
+    // public MediaEntity getAvatarMediaId() {
+    //     return avatarMediaId;
+    // }
 
-    public void setAvatarMediaId(UUID avatarMediaId) {
-        this.avatarMediaId = avatarMediaId;
-    }
+    // public void setAvatarMediaId(MediaEntity avatarMediaId) {
+    //     this.avatarMediaId = avatarMediaId;
+    // }
 
     public String getReadme() {
         return readme;
@@ -176,5 +185,13 @@ public class UserEntity {
 
     public void setReadme(String readme) {
         this.readme = readme;
+    }
+
+    public MediaEntity getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(MediaEntity avatar) {
+        this.avatar = avatar;
     }
 }

@@ -62,6 +62,7 @@ public class MediaServiceImpl implements MediaService {
     @Override
     @Transactional
     public UUID uploadAvatar(UUID userId, MultipartFile file) throws IOException, java.io.IOException {
+
         Optional<UUID> avatarId = userRepository.getAvatarId(userId);
 
         if (avatarId.isPresent()) {
@@ -79,8 +80,10 @@ public class MediaServiceImpl implements MediaService {
         String relativePath = "avatars/" + filename;
 
         fileStorage.store(file, relativePath);
+        UUID mediaId = UUID.randomUUID();
 
         Media media = new Media();
+        media.setId(mediaId);
         media.setUserId(userId);
         media.setMediaType(getMediaType(filename).toString());
         media.setSize(file.getSize());

@@ -14,4 +14,8 @@ public record AuthorResponse(
     public static AuthorResponse fromDomain(User user, String avatarUrl) {
         return new AuthorResponse(user.getId(), user.getName(), user.getUsername(), avatarUrl);
     }
+
+    public static AuthorResponse fromDomain(User user) {
+        return new AuthorResponse(user.getId(), user.getName(), user.getUsername(), user.getAvatarUrl());
+    }
 }

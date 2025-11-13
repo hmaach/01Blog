@@ -19,7 +19,7 @@ public record UserProfileResponse(
         Instant createdAt
         ) {
 
-    public static UserProfileResponse fromDomain(User user, String avatarUrl, String relation) {
+    public static UserProfileResponse fromDomain(User user, String relation) {
         return new UserProfileResponse(
                 user.getId(),
                 user.getName(),
@@ -30,7 +30,7 @@ public record UserProfileResponse(
                 user.getSubscribersCount(),
                 user.getImpressionsCount(),
                 relation,
-                avatarUrl,
+                user.getAvatarUrl(),
                 user.getCreatedAt()
         );
     }

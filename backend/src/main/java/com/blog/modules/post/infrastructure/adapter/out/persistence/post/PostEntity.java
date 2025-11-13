@@ -1,15 +1,21 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.post;
 
 import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
+import com.blog.modules.media.infrastructure.adapter.out.persistence.MediaEntity;
+import com.blog.modules.post.infrastructure.adapter.out.persistence.postmedia.PostMediaEntity;
 import com.blog.modules.user.infrastructure.adapter.out.persistence.user.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,9 +25,12 @@ public class PostEntity {
     @Id
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UserEntity user;
+
+    @OneToMany(mappedBy = "id.postId", fetch = FetchType.LAZY)
+    private List<PostMediaEntity> postMedias;
 
     @Column(name = "title")
     private String title;
@@ -47,6 +56,7 @@ public class PostEntity {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    // Getters and setters
     public PostEntity(
             UUID id,
             String title,
@@ -70,6 +80,10 @@ public class PostEntity {
 
     public PostEntity() {
 
+    }
+
+    public List<MediaEntity> getMedias() {
+        return Collections.emptyList();
     }
 
     // Getters and setters
@@ -137,12 +151,27 @@ public class PostEntity {
         this.impressionsCount = impressionsCount;
     }
 
+    public UserEntity getUser() {
+        return user;
+    }
+
+    // public List<MediaEntity> getMedias() {
+    //     return medias;
+    // }
     public Instant getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<PostMediaEntity> getPostMedias() {
+        return postMedias;
+    }
+
+    public void setPostMedias(List<PostMediaEntity> postMedias) {
+        this.postMedias = postMedias;
     }
 
 }

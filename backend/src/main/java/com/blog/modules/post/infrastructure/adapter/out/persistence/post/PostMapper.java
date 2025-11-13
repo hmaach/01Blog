@@ -1,6 +1,8 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.post;
 
+import com.blog.modules.media.infrastructure.adapter.out.persistence.MediaMapper;
 import com.blog.modules.post.domain.model.Post;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.user.UserMapper;
 
 public class PostMapper {
 
@@ -33,6 +35,8 @@ public class PostMapper {
                 entity.getTitle(),
                 entity.getBody(),
                 entity.getStatus(),
+                UserMapper.toDomain(entity.getUser()),
+                MediaMapper.toDomain(entity.getMedias()),
                 entity.getLikesCount(),
                 entity.getCommentsCount(),
                 entity.getImpressionsCount(),
