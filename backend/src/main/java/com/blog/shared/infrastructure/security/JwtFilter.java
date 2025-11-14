@@ -10,7 +10,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.blog.shared.infrastructure.exception.UnauthorizedException;
 import com.blog.shared.utils.JsonResponseWriter;
 
 import io.jsonwebtoken.security.SignatureException;

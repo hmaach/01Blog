@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "posts")
@@ -52,6 +53,9 @@ public class PostEntity {
 
     @Column(name = "impressions_count")
     private int impressionsCount;
+
+    @Transient
+    private String firstMediaUrl;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -172,6 +176,14 @@ public class PostEntity {
 
     public void setPostMedias(List<PostMediaEntity> postMedias) {
         this.postMedias = postMedias;
+    }
+
+    public String getFirstMediaUrl() {
+        return firstMediaUrl;
+    }
+
+    public void setFirstMediaUrl(String firstMediaUrl) {
+        this.firstMediaUrl = firstMediaUrl;
     }
 
 }

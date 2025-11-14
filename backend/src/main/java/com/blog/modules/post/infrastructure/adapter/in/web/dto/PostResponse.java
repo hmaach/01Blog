@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.blog.modules.media.domain.model.Media;
-import com.blog.modules.media.infrastructure.adapter.in.web.dto.MediaResponse;
 import com.blog.modules.post.domain.model.Post;
 
 public record PostResponse(
@@ -20,7 +19,7 @@ public record PostResponse(
         Instant createdAt,
         Boolean isOwner,
         Boolean isLiked,
-        List<MediaResponse> media
+        String firstMediaUrl
         ) {
 
     public static PostResponse fromDomain(
@@ -39,13 +38,13 @@ public record PostResponse(
                 post.getCreatedAt(),
                 isOwner,
                 post.isLiked(),
-                post.getMedias().stream()
-                        .map(MediaResponse::fromDomain)
-                        .toList()
+                post.getFirstMediaUrl()
         );
     }
 
     public static PostResponse fromDomain(Post createdPost, boolean isOwner, List<Media> mediaList) {
+        String firstMediaUrl = !mediaList.isEmpty() ? mediaList.get(0).getUrl() : null;
+
         return new PostResponse(
                 createdPost.getId(),
                 null,
@@ -58,9 +57,7 @@ public record PostResponse(
                 createdPost.getCreatedAt(),
                 isOwner,
                 false,
-                mediaList.stream()
-                        .map(MediaResponse::fromDomain)
-                        .toList()
+                firstMediaUrl
         );
     }
 }

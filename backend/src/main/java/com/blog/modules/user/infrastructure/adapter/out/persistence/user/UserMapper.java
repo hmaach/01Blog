@@ -30,6 +30,10 @@ public class UserMapper {
             return null;
         }
 
+        String avatarUrl = entity.getAvatar() != null
+                ? entity.getAvatar().getUrl()
+                : null;
+
         return new User(
                 entity.getId(),
                 entity.getName(),
@@ -43,7 +47,7 @@ public class UserMapper {
                 entity.getImpressionsCount(),
                 // entity.getAvatarMediaId(),
                 null,
-                entity.getAvatar().getUrl(),
+                avatarUrl,
                 entity.getReadme(),
                 entity.getCreatedAt()
         );

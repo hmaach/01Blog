@@ -1,10 +1,8 @@
 package com.blog.modules.post.domain.model;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
-import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.user.domain.model.User;
 
 public class Post {
@@ -15,7 +13,7 @@ public class Post {
     private String body;
     private String status;
     private User user;
-    private List<Media> medias;
+    private String firstMediaUrl;
     private boolean isLiked;
     private final int likesCount;
     private final int commentsCount;
@@ -29,7 +27,7 @@ public class Post {
             String body,
             String status,
             User user,
-            List<Media> medias,
+            String firstMediaUrl,
             int likesCount,
             int commentsCount,
             int ImpressionsCount,
@@ -41,7 +39,7 @@ public class Post {
         this.userId = userId;
         this.status = status;
         this.user = user;
-        this.medias = medias;
+        this.firstMediaUrl = firstMediaUrl;
         this.likesCount = likesCount;
         this.commentsCount = commentsCount;
         this.ImpressionsCount = ImpressionsCount;
@@ -123,20 +121,20 @@ public class Post {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public List<Media> getMedias() {
-        return medias;
-    }
-
-    public void setMedias(List<Media> medias) {
-        this.medias = medias;
-    }
-
+    
     public boolean isLiked() {
         return isLiked;
     }
 
     public void setIsLiked(boolean isLiked) {
         this.isLiked = isLiked;
+    }
+
+    public String getFirstMediaUrl() {
+        return firstMediaUrl;
+    }
+
+    public void setFirstMediaUrl(String firstMediaUrl) {
+        this.firstMediaUrl = firstMediaUrl;
     }
 }

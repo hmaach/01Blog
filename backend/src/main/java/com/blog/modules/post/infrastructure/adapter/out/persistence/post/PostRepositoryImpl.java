@@ -30,13 +30,17 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> findFeedPosts(UUID currUserId, Instant before, Pageable pageable) {
 
-        List<PostEntity> posts = new ArrayList<>();
+        List<PostEntity> posts;
 
         // if (before == null) {
-        // posts = jpaRepository.findFeedPosts(currUserId, pageable);
+        posts = jpaRepository.findFeedPosts(currUserId, pageable);
         // } else {
         //     posts = jpaRepository.findFeedPostsBefore(currUserId, before, pageable);
         // }
+
+        posts.forEach(post
+                -> post.setFirstMediaUrl(jpaRepository.findFirstmediaUrl(post.getId()))
+        );
 
         return posts.stream()
                 .map(PostMapper::toDomain)
