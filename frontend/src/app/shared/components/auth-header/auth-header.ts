@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { Logo } from '../logo/logo';
+import { HeaderLogo } from '../logo/header-logo/header-logo';
 import { MatIconModule } from "@angular/material/icon";
 import { SwitchMode } from "../switch-mode/switch-mode";
 
@@ -14,7 +14,7 @@ import { SwitchMode } from "../switch-mode/switch-mode";
     RouterLinkActive,
     MatButtonModule,
     MatToolbarModule,
-    Logo,
+    HeaderLogo,
     MatSlideToggleModule,
     MatIconModule,
     SwitchMode

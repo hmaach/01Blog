@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Logo } from '../logo/logo';
+import { HeaderLogo } from '../logo/header-logo/header-logo';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -19,7 +19,7 @@ import { ThemeService } from '../../../core/services/theme.service';
   selector: 'app-header',
   standalone: true,
   imports: [
-    Logo,
+    HeaderLogo,
     SwitchMode,
     RouterLink,
     MatIconModule,
@@ -41,7 +41,7 @@ export class Header {
   user: CurrentUserInfo | null = this.storageService.getCurrentUserInfo();
 
   avatarUrl?: string;
-  constructor(private dialog: MatDialog, public themeService: ThemeService) {}
+  constructor(private dialog: MatDialog, public themeService: ThemeService) { }
 
   ngOnInit() {
     const avatar: string | null = this.storageService.getUserAvatarUrl();

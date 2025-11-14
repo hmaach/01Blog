@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-logo',
+  selector: 'app-header-logo',
   imports: [RouterLink],
-  templateUrl: './logo.html',
-  styleUrl: './logo.scss',
+  templateUrl: './header-logo.html',
+  styleUrl: './header-logo.scss'
 })
-export class Logo {}
+export class HeaderLogo {
+
+}
