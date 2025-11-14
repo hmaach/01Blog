@@ -2,6 +2,7 @@ package com.blog.shared.infrastructure.security;
 
 import java.io.IOException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.blog.shared.infrastructure.exception.UnauthorizedException;
+import com.blog.shared.utils.JsonResponseWriter;
+
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +43,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-            username = jwtService.getEmailFromToken(jwt);
+            try {
+                username = jwtService.getEmailFromToken(jwt);
+            } catch (SignatureException e) {
+                JsonResponseWriter.write(
+                        response,
+                        HttpStatus.UNAUTHORIZED.value(),
+                        "UNAUTHORIZED",
+                        "Authentication is required"
+                );
+                return;
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
