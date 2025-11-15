@@ -7,16 +7,19 @@ import com.blog.modules.post.domain.model.Comment;
 
 public record CommentResponse(
         UUID id,
-        UUID userId,
-        String text,
+        UUID postId,
+        AuthorResponse author,
+        String content,
         Instant createdAt
         ) {
 
-    // TODO: create a user response special for the comments and posts conatin (name, username, avatar) 
     public static CommentResponse fromDomain(Comment comment) {
+        AuthorResponse author = comment.getUser() != null ? AuthorResponse.fromDomain(comment.getUser()) : null;
+
         return new CommentResponse(
                 comment.getId(),
-                comment.getUserId(),
+                comment.getPostId(),
+                author,
                 comment.getText(),
                 comment.getCreatedAt()
         );

@@ -101,8 +101,18 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void incrementImpressionsCount(UUID postIds) {
-        jpaRepository.incrementImpressionsCount(postIds);
+    public void incrementCommentsCount(UUID postId) {
+        jpaRepository.incrementCommentsCount(postId);
+    }
+
+    @Override
+    public void decrementCommentsCount(UUID postId) {
+        jpaRepository.decrementCommentsCount(postId);
+    }
+
+    @Override
+    public void incrementImpressionsCount(UUID postId) {
+        jpaRepository.incrementImpressionsCount(postId);
     }
 
     @Override

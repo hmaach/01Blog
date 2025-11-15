@@ -225,7 +225,7 @@ export const mockComments: Comment[] = [
       id: '3',
       username: 'mikejohnson',
       name: 'Mike Johnson',
-      avatar: '/male-programmer.jpg',
+      avatarUrl: '/male-programmer.jpg',
     },
     content: 'This is exactly what I needed! Thanks for sharing your experience.',
     createdAt: '2025-10-15T12:30:00Z',

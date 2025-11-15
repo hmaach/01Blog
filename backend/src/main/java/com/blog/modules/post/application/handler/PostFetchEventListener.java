@@ -8,11 +8,11 @@ import com.blog.modules.post.domain.event.PostFetchedEvent;
 import com.blog.modules.post.domain.port.in.PostService;
 
 @Component
-public class PostFetchedEventListener {
+public class PostFetchEventListener {
 
     private final PostService postService;
 
-    public PostFetchedEventListener(PostService postService) {
+    public PostFetchEventListener(PostService postService) {
         this.postService = postService;
     }
 

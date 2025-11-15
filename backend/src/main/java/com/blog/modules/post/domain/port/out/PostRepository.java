@@ -36,4 +36,8 @@ public interface PostRepository {
     List<Post> findByUserUsername(String username, Pageable pageable);
 
     List<Post> findFeedPosts(UUID currUserId, Instant before, Pageable pageable);
+
+    void incrementCommentsCount(UUID postId);
+
+    void decrementCommentsCount(UUID postId);
 }

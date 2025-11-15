@@ -22,6 +22,8 @@ import { PostForm } from '../post-form/post-form';
 import { BlobService } from '../../../../core/services/blob.service';
 import { ReportDialog } from '../../../../shared/components/report-dialog/report-dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommentApiService } from '../../services/comment-api.service';
+import { Author } from '../../models/author-model';
 
 @Component({
   selector: 'app-post-detail',
@@ -42,20 +44,25 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./post-detail.scss'],
 })
 export class PostDetail {
-  @Input() comments: Comment[] = mockComments;
+  @Input() comments?: Comment[];
   @Output() close = new EventEmitter<void>();
 
   private storageService = inject(StorageService);
   private postApi = inject(PostApiService);
+  private commentApi = inject(CommentApiService);
   private toast = inject(ToastService);
   private blobService = inject(BlobService);
-  formatDate = formatDate;
 
   post!: Post;
   menuOpen = false;
-  commentText = '';
   isAdmin: boolean = this.storageService.isAdmin();
+  formatDate = formatDate;
   isMediaLoading: boolean = true;
+
+  private commentsLimit: number = 10;
+  private lastCommentTime: string | null = null;
+  commentText = '';
+  isCommentsLoading: boolean = true;
 
   constructor(
     private dialogRef: MatDialogRef<PostDetail>,
@@ -65,26 +72,8 @@ export class PostDetail {
 
   ngOnInit(): void {
     this.post = this.data?.post;
-
-    this.postApi.fetchPostDetail(this.post.id).subscribe({
-      next: (post) => {
-        this.post.media = post.media;
-        if (this.post.media) {
-          this.post.media.forEach((media) => {
-            this.blobService.loadBlob(media.url).subscribe({
-              next: (url) => {
-                media.url = url;
-              },
-            });
-          });
-          this.isMediaLoading = false;
-        }
-      },
-      error: (e) => {
-        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
-        this.isMediaLoading = false;
-      },
-    });
+    this.loadPostDetail();
+    this.loadComments();
   }
 
   toggleMenu(): void {
@@ -158,9 +147,36 @@ export class PostDetail {
     });
   }
 
-  handleComment(): void {
-    console.log('Comment submitted:', this.commentText);
-    this.commentText = '';
+  //TODO: update the media and the comments count in the posts list
+  handleCreateComment(): void {
+    this.commentApi.createComment(this.post.id, this.commentText).subscribe({
+      next: async (newComment: Comment) => {
+        if (newComment) {
+          const author: Author = {
+            id: this.storageService.getCurrentUserInfo()?.id || '',
+            name: this.storageService.getCurrentUserInfo()?.name || '',
+            username: this.storageService.getCurrentUserInfo()?.username || '',
+            avatarUrl: this.storageService.getUserAvatarUrl() || null,
+          };
+
+          if (author.avatarUrl) {
+            await this.blobService.loadBlob(author.avatarUrl).subscribe({
+              next: (url) => {
+                author.avatarUrl = url;
+              },
+            });
+          }
+
+          newComment.author = author;
+          this.post.commentsCount += 1;
+          this.commentText = '';
+          this.comments?.unshift(newComment);
+        }
+      },
+      error: (e) => {
+        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+      },
+    });
   }
 
   stopPropagation(event: Event): void {
@@ -171,7 +187,59 @@ export class PostDetail {
     this.dialogRef.close();
   }
 
-  handleDelete() {
+  private loadPostDetail() {
+    this.postApi.fetchPostDetail(this.post.id).subscribe({
+      next: (post) => {
+        this.post.media = post.media;
+        if (this.post.media) {
+          this.post.media.forEach((media) => {
+            this.blobService.loadBlob(media.url).subscribe({
+              next: (url) => {
+                media.url = url;
+              },
+            });
+          });
+          this.isMediaLoading = false;
+        }
+      },
+      error: (e) => {
+        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.isMediaLoading = false;
+      },
+    });
+  }
+
+  private loadComments() {
+    this.commentApi
+      .fetchComments(this.post.id, this.lastCommentTime, this.commentsLimit)
+      .subscribe({
+        next: (comments) => {
+          if (comments.length > 0) {
+            this.comments = comments;
+            this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
+            comments.forEach((comment) => {
+              if (comment.author?.avatarUrl) {
+                this.blobService.loadBlob(comment.author?.avatarUrl).subscribe({
+                  next: (url) => {
+                    comment.author.avatarUrl = url;
+                  },
+                });
+              }
+            });
+            // console.log(comments);
+
+            this.comments.push(...comments);
+            this.isCommentsLoading = false;
+          }
+        },
+        error: (e) => {
+          this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+          this.isCommentsLoading = false;
+        },
+      });
+  }
+
+  handleDeletePost() {
     const dialogRef = this.dialog.open(Confirmation, {
       data: { message: 'Are you sure you want to delete?' },
       panelClass: 'post-report-dialog',

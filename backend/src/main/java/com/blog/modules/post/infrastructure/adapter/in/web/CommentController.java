@@ -1,11 +1,10 @@
 package com.blog.modules.post.infrastructure.adapter.in.web;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,14 +49,10 @@ public class CommentController {
     @GetMapping("/{postId}")
     public ResponseEntity<List<CommentResponse>> getAllComments(
             @PathVariable UUID postId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "createdAt") String sortBy
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
+            @RequestParam(defaultValue = "10") int size
     ) {
-        Sort sort = Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        List<Comment> comments = commentService.getByPostId(postId, pageable);
+        List<Comment> comments = commentService.getComments(postId, before, size);
         return ResponseEntity.ok(
                 comments.stream()
                         .map(CommentResponse::fromDomain)
@@ -78,6 +73,7 @@ public class CommentController {
 
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
         Comment comment = commentService.createComment(postId, currUserId, cmd);
+        
         return ResponseEntity.ok(CommentResponse.fromDomain(comment));
     }
 

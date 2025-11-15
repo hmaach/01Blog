@@ -38,4 +38,8 @@ public interface PostService {
 
     void incrementImpressionsCount(UUID postIds);
 
+    void incrementCommentsCount(UUID postId);
+
+    void decrementCommentsCount(UUID postId);
+
 }

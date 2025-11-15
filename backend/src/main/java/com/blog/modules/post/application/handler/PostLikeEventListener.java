@@ -9,11 +9,11 @@ import com.blog.modules.post.domain.event.PostUnlikedEvent;
 import com.blog.modules.post.domain.port.in.PostService;
 
 @Component
-public class PostLikedEventListener {
+public class PostLikeEventListener {
 
     private final PostService postService;
 
-    public PostLikedEventListener(PostService postService) {
+    public PostLikeEventListener(PostService postService) {
         this.postService = postService;
     }
 

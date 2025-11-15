@@ -32,7 +32,7 @@
               <span>Hide</span>
             </button>
             } @if (isAdmin || post.isOwner) {
-            <button mat-menu-item (click)="handleDelete()">
+            <button mat-menu-item (click)="handleDeletePost()">
               <mat-icon color="warn">delete</mat-icon>
               <span>Delete</span>
             </button>
@@ -90,22 +90,7 @@
       </div>
 
       <div class="commentsSection">
-        <h2 class="commentsHeader">Comments ({{ comments.length }})</h2>
-
-        <div class="commentsList">
-          <div *ngFor="let comment of comments" class="comment">
-            <img
-              [src]="comment.author.avatar || '/assets/images/default-avatar.jpg'"
-              [alt]="comment.author.name"
-              class="commentAvatar"
-            />
-            <div class="commentContent">
-              <div class="commentAuthor">{{ comment.author.name }}</div>
-              <div class="commentText">{{ comment.content }}</div>
-              <div class="commentDate">{{ formatDate(comment.createdAt) }}</div>
-            </div>
-          </div>
-        </div>
+        <h2 class="commentsHeader">Comments ({{ post.commentsCount || 0 }})</h2>
 
         <div class="commentForm">
           <textarea
@@ -116,11 +101,26 @@
           <button
             matButton="filled"
             class="primary"
-            (click)="handleComment()"
+            (click)="handleCreateComment()"
             [disabled]="!commentText.trim()"
           >
             Post
           </button>
+        </div>
+
+        <div class="commentsList">
+          <div *ngFor="let comment of comments" class="comment">
+            <img
+              [src]="comment.author.avatarUrl || '/assets/images/default-avatar.jpg'"
+              [alt]="comment.author.name"
+              class="commentAvatar"
+            />
+            <div class="commentContent">
+              <div class="commentAuthor">{{ comment.author.name }}</div>
+              <div class="commentDate">{{ formatDate(comment.createdAt) }}</div>
+              <div class="commentText">{{ comment.content }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

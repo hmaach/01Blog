@@ -4,9 +4,14 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.blog.modules.post.domain.event.PostCreatedCommentEvent;
+import com.blog.modules.post.domain.event.PostDeletedCommentEvent;
 import com.blog.modules.post.domain.model.Comment;
 import com.blog.modules.post.domain.port.in.CommentService;
 import com.blog.modules.post.domain.port.out.CommentRepository;
@@ -18,15 +23,20 @@ import com.blog.shared.infrastructure.exception.ForbiddenException;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public CommentServiceImpl(
-            CommentRepository commentRepository
+            CommentRepository commentRepository,
+            ApplicationEventPublisher eventPublisher
     ) {
         this.commentRepository = commentRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
-    public List<Comment> getByPostId(UUID postId, Pageable pageable) {
+    public List<Comment> getComments(UUID postId, Instant before, int size) {
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(0, size, sort);
         return commentRepository.findByPostId(postId, pageable);
     }
 
@@ -41,8 +51,9 @@ public class CommentServiceImpl implements CommentService {
                 cmd.comment(),
                 Instant.now()
         );
-
-        return commentRepository.save(comment);
+        Comment newComment = commentRepository.save(comment);
+        eventPublisher.publishEvent(new PostCreatedCommentEvent(postId));
+        return newComment;
     }
 
     @Override
@@ -55,5 +66,6 @@ public class CommentServiceImpl implements CommentService {
         }
 
         commentRepository.deleteById(commentId);
+        eventPublisher.publishEvent(new PostDeletedCommentEvent(comment.getPostId()));
     }
 }

@@ -15,7 +15,6 @@ import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.infrastructure.exception.MediaStorageException;
 import com.blog.modules.post.domain.event.PostFetchedEvent;
 import com.blog.modules.post.domain.model.Post;
-import com.blog.modules.post.domain.port.in.CommentService;
 import com.blog.modules.post.domain.port.in.LikeService;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.domain.port.out.PostRepository;
@@ -38,7 +37,6 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final UserService userService;
     private final MediaService mediaService;
-    private final CommentService commentService;
     private final LikeService likeService;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -46,14 +44,12 @@ public class PostServiceImpl implements PostService {
             PostRepository postRepository,
             UserService userService,
             MediaService mediaService,
-            CommentService commentService,
             LikeService likeService,
             ApplicationEventPublisher eventPublisher
     ) {
         this.postRepository = postRepository;
         this.userService = userService;
         this.mediaService = mediaService;
-        this.commentService = commentService;
         this.likeService = likeService;
         this.eventPublisher = eventPublisher;
     }
@@ -193,6 +189,18 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void decrementLikesCount(UUID postId) {
         postRepository.decrementLikesCount(postId);
+    }
+
+    @Override
+    @Transactional
+    public void incrementCommentsCount(UUID postId) {
+        postRepository.incrementCommentsCount(postId);
+    }
+
+    @Override
+    @Transactional
+    public void decrementCommentsCount(UUID postId) {
+        postRepository.decrementCommentsCount(postId);
     }
 
     @Override

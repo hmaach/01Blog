@@ -36,7 +36,6 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
     //         WHERE p.id = :postId
     //     """)
     // Optional<PostEntity> findById(@Param("postId") UUID postId);
-
     @Query("""
             SELECT p
             FROM PostEntity p
@@ -78,6 +77,14 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
     @Modifying
     @Query("UPDATE PostEntity p SET p.likesCount = p.likesCount - 1 WHERE p.id = :postId")
     void decrementLikesCount(@Param("postId") UUID postId);
+
+    @Modifying
+    @Query("UPDATE PostEntity p SET p.commentsCount = p.commentsCount + 1 WHERE p.id = :postId")
+    void incrementCommentsCount(UUID postId);
+
+    @Modifying
+    @Query("UPDATE PostEntity p SET p.commentsCount = p.commentsCount + 1 WHERE p.id = :postId")
+    void decrementCommentsCount(UUID postId);
 
     @Modifying
     @Query("UPDATE PostEntity p SET p.impressionsCount = p.impressionsCount + 1 WHERE p.id = :postId")
