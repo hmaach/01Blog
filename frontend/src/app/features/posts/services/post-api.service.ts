@@ -12,6 +12,14 @@ export class PostApiService {
 
   constructor(private http: HttpClient) {}
 
+  fetchPostDetail(postId: string): Observable<Post> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.get<Post>(`${this.apiUrl}/posts/${postId}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
+
   fetchFeedPosts(lastPostTime: string | null, limit: number): Observable<Post[]> {
     const token = this.storageService.getAccessToken();
     const params = new URLSearchParams();

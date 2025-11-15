@@ -20,7 +20,8 @@ public record PostResponse(
         Instant createdAt,
         Boolean isOwner,
         Boolean isLiked,
-        MediaResponse firstMedia
+        MediaResponse firstMedia,
+        List<MediaResponse> media
         ) {
 
     public static PostResponse fromDomain(
@@ -39,7 +40,8 @@ public record PostResponse(
                 post.getCreatedAt(),
                 isOwner,
                 post.isLiked(),
-                MediaResponse.fromDomain(post.getFirstMedia())
+                MediaResponse.fromDomain(post.getFirstMedia()),
+                null
         );
     }
 
@@ -58,7 +60,8 @@ public record PostResponse(
                 createdPost.getCreatedAt(),
                 isOwner,
                 false,
-                firstMedia
+                firstMedia,
+                MediaResponse.fromDomain(mediaList)
         );
     }
 }

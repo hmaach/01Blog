@@ -197,8 +197,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void incrementImpressionsCount(List<UUID> postIds) {
-        postRepository.incrementImpressionsCount(postIds);
+    public void incrementImpressionsCount(UUID postId) {
+        postRepository.incrementImpressionsCount(postId);
     }
 
     @Override

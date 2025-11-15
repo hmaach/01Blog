@@ -21,6 +21,7 @@ import { Confirmation } from '../../../../shared/components/confirmation/confirm
 import { PostForm } from '../post-form/post-form';
 import { BlobService } from '../../../../core/services/blob.service';
 import { ReportDialog } from '../../../../shared/components/report-dialog/report-dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-post-detail',
@@ -35,6 +36,7 @@ import { ReportDialog } from '../../../../shared/components/report-dialog/report
     MatCardModule,
     CommonModule,
     FormsModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './post-detail.html',
   styleUrls: ['./post-detail.scss'],
@@ -53,6 +55,7 @@ export class PostDetail {
   menuOpen = false;
   commentText = '';
   isAdmin: boolean = this.storageService.isAdmin();
+  isMediaLoading: boolean = true;
 
   constructor(
     private dialogRef: MatDialogRef<PostDetail>,
@@ -62,15 +65,26 @@ export class PostDetail {
 
   ngOnInit(): void {
     this.post = this.data?.post;
-    // if (this.post.media) {
-    //   this.post.media.forEach((media) => {
-    //     this.blobService.loadBlob(media.url).subscribe({
-    //       next: (url) => {
-    //         media.url = url;
-    //       },
-    //     });
-    //   });
-    // }
+
+    this.postApi.fetchPostDetail(this.post.id).subscribe({
+      next: (post) => {
+        this.post.media = post.media;
+        if (this.post.media) {
+          this.post.media.forEach((media) => {
+            this.blobService.loadBlob(media.url).subscribe({
+              next: (url) => {
+                media.url = url;
+              },
+            });
+          });
+          this.isMediaLoading = false;
+        }
+      },
+      error: (e) => {
+        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.isMediaLoading = false;
+      },
+    });
   }
 
   toggleMenu(): void {
@@ -133,15 +147,13 @@ export class PostDetail {
         this.post.likesCount = post.likesCount;
         this.post.commentsCount = post.commentsCount;
         this.post.impressionsCount = post.impressionsCount;
-        post.media &&
-          post.media.map((media) => {
-            this.blobService.loadBlob(media.url).subscribe({
-              next: (url) => {
-                media.url = url;
-                this.post.media?.push(media);
-              },
-            });
+        this.post.media = post.media ? [...post.media] : [];
+
+        this.post.media.forEach((media) => {
+          this.blobService.loadBlob(media.url).subscribe({
+            next: (url) => (media.url = url),
           });
+        });
       }
     });
   }
@@ -174,7 +186,6 @@ export class PostDetail {
           },
           error: (e) => {
             this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
-            console.error('Failed to delete post:', e);
           },
         });
       }

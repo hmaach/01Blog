@@ -25,7 +25,6 @@ import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse;
-import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse2;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.UpdatePostCommand;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.shared.infrastructure.security.JwtService;
@@ -134,9 +133,15 @@ public class PostController {
 //         return ResponseEntity.ok(responses);
 //     }
     @GetMapping("/{postId}")
-    public PostResponse2 getPost(@PathVariable UUID postId, HttpServletRequest request) {
+    public PostResponse getPost(@PathVariable UUID postId, HttpServletRequest request) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+
+        Post post = postService.findById(postId);
+
         List<Media> mediaList = mediaService.findByPostId(postId);
-        return PostResponse2.fromDomain(postService.findById(postId), mediaList);
+        Boolean isOwner = currUserId.equals(post.getUserId());
+
+        return PostResponse.fromDomain(post, isOwner, mediaList);
     }
 
     @PostMapping

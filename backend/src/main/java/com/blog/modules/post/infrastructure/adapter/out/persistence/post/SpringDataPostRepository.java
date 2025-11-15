@@ -29,6 +29,14 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
         """)
     List<PostEntity> findFeedPosts(@Param("currUserId") UUID currUserId, Pageable pageable);
 
+    // @Override
+    // @Query("""
+    //         SELECT p
+    //         FROM PostEntity p
+    //         WHERE p.id = :postId
+    //     """)
+    // Optional<PostEntity> findById(@Param("postId") UUID postId);
+
     @Query("""
             SELECT p
             FROM PostEntity p
@@ -72,8 +80,8 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
     void decrementLikesCount(@Param("postId") UUID postId);
 
     @Modifying
-    @Query("UPDATE PostEntity p SET p.impressionsCount = p.impressionsCount + 1 WHERE p.id IN :postIds")
-    void incrementImpressionsCount(@Param("postId") List<UUID> postIds);
+    @Query("UPDATE PostEntity p SET p.impressionsCount = p.impressionsCount + 1 WHERE p.id = :postId")
+    void incrementImpressionsCount(@Param("postId") UUID postId);
 
     @Modifying
     @Query("UPDATE PostEntity p SET p.status = 'hidden' WHERE p.id = :id")

@@ -56,11 +56,16 @@
       <div class="postContent">{{ post.body }}</div>
 
       <div class="postMedias">
-        @for (m of post.media; track m.id) { @if(m.mediaType.startsWith("video")){
+        @if (isMediaLoading) {
+        <!-- <app-spinner></app-spinner> -->
+        <div class="spinnerContainer">
+          <mat-spinner></mat-spinner>
+        </div>
+        }@else { @for (m of post.media; track m.id) { @if(m.mediaType.startsWith("video")){
         <video [src]="m.url" controls class="postMedia"></video>
         }@else {
         <img [src]="m.url" [alt]="post.title" class="postMedia" />
-        } }
+        } } }
       </div>
 
       <div class="postMetrics">

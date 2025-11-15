@@ -27,7 +27,7 @@ public interface PostRepository {
 
     void decrementLikesCount(UUID postId);
 
-    void incrementImpressionsCount(List<UUID> postIds);
+    void incrementImpressionsCount(UUID postIds);
 
     void hidePostById(UUID postId);
 

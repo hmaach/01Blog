@@ -12,6 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.blog.shared.utils.JsonResponseWriter;
 
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,7 +45,7 @@ public class JwtFilter extends OncePerRequestFilter {
             jwt = authHeader.substring(7);
             try {
                 username = jwtService.getEmailFromToken(jwt);
-            } catch (SignatureException e) {
+            } catch (SignatureException | MalformedJwtException e) {
                 JsonResponseWriter.write(
                         response,
                         HttpStatus.UNAUTHORIZED.value(),

@@ -49,6 +49,12 @@
   gap: var(--spacing-md);
 }
 
+.spinnerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .authorAvatar {
   width: 48px;
   height: 48px;
