@@ -55,7 +55,7 @@ public class PostEntity {
     private int impressionsCount;
 
     @Transient
-    private String firstMediaUrl;
+    private MediaEntity firstMedia;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -159,9 +159,6 @@ public class PostEntity {
         return user;
     }
 
-    // public List<MediaEntity> getMedias() {
-    //     return medias;
-    // }
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -178,12 +175,12 @@ public class PostEntity {
         this.postMedias = postMedias;
     }
 
-    public String getFirstMediaUrl() {
-        return firstMediaUrl;
+    public MediaEntity getFirstMedia() {
+        return firstMedia;
     }
 
-    public void setFirstMediaUrl(String firstMediaUrl) {
-        this.firstMediaUrl = firstMediaUrl;
+    public void setFirstMedia(MediaEntity firstMedia) {
+        this.firstMedia = firstMedia;
     }
 
 }

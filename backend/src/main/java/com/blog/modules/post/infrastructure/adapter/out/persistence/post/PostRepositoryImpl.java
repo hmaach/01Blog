@@ -1,7 +1,6 @@
 package com.blog.modules.post.infrastructure.adapter.out.persistence.post;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,14 +31,20 @@ public class PostRepositoryImpl implements PostRepository {
 
         List<PostEntity> posts;
 
-        // if (before == null) {
-        posts = jpaRepository.findFeedPosts(currUserId, pageable);
-        // } else {
-        //     posts = jpaRepository.findFeedPostsBefore(currUserId, before, pageable);
-        // }
+        if (before == null) {
+            posts = jpaRepository.findFeedPosts(currUserId, pageable);
+        } else {
+            posts = jpaRepository.findFeedPostsBefore(currUserId, before, pageable);
+        }
 
         posts.forEach(post
-                -> post.setFirstMediaUrl(jpaRepository.findFirstmediaUrl(post.getId()))
+                -> {
+
+            Optional<PostMediaEntity> pm = postMediaJpaRepository.findFirstByIdPostIdOrderByCreatedAtAsc(post.getId());
+            if (!pm.isEmpty()) {
+                post.setFirstMedia(pm.get().getMediaEntity());
+            }
+        }
         );
 
         return posts.stream()

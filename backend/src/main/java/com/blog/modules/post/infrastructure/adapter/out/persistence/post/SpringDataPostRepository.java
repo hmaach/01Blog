@@ -29,16 +29,6 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
         """)
     List<PostEntity> findFeedPosts(@Param("currUserId") UUID currUserId, Pageable pageable);
 
-    // @Query(
-    //         "SELECT p FROM PostEntity p "
-    //         + "WHERE p.status = 'published' "
-    //         + "AND p.createdAt < :before "
-    //         + "AND (p.user.id IN ("
-    //         + "    SELECT s.id.subscribedToId FROM SubscriptionEntity s "
-    //         + "    WHERE s.id.subscriberId = :currUserId"
-    //         + ") OR p.user.id = :currUserId) "
-    //         + "ORDER BY p.createdAt DESC"
-    // )
     @Query("""
             SELECT p
             FROM PostEntity p

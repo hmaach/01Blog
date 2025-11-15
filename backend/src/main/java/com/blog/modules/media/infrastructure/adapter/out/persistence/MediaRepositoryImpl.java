@@ -23,11 +23,17 @@ public class MediaRepositoryImpl implements MediaRepository {
     @Override
     public Media save(Media media) {
         MediaEntity entity = MediaMapper.toEntity(media);
+        if (entity == null) {
+            return null;
+        }
         return MediaMapper.toDomain(jpaRepository.save(entity));
     }
 
     @Override
     public void linkMediaToPost(UUID mediaId) {
+        if (mediaId == null) {
+            return;
+        }
         Optional<MediaEntity> entityOpt = jpaRepository.findById(mediaId);
         if (entityOpt.isPresent()) {
             MediaEntity entity = entityOpt.get();
@@ -40,6 +46,9 @@ public class MediaRepositoryImpl implements MediaRepository {
 
     @Override
     public Optional<Media> findById(UUID mediaId) {
+        if (mediaId == null) {
+            return Optional.empty();
+        }
         return jpaRepository.findById(mediaId).map(MediaMapper::toDomain);
     }
 

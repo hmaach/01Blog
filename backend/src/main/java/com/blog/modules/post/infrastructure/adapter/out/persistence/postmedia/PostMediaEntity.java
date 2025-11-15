@@ -24,7 +24,7 @@ public class PostMediaEntity {
     private PostMediaKey id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
+    @JoinColumn(name = "media_id", referencedColumnName = "id", insertable = false, updatable = false)
     private MediaEntity mediaEntity;
 
     @Column(name = "created_at")

@@ -10,4 +10,12 @@ public interface SpringDataMediaRepository extends JpaRepository<MediaEntity, UU
 
     @Query("SELECT m FROM MediaEntity m JOIN PostMediaEntity pm ON m.id = pm.id.mediaId WHERE pm.id.postId = :postId")
     List<MediaEntity> findByPostId(UUID postId);
+
+    // @Query(value = """
+    //     SELECT m
+    //     FROM PostMediaEntity pm
+    //     JOIN MediaEntity m ON m.id = pm.media_id
+    //     WHERE pm.post_id = :post_id
+    // """)
+    // MediaEntity findFirstmediaUrl(@Param("post_id") UUID post_id, Pageable pageable);
 }

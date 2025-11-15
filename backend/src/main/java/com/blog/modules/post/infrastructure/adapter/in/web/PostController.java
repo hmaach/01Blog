@@ -67,10 +67,10 @@ public class PostController {
 
         List<Post> posts = postService.findFeedPosts(currUserId, before, size);
 
-
         List<PostResponse> responses = posts.stream()
                 .map(post -> {
                     Boolean isOwner = currUserId.equals(post.getUserId());
+
                     return PostResponse.fromDomain(post, isOwner);
                 }).toList();
 

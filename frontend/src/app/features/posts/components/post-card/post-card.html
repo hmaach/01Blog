@@ -28,13 +28,15 @@
       {{ post.body }}
     </p>
 
-    <div *ngIf="post.media && post.media.length > 0">
-      @if(post.media[0].mediaType.startsWith("video")){
-      <video [src]="post.media[0].url" muted class="postMedia"></video>
+    @if (post.firstMedia) {
+    <div>
+      @if(post.firstMedia.mediaType.startsWith("video")){
+      <video [src]="post.firstMedia.url" muted class="postMedia"></video>
       }@else {
-      <img [src]="post.media[0].url" [alt]="post.title" class="postMedia" />
+      <img [src]="post.firstMedia.url" [alt]="post.title" class="postMedia" />
       }
     </div>
+    }
   </div>
 
   <div class="postFooter">

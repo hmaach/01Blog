@@ -62,6 +62,15 @@ export class PostDetail {
 
   ngOnInit(): void {
     this.post = this.data?.post;
+    // if (this.post.media) {
+    //   this.post.media.forEach((media) => {
+    //     this.blobService.loadBlob(media.url).subscribe({
+    //       next: (url) => {
+    //         media.url = url;
+    //       },
+    //     });
+    //   });
+    // }
   }
 
   toggleMenu(): void {

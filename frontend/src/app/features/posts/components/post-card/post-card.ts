@@ -27,15 +27,23 @@ export class PostCard {
   constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
-    if (this.post.media) {
-      this.post.media.forEach((media) => {
-        this.blobService.loadBlob(media.url).subscribe({
-          next: (url) => {
-            media.url = url;
-          },
-        });
+    if (this.post.firstMedia) {
+      this.blobService.loadBlob(this.post.firstMedia.url).subscribe({
+        next: (url) => {
+          this.post.firstMedia!.url = url;
+        },
       });
     }
+
+    // if (this.post.media) {
+    //   this.post.media.forEach((media) => {
+    //     this.blobService.loadBlob(media.url).subscribe({
+    //       next: (url) => {
+    //         media.url = url;
+    //       },
+    //     });
+    //   });
+    // }
 
     if (this.post.author.avatarUrl) {
       this.blobService.loadBlob(this.post.author.avatarUrl).subscribe({

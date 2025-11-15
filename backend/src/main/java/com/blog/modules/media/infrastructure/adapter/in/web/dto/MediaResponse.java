@@ -13,6 +13,9 @@ public record MediaResponse(
         ) {
 
     public static MediaResponse fromDomain(Media media) {
+        if (media == null) {
+            return null;
+        }
         return new MediaResponse(
                 media.getId(),
                 media.getUrl(),

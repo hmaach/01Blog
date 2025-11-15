@@ -24,6 +24,9 @@ public class MediaEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private UserEntity user;
 
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
+
     @Column(name = "media_type", nullable = false)
     private String mediaType;
 
@@ -67,11 +70,11 @@ public class MediaEntity {
     }
 
     public UUID getUserId() {
-        return user.getId();
+        return this.userId;
     }
 
     public void setUserId(UUID userId) {
-        this.user.setId(userId);
+        this.userId = userId;
     }
 
     public String getMediaType() {
@@ -112,6 +115,14 @@ public class MediaEntity {
 
     public void setRelatedTo(String relatedTo) {
         this.relatedTo = relatedTo;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
 }

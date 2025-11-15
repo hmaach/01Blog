@@ -9,6 +9,7 @@ export interface Post {
   commentsCount: number;
   impressionsCount: number;
   author: Author;
+  firstMedia?: Media;
   media?: Media[];
   createdAt: string;
   isHidden?: boolean;

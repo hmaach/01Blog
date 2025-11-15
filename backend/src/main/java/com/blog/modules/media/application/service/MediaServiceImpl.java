@@ -137,6 +137,7 @@ public class MediaServiceImpl implements MediaService {
 
         fileStorage.store(file, relativePath);
 
+        
         Media media = new Media();
         UUID mediaId = UUID.randomUUID();
         media.setId(mediaId);
@@ -146,7 +147,7 @@ public class MediaServiceImpl implements MediaService {
         media.setUrl(relativePath);
         media.setRelatedTo("nothing");
         media.setUploadedAt(Instant.now());
-
+        
         Media savedMedia = mediaRepository.save(media);
 
         return savedMedia;
