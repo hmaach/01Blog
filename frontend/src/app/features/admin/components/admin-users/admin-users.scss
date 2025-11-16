@@ -1,0 +1,178 @@
+.page {
+  padding-top: 50px;
+  min-height: 100vh;
+  background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
+}
+
+.main {
+  padding: var(--spacing-2xl) 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+.section {
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid transparent;
+  transition: all var(--transition-normal);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead {
+  border-bottom: 2px solid var(--border-dark);
+}
+
+.table th {
+  padding: var(--spacing-md);
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-dark-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table td {
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--border-dark);
+  color: var(--text-dark);
+}
+
+.table tbody tr:hover {
+  background-color: var(--bg-dark-tertiary);
+}
+
+.userCell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.userUsername {
+  font-size: 0.75rem;
+  color: var(--text-dark-secondary);
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge.admin {
+  background-color: rgba(255, 107, 53, 0.1);
+  color: var(--primary-orange);
+}
+
+.badge.user {
+  background-color: var(--bg-dark-tertiary);
+  color: var(--text-dark-secondary);
+}
+
+.badge.waiting {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning);
+}
+
+.badge.approved {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success);
+}
+
+.badge.declined {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error);
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.actionButton {
+  padding: 6px 12px;
+  background-color: transparent;
+  color: var(--text-dark-secondary);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.actionButton:hover {
+  background-color: var(--bg-dark-tertiary);
+  color: var(--text-dark);
+}
+
+.actionButton.danger {
+  border-color: var(--error);
+  color: var(--error);
+}
+
+.actionButton.danger:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.actionButton.success {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.actionButton.success:hover {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.reportReason {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+}

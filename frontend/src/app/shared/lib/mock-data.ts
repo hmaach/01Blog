@@ -18,6 +18,103 @@ export interface User {
   isSubscribed?: boolean;
 }
 
+// export interface Report {
+//   id: string;
+//   reportedUser: {
+//     id: string;
+//     username: string;
+//     displayName: string;
+//   };
+//   reporter: {
+//     id: string;
+//     username: string;
+//     displayName: string;
+//   };
+//   reason: string;
+//   category: 'spam' | 'offensive' | 'inappropriate' | 'other';
+//   relatedPost?: {
+//     id: string;
+//     title: string;
+//   };
+//   status: 'waiting' | 'approved' | 'declined';
+//   createdAt: string;
+// }
+
+// Mock reports for admin
+// export const mockReports: Report[] = [
+//   {
+//     id: '1',
+//     reportedUser: {
+//       id: '6',
+//       username: 'spammer123',
+//       displayName: 'Spam Account',
+//     },
+//     reporter: {
+//       id: '2',
+//       username: 'sarahchen',
+//       displayName: 'Sarah Chen',
+//     },
+//     reason: 'This user is posting spam links in multiple posts',
+//     category: 'spam',
+//     relatedPost: {
+//       id: '7',
+//       title: 'Check out this amazing deal!!!',
+//     },
+//     status: 'waiting',
+//     createdAt: '2025-10-15T09:30:00Z',
+//   },
+//   {
+//     id: '2',
+//     reportedUser: {
+//       id: '7',
+//       username: 'rudeuser',
+//       displayName: 'Rude User',
+//     },
+//     reporter: {
+//       id: '3',
+//       username: 'mikejohnson',
+//       displayName: 'Mike Johnson',
+//     },
+//     reason: 'Offensive language and harassment in comments',
+//     category: 'offensive',
+//     status: 'approved',
+//     createdAt: '2025-10-14T14:15:00Z',
+//   },
+// ];
+
+// Mock users for admin panel
+// export const mockUsers: User[] = [
+//   mockCurrentUser,
+//   {
+//     id: '2',
+//     username: 'sarahchen',
+//     displayName: 'Sarah Chen',
+//     avatar: '/female-developer.png',
+//     bio: 'Frontend developer passionate about React and design systems',
+//     joinDate: '2024-02-20',
+//     role: 'user',
+//     stats: {
+//       totalPosts: 18,
+//       totalLikes: 234,
+//       subscribers: 67,
+//     },
+//   },
+//   {
+//     id: '3',
+//     username: 'mikejohnson',
+//     displayName: 'Mike Johnson',
+//     avatar: '/male-programmer.jpg',
+//     bio: 'Backend engineer learning cloud architecture',
+//     joinDate: '2024-03-10',
+//     role: 'user',
+//     stats: {
+//       totalPosts: 12,
+//       totalLikes: 145,
+//       subscribers: 34,
+//     },
+//   },
+// ];
+
 export interface Notification {
   id: string;
   type: 'new_post' | 'comment' | 'like' | 'subscribe';
