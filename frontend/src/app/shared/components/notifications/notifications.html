@@ -1,3 +1,45 @@
 <div class="preview-dialog">
-  <p>notifications works!</p>
+  <ng-container *ngIf="notifications.length > 0; else emptyState">
+    <div class="notificationsList">
+      <mat-card
+        *ngFor="let notification of notifications"
+        class="notification"
+        [ngClass]="{ unread: !notification.isRead }"
+      >
+        <img
+          [src]="notification.relatedUser?.avatar || '/placeholder-user.jpg'"
+          [alt]="notification.relatedUser?.name"
+          class="notificationAvatar"
+        />
+
+        <div class="notificationContent">
+          <p class="notificationText">
+            <strong>{{ notification.relatedUser?.name }}</strong>
+            {{ notification.message }}
+          </p>
+
+          <div class="notificationMeta">
+            <span>{{ formatDate(notification.timestamp) }}</span>
+
+            <span *ngIf="notification.relatedPost" class="notificationPost">
+              "{{ notification.relatedPost.title }}"
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="!notification.isRead" class="unreadBadge"></div>
+      </mat-card>
+    </div>
+  </ng-container>
+
+  <!-- EMPTY STATE -->
+  <ng-template #emptyState>
+    <div class="emptyState">
+      <!-- Replace icon with Angular icon component if needed -->
+      <i class="emptyIcon">🔔</i>
+
+      <h2 class="emptyTitle">No notifications yet</h2>
+      <p class="emptyText">When someone interacts with your posts, you'll see it here</p>
+    </div>
+  </ng-template>
 </div>

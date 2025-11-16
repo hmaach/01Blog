@@ -4,4 +4,117 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: var(--spacing-md);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  // color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-dark-secondary);
+}
+
+.notificationsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.notification {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  // background-color: var(--bg-dark-secondary);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.notification:hover {
+  border-color: var(--primary-orange);
+  transform: translateX(4px);
+}
+
+.notification.unread {
+  background-color: rgba(255, 107, 53, 0.05);
+  border-color: var(--primary-orange);
+}
+
+.notificationAvatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.notificationContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.notificationText {
+  font-size: 0.875rem;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.notificationText strong {
+  font-weight: 600;
+  color: var(--primary-orange);
+}
+
+.notificationMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-size: 0.75rem;
+  color: var(--text-dark-secondary);
+}
+
+.notificationPost {
+  color: var(--text-dark-secondary);
+  font-style: italic;
+}
+
+.unreadBadge {
+  width: 8px;
+  height: 8px;
+  background-color: var(--primary-orange);
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  background-color: var(--bg-dark-secondary);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--spacing-lg);
+  color: var(--text-dark-secondary);
+}
+
+.emptyTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.emptyText {
+  font-size: 0.875rem;
+  color: var(--text-dark-secondary);
 }
