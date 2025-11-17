@@ -1,5 +1,186 @@
 <div class="page">
   <main class="main">
-    <p>settings works!</p>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">Settings</h1>
+        <p class="subtitle">Manage your profile and account settings</p>
+      </div>
+
+      <mat-card class="content">
+        <!-- Angular Material Tabs (navigation only) -->
+        <mat-tab-group
+          [selectedIndex]="activeTabIndex"
+          (selectedIndexChange)="onTabChange($event)"
+          class="tabs"
+        >
+          <mat-tab label="Profile"></mat-tab>
+          <mat-tab label="README"></mat-tab>
+          <mat-tab label="Password"></mat-tab>
+          <mat-tab label="Account"></mat-tab>
+        </mat-tab-group>
+
+        <!-- Sync activeTab with index -->
+        <!-- <ng-container
+          *ngIf="activeTab = ['profile','readme','password','account'][activeTabIndex]"
+        ></ng-container> -->
+
+        <div *ngIf="successMessage" class="successMessage">
+          {{ successMessage }}
+        </div>
+
+        <!-- ************************************ -->
+        <!-- PROFILE TAB -->
+        <!-- ************************************ -->
+        <div class="section" *ngIf="activeTab === 'profile'">
+          <h2 class="sectionTitle">Profile Settings</h2>
+
+          <!-- Avatar -->
+          <div class="formGroup">
+            <label class="label">Profile Picture</label>
+            <div class="avatarSection">
+              <img [src]="avatar" class="avatarPreview" alt="Avatar" />
+
+              <div class="avatarUpload">
+                <label class="uploadLabel">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    (change)="handleAvatarChange($event)"
+                    class="fileInput"
+                  />
+                  Choose Image
+                </label>
+                <p class="uploadHint">JPG, PNG or GIF (max 5MB)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Display Name -->
+          <div class="formGroup">
+            <label class="label">Display Name</label>
+            <input type="text" [(ngModel)]="displayName" class="input" />
+          </div>
+
+          <!-- Email -->
+          <div class="formGroup">
+            <label class="label">Email</label>
+            <div class="emailGroup">
+              <input type="email" [(ngModel)]="email" class="input" />
+              <span *ngIf="!emailVerified" class="badge">Not Verified</span>
+            </div>
+            <p class="hint">We'll send a verification link</p>
+          </div>
+
+          <!-- Username -->
+          <div class="formGroup">
+            <label class="label">Username</label>
+            <input type="text" [value]="username" disabled class="input disabled" />
+            <p class="hint">Username cannot be changed</p>
+          </div>
+
+          <button class="button" (click)="handleSaveProfile()">Save Changes</button>
+        </div>
+
+        <!-- ************************************ -->
+        <!-- README TAB -->
+        <!-- ************************************ -->
+        <div *ngIf="activeTab === 'readme'" class="section">
+          <h2 class="sectionTitle">Profile README</h2>
+
+          <div class="readmeSteps">
+            <div class="step">
+              <div class="stepNumber">1</div>
+              <div>
+                <h3>Generate your README</h3>
+                <p>
+                  Visit
+                  <a
+                    href="https://rahuldkjain.github.io/gh-profile-readme-generator/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    GitHub Profile README Generator
+                  </a>
+                  to create your markdown file
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="stepNumber">2</div>
+              <div>
+                <h3>Download the file</h3>
+                <p>Save the generated README.md file to your computer</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="stepNumber">3</div>
+              <div>
+                <h3>Upload your file</h3>
+                <p>Use the upload button below to add your README</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="formGroup">
+            <label class="label">Upload README.md</label>
+            <label class="uploadLabel">
+              <input
+                type="file"
+                accept=".md"
+                (change)="handleReadmeUpload($event)"
+                class="fileInput"
+              />
+              Choose File
+            </label>
+
+            <p *ngIf="readmeFile" class="selectedFile">✓ {{ readmeFile.name }} selected</p>
+          </div>
+
+          <div *ngIf="readmePreview" class="readmePreview">
+            <h3 class="previewTitle">Preview</h3>
+            <div class="previewContent">{{ readmePreview }}</div>
+          </div>
+
+          <button class="button">Save README</button>
+        </div>
+
+        <!-- ************************************ -->
+        <!-- PASSWORD TAB -->
+        <!-- ************************************ -->
+        <div *ngIf="activeTab === 'password'" class="section">
+          <h2 class="sectionTitle">Change Password</h2>
+
+          <div class="formGroup">
+            <label class="label">Current Password</label>
+            <input type="password" [(ngModel)]="currentPassword" class="input" />
+          </div>
+
+          <div class="formGroup">
+            <label class="label">New Password</label>
+            <input type="password" [(ngModel)]="newPassword" class="input" />
+          </div>
+
+          <div class="formGroup">
+            <label class="label">Confirm Password</label>
+            <input type="password" [(ngModel)]="confirmPassword" class="input" />
+          </div>
+
+          <button class="button" (click)="handleChangePassword()">Save Password</button>
+        </div>
+
+        <!-- ************************************ -->
+        <!-- ACCOUNT TAB -->
+        <!-- ************************************ -->
+        <div *ngIf="activeTab === 'account'" class="section">
+          <h2 class="sectionTitle">Account Management</h2>
+
+          <div class="dangerZone">
+            <h3 class="dangerTitle">Danger Zone</h3>
+            <p class="dangerDescription">Permanently delete your account.</p>
+            <button class="deleteButton" (click)="handleDeleteAccount()">Delete Account</button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
   </main>
 </div>
