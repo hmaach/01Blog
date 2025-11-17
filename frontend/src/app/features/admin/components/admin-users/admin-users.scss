@@ -6,7 +6,7 @@
 }
 
 .main {
-  padding: var(--spacing-2xl) ;
+  padding: var(--spacing-2xl);
 }
 
 .container {
@@ -14,25 +14,95 @@
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
 }
-.section {
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
-  border: 1px solid transparent;
-  transition: all var(--transition-normal);
-}
 
-.sectionHeader {
+.header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: var(--spacing-lg);
+  align-items: flex-start;
+  margin-bottom: var(--spacing-2xl);
+  gap: var(--spacing-lg);
 }
 
-.sectionTitle {
-  font-size: 1.5rem;
+.title {
+  font-size: 2rem;
   font-weight: 700;
   color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: var(--text-dark-secondary);
+  margin: 0;
+}
+
+.backButton {
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--primary-orange);
+  color: white;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.backButton:hover {
+  background: var(--primary-orange-hover);
+  transform: translateX(-4px);
+}
+
+.successMessage {
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid #4ade80;
+  color: #4ade80;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+  font-weight: 500;
+}
+
+.searchBox {
+  // background: var(--bg-dark-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  padding: var(--spacing-md);
+  // background: var(--bg-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  color: var(--text-dark);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1);
+}
+
+.resultCount {
+  color: var(--text-dark-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tableWrapper {
+  // background: var(--bg-dark-secondary);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
 }
 
 .table {
@@ -41,138 +111,234 @@
 }
 
 .table thead {
+  // background: var(--bg-dark);
   border-bottom: 2px solid var(--border-dark);
 }
 
 .table th {
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
   text-align: left;
-  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-dark-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  // color: var(--text-dark);
+  font-size: 0.95rem;
 }
 
 .table td {
-  padding: var(--spacing-md);
+  padding: var(--spacing-lg);
   border-bottom: 1px solid var(--border-dark);
-  color: var(--text-dark);
+  color: var(--text-dark-secondary);
 }
 
 .table tbody tr:hover {
-  background-color: var(--bg-dark-tertiary);
+  background: rgba(255, 140, 0, 0.02);
+}
+
+.bannedRow {
+  opacity: 0.6;
 }
 
 .userCell {
+  width: 300px;
+}
+
+.userRow {
   display: flex;
-  align-items: center;
   gap: var(--spacing-md);
+  align-items: center;
 }
 
 .userAvatar {
   width: 40px;
   height: 40px;
-  border-radius: var(--radius-full);
+  border-radius: 50%;
   object-fit: cover;
-}
-
-.userInfo {
-  display: flex;
-  flex-direction: column;
+  border: 2px solid var(--primary-orange);
 }
 
 .userName {
   font-weight: 600;
-  color: var(--text-dark);
+  // color: var(--text-dark);
+  font-size: 0.95rem;
 }
 
 .userUsername {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: var(--text-dark-secondary);
 }
 
-.badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
+.roleBadge,
+.statusBadge {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
   font-weight: 600;
+  display: inline-block;
 }
 
-.badge.admin {
-  background-color: rgba(255, 107, 53, 0.1);
-  color: var(--primary-orange);
+.adminRole {
+  background: rgba(147, 112, 219, 0.1);
+  color: #9370db;
 }
 
-.badge.user {
-  background-color: var(--bg-dark-tertiary);
-  color: var(--text-dark-secondary);
+.userRole {
+  background: rgba(100, 200, 255, 0.1);
+  color: #64c8ff;
 }
 
-.badge.waiting {
-  background-color: rgba(245, 158, 11, 0.1);
-  color: var(--warning);
+.active {
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
 }
 
-.badge.approved {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: var(--success);
+.banned {
+  background: rgba(255, 100, 100, 0.1);
+  color: #ff6464;
 }
 
-.badge.declined {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: var(--error);
-}
-
-.actions {
+.actionsCell {
   display: flex;
   gap: var(--spacing-sm);
 }
 
-.actionButton {
-  padding: 6px 12px;
-  background-color: transparent;
-  color: var(--text-dark-secondary);
-  border: 1px solid var(--border-dark);
+.actionBtn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: none;
   border-radius: var(--radius-md);
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
-}
-
-.actionButton:hover {
-  background-color: var(--bg-dark-tertiary);
-  color: var(--text-dark);
-}
-
-.actionButton.danger {
-  border-color: var(--error);
-  color: var(--error);
-}
-
-.actionButton.danger:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-}
-
-.actionButton.success {
-  border-color: var(--success);
-  color: var(--success);
-}
-
-.actionButton.success:hover {
-  background-color: rgba(16, 185, 129, 0.1);
-}
-
-.reportReason {
-  max-width: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: all 0.3s ease;
   white-space: nowrap;
 }
 
+.banBtn {
+  background: rgba(255, 100, 100, 0.1);
+  color: #ff6464;
+  border: 1px solid rgba(255, 100, 100, 0.2);
+}
+
+.banBtn:hover {
+  background: #ff6464;
+  color: white;
+}
+
+.unbanBtn {
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.unbanBtn:hover {
+  background: #4ade80;
+  color: white;
+}
+
+.roleBtn {
+  background: rgba(147, 112, 219, 0.1);
+  color: #9370db;
+  border: 1px solid rgba(147, 112, 219, 0.2);
+}
+
+.roleBtn:hover {
+  background: #9370db;
+  color: white;
+}
+
+.deleteBtn {
+  background: rgba(255, 140, 0, 0.1);
+  color: var(--primary-orange);
+  border: 1px solid var(--primary-orange);
+}
+
+.deleteBtn:hover {
+  background: var(--primary-orange);
+  color: white;
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  color: var(--text-dark-secondary);
+}
+
+@media (max-width: 1024px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .backButton {
+    width: 100%;
+    text-align: center;
+  }
+
+  .actionsCell {
+    flex-direction: column;
+  }
+
+  .actionBtn {
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
-  .table {
-    display: block;
-    overflow-x: auto;
+  .tableWrapper {
+    font-size: 0.9rem;
+  }
+
+  .table th,
+  .table td {
+    padding: var(--spacing-md);
+  }
+
+  .userCell {
+    width: 200px;
+  }
+
+  .userAvatar {
+    width: 35px;
+    height: 35px;
+  }
+
+  .userName {
+    font-size: 0.9rem;
+  }
+
+  .userUsername {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .tableWrapper {
+    font-size: 0.85rem;
+  }
+
+  .table th,
+  .table td {
+    padding: var(--spacing-sm);
+  }
+
+  .userRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .userAvatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .actionBtn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.8rem;
+  }
+
+  .actionsCell {
+    flex-direction: row;
+    gap: var(--spacing-xs);
   }
 }

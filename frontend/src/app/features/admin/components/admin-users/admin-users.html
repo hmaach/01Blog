@@ -1,66 +1,111 @@
 <div class="page">
   <main class="main">
-    <div class="sectionHeader">
-      <h2 class="sectionTitle">User Management</h2>
+    <div class="container">
+      <div class="header">
+        <div>
+          <h1 class="title">User Management</h1>
+          <p class="subtitle">Search and manage user accounts</p>
+        </div>
+        <a routerLink="/admin" class="backButton">← Back to Dashboard</a>
+      </div>
+
+      <div *ngIf="actionMessage()" class="successMessage">
+        {{ actionMessage() }}
+      </div>
+
+      <mat-card class="searchBox">
+        <input
+          type="text"
+          placeholder="Search by username or display name..."
+          [value]="searchQuery()"
+          (input)="searchQuery.set($any($event.target).value)"
+          class="searchInput"
+        />
+        <span class="resultCount">
+          Found {{ filteredUsers().length }} user{{ filteredUsers().length !== 1 ? 's' : '' }}
+        </span>
+      </mat-card>
+
+      <div class="tableWrapper">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Posts</th>
+              <th>Subscribers</th>
+              <th>Joined</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let user of filteredUsers()" [class.bannedRow]="user.isBanned">
+              <td class="userCell">
+                <div class="userRow">
+                  <img
+                    [src]="user.avatar || '/placeholder.svg'"
+                    [alt]="user.name"
+                    class="userAvatar"
+                  />
+                  <div>
+                    <div class="userName">{{ user.name }}</div>
+                    <div class="userUsername">@{{ user.username }}</div>
+                  </div>
+                </div>
+              </td>
+
+              <td>{{ user.totalPosts }}</td>
+              <td>{{ user.subscribers }}</td>
+              <td>{{ user.joinDate }}</td>
+
+              <td>
+                <span
+                  class="roleBadge"
+                  [class.adminRole]="user.role === 'admin'"
+                  [class.userRole]="user.role === 'user'"
+                >
+                  {{ user.role }}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  class="statusBadge"
+                  [class.banned]="user.isBanned"
+                  [class.active]="!user.isBanned"
+                >
+                  {{ user.isBanned ? 'Banned' : 'Active' }}
+                </span>
+              </td>
+
+              <td class="actionsCell">
+                <button
+                  class="actionBtn"
+                  [class.unbanBtn]="user.isBanned"
+                  [class.banBtn]="!user.isBanned"
+                  (click)="handleBanUser(user.id)"
+                >
+                  {{ user.isBanned ? 'Unban' : 'Ban' }}
+                </button>
+
+                <button class="actionBtn roleBtn" (click)="handleChangeRole(user.id)">
+                  {{ user.role === 'user' ? 'Make Admin' : 'Make User' }}
+                </button>
+
+                <button class="actionBtn deleteBtn" (click)="handleDeleteUser(user.id)">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div *ngIf="filteredUsers().length === 0" class="emptyState">
+        No users found matching your search
+      </div>
     </div>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>User</th>
-          <th>Role</th>
-          <th>Posts</th>
-          <th>Joined</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let user of users">
-          <td>
-            <div class="userCell">
-              <img
-                [src]="user.avatar || '/placeholder-user.jpg'"
-                [alt]="user.name"
-                class="userAvatar"
-              />
-              <div class="userInfo">
-                <span class="userName">{{ user.name }}</span>
-                <span class="userUsername">@{{ user.username }}</span>
-              </div>
-            </div>
-          </td>
-
-          <td>
-            <span class="badge">
-              {{ user.role === 'admin' ? 'Admin' : 'User' }}
-            </span>
-          </td>
-
-          <td>{{ user.stats.totalPosts }}</td>
-
-          <td>
-            {{ user.joinDate }}
-          </td>
-
-          <td>
-            <div class="actions">
-              <button
-                class="actionButton"
-                (click)="handleChangeRole(user.id, user.role === 'admin' ? 'user' : 'admin')"
-              >
-                {{ user.role === 'admin' ? 'Make User' : 'Make Admin' }}
-              </button>
-
-              <button class="actionButton danger" (click)="handleBanUser(user.id)">Ban</button>
-
-              <button class="actionButton danger" (click)="handleDeleteUser(user.id)">
-                Delete
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </main>
 </div>
