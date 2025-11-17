@@ -1,80 +1,90 @@
 <div class="page">
   <main class="main">
-    <div class="sectionHeader">
-      <h2 class="sectionTitle">Report Management</h2>
+    <div class="container">
+      <div class="header">
+        <div>
+          <h1 class="title">Reports Management</h1>
+          <p class="subtitle">View and manage content and user reports</p>
+        </div>
+
+        <a routerLink="/admin" class="backButton"> ← Back to Dashboard </a>
+      </div>
+
+      <div class="reportGrid">
+        <mat-card routerLink="/admin/reports/users" class="reportCard color-blue">
+          <div class="cardHeader">
+            <span class="icon">👤</span>
+            <span class="badge">5</span>
+          </div>
+          <h2 class="cardTitle">User Reports</h2>
+        </mat-card>
+
+        <!-- Post Reports -->
+        <mat-card routerLink="/admin/reports/posts" class="reportCard color-red">
+          <div class="cardHeader">
+            <span class="icon">📝</span>
+            <span class="badge">8</span>
+          </div>
+          <h2 class="cardTitle">Post Reports</h2>
+        </mat-card>
+
+        <!-- Comment Reports -->
+        <mat-card routerLink="/admin/reports/comments" class="reportCard color-orange">
+          <div class="cardHeader">
+            <span class="icon">💬</span>
+            <span class="badge">3</span>
+          </div>
+          <h2 class="cardTitle">Comment Reports</h2>
+        </mat-card>
+      </div>
+
+      <div class="reportsList">
+        <mat-card *ngFor="let report of reports" class="reportItem">
+          <div class="reportHeader">
+            <div class="reportTitle">
+              <h3 class="userName">{{ report.reportedUser }}</h3>
+              <p class="userHandle">@{{ report.reportedUsername }}</p>
+            </div>
+
+            <div class="reportMeta">
+              <span class="status" [ngClass]="'status-' + report.status">
+                {{ report.status }}
+              </span>
+            </div>
+          </div>
+
+          <div class="reportContent">
+            <div class="reportSection">
+              <label class="label">Report Reason:</label>
+              <p class="reason">{{ report.reason }}</p>
+            </div>
+
+            <div class="reportSection">
+              <label class="label">Reported By:</label>
+              <p class="reporter">{{ report.reporter }}</p>
+            </div>
+
+            <div class="reportSection">
+              <label class="label">Reported:</label>
+              <p class="date">{{ report.createdAt | date : 'medium' }}</p>
+            </div>
+          </div>
+
+          <div class="reportActions">
+            <button class="actionBtn banBtn" (click)="handleApprove(report.id)">
+              Ban User & Approve
+            </button>
+
+            <button class="actionBtn declineBtn" (click)="handleDecline(report.id)">
+              Decline Report
+            </button>
+
+            <button class="actionBtn deleteBtn" (click)="handleDelete(report.id)">
+              Delete Report
+            </button>
+          </div>
+        </mat-card>
+      </div>
     </div>
-
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Reported User</th>
-          <th>Reporter</th>
-          <th>Category</th>
-          <th>Reason</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let report of reports">
-          <td>
-            <div class="userCell">
-              <div class="userInfo">
-                <span class="userName">{{ report.reportedUser.name }}</span>
-                <span class="userUsername">@{{ report.reportedUser.username }}</span>
-              </div>
-            </div>
-          </td>
-
-          <td>
-            <div class="userInfo">
-              <span class="userName">{{ report.reporter.name }}</span>
-              <span class="userUsername">@{{ report.reporter.username }}</span>
-            </div>
-          </td>
-
-          <td>
-            <span class="badge">{{ report.category }}</span>
-          </td>
-
-          <td>
-            <div class="reportReason">
-              {{ report.reason }}
-            </div>
-          </td>
-
-          <td>
-            <span class="badge">
-              {{ report.status }}
-            </span>
-          </td>
-
-          <td>
-            <div class="actions">
-              <ng-container *ngIf="report.status === 'waiting'; else resolved">
-                <button
-                  class="actionButton success"
-                  (click)="handleUpdateReportStatus(report.id, 'approved')"
-                >
-                  Approve
-                </button>
-
-                <button
-                  class="actionButton danger"
-                  (click)="handleUpdateReportStatus(report.id, 'declined')"
-                >
-                  Decline
-                </button>
-              </ng-container>
-
-              <ng-template #resolved>
-                <span class="userUsername">Resolved</span>
-              </ng-template>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </main>
 </div>
