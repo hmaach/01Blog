@@ -60,6 +60,16 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'about-us',
+    component: MainLayout,
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./shared/components/about-us/about-us').then((m) => m.AboutUs),
+      },
+    ],
+  },
+  {
     path: '**',
     loadComponent: () => import('./shared/components/not-found/not-found').then((m) => m.NotFound),
   },

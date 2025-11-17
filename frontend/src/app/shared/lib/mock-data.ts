@@ -374,6 +374,66 @@ export const mockNotifications: Notification[] = [
     timestamp: '2025-10-14T16:20:00Z',
     isRead: true,
   },
+  {
+    id: '3',
+    type: 'subscribe',
+    message: 'subscribed to your blog',
+    relatedUser: {
+      username: 'emilypark',
+      name: 'Emily Park',
+      avatar: '/asian-developer.jpg',
+    },
+    timestamp: '2025-10-14T16:20:00Z',
+    isRead: true,
+  },
+  {
+    id: '3',
+    type: 'subscribe',
+    message: 'subscribed to your blog',
+    relatedUser: {
+      username: 'emilypark',
+      name: 'Emily Park',
+      avatar: '/asian-developer.jpg',
+    },
+    timestamp: '2025-10-14T16:20:00Z',
+    isRead: true,
+  },
+  {
+    id: '3',
+    type: 'subscribe',
+    message: 'subscribed to your blog',
+    relatedUser: {
+      username: 'emilypark',
+      name: 'Emily Park',
+      avatar: '/asian-developer.jpg',
+    },
+    timestamp: '2025-10-14T16:20:00Z',
+    isRead: true,
+  },
+  {
+    id: '3',
+    type: 'subscribe',
+    message: 'subscribed to your blog',
+    relatedUser: {
+      username: 'emilypark',
+      name: 'Emily Park',
+      avatar: '/asian-developer.jpg',
+    },
+    timestamp: '2025-10-14T16:20:00Z',
+    isRead: true,
+  },
+  {
+    id: '3',
+    type: 'subscribe',
+    message: 'subscribed to your blog',
+    relatedUser: {
+      username: 'emilypark',
+      name: 'Emily Park',
+      avatar: '/asian-developer.jpg',
+    },
+    timestamp: '2025-10-14T16:20:00Z',
+    isRead: true,
+  },
 ];
 
 // Mock reports for admin

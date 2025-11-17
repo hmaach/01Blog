@@ -1,82 +1,80 @@
 <div class="page">
   <main class="main">
-    <mat-card class="section">
-      <div class="sectionHeader">
-        <h2 class="sectionTitle">Report Management</h2>
-      </div>
+    <div class="sectionHeader">
+      <h2 class="sectionTitle">Report Management</h2>
+    </div>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Reported User</th>
-            <th>Reporter</th>
-            <th>Category</th>
-            <th>Reason</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Reported User</th>
+          <th>Reporter</th>
+          <th>Category</th>
+          <th>Reason</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <tr *ngFor="let report of reports">
-            <td>
-              <div class="userCell">
-                <div class="userInfo">
-                  <span class="userName">{{ report.reportedUser.name }}</span>
-                  <span class="userUsername">@{{ report.reportedUser.username }}</span>
-                </div>
-              </div>
-            </td>
-
-            <td>
+      <tbody>
+        <tr *ngFor="let report of reports">
+          <td>
+            <div class="userCell">
               <div class="userInfo">
-                <span class="userName">{{ report.reporter.name }}</span>
-                <span class="userUsername">@{{ report.reporter.username }}</span>
+                <span class="userName">{{ report.reportedUser.name }}</span>
+                <span class="userUsername">@{{ report.reportedUser.username }}</span>
               </div>
-            </td>
+            </div>
+          </td>
 
-            <td>
-              <span class="badge">{{ report.category }}</span>
-            </td>
+          <td>
+            <div class="userInfo">
+              <span class="userName">{{ report.reporter.name }}</span>
+              <span class="userUsername">@{{ report.reporter.username }}</span>
+            </div>
+          </td>
 
-            <td>
-              <div class="reportReason">
-                {{ report.reason }}
-              </div>
-            </td>
+          <td>
+            <span class="badge">{{ report.category }}</span>
+          </td>
 
-            <td>
-              <span class="badge">
-                {{ report.status }}
-              </span>
-            </td>
+          <td>
+            <div class="reportReason">
+              {{ report.reason }}
+            </div>
+          </td>
 
-            <td>
-              <div class="actions">
-                <ng-container *ngIf="report.status === 'waiting'; else resolved">
-                  <button
-                    class="actionButton success"
-                    (click)="handleUpdateReportStatus(report.id, 'approved')"
-                  >
-                    Approve
-                  </button>
+          <td>
+            <span class="badge">
+              {{ report.status }}
+            </span>
+          </td>
 
-                  <button
-                    class="actionButton danger"
-                    (click)="handleUpdateReportStatus(report.id, 'declined')"
-                  >
-                    Decline
-                  </button>
-                </ng-container>
+          <td>
+            <div class="actions">
+              <ng-container *ngIf="report.status === 'waiting'; else resolved">
+                <button
+                  class="actionButton success"
+                  (click)="handleUpdateReportStatus(report.id, 'approved')"
+                >
+                  Approve
+                </button>
 
-                <ng-template #resolved>
-                  <span class="userUsername">Resolved</span>
-                </ng-template>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </mat-card>
+                <button
+                  class="actionButton danger"
+                  (click)="handleUpdateReportStatus(report.id, 'declined')"
+                >
+                  Decline
+                </button>
+              </ng-container>
+
+              <ng-template #resolved>
+                <span class="userUsername">Resolved</span>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </main>
 </div>

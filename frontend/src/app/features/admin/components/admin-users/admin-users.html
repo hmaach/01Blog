@@ -1,68 +1,66 @@
 <div class="page">
   <main class="main">
-    <mat-card class="section">
-      <div class="sectionHeader">
-        <h2 class="sectionTitle">User Management</h2>
-      </div>
+    <div class="sectionHeader">
+      <h2 class="sectionTitle">User Management</h2>
+    </div>
 
-      <table class="table">
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Role</th>
-            <th>Posts</th>
-            <th>Joined</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Role</th>
+          <th>Posts</th>
+          <th>Joined</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-        <tbody>
-          <tr *ngFor="let user of users">
-            <td>
-              <div class="userCell">
-                <img
-                  [src]="user.avatar || '/placeholder-user.jpg'"
-                  [alt]="user.name"
-                  class="userAvatar"
-                />
-                <div class="userInfo">
-                  <span class="userName">{{ user.name }}</span>
-                  <span class="userUsername">@{{ user.username }}</span>
-                </div>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>
+            <div class="userCell">
+              <img
+                [src]="user.avatar || '/placeholder-user.jpg'"
+                [alt]="user.name"
+                class="userAvatar"
+              />
+              <div class="userInfo">
+                <span class="userName">{{ user.name }}</span>
+                <span class="userUsername">@{{ user.username }}</span>
               </div>
-            </td>
+            </div>
+          </td>
 
-            <td>
-              <span class="badge">
-                {{ user.role === 'admin' ? 'Admin' : 'User' }}
-              </span>
-            </td>
+          <td>
+            <span class="badge">
+              {{ user.role === 'admin' ? 'Admin' : 'User' }}
+            </span>
+          </td>
 
-            <td>{{ user.stats.totalPosts }}</td>
+          <td>{{ user.stats.totalPosts }}</td>
 
-            <td>
-              {{ user.joinDate }}
-            </td>
+          <td>
+            {{ user.joinDate }}
+          </td>
 
-            <td>
-              <div class="actions">
-                <button
-                  class="actionButton"
-                  (click)="handleChangeRole(user.id, user.role === 'admin' ? 'user' : 'admin')"
-                >
-                  {{ user.role === 'admin' ? 'Make User' : 'Make Admin' }}
-                </button>
+          <td>
+            <div class="actions">
+              <button
+                class="actionButton"
+                (click)="handleChangeRole(user.id, user.role === 'admin' ? 'user' : 'admin')"
+              >
+                {{ user.role === 'admin' ? 'Make User' : 'Make Admin' }}
+              </button>
 
-                <button class="actionButton danger" (click)="handleBanUser(user.id)">Ban</button>
+              <button class="actionButton danger" (click)="handleBanUser(user.id)">Ban</button>
 
-                <button class="actionButton danger" (click)="handleDeleteUser(user.id)">
-                  Delete
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </mat-card>
+              <button class="actionButton danger" (click)="handleDeleteUser(user.id)">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </main>
 </div>

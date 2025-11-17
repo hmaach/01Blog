@@ -14,6 +14,8 @@ import { StorageService } from '../../../core/services/storage.service';
 import { BlobService } from '../../../core/services/blob.service';
 import { CurrentUserInfo } from '../../../core/models/user.model';
 import { ThemeService } from '../../../core/services/theme.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { Contact } from '../contact/contact';
 
 @Component({
   selector: 'app-header',
@@ -36,12 +38,13 @@ export class Header {
   private authService = inject(AuthService);
   private blobService = inject(BlobService);
   private storageService = inject(StorageService);
+  private _bottomSheet = inject(MatBottomSheet);
 
   isAdmin: boolean = this.storageService.getUserRole() === 'ADMIN';
   user: CurrentUserInfo | null = this.storageService.getCurrentUserInfo();
 
   avatarUrl?: string;
-  constructor(private dialog: MatDialog, public themeService: ThemeService) { }
+  constructor(private dialog: MatDialog, public themeService: ThemeService) {}
 
   ngOnInit() {
     const avatar: string | null = this.storageService.getUserAvatarUrl();
@@ -56,6 +59,11 @@ export class Header {
     this.dialog.open(Notifications, {
       panelClass: 'media-preview-dialog',
     });
+  }
+
+
+  openContactDialog(): void {
+    this._bottomSheet.open(Contact);
   }
 
   logout() {

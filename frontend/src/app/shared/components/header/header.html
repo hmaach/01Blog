@@ -58,6 +58,14 @@
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
       </a>
+      <a mat-menu-item class="w-full" (click)="openContactDialog()">
+        <mat-icon>contact_mail</mat-icon>
+        <span>Contact Us</span>
+      </a>
+      <a mat-menu-item class="w-full" routerLink="/about-us">
+        <mat-icon>info</mat-icon>
+        <span>About Us</span>
+      </a>
       <a mat-menu-item (click)="logout()" class="w-full">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
