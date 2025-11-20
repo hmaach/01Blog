@@ -11,9 +11,9 @@ html {
   --mat-sys-primary-container: light-dark(#ffdbcc, #7b2f00);
   --mat-sys-on-primary-container: light-dark(#351000, #ffdbcc);
   --mat-sys-inverse-primary: light-dark(#ffb694, #a14000);
-  --mat-sys-primary-fixed: light-dark(#ffdbcc, #ffdbcc);
+  --mat-sys-primary-fixed: light-dark(#fff1ea, #fff1ea);
   --mat-sys-primary-fixed-dim: light-dark(#ffb694, #ffb694);
-  --mat-sys-on-primary-fixed: light-dark(#351000, #351000);
+  --mat-sys-on-primary-fixed: light-dark(#252525, #351000);
   --mat-sys-on-primary-fixed-variant: light-dark(#7b2f00, #7b2f00);
 
   /* Secondary palette variables */

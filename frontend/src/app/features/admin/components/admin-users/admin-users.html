@@ -6,11 +6,9 @@
           <h1 class="title">User Management</h1>
           <p class="subtitle">Search and manage user accounts</p>
         </div>
-        <a routerLink="/admin" class="backButton">← Back to Dashboard</a>
-      </div>
-
-      <div *ngIf="actionMessage()" class="successMessage">
-        {{ actionMessage() }}
+        <a matButton routerLink="/admin" class="backButton"
+          ><mat-icon>arrow_backward</mat-icon> Back to Dashboard</a
+        >
       </div>
 
       <mat-card class="searchBox">
@@ -81,20 +79,15 @@
               </td>
 
               <td class="actionsCell">
-                <button
-                  class="actionBtn"
-                  [class.unbanBtn]="user.isBanned"
-                  [class.banBtn]="!user.isBanned"
-                  (click)="handleBanUser(user.id)"
-                >
+                <button matButton="outlined" (click)="handleBanUser(user.id)">
                   {{ user.isBanned ? 'Unban' : 'Ban' }}
                 </button>
 
-                <button class="actionBtn roleBtn" (click)="handleChangeRole(user.id)">
+                <button matButton="outlined" (click)="handleChangeRole(user.id)">
                   {{ user.role === 'user' ? 'Make Admin' : 'Make User' }}
                 </button>
 
-                <button class="actionBtn deleteBtn" (click)="handleDeleteUser(user.id)">
+                <button matButton="filled" color="red" (click)="handleDeleteUser(user.id)">
                   Delete
                 </button>
               </td>

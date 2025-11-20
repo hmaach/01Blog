@@ -22,7 +22,7 @@
 .title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--text-dark);
+  // color: var(--text-dark);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -39,7 +39,7 @@
 }
 
 .statCard {
-  border: 1px solid transparent;
+  border-top: 3px solid var(--mat-sys-primary);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   cursor: pointer;
@@ -64,6 +64,9 @@
   color: var(--text-dark-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .statIcon {
@@ -75,14 +78,15 @@
 .statValue {
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--text-dark);
+  // color: var(--text-dark);
 }
 
 .section {
   border-radius: var(--radius-lg);
+  border-top: 3px solid var(--mat-sys-primary);
   padding: var(--spacing-xl);
   margin-bottom: var(--spacing-xl);
-  border: 1px solid transparent;
+  // border: 1px solid transparent;
   transition: all var(--transition-normal);
 }
 
@@ -96,32 +100,45 @@
 .sectionTitle {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-dark);
+  // color: var(--text-dark);
+}
+
+.sectionLink {
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-direction: row-reverse;
+  gap: 10px;
+}
+
+.sectionLink:hover {
+  transform: translateX(4px);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.table thead {
-  border-bottom: 2px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  // border: solid 1px red;
+  overflow: hidden;
 }
 
 .table th {
+  background-color: var(--mat-sys-primary-fixed);
+  color: var(--mat-sys-on-primary-fixed);
   padding: var(--spacing-md);
   text-align: left;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-dark-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .table td {
+  background-color: var(--mat-sys-primary-fixed);
+  color: var(--mat-sys-on-primary-fixed);
   padding: var(--spacing-md);
   border-bottom: 1px solid var(--border-dark);
-  color: var(--text-dark);
+  // color: var(--text-dark);
 }
 
 .table tbody tr:hover {
@@ -148,7 +165,7 @@
 
 .userName {
   font-weight: 600;
-  color: var(--text-dark);
+  // color: var(--text-dark);
 }
 
 .userUsername {
@@ -156,38 +173,39 @@
   color: var(--text-dark-secondary);
 }
 
-.badge {
+.badgeTable {
   display: inline-block;
   padding: 4px 12px;
   border-radius: var(--radius-full);
+  border: solid 1px (--mat-sys-on-primary-fixed);
   font-size: 0.75rem;
   font-weight: 600;
+  color: var(--mat-sys-on-primary-fixed);
 }
 
-.badge.admin {
-  background-color: rgba(255, 107, 53, 0.1);
-  color: var(--primary-orange);
-}
+// .badge.admin {
+//   background-color: rgba(255, 107, 53, 0.1);
+// }
 
-.badge.user {
-  background-color: var(--bg-dark-tertiary);
-  color: var(--text-dark-secondary);
-}
+// .badge.user {
+//   background-color: var(--bg-dark-tertiary);
+//   color: var(--text-dark-secondary);
+// }
 
-.badge.waiting {
-  background-color: rgba(245, 158, 11, 0.1);
-  color: var(--warning);
-}
+// .badge.waiting {
+//   background-color: rgba(245, 158, 11, 0.1);
+//   color: var(--warning);
+// }
 
-.badge.approved {
-  background-color: rgba(16, 185, 129, 0.1);
-  color: var(--success);
-}
+// .badge.approved {
+//   background-color: rgba(16, 185, 129, 0.1);
+//   color: var(--success);
+// }
 
-.badge.declined {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: var(--error);
-}
+// .badge.declined {
+//   background-color: rgba(239, 68, 68, 0.1);
+//   color: var(--error);
+// }
 
 .actions {
   display: flex;

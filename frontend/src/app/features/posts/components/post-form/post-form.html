@@ -87,9 +87,9 @@
         (click)="handleSubmit()"
         [disabled]="!title.trim() || !body.trim() || isLoading || hasInvalidMedia"
       >
-        @if (this.data.action === "create") {
-        <mat-icon>publish</mat-icon> Publish }@else if (this.data.action === "edit") {
-        <mat-icon>publish</mat-icon> Update }
+        <mat-icon>publish</mat-icon>
+        @if (this.data.action === "create") { Publish }@else if (this.data.action === "edit") {
+        Update }
       </button>
     </div>
   </mat-card>

@@ -2,10 +2,21 @@ import { Component } from '@angular/core';
 import { mockCurrentUser, mockReports, mockUsers } from '../../../../shared/lib/mock-data';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-admin-main',
-  imports: [CommonModule, MatCardModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterLink,
+    MatButtonModule,
+    MatChipsModule,
+  ],
   templateUrl: './admin-main.html',
   styleUrl: './admin-main.scss',
 })

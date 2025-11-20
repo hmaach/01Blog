@@ -7,34 +7,34 @@
           <p class="subtitle">View and manage content and user reports</p>
         </div>
 
-        <a routerLink="/admin" class="backButton"> ← Back to Dashboard </a>
+        <a matButton routerLink="/admin" class="backButton"
+          ><mat-icon>arrow_backward</mat-icon> Back to Dashboard</a
+        >
       </div>
 
-      <div class="reportGrid">
-        <mat-card routerLink="/admin/reports/users" class="reportCard color-blue">
-          <div class="cardHeader">
-            <span class="icon">👤</span>
-            <span class="badge">5</span>
+      <div class="statsGrid">
+        <mat-card class="statCard">
+          <div class="statHeader">
+            <span class="statLabel"><mat-icon>group</mat-icon>User Reports</span>
+            <i class="statIcon"></i>
           </div>
-          <h2 class="cardTitle">User Reports</h2>
+          <div class="statValue">{{ 154 }}</div>
         </mat-card>
 
-        <!-- Post Reports -->
-        <mat-card routerLink="/admin/reports/posts" class="reportCard color-red">
-          <div class="cardHeader">
-            <span class="icon">📝</span>
-            <span class="badge">8</span>
+        <mat-card class="statCard">
+          <div class="statHeader">
+            <span class="statLabel"><mat-icon>article</mat-icon>Post Reports</span>
+            <i class="statIcon"></i>
           </div>
-          <h2 class="cardTitle">Post Reports</h2>
+          <div class="statValue">{{ 124 }}</div>
         </mat-card>
 
-        <!-- Comment Reports -->
-        <mat-card routerLink="/admin/reports/comments" class="reportCard color-orange">
-          <div class="cardHeader">
-            <span class="icon">💬</span>
-            <span class="badge">3</span>
+        <mat-card class="statCard">
+          <div class="statHeader">
+            <span class="statLabel"><mat-icon>comment</mat-icon>Comment Reports</span>
+            <i class="statIcon"></i>
           </div>
-          <h2 class="cardTitle">Comment Reports</h2>
+          <div class="statValue">{{ 11 }}</div>
         </mat-card>
       </div>
 

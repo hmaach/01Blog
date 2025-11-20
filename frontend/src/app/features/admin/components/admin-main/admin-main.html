@@ -4,7 +4,7 @@
       <div class="statsGrid">
         <mat-card class="statCard">
           <div class="statHeader">
-            <span class="statLabel">Total Users</span>
+            <span class="statLabel"><mat-icon>group</mat-icon> Total Users</span>
             <i class="statIcon"></i>
           </div>
           <div class="statValue">{{ totalUsers }}</div>
@@ -12,7 +12,7 @@
 
         <mat-card class="statCard">
           <div class="statHeader">
-            <span class="statLabel">Total Posts</span>
+            <span class="statLabel"><mat-icon>article</mat-icon> Total Posts</span>
             <i class="statIcon"></i>
           </div>
           <div class="statValue">{{ totalPosts }}</div>
@@ -20,18 +20,10 @@
 
         <mat-card class="statCard">
           <div class="statHeader">
-            <span class="statLabel">Total Reports</span>
+            <span class="statLabel"><mat-icon>report</mat-icon> Total Reports</span>
             <i class="statIcon"></i>
           </div>
           <div class="statValue">{{ totalReports }}</div>
-        </mat-card>
-
-        <mat-card class="statCard">
-          <div class="statHeader">
-            <span class="statLabel">Pending Reports</span>
-            <i class="statIcon"></i>
-          </div>
-          <div class="statValue">{{ pendingReports }}</div>
         </mat-card>
       </div>
 
@@ -39,7 +31,11 @@
       <mat-card class="section">
         <div class="sectionHeader">
           <h2 class="sectionTitle">User Management</h2>
+          <a matButton routerLink="/admin/users" class="sectionLink"
+            >Users Management <mat-icon>arrow_forward</mat-icon></a
+          >
         </div>
+        <p>Most active users</p>
 
         <table class="table">
           <thead>
@@ -48,7 +44,7 @@
               <th>Role</th>
               <th>Posts</th>
               <th>Joined</th>
-              <th>Actions</th>
+              <!-- <th>Actions</th> -->
             </tr>
           </thead>
 
@@ -69,9 +65,7 @@
               </td>
 
               <td>
-                <span class="badge">
-                  {{ user.role === 'admin' ? 'Admin' : 'User' }}
-                </span>
+                <span class="badgeTable">{{ user.role === 'admin' ? 'Admin' : 'User' }}</span>
               </td>
 
               <td>{{ user.stats.totalPosts }}</td>
@@ -80,7 +74,7 @@
                 {{ user.joinDate }}
               </td>
 
-              <td>
+              <!-- <td>
                 <div class="actions">
                   <button
                     class="actionButton"
@@ -95,7 +89,7 @@
                     Delete
                   </button>
                 </div>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -104,8 +98,12 @@
       <!-- REPORTS -->
       <mat-card class="section">
         <div class="sectionHeader">
-          <h2 class="sectionTitle">Report Management</h2>
+          <h2 class="sectionTitle">Reports Management</h2>
+          <a matButton routerLink="/admin/reports" class="sectionLink"
+            >Reports Management <mat-icon>arrow_forward</mat-icon></a
+          >
         </div>
+        <p>Last reports</p>
 
         <table class="table">
           <thead>
@@ -114,8 +112,8 @@
               <th>Reporter</th>
               <th>Category</th>
               <th>Reason</th>
-              <th>Status</th>
-              <th>Actions</th>
+              <!-- <th>Status</th>
+              <th>Actions</th> -->
             </tr>
           </thead>
 
@@ -138,7 +136,7 @@
               </td>
 
               <td>
-                <span class="badge">{{ report.category }}</span>
+                <span class="badgeTable">{{ report.category }}</span>
               </td>
 
               <td>
@@ -147,10 +145,8 @@
                 </div>
               </td>
 
-              <td>
-                <span class="badge">
-                  {{ report.status }}
-                </span>
+              <!-- <td>
+                <mat-chip>{{ report.status }}</mat-chip>
               </td>
 
               <td>
@@ -175,7 +171,7 @@
                     <span class="userUsername">Resolved</span>
                   </ng-template>
                 </div>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

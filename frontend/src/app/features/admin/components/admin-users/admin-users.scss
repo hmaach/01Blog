@@ -38,29 +38,12 @@
 }
 
 .backButton {
-  padding: var(--spacing-md) var(--spacing-lg);
-  background: var(--primary-orange);
-  color: white;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  text-decoration: none;
   transition: all 0.3s ease;
   white-space: nowrap;
 }
 
 .backButton:hover {
-  background: var(--primary-orange-hover);
   transform: translateX(-4px);
-}
-
-.successMessage {
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid #4ade80;
-  color: #4ade80;
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-lg);
-  font-weight: 500;
 }
 
 .searchBox {
@@ -100,23 +83,30 @@
 
 .tableWrapper {
   // background: var(--bg-dark-secondary);
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-lg);
-  overflow-x: auto;
+  // border: 1px solid var(--border-dark);
+  // border-radius: var(--radius-lg);
+  // overflow-x: auto;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
+  border-radius: var(--radius-md);
+  // border: solid 1px red;
+  overflow: hidden;
 }
 
 .table thead {
+  background-color: var(--mat-sys-primary-fixed);
+  color: var(--mat-sys-on-primary-fixed);
   // background: var(--bg-dark);
   border-bottom: 2px solid var(--border-dark);
 }
 
 .table th {
-  padding: var(--spacing-lg);
+  background-color: var(--mat-sys-primary-fixed);
+  color: var(--mat-sys-on-primary-fixed);
+  padding: var(--spacing-md);
   text-align: left;
   font-weight: 600;
   // color: var(--text-dark);
@@ -124,9 +114,10 @@
 }
 
 .table td {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   border-bottom: 1px solid var(--border-dark);
-  color: var(--text-dark-secondary);
+  background-color: var(--mat-sys-primary-fixed);
+  color: var(--mat-sys-on-primary-fixed);
 }
 
 .table tbody tr:hover {
@@ -197,6 +188,7 @@
 
 .actionsCell {
   display: flex;
+  justify-content: space-between;
   gap: var(--spacing-sm);
 }
 

@@ -2,10 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { mockUsers } from '../../../../shared/lib/mock-data';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-users',
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule, RouterLink],
   templateUrl: './admin-users.html',
   styleUrl: './admin-users.scss',
 })
@@ -30,8 +33,7 @@ export class AdminUsers {
   filteredUsers = computed(() => {
     const q = this.searchQuery().toLowerCase();
     return this.users().filter(
-      (user) =>
-        user.username.toLowerCase().includes(q) || user.name.toLowerCase().includes(q)
+      (user) => user.username.toLowerCase().includes(q) || user.name.toLowerCase().includes(q)
     );
   });
 
@@ -51,9 +53,7 @@ export class AdminUsers {
     const user = this.users().find((u) => u.id === userId);
     if (!user) return;
 
-    if (
-      confirm(`Are you sure you want to delete ${user.name}? This action cannot be undone.`)
-    ) {
+    if (confirm(`Are you sure you want to delete ${user.name}? This action cannot be undone.`)) {
       this.users.update((list) => list.filter((u) => u.id !== userId));
       this.showMessage(`User ${user.name} has been deleted`);
     }
