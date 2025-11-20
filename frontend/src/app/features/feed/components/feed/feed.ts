@@ -2,9 +2,9 @@ import { Component, HostListener, inject } from '@angular/core';
 import { Post } from '../../../posts/models/post-model';
 import { CommonModule } from '@angular/common';
 import { PostList } from '../../../posts/components/post-list/post-list';
-import { PostApiService } from '../../../posts/services/post-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
+import { FeedApiService } from '../../services/feed-api.service';
 
 @Component({
   selector: 'app-feed',
@@ -24,7 +24,7 @@ export class Feed {
   private isThrottled = false;
   private lastPostTime: string | null = null;
 
-  private postApi = inject(PostApiService);
+  private feedApi = inject(FeedApiService);
   private toast = inject(ToastService);
 
   ngOnInit(): void {
@@ -53,7 +53,7 @@ export class Feed {
   }
 
   private loadPosts() {
-    this.postApi.fetchFeedPosts(this.lastPostTime, this.limit).subscribe({
+    this.feedApi.fetchFeedPosts(this.lastPostTime, this.limit).subscribe({
       next: (response) => {
         if (response.length === 0) {
           this.noMorePosts = true;

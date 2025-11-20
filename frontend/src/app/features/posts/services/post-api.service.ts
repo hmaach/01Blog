@@ -20,30 +20,6 @@ export class PostApiService {
     });
   }
 
-  fetchFeedPosts(lastPostTime: string | null, limit: number): Observable<Post[]> {
-    const token = this.storageService.getAccessToken();
-    const params = new URLSearchParams();
-
-    params.append('size', limit.toString());
-    if (lastPostTime) params.append('before', lastPostTime);
-
-    return this.http.get<Post[]>(`${this.apiUrl}/posts/feed?${params.toString()}`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
-  }
-
-  fetchExplorePosts(lastPostTime: string | null, limit: number): Observable<Post[]> {
-    const token = this.storageService.getAccessToken();
-    const params = new URLSearchParams();
-
-    params.append('size', limit.toString());
-    if (lastPostTime) params.append('before', lastPostTime);
-
-    return this.http.get<Post[]>(`${this.apiUrl}/posts/explore?${params.toString()}`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
-  }
-
   fetchUserPosts(username: string, lastPostTime: string | null, limit: number): Observable<Post[]> {
     const token = this.storageService.getAccessToken();
     const params = new URLSearchParams();

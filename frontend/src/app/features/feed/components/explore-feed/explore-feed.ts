@@ -4,7 +4,7 @@ import { PostList } from '../../../posts/components/post-list/post-list';
 import { CommonModule } from '@angular/common';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { ToastService } from '../../../../core/services/toast.service';
-import { PostApiService } from '../../../posts/services/post-api.service';
+import { FeedApiService } from '../../services/feed-api.service';
 
 @Component({
   selector: 'app-explore-feed',
@@ -25,7 +25,7 @@ export class ExploreFeed {
   private isThrottled = false;
   private lastPostTime: string | null = null;
 
-  private postApi = inject(PostApiService);
+  private feedApi = inject(FeedApiService);
   private toast = inject(ToastService);
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class ExploreFeed {
   }
 
   private loadPosts() {
-    this.postApi.fetchExplorePosts(this.lastPostTime, this.limit).subscribe({
+    this.feedApi.fetchExplorePosts(this.lastPostTime, this.limit).subscribe({
       next: (response) => {
         if (response.length === 0) {
           this.noMorePosts = true;
