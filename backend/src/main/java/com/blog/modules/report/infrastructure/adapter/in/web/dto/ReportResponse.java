@@ -6,6 +6,7 @@ import com.blog.modules.report.domain.model.Report;
 
 public record ReportResponse(
         UUID id,
+        String reportedType,
         UUID reportedUserId,
         UUID reportedPostId,
         UUID reportedCommentId,
@@ -16,6 +17,7 @@ public record ReportResponse(
     public static ReportResponse fromDomain(Report report) {
         return new ReportResponse(
                 report.getId(),
+                report.getReportedType(),
                 report.getReportedUserId(),
                 report.getReportedPostId(),
                 report.getReportedCommentId(),

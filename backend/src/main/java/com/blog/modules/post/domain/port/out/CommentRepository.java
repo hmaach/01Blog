@@ -17,4 +17,6 @@ public interface CommentRepository {
     Comment save(Comment comment);
 
     void deleteById(UUID commentId);
+
+    boolean existsById(UUID commentId);
 }

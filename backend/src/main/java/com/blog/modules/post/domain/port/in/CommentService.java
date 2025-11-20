@@ -15,4 +15,6 @@ public interface CommentService {
 
     void deleteComment(UUID commentId, UUID currUserId, boolean isAdmin);
 
+    boolean existsById(UUID commentId);
+
 }

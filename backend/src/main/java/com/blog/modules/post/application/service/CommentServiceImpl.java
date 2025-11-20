@@ -41,6 +41,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public boolean existsById(UUID commentId) {
+        return commentRepository.existsById(commentId);
+    }
+
+    @Override
     public Comment createComment(UUID postId, UUID currUserId, CreateCommentCommand cmd) {
         UUID commentId = UUID.randomUUID();
 

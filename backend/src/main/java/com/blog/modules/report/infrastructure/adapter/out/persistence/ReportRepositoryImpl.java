@@ -1,7 +1,12 @@
 package com.blog.modules.report.infrastructure.adapter.out.persistence;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.blog.modules.report.domain.model.Report;
@@ -14,6 +19,21 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     public ReportRepositoryImpl(SpringDataReportRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
+    }
+
+    @Override
+    public List<Report> findAll(Instant before, Pageable pageable) {
+        Page<ReportEntity> reports;
+
+        if (before == null && pageable != null) {
+            reports = jpaRepository.findAll(pageable);
+        } else {
+            reports = jpaRepository.findFeedReportsBefore(before, pageable);
+        }
+
+        return reports.stream()
+                .map(ReportMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override

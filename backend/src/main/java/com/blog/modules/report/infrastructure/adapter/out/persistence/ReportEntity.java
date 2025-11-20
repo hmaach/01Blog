@@ -20,6 +20,9 @@ public class ReportEntity {
     @Column(name = "reporter_id", nullable = false)
     private UUID reporterId;
 
+    @Column(name = "reported_type", nullable = false)
+    private String reportedType;
+
     @Column(name = "reported_user_id", nullable = false)
     private UUID reportedUserId;
 
@@ -41,10 +44,11 @@ public class ReportEntity {
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
-    public ReportEntity(UUID id, UUID reporterId, UUID reportedUserId, UUID reportedPostId,
+    public ReportEntity(UUID id, UUID reporterId, String reportedType, UUID reportedUserId, UUID reportedPostId,
             UUID reportedCommentId, String category, String reason, String status, Instant createdAt) {
         this.id = id;
         this.reporterId = reporterId;
+        this.reportedType = reportedType;
         this.reportedUserId = reportedUserId;
         this.reportedPostId = reportedPostId;
         this.reportedCommentId = reportedCommentId;
@@ -128,5 +132,13 @@ public class ReportEntity {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getReportedType() {
+        return reportedType;
+    }
+
+    public void setReportedType(String reportedType) {
+        this.reportedType = reportedType;
     }
 }

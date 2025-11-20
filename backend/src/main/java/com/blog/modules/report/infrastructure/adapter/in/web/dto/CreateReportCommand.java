@@ -4,11 +4,16 @@ import java.util.UUID;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record CreateReportCommand(
         @NotNull(message = "Reported user ID cannot be null")
         UUID reportedUserId,
+        @NotNull
+        @NotBlank
+        @Pattern(regexp = "USER|POST|COMMENT", message = "Reported type must be one of: USER, POST, COMMENT")
+        String reportedType,
         UUID reportedPostId,
         UUID reportedCommentId,
         @NotNull

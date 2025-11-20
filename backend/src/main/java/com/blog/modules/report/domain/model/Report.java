@@ -7,6 +7,7 @@ public class Report {
 
     private UUID id;
     private UUID reporterId;
+    private String reportedType;
     private UUID reportedUserId;
     private UUID reportedPostId;
     private UUID reportedCommentId;
@@ -15,10 +16,11 @@ public class Report {
     private String status;
     private Instant createdAt;
 
-    public Report(UUID id, UUID reporterId, UUID reportedUserId, UUID reportedPostId, UUID reportedCommentId,
+    public Report(UUID id, UUID reporterId, String reportedType, UUID reportedUserId, UUID reportedPostId, UUID reportedCommentId,
             String category, String reason, String status, Instant createdAt) {
         this.id = id;
         this.reporterId = reporterId;
+        this.reportedType = reportedType;
         this.reportedUserId = reportedUserId;
         this.reportedPostId = reportedPostId;
         this.reportedCommentId = reportedCommentId;
@@ -42,6 +44,14 @@ public class Report {
 
     public UUID getReporterId() {
         return reporterId;
+    }
+
+    public String getReportedType() {
+        return reportedType;
+    }
+
+    public void setReportedType(String reportedType) {
+        this.reportedType = reportedType;
     }
 
     public void setReporterId(UUID reporterId) {

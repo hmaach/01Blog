@@ -8,6 +8,7 @@ public class ReportMapper {
         return new ReportEntity(
                 report.getId(),
                 report.getReporterId(),
+                report.getReportedType(),
                 report.getReportedUserId(),
                 report.getReportedPostId(),
                 report.getReportedCommentId(),
@@ -22,6 +23,7 @@ public class ReportMapper {
         return new Report(
                 entity.getId(),
                 entity.getReporterId(),
+                entity.getReportedType(),
                 entity.getReportedUserId(),
                 entity.getReportedPostId(),
                 entity.getReportedCommentId(),

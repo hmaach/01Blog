@@ -28,6 +28,14 @@ public class CommentRepositoryImpl implements CommentRepository {
     }
 
     @Override
+    public boolean existsById(UUID commentId) {
+        if (commentId == null) {
+            return false;
+        }
+        return jpaRepository.existsById(commentId);
+    }
+
+    @Override
     public Comment save(Comment comment) {
         CommentEntity entity = CommentMapper.toEntity(comment);
         return CommentMapper.toDomain(jpaRepository.save(entity));
@@ -35,11 +43,16 @@ public class CommentRepositoryImpl implements CommentRepository {
 
     @Override
     public Optional<Comment> findById(UUID commentId) {
+        if (commentId == null) {
+            return Optional.empty();
+        }
         return jpaRepository.findById(commentId).map(CommentMapper::toDomain);
     }
 
     @Override
     public void deleteById(UUID commentId) {
-        jpaRepository.deleteById(commentId);
+        if (commentId != null) {
+            jpaRepository.deleteById(commentId);
+        }
     }
 }
