@@ -3,10 +3,15 @@ package com.blog.modules.report.infrastructure.adapter.out.persistence;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.blog.modules.user.infrastructure.adapter.out.persistence.user.UserEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,6 +27,14 @@ public class ReportEntity {
 
     @Column(name = "reported_type", nullable = false)
     private String reportedType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reporter_id", insertable = false, updatable = false)
+    private UserEntity reporterUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reported_user_id", insertable = false, updatable = false)
+    private UserEntity reportedUser;
 
     @Column(name = "reported_user_id", nullable = false)
     private UUID reportedUserId;
@@ -140,5 +153,21 @@ public class ReportEntity {
 
     public void setReportedType(String reportedType) {
         this.reportedType = reportedType;
+    }
+
+    public UserEntity getReporterUser() {
+        return reporterUser;
+    }
+
+    public void setReporterUser(UserEntity reporterUser) {
+        this.reporterUser = reporterUser;
+    }
+
+    public UserEntity getReportedUser() {
+        return reportedUser;
+    }
+
+    public void setReportedUser(UserEntity reportedUser) {
+        this.reportedUser = reportedUser;
     }
 }

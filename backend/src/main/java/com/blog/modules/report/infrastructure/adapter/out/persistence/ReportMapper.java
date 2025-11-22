@@ -1,6 +1,7 @@
 package com.blog.modules.report.infrastructure.adapter.out.persistence;
 
 import com.blog.modules.report.domain.model.Report;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.user.UserMapper;
 
 public class ReportMapper {
 
@@ -22,9 +23,9 @@ public class ReportMapper {
     public static Report toDomain(ReportEntity entity) {
         return new Report(
                 entity.getId(),
-                entity.getReporterId(),
+                UserMapper.toDomain(entity.getReporterUser()),
+                UserMapper.toDomain(entity.getReportedUser()),
                 entity.getReportedType(),
-                entity.getReportedUserId(),
                 entity.getReportedPostId(),
                 entity.getReportedCommentId(),
                 entity.getCategory(),

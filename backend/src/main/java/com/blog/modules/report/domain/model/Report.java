@@ -3,25 +3,42 @@ package com.blog.modules.report.domain.model;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.blog.modules.user.domain.model.User;
+
 public class Report {
 
     private UUID id;
     private UUID reporterId;
-    private String reportedType;
     private UUID reportedUserId;
     private UUID reportedPostId;
     private UUID reportedCommentId;
+
+    private User reporterUser;
+    private User reportedUser;
+
+    private String reportedType;
     private String category;
     private String reason;
     private String status;
+
     private Instant createdAt;
 
-    public Report(UUID id, UUID reporterId, String reportedType, UUID reportedUserId, UUID reportedPostId, UUID reportedCommentId,
-            String category, String reason, String status, Instant createdAt) {
+    public Report(
+            UUID id,
+            User reporterUser,
+            User reportedUser,
+            String reportedType,
+            UUID reportedPostId,
+            UUID reportedCommentId,
+            String category,
+            String reason,
+            String status,
+            Instant createdAt
+    ) {
         this.id = id;
-        this.reporterId = reporterId;
+        this.reporterUser = reporterUser;
+        this.reportedUser = reportedUser;
         this.reportedType = reportedType;
-        this.reportedUserId = reportedUserId;
         this.reportedPostId = reportedPostId;
         this.reportedCommentId = reportedCommentId;
         this.category = category;
@@ -112,6 +129,22 @@ public class Report {
 
     public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public User getReporterUser() {
+        return reporterUser;
+    }
+
+    public void setReporterUser(User reporterUser) {
+        this.reporterUser = reporterUser;
+    }
+
+    public User getReportedUser() {
+        return reportedUser;
+    }
+
+    public void setReportedUser(User reportedUser) {
+        this.reportedUser = reportedUser;
     }
 
 }
