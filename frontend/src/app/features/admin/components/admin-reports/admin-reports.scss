@@ -38,7 +38,7 @@
 }
 
 .backButton {
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
   white-space: nowrap;
 }
 
@@ -123,7 +123,7 @@
   border: 1px solid transparent;
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
 }
 
 .reportItem:hover {
@@ -143,6 +143,15 @@
 
 .reportTitle {
   flex: 1;
+}
+
+.authorName {
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.authorName:hover {
+  text-decoration: underline;
 }
 
 .userName {
@@ -252,35 +261,27 @@
 }
 
 .actionBtn {
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border: none;
   border-radius: var(--radius-md);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
   font-size: 0.9rem;
 }
 
 .banBtn {
+  background: rgba(113, 255, 100, 0.1);
+  color: #65a30d;
+  border: 1px solid rgba(113, 255, 100, 0.2);
+}
+
+.deleteBtn {
   background: rgba(255, 100, 100, 0.1);
   color: #ff6464;
   border: 1px solid rgba(255, 100, 100, 0.2);
-}
-
-.banBtn:hover {
-  background: #ff6464;
-  color: white;
 }
 
 .declineBtn {
   background: rgba(147, 112, 219, 0.1);
   color: #9370db;
   border: 1px solid rgba(147, 112, 219, 0.2);
-}
-
-.declineBtn:hover {
-  background: #9370db;
-  color: white;
 }
 
 .hideBtn {

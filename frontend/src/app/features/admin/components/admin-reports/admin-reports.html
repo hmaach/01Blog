@@ -39,11 +39,29 @@
       </div>
 
       <div class="reportsList">
+        @if (isLoading) {
+        <app-spinner></app-spinner>
+        }@else{
         <mat-card *ngFor="let report of reports" class="reportItem">
           <div class="reportHeader">
             <div class="reportTitle">
-              <h3 class="userName">{{ report.reportedUser }}</h3>
-              <p class="userHandle">@{{ report.reportedUsername }}</p>
+              @if (report.reportedUser) {
+              <h3
+                class="userName authorName"
+                (click)="openUserCardDialog(report.reportedUser.username)"
+              >
+                {{ report.reportedUser.name }}
+              </h3>
+              <p
+                class="userHandle authorName"
+                (click)="openUserCardDialog(report.reportedUser.username)"
+              >
+                @{{ report.reportedUser.username }}
+              </p>
+              }@else {
+              <h3 class="userName">{{ 'DELETED USER' }}</h3>
+              <p class="userHandle">@{{ 'deleted_user' }}</p>
+              }
             </div>
 
             <div class="reportMeta">
@@ -61,29 +79,60 @@
 
             <div class="reportSection">
               <label class="label">Reported By:</label>
-              <p class="reporter">{{ report.reporter }}</p>
+              @if (report.reporterUser) {
+              <p
+                class="reporter authorName"
+                (click)="openUserCardDialog(report.reporterUser.username)"
+              >
+                @{{ report.reporterUser.username }}
+              </p>
+              }@else {
+              <p class="reporter">{{ 'deleted_user' }}</p>
+              }
             </div>
 
             <div class="reportSection">
-              <label class="label">Reported:</label>
+              <label class="label">Reported: </label>
+              @if (report.reportedType === "USER" && report.reporterUser) {
+              <button
+                matButton="outlined"
+                (click)="openUserCardDialog(report.reporterUser.username)"
+              >
+                See Profile
+              </button>
+              }@else if (report.reportedType === "POST" && report.reportedPostId) {
+              <button matButton="outlined" (click)="openPostDetail(report.reportedPostId)">
+                See Post
+              </button>
+              } @else if (report.reportedType === "COMMENT" && report.reportedCommentId) {
+              <button matButton="outlined" (click)="openCommentDetail(report.reportedCommentId)">
+                See Comment
+              </button>
+
+              }
+            </div>
+
+            <div class="reportSection">
+              <label class="label">Reported At:</label>
               <p class="date">{{ report.createdAt | date : 'medium' }}</p>
             </div>
           </div>
 
           <div class="reportActions">
-            <button class="actionBtn banBtn" (click)="handleApprove(report.id)">
-              Ban User & Approve
+            <button matButton="outlined" class="banBtn" (click)="handleApprove(report.id)">
+              Approve
             </button>
 
-            <button class="actionBtn declineBtn" (click)="handleDecline(report.id)">
-              Decline Report
+            <button matButton="outlined" class="declineBtn" (click)="handleDecline(report.id)">
+              Decline
             </button>
 
-            <button class="actionBtn deleteBtn" (click)="handleDelete(report.id)">
-              Delete Report
+            <button matButton="outlined" class="deleteBtn" (click)="handleDelete(report.id)">
+              Delete
             </button>
           </div>
         </mat-card>
+        }
       </div>
     </div>
   </main>

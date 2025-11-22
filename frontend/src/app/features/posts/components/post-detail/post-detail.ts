@@ -108,7 +108,6 @@ export class PostDetail {
   }
 
   openReportDialog(): void {
-    console.log(this.post.author);
 
     this.dialog.open(ReportDialog, {
       data: {
