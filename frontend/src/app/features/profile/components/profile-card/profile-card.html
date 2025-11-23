@@ -4,7 +4,7 @@
     <button matIconButton class="closeButton" (click)="closeDialog?.()">
       <mat-icon>close</mat-icon>
     </button>
-    } @if (user) { @if (user.relation !== 'owner') {
+    } @if (user) { @if (user.relation !== 'owner' && !isAdmin) {
     <div class="reportContainer" (click)="openReportDialog()">
       <button matIconButton>
         <mat-icon style="margin-bottom: 2px">report</mat-icon>
@@ -89,6 +89,36 @@
         <mat-icon>person</mat-icon>
         View Profile
       </button>
+
+      } @if (isAdmin && user.relation !== 'owner') {
+
+      <button mat-stroked-button [matMenuTriggerFor]="menu" [disabled]="isLoading">
+        Actions <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        @if (user.status === "active") {
+        <button mat-menu-item color="warn" [disabled]="isLoading" (click)="toggleUserBanning()">
+          <mat-icon>person_remove</mat-icon> Ban User
+        </button>
+        } @else if (user.status === "banned") {
+        <button mat-menu-item color="warn" [disabled]="isLoading" (click)="toggleUserBanning()">
+          <mat-icon>person_remove</mat-icon> Unban User
+        </button>
+        } @if (user.role === "USER") {
+
+        <button mat-menu-item color="warn" [disabled]="isLoading" (click)="toggleUserRole()">
+          <mat-icon>person_remove</mat-icon> Make Admin
+        </button>
+        } @else if (user.status === "ADMIN") {
+        <button mat-menu-item color="warn" [disabled]="isLoading" (click)="toggleUserRole()">
+          <mat-icon>person_remove</mat-icon> Make User
+        </button>
+        }
+        <button mat-menu-item color="warn" [disabled]="isLoading" (click)="handleDeleteUser()">
+          <mat-icon>person_remove</mat-icon> Delete User
+        </button>
+      </mat-menu>
 
       }
     </div>

@@ -3,7 +3,6 @@ import { Post } from '../../models/post-model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Comment } from '../../models/comment-model';
-import { mockComments } from '../../../../shared/lib/mock-data';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
@@ -24,6 +23,7 @@ import { ReportDialog } from '../../../../shared/components/report-dialog/report
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommentApiService } from '../../services/comment-api.service';
 import { Author } from '../../models/author-model';
+import { Spinner } from "../../../../shared/components/spinner/spinner";
 
 @Component({
   selector: 'app-post-detail',
@@ -39,7 +39,8 @@ import { Author } from '../../models/author-model';
     CommonModule,
     FormsModule,
     MatProgressSpinnerModule,
-  ],
+    Spinner
+],
   templateUrl: './post-detail.html',
   styleUrls: ['./post-detail.scss'],
 })
@@ -53,10 +54,12 @@ export class PostDetail {
   private toast = inject(ToastService);
   private blobService = inject(BlobService);
 
+  postId!: string;
   post!: Post;
   menuOpen = false;
   isAdmin: boolean = this.storageService.isAdmin();
   formatDate = formatDate;
+  isLoading: boolean = true;
   isMediaLoading: boolean = true;
 
   private commentsLimit: number = 10;
@@ -66,22 +69,31 @@ export class PostDetail {
 
   constructor(
     private dialogRef: MatDialogRef<PostDetail>,
-    @Inject(MAT_DIALOG_DATA) public data: { post: Post },
+    @Inject(MAT_DIALOG_DATA) public data: { post: Post; postId: string },
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    this.post = this.data?.post;
-    this.loadPostDetail();
-    this.loadComments();
-  }
+    if (this.data?.post) {
+      this.post = this.data.post;
+      this.postId = this.data.post.id;
+      this.isLoading = false;
+    } else if (this.data?.postId) {
+      this.postId = this.data.postId;
+    } else {
+      return;
+    }
 
-  toggleMenu(): void {
-    this.menuOpen = !this.menuOpen;
+    // Now proceed with loading post details
+    if (this.postId) {
+      this.loadPostDetail();
+    }
+
+    // this.loadComments();
   }
 
   toggleLike() {
-    if (!this.post.id) return;
+    if (!this.postId) return;
 
     const previousLiked = this.post.isLiked;
     const previousLikesCount = this.post.likesCount;
@@ -89,7 +101,7 @@ export class PostDetail {
     this.post.isLiked = !this.post.isLiked;
     this.post.likesCount += this.post.isLiked ? 1 : -1;
 
-    this.postApi.likePost(this.post.id).subscribe({
+    this.postApi.likePost(this.postId).subscribe({
       error: (e) => {
         this.post.isLiked = previousLiked;
         this.post.likesCount = previousLikesCount;
@@ -108,12 +120,13 @@ export class PostDetail {
   }
 
   openReportDialog(): void {
+    if (!this.post) return;
 
     this.dialog.open(ReportDialog, {
       data: {
         reportType: 'post',
         reportedUserId: this.post.author.id,
-        reportedPostId: this.post.id,
+        reportedPostId: this.postId,
       },
       maxHeight: '90vh',
       panelClass: 'post-report-dialog',
@@ -148,7 +161,7 @@ export class PostDetail {
 
   //TODO: update the media and the comments count in the posts list
   handleCreateComment(): void {
-    this.commentApi.createComment(this.post.id, this.commentText).subscribe({
+    this.commentApi.createComment(this.postId, this.commentText).subscribe({
       next: async (newComment: Comment) => {
         if (newComment) {
           const author: Author = {
@@ -187,7 +200,10 @@ export class PostDetail {
   }
 
   private loadPostDetail() {
-    this.postApi.fetchPostDetail(this.post.id).subscribe({
+    const postId: string = this.data.post.id ? this.data.post.id : this.data.postId;
+
+    if (!postId) return;
+    this.postApi.fetchPostDetail(postId).subscribe({
       next: (post) => {
         this.post.media = post.media;
         if (this.post.media) {
@@ -209,33 +225,31 @@ export class PostDetail {
   }
 
   private loadComments() {
-    this.commentApi
-      .fetchComments(this.post.id, this.lastCommentTime, this.commentsLimit)
-      .subscribe({
-        next: (comments) => {
-          if (comments.length > 0) {
-            this.comments = comments;
-            this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
-            comments.forEach((comment) => {
-              if (comment.author?.avatarUrl) {
-                this.blobService.loadBlob(comment.author?.avatarUrl).subscribe({
-                  next: (url) => {
-                    comment.author.avatarUrl = url;
-                  },
-                });
-              }
-            });
-            // console.log(comments);
+    if (!this.post) return;
+    this.commentApi.fetchComments(this.postId, this.lastCommentTime, this.commentsLimit).subscribe({
+      next: (comments) => {
+        if (comments.length > 0) {
+          this.comments = comments;
+          this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
+          comments.forEach((comment) => {
+            if (comment.author?.avatarUrl) {
+              this.blobService.loadBlob(comment.author?.avatarUrl).subscribe({
+                next: (url) => {
+                  comment.author.avatarUrl = url;
+                },
+              });
+            }
+          });
 
-            this.comments.push(...comments);
-            this.isCommentsLoading = false;
-          }
-        },
-        error: (e) => {
-          this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+          this.comments.push(...comments);
           this.isCommentsLoading = false;
-        },
-      });
+        }
+      },
+      error: (e) => {
+        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.isCommentsLoading = false;
+      },
+    });
   }
 
   handleDeletePost() {
@@ -246,10 +260,10 @@ export class PostDetail {
 
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        this.postApi.deletePost(this.post.id).subscribe({
+        this.postApi.deletePost(this.postId).subscribe({
           next: () => {
             this.toast.show('Post deleted seccufully!', 'success');
-            this.dialogRef.close({ action: 'delete', postId: this.post.id });
+            this.dialogRef.close({ action: 'delete', postId: this.postId });
           },
           error: (e) => {
             this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');

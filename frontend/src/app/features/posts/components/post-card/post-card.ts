@@ -22,9 +22,9 @@ export class PostCard {
   @Output() postDeleted = new EventEmitter<string>();
 
   private blobService = inject(BlobService);
-  formatDate = formatDate;
+  private dialog = inject(MatDialog);
 
-  constructor(private dialog: MatDialog) {}
+  formatDate = formatDate;
 
   ngOnInit() {
     if (this.post.firstMedia) {
@@ -34,16 +34,6 @@ export class PostCard {
         },
       });
     }
-
-    // if (this.post.media) {
-    //   this.post.media.forEach((media) => {
-    //     this.blobService.loadBlob(media.url).subscribe({
-    //       next: (url) => {
-    //         media.url = url;
-    //       },
-    //     });
-    //   });
-    // }
 
     if (this.post.author.avatarUrl) {
       this.blobService.loadBlob(this.post.author.avatarUrl).subscribe({

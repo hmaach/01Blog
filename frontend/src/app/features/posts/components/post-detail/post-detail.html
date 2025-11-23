@@ -3,14 +3,17 @@
     <div class="modalHeader">
       <div class="headerLeft">
         <img
+          *ngIf="post?.author"
           [src]="post.author.avatarUrl || '/assets/images/default-avatar.jpg'"
-          [alt]="post.author.name"
+          [alt]="post.author.name || 'avatar'"
           (click)="openUserCardDialog(post.author.username)"
           class="authorAvatar"
         />
         <div class="authorInfo">
-          <h3 (click)="openUserCardDialog(post.author.username)">{{ post.author.name }}</h3>
-          <p>@{{ post.author.username }} · {{ formatDate(post.createdAt) }}</p>
+          <h3 *ngIf="post?.author" (click)="openUserCardDialog(post.author.username)">
+            {{ post.author.name }}
+          </h3>
+          <p *ngIf="post?.author">@{{ post.author.username }} · {{ formatDate(post.createdAt) }}</p>
         </div>
       </div>
 
@@ -52,12 +55,15 @@
     </div>
 
     <div class="modalBody">
+      @if (isLoading) {
+      <app-spinner></app-spinner>
+      }@else {
       <h1 class="postTitle">{{ post.title }}</h1>
       <div class="postContent">{{ post.body }}</div>
+      }
 
       <div class="postMedias">
         @if (isMediaLoading) {
-        <!-- <app-spinner></app-spinner> -->
         <div class="spinnerContainer">
           <mat-spinner></mat-spinner>
         </div>

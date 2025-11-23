@@ -9,9 +9,10 @@ import { AdminApiService } from '../../services/admin-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
-import { MatDialog, MatDialogClose } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Confirmation } from '../../../../shared/components/confirmation/confirmation';
 import { PostDetail } from '../../../posts/components/post-detail/post-detail';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-admin-reports',
@@ -22,7 +23,7 @@ import { PostDetail } from '../../../posts/components/post-detail/post-detail';
     MatButtonModule,
     RouterLink,
     Spinner,
-    MatDialogClose,
+    MatMenuModule,
   ],
   templateUrl: './admin-reports.html',
   styleUrl: './admin-reports.scss',

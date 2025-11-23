@@ -4,6 +4,7 @@ export interface UserResponse {
   username: string;
   relation: string;
   status: string;
+  role: string;
   avatarUrl: string;
   postsCount: number;
   subscribersCount: number;

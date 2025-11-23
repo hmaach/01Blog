@@ -92,6 +92,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
         eventPublisher.publishEvent(new PostFetchedEvent(postId));
+        System.err.println("---------------------  " + post.getUser().getName());
         return post;
     }
 

@@ -45,19 +45,20 @@ public record PostResponse(
         );
     }
 
-    public static PostResponse fromDomain(Post createdPost, boolean isOwner, List<Media> mediaList) {
+    public static PostResponse fromDomain(Post post, boolean isOwner, List<Media> mediaList) {
         MediaResponse firstMedia = !mediaList.isEmpty() ? MediaResponse.fromDomain(mediaList.get(0)) : null;
+        AuthorResponse author = post.getUser() != null ? AuthorResponse.fromDomain(post.getUser()) : null;
 
         return new PostResponse(
-                createdPost.getId(),
-                null,
-                createdPost.getTitle(),
-                createdPost.getBody(),
-                createdPost.getStatus(),
-                createdPost.getLikesCount(),
-                createdPost.getCommentsCount(),
-                createdPost.getImpressionsCount(),
-                createdPost.getCreatedAt(),
+                post.getId(),
+                author,
+                post.getTitle(),
+                post.getBody(),
+                post.getStatus(),
+                post.getLikesCount(),
+                post.getCommentsCount(),
+                post.getImpressionsCount(),
+                post.getCreatedAt(),
                 isOwner,
                 false,
                 firstMedia,

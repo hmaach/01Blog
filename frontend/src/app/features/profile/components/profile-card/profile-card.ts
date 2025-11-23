@@ -13,6 +13,10 @@ import { formatNumber } from '../../../../shared/lib/format';
 import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ReportDialog } from '../../../../shared/components/report-dialog/report-dialog';
+import { StorageService } from '../../../../core/services/storage.service';
+import { Confirmation } from '../../../../shared/components/confirmation/confirmation';
+import { MatMenuModule } from '@angular/material/menu';
+import { AdminApiService } from '../../../admin/services/admin-api.service';
 
 @Component({
   selector: 'app-profile-card',
@@ -24,6 +28,7 @@ import { ReportDialog } from '../../../../shared/components/report-dialog/report
     MatButtonModule,
     MatProgressSpinnerModule,
     RouterModule,
+    MatMenuModule,
   ],
   templateUrl: './profile-card.html',
   styleUrls: ['./profile-card.scss'],
@@ -31,6 +36,8 @@ import { ReportDialog } from '../../../../shared/components/report-dialog/report
 export class ProfileCard implements OnInit {
   private profileService = inject(ProfileApiService);
   private blobService = inject(BlobService);
+  private storageService = inject(StorageService);
+  private adminService = inject(AdminApiService);
   private toast = inject(ToastService);
 
   @Input() username?: string;
@@ -38,6 +45,7 @@ export class ProfileCard implements OnInit {
   @Input() isDialog!: boolean;
   @Input() closeDialog?: () => void;
 
+  isAdmin: boolean = this.storageService.getUserRole() === 'ADMIN';
   isLoading: boolean = false;
   avatarUrl?: string;
   formatNumber = formatNumber;
@@ -120,6 +128,54 @@ export class ProfileCard implements OnInit {
     this.dialog.open(MediaPreview, {
       data: { media },
       panelClass: 'media-preview-dialog',
+    });
+  }
+
+  handleDeleteUser() {
+    if (!this.isAdmin) return;
+    const dialogRef = this.dialog.open(Confirmation, {
+      data: { message: `Are you sure you want to DELETE this user ?` },
+      panelClass: 'post-report-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        console.log('Delete', this.user?.id);
+      }
+    });
+  }
+  toggleUserRole() {
+    if (!this.isAdmin) return;
+    const dialogRef = this.dialog.open(Confirmation, {
+      data: {
+        message: `Are you sure you want to make this user ${
+          this.user?.role === 'ADMIN' ? 'User' : 'Admin'
+        } ?`,
+      },
+      panelClass: 'post-report-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        console.log('change role', this.user?.id);
+      }
+    });
+  }
+  toggleUserBanning() {
+    if (!this.isAdmin) return;
+    const dialogRef = this.dialog.open(Confirmation, {
+      data: {
+        message: `Are you sure you want to ${
+          this.user?.status === 'active' ? 'Ban' : 'Unban'
+        } this user ?`,
+      },
+      panelClass: 'post-report-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        console.log('Ban/Unban', this.user?.id);
+      }
     });
   }
 }
