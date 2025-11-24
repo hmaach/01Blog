@@ -88,7 +88,6 @@ export class PostDetail {
       this.loadPostDetail();
       this.loadComments();
     }
-
   }
 
   toggleLike() {
@@ -204,7 +203,11 @@ export class PostDetail {
     if (!postId) return;
     this.postApi.fetchPostDetail(postId).subscribe({
       next: (post) => {
+        // just to not update the user avatar because is already fetched
+        const avatarUrl = this.post.author.avatarUrl;
         this.post = post;
+        this.post.author.avatarUrl = avatarUrl;
+
         this.isLoading = false;
         if (this.post.media) {
           this.post.media.forEach((media) => {
@@ -226,11 +229,9 @@ export class PostDetail {
   }
 
   private loadComments() {
-    // console.log(comments);
     if (!this.postId) return;
     this.commentApi.fetchComments(this.postId, this.lastCommentTime, this.commentsLimit).subscribe({
       next: (comments) => {
-        
         if (comments.length > 0) {
           this.comments = comments;
           this.lastCommentTime = comments.at(-1)?.createdAt ?? null;

@@ -11,10 +11,12 @@ public interface CommentService {
 
     List<Comment> getComments(UUID postId, Instant before, int size);
 
+    boolean existsById(UUID commentId);
+
+    Comment getCommentById(UUID commentId);
+
     Comment createComment(UUID postId, UUID currUserId, CreateCommentCommand cmd);
 
     void deleteComment(UUID commentId, UUID currUserId, boolean isAdmin);
-
-    boolean existsById(UUID commentId);
 
 }

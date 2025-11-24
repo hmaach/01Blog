@@ -29,13 +29,6 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
         """)
     List<PostEntity> findFeedPosts(@Param("currUserId") UUID currUserId, Pageable pageable);
 
-    // @Override
-    // @Query("""
-    //         SELECT p
-    //         FROM PostEntity p
-    //         WHERE p.id = :postId
-    //     """)
-    // Optional<PostEntity> findById(@Param("postId") UUID postId);
     @Query("""
             SELECT p
             FROM PostEntity p
@@ -52,6 +45,15 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
             ORDER BY p.createdAt DESC
         """)
     List<PostEntity> findFeedPostsBefore(@Param("currUserId") UUID currUserId, @Param("before") Instant before, Pageable pageable);
+
+    @Query("""
+            SELECT p
+            FROM PostEntity p
+            WHERE p.status = 'published'
+            AND p.createdAt < :before
+            ORDER BY p.createdAt DESC
+        """)
+    Page<PostEntity> findAllPostsBefore(Instant before, Pageable pageable);
 
     Page<PostEntity> findByUserId(UUID userId, Pageable pageable);
 

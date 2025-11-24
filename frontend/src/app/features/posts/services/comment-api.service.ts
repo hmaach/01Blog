@@ -20,6 +20,14 @@ export class CommentApiService {
     });
   }
 
+  fetchComment(commentId: string): Observable<Comment> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.get<Comment>(`${this.apiUrl}/comments/details/${commentId}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
+
   createComment(postId: string, comment: string): Observable<Comment> {
     const token = this.storageService.getAccessToken();
 

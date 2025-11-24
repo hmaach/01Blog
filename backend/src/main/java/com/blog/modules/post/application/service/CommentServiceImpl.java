@@ -41,6 +41,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Comment getCommentById(UUID commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(commentId.toString()));
+    }
+
+    @Override
     public boolean existsById(UUID commentId) {
         return commentRepository.existsById(commentId);
     }

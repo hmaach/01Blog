@@ -129,7 +129,8 @@
             <button matButton="outlined" (click)="openCommentDetail(report.reportedCommentId)">
               See Comment
             </button>
-
+            }@else {
+            <button matButton="outlined" disabled>DELETED {{ report.reportedType }}</button>
             }
             <!-- <button matButton="outlined" class="banBtn" (click)="handleApprove(report.id)">
               Approve

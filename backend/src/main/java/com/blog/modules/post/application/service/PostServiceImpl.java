@@ -80,10 +80,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findByUserUsername(String username, Pageable pageable) {
+    public List<Post> findByUserUsername(String username, Instant before, int size) {
         if (!userService.userExistByUsername(username)) {
             throw new UserNotFoundException(username);
         }
+
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(0, size, sort);
+        
         return postRepository.findByUserUsername(username, pageable);
     }
 

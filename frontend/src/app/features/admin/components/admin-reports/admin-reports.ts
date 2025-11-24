@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Confirmation } from '../../../../shared/components/confirmation/confirmation';
 import { PostDetail } from '../../../posts/components/post-detail/post-detail';
 import { MatMenuModule } from '@angular/material/menu';
+import { CommentDetail } from '../../../posts/components/comment-detail/comment-detail';
 
 @Component({
   selector: 'app-admin-reports',
@@ -91,7 +92,7 @@ export class AdminReports {
   }
 
   openCommentDetail(commentId: string): void {
-    this.dialog.open(PostDetail, {
+    this.dialog.open(CommentDetail, {
       data: { commentId },
       width: '800px',
       maxHeight: '90vh',

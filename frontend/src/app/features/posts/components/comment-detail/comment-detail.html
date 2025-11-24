@@ -1,0 +1,58 @@
+<div class="modalOverlay">
+  <mat-card class="modalContent">
+    <div class="modalHeader">
+      <div class="headerLeft">
+        <img
+          *ngIf="comment?.author"
+          [src]="comment.author.avatarUrl || '/assets/images/default-avatar.jpg'"
+          [alt]="comment.author.name || 'avatar'"
+          (click)="openUserCardDialog(comment.author.username)"
+          class="authorAvatar"
+        />
+        <div class="authorInfo">
+          <h3 *ngIf="comment?.author" (click)="openUserCardDialog(comment.author.username)">
+            {{ comment.author.name }}
+          </h3>
+          <p *ngIf="comment?.author">
+            @{{ comment.author.username }} · {{ formatDate(comment.createdAt) }}
+          </p>
+        </div>
+      </div>
+
+      <div class="headerActions">
+        <div class="menuContainer">
+          @if (comment) {
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openPostDetail(comment.postId)">
+              <mat-icon color="warn">article</mat-icon>
+              <span>See Post</span>
+            </button>
+            @if (isAdmin || comment.isOwner) {
+            <button mat-menu-item (click)="handleDeleteComment()">
+              <mat-icon color="warn">delete</mat-icon>
+              <span>Delete</span>
+            </button>
+            }
+          </mat-menu>
+          }
+        </div>
+
+        <button mat-icon-button (click)="closeDialog()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="modalBody">
+      @if (isLoading) {
+      <app-spinner></app-spinner>
+      }@else {
+      <div class="postContent">{{ comment.content }}</div>
+      }
+    </div>
+  </mat-card>
+</div>

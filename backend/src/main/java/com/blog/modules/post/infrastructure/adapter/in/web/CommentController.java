@@ -48,16 +48,33 @@ public class CommentController {
 
     @GetMapping("/{postId}")
     public ResponseEntity<List<CommentResponse>> getAllComments(
+            HttpServletRequest request,
             @PathVariable UUID postId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
             @RequestParam(defaultValue = "10") int size
     ) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
         List<Comment> comments = commentService.getComments(postId, before, size);
+
         return ResponseEntity.ok(
-                comments.stream()
-                        .map(CommentResponse::fromDomain)
-                        .toList()
+                comments.stream().map(comment -> {
+                    boolean isOwner = currUserId.equals(comment.getUserId());
+                    return CommentResponse.fromDomain(comment, isOwner);
+                }).toList()
         );
+    }
+
+    @GetMapping("/details/{commentId}")
+    public ResponseEntity<CommentResponse> getComment(
+            HttpServletRequest request,
+            @PathVariable UUID commentId
+    ) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        System.err.println(commentId);
+        Comment comment = commentService.getCommentById(commentId);
+        boolean isOwner = currUserId.equals(comment.getUserId());
+
+        return ResponseEntity.ok(CommentResponse.fromDomain(comment, isOwner));
     }
 
     @PostMapping("/{postId}")
@@ -73,8 +90,8 @@ public class CommentController {
 
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
         Comment comment = commentService.createComment(postId, currUserId, cmd);
-        
-        return ResponseEntity.ok(CommentResponse.fromDomain(comment));
+
+        return ResponseEntity.ok(CommentResponse.fromDomain(comment, true));
     }
 
     @DeleteMapping("/{commentId}")

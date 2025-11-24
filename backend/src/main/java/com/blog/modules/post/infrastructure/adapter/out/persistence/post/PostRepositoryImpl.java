@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,31 @@ public class PostRepositoryImpl implements PostRepository {
             SpringDataPostMediaRepository postMediaJpaRepository) {
         this.jpaRepository = jpaRepository;
         this.postMediaJpaRepository = postMediaJpaRepository;
+    }
+
+    @Override
+    public List<Post> findAll(Instant before, Pageable pageable) {
+        Page<PostEntity> posts;
+
+        if (before == null) {
+            posts = jpaRepository.findAll(pageable);
+        } else {
+            posts = jpaRepository.findAllPostsBefore(before, pageable);
+        }
+
+        posts.forEach(post
+                -> {
+
+            Optional<PostMediaEntity> pm = postMediaJpaRepository.findFirstByIdPostIdOrderByCreatedAtAsc(post.getId());
+            if (!pm.isEmpty()) {
+                post.setFirstMedia(pm.get().getMediaEntity());
+            }
+        }
+        );
+
+        return posts.stream()
+                .map(PostMapper::toDomain)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -123,12 +149,6 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public void deleteById(UUID postId) {
         jpaRepository.deleteById(postId);
-    }
-
-    @Override
-    public List<Post> findAll(Instant before, Pageable pageable) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
 }
