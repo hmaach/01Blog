@@ -19,6 +19,7 @@
 
       <div class="headerActions">
         <div class="menuContainer">
+          @if (post) {
           <button mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon>more_vert</mat-icon>
           </button>
@@ -46,6 +47,7 @@
             </button>
             }
           </mat-menu>
+          }
         </div>
 
         <button mat-icon-button (click)="closeDialog()">
@@ -54,13 +56,14 @@
       </div>
     </div>
 
+    @if (isLoading) {
     <div class="modalBody">
-      @if (isLoading) {
       <app-spinner></app-spinner>
-      }@else {
+    </div>
+    }@else {
+    <div class="modalBody">
       <h1 class="postTitle">{{ post.title }}</h1>
       <div class="postContent">{{ post.body }}</div>
-      }
 
       <div class="postMedias">
         @if (isMediaLoading) {
@@ -130,5 +133,6 @@
         </div>
       </div>
     </div>
+    }
   </mat-card>
 </div>

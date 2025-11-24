@@ -23,7 +23,7 @@ import { ReportDialog } from '../../../../shared/components/report-dialog/report
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommentApiService } from '../../services/comment-api.service';
 import { Author } from '../../models/author-model';
-import { Spinner } from "../../../../shared/components/spinner/spinner";
+import { Spinner } from '../../../../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-post-detail',
@@ -39,8 +39,8 @@ import { Spinner } from "../../../../shared/components/spinner/spinner";
     CommonModule,
     FormsModule,
     MatProgressSpinnerModule,
-    Spinner
-],
+    Spinner,
+  ],
   templateUrl: './post-detail.html',
   styleUrls: ['./post-detail.scss'],
 })
@@ -84,12 +84,11 @@ export class PostDetail {
       return;
     }
 
-    // Now proceed with loading post details
     if (this.postId) {
       this.loadPostDetail();
+      this.loadComments();
     }
 
-    // this.loadComments();
   }
 
   toggleLike() {
@@ -200,12 +199,13 @@ export class PostDetail {
   }
 
   private loadPostDetail() {
-    const postId: string = this.data.post.id ? this.data.post.id : this.data.postId;
+    const postId: string = this.data.postId ? this.data.postId : this.data.post.id;
 
     if (!postId) return;
     this.postApi.fetchPostDetail(postId).subscribe({
       next: (post) => {
-        this.post.media = post.media;
+        this.post = post;
+        this.isLoading = false;
         if (this.post.media) {
           this.post.media.forEach((media) => {
             this.blobService.loadBlob(media.url).subscribe({
@@ -219,15 +219,18 @@ export class PostDetail {
       },
       error: (e) => {
         this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.isLoading = false;
         this.isMediaLoading = false;
       },
     });
   }
 
   private loadComments() {
-    if (!this.post) return;
+    // console.log(comments);
+    if (!this.postId) return;
     this.commentApi.fetchComments(this.postId, this.lastCommentTime, this.commentsLimit).subscribe({
       next: (comments) => {
+        
         if (comments.length > 0) {
           this.comments = comments;
           this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
