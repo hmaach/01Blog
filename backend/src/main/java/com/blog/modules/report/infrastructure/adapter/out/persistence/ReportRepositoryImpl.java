@@ -47,6 +47,19 @@ public class ReportRepositoryImpl implements ReportRepository {
     }
 
     @Override
+    public boolean existsById(UUID reportId) {
+        if (reportId == null) {
+            return false;
+        }
+        return jpaRepository.existsById(reportId);
+    }
+
+    @Override
+    public void changeStatus(UUID reportId, String status) {
+        jpaRepository.changeStatus(reportId, status);
+    }
+
+    @Override
     public void delete(UUID reportId) {
         if (reportId != null) {
             jpaRepository.deleteById(reportId);

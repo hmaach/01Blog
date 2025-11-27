@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.blog.modules.post.domain.port.in.CommentService;
 import com.blog.modules.post.domain.port.in.PostService;
@@ -17,6 +18,7 @@ import com.blog.modules.report.domain.model.Report;
 import com.blog.modules.report.domain.port.in.ReportService;
 import com.blog.modules.report.domain.port.out.ReportRepository;
 import com.blog.modules.report.infrastructure.adapter.in.web.dto.CreateReportCommand;
+import com.blog.modules.report.infrastructure.exception.ReportNotFoundException;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 import com.blog.shared.infrastructure.exception.ConflictException;
@@ -50,6 +52,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    @Transactional
     public Report createReport(UUID currentUserId, CreateReportCommand cmd) {
         if (currentUserId.equals(cmd.reportedUserId())) {
             throw new ConflictException("You can't report yourself.");
@@ -87,5 +90,25 @@ public class ReportServiceImpl implements ReportService {
         report.setCreatedAt(Instant.now());
 
         return reportRepository.save(report);
+    }
+
+    @Override
+    @Transactional
+    public void changeStatus(UUID reportId, String status) {
+        if (!reportRepository.existsById(reportId)) {
+            throw new ReportNotFoundException(reportId.toString());
+        }
+
+        reportRepository.changeStatus(reportId, status);
+    }
+
+    @Override
+    @Transactional
+    public void deleteReport(UUID reportId) {
+        if (!reportRepository.existsById(reportId)) {
+            throw new ReportNotFoundException(reportId.toString());
+        }
+
+        reportRepository.delete(reportId);
     }
 }

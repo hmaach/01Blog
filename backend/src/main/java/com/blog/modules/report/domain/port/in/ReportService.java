@@ -13,4 +13,8 @@ public interface ReportService {
 
     Report createReport(UUID currentUserId, CreateReportCommand cmd);
 
+    void changeStatus(UUID reportId, String status);
+
+    void deleteReport(UUID reportId);
+
 }

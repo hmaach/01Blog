@@ -16,4 +16,8 @@ public interface ReportRepository {
 
     void delete(UUID reportId);
 
+    boolean existsById(UUID reportId);
+
+    void changeStatus(UUID reportId, String status);
+
 }

@@ -20,10 +20,18 @@ public record ReportResponse(
         ) {
 
     public static ReportResponse fromDomain(Report report) {
+
+        AuthorResponse reporterUser
+                = report.getReportedUser() != null ? AuthorResponse.fromDomain(report.getReporterUser())
+                : null;
+        AuthorResponse reportedUser
+                = report.getReportedUser() != null ? AuthorResponse.fromDomain(report.getReportedUser())
+                : null;
+
         return new ReportResponse(
                 report.getId(),
-                AuthorResponse.fromDomain(report.getReporterUser()),
-                AuthorResponse.fromDomain(report.getReportedUser()),
+                reporterUser,
+                reportedUser,
                 report.getReportedType(),
                 report.getReportedPostId(),
                 report.getReportedCommentId(),
