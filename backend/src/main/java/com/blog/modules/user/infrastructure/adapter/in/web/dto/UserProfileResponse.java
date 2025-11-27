@@ -34,4 +34,20 @@ public record UserProfileResponse(
                 user.getCreatedAt()
         );
     }
+
+    public static UserProfileResponse fromDomain(User user) {
+        return new UserProfileResponse(
+                user.getId(),
+                user.getName(),
+                user.getUsername(),
+                user.getRole(),
+                user.getStatus(),
+                user.getPostsCount(),
+                user.getSubscribersCount(),
+                user.getImpressionsCount(),
+                null,
+                user.getAvatarUrl(),
+                user.getCreatedAt()
+        );
+    }
 }

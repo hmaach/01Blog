@@ -52,6 +52,14 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public List<Report> getLastThreeReports() {
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(0, 3, sort);
+
+        return reportRepository.findAll(null, pageable);
+    }
+
+    @Override
     @Transactional
     public Report createReport(UUID currentUserId, CreateReportCommand cmd) {
         if (currentUserId.equals(cmd.reportedUserId())) {

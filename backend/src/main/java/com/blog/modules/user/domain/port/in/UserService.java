@@ -1,5 +1,6 @@
 package com.blog.modules.user.domain.port.in;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -7,6 +8,10 @@ import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 
 public interface UserService {
+
+    List<User> findAll(Instant before, int size);
+
+    List<User> getThreeActiveUsers();
 
     User findById(UUID userId);
 
@@ -17,8 +22,6 @@ public interface UserService {
     User findByUsername(String username);
 
     User findByEmail(String email);
-
-    List<User> findAll();
 
     String getUserReadme(UUID currentUserId, UUID userId);
 

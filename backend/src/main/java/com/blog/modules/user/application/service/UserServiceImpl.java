@@ -1,9 +1,13 @@
 package com.blog.modules.user.application.service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +44,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<User> findAll(Instant before, int size) {
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(0, size, sort);
+
+        return userRepository.findAll(before, pageable);
+    }
+
+    @Override
+    public List<User> getThreeActiveUsers() {
+
+        Sort sort = Sort.by("postsCount").descending();
+        Pageable pageable = PageRequest.of(0, 3, sort);
+
+        return userRepository.findAll(null, pageable);
     }
 
     @Override
@@ -51,15 +67,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    // TODO : implement userExist
     @Override
     public Boolean userExist(UUID userId) {
-        return userRepository.findById(userId).isPresent();
+        return userRepository.existsById(userId);
     }
 
     @Override
     public boolean userExistByUsername(String username) {
-        return userRepository.findByUsername(username).isPresent();
+        return userRepository.existsByUsername(username);
     }
 
     @Override

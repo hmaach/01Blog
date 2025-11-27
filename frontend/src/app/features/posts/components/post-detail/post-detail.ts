@@ -202,11 +202,12 @@ export class PostDetail {
 
     if (!postId) return;
     this.postApi.fetchPostDetail(postId).subscribe({
-      next: (post) => {
+      next: (post: Post) => {
+        console.log(post);
         // just to not update the user avatar because is already fetched
         const avatarUrl = this.post.author.avatarUrl;
         this.post = post;
-        this.post.author.avatarUrl = avatarUrl;
+        if (avatarUrl) this.post.author.avatarUrl = avatarUrl;
 
         this.isLoading = false;
         if (this.post.media) {

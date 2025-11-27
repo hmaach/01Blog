@@ -1,9 +1,12 @@
 package com.blog.modules.user.infrastructure.adapter.out.persistence.user;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.blog.modules.user.domain.model.User;
@@ -19,8 +22,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() {
-        return jpaRepository.findAll()
+    public List<User> findAll(Instant before, Pageable pageable) {
+
+        Page<UserEntity> users;
+
+        if (before == null && pageable != null) {
+            users = jpaRepository.findAll(pageable);
+        } else {
+            users = jpaRepository.findAllBefore(before, pageable);
+        }
+
+        return users
                 .stream()
                 .map(UserMapper::toDomain)
                 .toList();

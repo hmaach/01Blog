@@ -19,6 +19,15 @@
   margin-bottom: var(--spacing-2xl);
 }
 
+.authorName {
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.authorName:hover {
+  text-decoration: underline;
+}
+
 .title {
   font-size: 2.5rem;
   font-weight: 700;

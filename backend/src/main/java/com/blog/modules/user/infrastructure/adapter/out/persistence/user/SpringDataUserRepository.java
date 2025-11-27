@@ -1,14 +1,25 @@
 package com.blog.modules.user.infrastructure.adapter.out.persistence.user;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID> {
+
+    @Query("""
+            SELECT u
+            FROM UserEntity u
+            WHERE u.createdAt < :before
+            ORDER BY u.createdAt DESC
+        """)
+    Page<UserEntity> findAllBefore(@Param("before") Instant before, Pageable pageable);
 
     @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.avatar WHERE u.email = :email")
     Optional<UserEntity> findByEmail(@Param("email") String email);

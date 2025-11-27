@@ -1,12 +1,17 @@
 package com.blog.modules.user.domain.port.out;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Pageable;
+
 import com.blog.modules.user.domain.model.User;
 
 public interface UserRepository {
+
+    List<User> findAll(Instant before, Pageable size);
 
     User save(User user);
 
@@ -23,8 +28,6 @@ public interface UserRepository {
     boolean existsByEmail(String email);
 
     boolean existsByUsername(String username);
-
-    List<User> findAll();
 
     Optional<UUID> getAvatarId(UUID userId);
 
@@ -45,4 +48,5 @@ public interface UserRepository {
     void decrementPostsCount(UUID userId);
 
     void deleteById(UUID id);
+
 }

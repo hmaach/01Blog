@@ -17,4 +17,6 @@ public interface ReportService {
 
     void deleteReport(UUID reportId);
 
+    List<Report> getLastThreeReports();
+
 }

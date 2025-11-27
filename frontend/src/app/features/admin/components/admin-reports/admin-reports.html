@@ -18,7 +18,7 @@
             <span class="statLabel"><mat-icon>group</mat-icon>User Reports</span>
             <i class="statIcon"></i>
           </div>
-          <div class="statValue">{{ 154 }}</div>
+          <div class="statValue">{{ totalUserReports || 0 }}</div>
         </mat-card>
 
         <mat-card class="statCard">
@@ -26,7 +26,7 @@
             <span class="statLabel"><mat-icon>article</mat-icon>Post Reports</span>
             <i class="statIcon"></i>
           </div>
-          <div class="statValue">{{ 124 }}</div>
+          <div class="statValue">{{ totalPostReports || 0 }}</div>
         </mat-card>
 
         <mat-card class="statCard">
@@ -34,7 +34,7 @@
             <span class="statLabel"><mat-icon>comment</mat-icon>Comment Reports</span>
             <i class="statIcon"></i>
           </div>
-          <div class="statValue">{{ 11 }}</div>
+          <div class="statValue">{{ totalCommentReports || 0 }}</div>
         </mat-card>
       </div>
 

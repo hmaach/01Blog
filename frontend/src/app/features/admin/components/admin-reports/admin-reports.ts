@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Report } from '../../models/report-model';
 import { AdminApiService } from '../../services/admin-api.service';
 import { ToastService } from '../../../../core/services/toast.service';
@@ -35,10 +35,15 @@ export class AdminReports {
   private apiService = inject(AdminApiService);
   private toast = inject(ToastService);
   private dialog = inject(MatDialog);
+  private route = inject(ActivatedRoute);
 
   isLoading: boolean = true;
   isLoadingMore = true;
   noMoreReports = false;
+
+  totalUserReports!: number;
+  totalPostReports!: number;
+  totalCommentReports!: number;
 
   private limit: number = 9;
   private scrollDistance = 0.8;
@@ -47,6 +52,11 @@ export class AdminReports {
   private lastReportTime: string | null = null;
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.totalUserReports = params['totalUserReports'];
+      this.totalPostReports = params['totalPostReports'];
+      this.totalCommentReports = params['totalCommentReports'];
+    });
     this.loadReports();
   }
 
@@ -67,7 +77,6 @@ export class AdminReports {
       },
       error: (e) => {
         this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
-        console.log('Failed to fetch reports:', e);
         this.isLoading = false;
         this.isLoadingMore = false;
       },
