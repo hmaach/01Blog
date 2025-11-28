@@ -26,6 +26,7 @@ import com.blog.modules.report.domain.port.in.ReportService;
 import com.blog.modules.report.infrastructure.adapter.in.web.dto.ReportResponse;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.UserService;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserProfileResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,13 +65,13 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public List<UserResponse> getUsers(
+    public List<UserProfileResponse> getUsers(
             HttpServletRequest request,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
             @RequestParam(defaultValue = "10") int size
     ) {
         return userService.findAll(before, size).stream()
-                .map(UserResponse::fromDomain)
+                .map(UserProfileResponse::fromDomain)
                 .toList();
     }
 
