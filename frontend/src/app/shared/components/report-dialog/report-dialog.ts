@@ -53,13 +53,13 @@ export class ReportDialog {
       reportedUserId: string;
       reportedPostId: string;
       reportedCommentId: string;
-      reportType: string;
+      reportedType: string;
       closeDialog?: () => void;
     }
   ) {}
 
   ngOnInit(): void {
-    this.reported = this.data.reportType;
+    this.reported = this.data.reportedType;
   }
 
   stopPropagation(event: Event): void {
@@ -72,7 +72,7 @@ export class ReportDialog {
 
   handleSubmit(): void {
     const dialogRef = this.dialog.open(Confirmation, {
-      data: { message: `Are you sure you want to report this ${this.data.reportType} ?` },
+      data: { message: `Are you sure you want to report this ${this.data.reportedType} ?` },
       panelClass: 'post-report-dialog',
     });
 
@@ -84,7 +84,7 @@ export class ReportDialog {
           reportedUserId: this.data.reportedUserId,
           reportedPostId: this.data.reportedPostId,
           reportedCommentId: this.data.reportedCommentId,
-          reportType: this.data.reportType, // post | user | comment
+          reportedType: this.data.reportedType, // POST | USER | COMMENT
           category: this.reportCategory,
           reason: this.reportReason,
         };

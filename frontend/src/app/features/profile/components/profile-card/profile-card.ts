@@ -86,7 +86,7 @@ export class ProfileCard implements OnInit {
 
   openReportDialog(): void {
     this.dialog.open(ReportDialog, {
-      data: { reportType: 'user', reportedUserId: this.user?.id, closeDialog: this.closeDialog },
+      data: { reportedType: 'USER', reportedUserId: this.user?.id, closeDialog: this.closeDialog },
       maxHeight: '90vh',
       panelClass: 'post-report-dialog',
     });

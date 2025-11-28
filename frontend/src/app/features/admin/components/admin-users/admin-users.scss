@@ -145,6 +145,14 @@
   object-fit: cover;
   border: 2px solid var(--primary-orange);
 }
+.authorName {
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.authorName:hover {
+  text-decoration: underline;
+}
 
 .userName {
   font-weight: 600;
@@ -178,7 +186,7 @@
 
 .active {
   background: rgba(74, 222, 128, 0.1);
-  color: #4ade80;
+  color: #2c884e;
 }
 
 .banned {
@@ -251,6 +259,10 @@
   text-align: center;
   padding: var(--spacing-3xl) var(--spacing-lg);
   color: var(--text-dark-secondary);
+}
+
+.spinnerContainer {
+  width: 100%;
 }
 
 @media (max-width: 1024px) {

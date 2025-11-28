@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { StorageService } from '../../../core/services/storage.service';
 import { Report } from '../models/report-model';
 import { AdminStats } from '../models/stats-model';
+import { UserResponse } from '../../profile/models/user-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class AdminApiService {
@@ -17,6 +18,18 @@ export class AdminApiService {
     const token = this.storageService.getAccessToken();
 
     return this.http.get<AdminStats>(`${this.apiUrl}/admin/stats`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
+
+  fetchUsers(lastPostTime: string | null, limit: number): Observable<UserResponse[]> {
+    const token = this.storageService.getAccessToken();
+    const params = new URLSearchParams();
+
+    params.append('size', limit.toString());
+    if (lastPostTime) params.append('before', lastPostTime);
+
+    return this.http.get<UserResponse[]>(`${this.apiUrl}/admin/users`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }

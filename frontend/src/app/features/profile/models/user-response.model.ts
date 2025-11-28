@@ -9,4 +9,5 @@ export interface UserResponse {
   postsCount: number;
   subscribersCount: number;
   impressionsCount: number;
+  createdAt: string;
 }

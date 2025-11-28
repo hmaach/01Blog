@@ -45,7 +45,6 @@ import { Spinner } from '../../../../shared/components/spinner/spinner';
   styleUrls: ['./post-detail.scss'],
 })
 export class PostDetail {
-  @Input() comments?: Comment[];
   @Output() close = new EventEmitter<void>();
 
   private storageService = inject(StorageService);
@@ -54,6 +53,7 @@ export class PostDetail {
   private toast = inject(ToastService);
   private blobService = inject(BlobService);
 
+  comments: Comment[] = [];
   postId!: string;
   post!: Post;
   menuOpen = false;
@@ -122,7 +122,7 @@ export class PostDetail {
 
     this.dialog.open(ReportDialog, {
       data: {
-        reportType: 'post',
+        reportedType: 'POST',
         reportedUserId: this.post.author.id,
         reportedPostId: this.postId,
       },
@@ -160,7 +160,7 @@ export class PostDetail {
   //TODO: update the media and the comments count in the posts list
   handleCreateComment(): void {
     this.commentApi.createComment(this.postId, this.commentText).subscribe({
-      next: async (newComment: Comment) => {
+      next: (newComment: Comment) => {
         if (newComment) {
           const author: Author = {
             id: this.storageService.getCurrentUserInfo()?.id || '',
@@ -170,7 +170,7 @@ export class PostDetail {
           };
 
           if (author.avatarUrl) {
-            await this.blobService.loadBlob(author.avatarUrl).subscribe({
+            this.blobService.loadBlob(author.avatarUrl).subscribe({
               next: (url) => {
                 author.avatarUrl = url;
               },
@@ -203,11 +203,18 @@ export class PostDetail {
     if (!postId) return;
     this.postApi.fetchPostDetail(postId).subscribe({
       next: (post: Post) => {
-        console.log(post);
         // just to not update the user avatar because is already fetched
-        const avatarUrl = this.post.author.avatarUrl;
+        const avatarUrl = this.post?.author.avatarUrl;
         this.post = post;
-        if (avatarUrl) this.post.author.avatarUrl = avatarUrl;
+        if (avatarUrl) {
+          this.post.author.avatarUrl = avatarUrl;
+        } else if (this.post.author.avatarUrl) {
+          this.blobService.loadBlob(this.post.author.avatarUrl).subscribe({
+            next: (url) => {
+              this.post.author.avatarUrl = url;
+            },
+          });
+        }
 
         this.isLoading = false;
         if (this.post.media) {
@@ -234,7 +241,7 @@ export class PostDetail {
     this.commentApi.fetchComments(this.postId, this.lastCommentTime, this.commentsLimit).subscribe({
       next: (comments) => {
         if (comments.length > 0) {
-          this.comments = comments;
+          // this.comments = comments;
           this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
           comments.forEach((comment) => {
             if (comment.author?.avatarUrl) {

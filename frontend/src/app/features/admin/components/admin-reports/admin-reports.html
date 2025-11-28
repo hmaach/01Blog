@@ -12,31 +12,35 @@
         >
       </div>
 
+      @if (totalUserReports && totalPostReports && totalCommentReports) {
       <div class="statsGrid">
+        @if (totalUserReports) {
         <mat-card class="statCard">
           <div class="statHeader">
             <span class="statLabel"><mat-icon>group</mat-icon>User Reports</span>
             <i class="statIcon"></i>
           </div>
-          <div class="statValue">{{ totalUserReports || 0 }}</div>
+          <div class="statValue">{{ totalUserReports }}</div>
         </mat-card>
-
+        } @if (totalPostReports) {
         <mat-card class="statCard">
           <div class="statHeader">
             <span class="statLabel"><mat-icon>article</mat-icon>Post Reports</span>
             <i class="statIcon"></i>
           </div>
-          <div class="statValue">{{ totalPostReports || 0 }}</div>
+          <div class="statValue">{{ totalPostReports }}</div>
         </mat-card>
-
+        } @if (totalCommentReports) {
         <mat-card class="statCard">
           <div class="statHeader">
             <span class="statLabel"><mat-icon>comment</mat-icon>Comment Reports</span>
             <i class="statIcon"></i>
           </div>
-          <div class="statValue">{{ totalCommentReports || 0 }}</div>
+          <div class="statValue">{{ totalCommentReports }}</div>
         </mat-card>
+        }
       </div>
+      }
 
       <div class="reportsList">
         @if (isLoading) {

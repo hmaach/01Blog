@@ -20,7 +20,7 @@
           class="searchInput"
         />
         <span class="resultCount">
-          Found {{ filteredUsers().length }} user{{ filteredUsers().length !== 1 ? 's' : '' }}
+          Found {{ users.length }} user{{ filteredUsers().length !== 1 ? 's' : '' }}
         </span>
       </mat-card>
 
@@ -34,35 +34,42 @@
               <th>Joined</th>
               <th>Role</th>
               <th>Status</th>
-              <th>Actions</th>
+              <!-- <th>Actions</th> -->
             </tr>
           </thead>
 
           <tbody>
-            <tr *ngFor="let user of filteredUsers()" [class.bannedRow]="user.isBanned">
+            <tr *ngFor="let user of users" [class.bannedRow]="user.status === 'banned'">
               <td class="userCell">
                 <div class="userRow">
-                  <img
+                  <!-- <img
                     [src]="user.avatar || '/placeholder.svg'"
                     [alt]="user.name"
                     class="userAvatar"
-                  />
+                  /> -->
                   <div>
-                    <div class="userName">{{ user.name }}</div>
-                    <div class="userUsername">@{{ user.username }}</div>
+                    <div class="userName authorName" (click)="openUserCardDialog(user.username)">
+                      {{ user.name }}
+                    </div>
+                    <div
+                      class="userUsername authorName"
+                      (click)="openUserCardDialog(user.username)"
+                    >
+                      @{{ user.username }}
+                    </div>
                   </div>
                 </div>
               </td>
 
-              <td>{{ user.totalPosts }}</td>
-              <td>{{ user.subscribers }}</td>
-              <td>{{ user.joinDate }}</td>
+              <td>{{ user.postsCount }}</td>
+              <td>{{ user.subscribersCount }}</td>
+              <td>{{ user.createdAt | date : 'medium' }}</td>
 
               <td>
                 <span
                   class="roleBadge"
-                  [class.adminRole]="user.role === 'admin'"
-                  [class.userRole]="user.role === 'user'"
+                  [class.adminRole]="user.role == 'admin'"
+                  [class.userRole]="user.role == 'user'"
                 >
                   {{ user.role }}
                 </span>
@@ -71,14 +78,14 @@
               <td>
                 <span
                   class="statusBadge"
-                  [class.banned]="user.isBanned"
-                  [class.active]="!user.isBanned"
+                  [class.banned]="user.status === 'banned'"
+                  [class.active]="user.status === 'active'"
                 >
-                  {{ user.isBanned ? 'Banned' : 'Active' }}
+                  {{ user.status }}
                 </span>
               </td>
 
-              <td class="actionsCell">
+              <!-- <td class="actionsCell">
                 <button matButton="outlined" (click)="handleBanUser(user.id)">
                   {{ user.isBanned ? 'Unban' : 'Ban' }}
                 </button>
@@ -90,8 +97,16 @@
                 <button matButton="filled" color="red" (click)="handleDeleteUser(user.id)">
                   Delete
                 </button>
-              </td>
+              </td> -->
             </tr>
+            @if (isLoading) {
+            <tr>
+              <td [colSpan]="6" class="spinnerContainer">
+                <app-spinner></app-spinner>
+              </td>
+              <!-- <mat-progress-spinner></mat-progress-spinner> -->
+            </tr>
+            }
           </tbody>
         </table>
       </div>

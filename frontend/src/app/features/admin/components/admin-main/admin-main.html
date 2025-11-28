@@ -8,7 +8,7 @@
             <i class="statIcon"></i>
           </div>
           @if (isLoading) {} @else {
-          <div class="statValue">{{ stats.totalUsers || 0 }}</div>
+          <div class="statValue">{{ stats?.totalUsers || 0 }}</div>
           }
         </mat-card>
 
@@ -18,7 +18,7 @@
             <i class="statIcon"></i>
           </div>
           @if (isLoading) {} @else {
-          <div class="statValue">{{ stats.totalPosts || 0 }}</div>
+          <div class="statValue">{{ stats?.totalPosts || 0 }}</div>
           }
         </mat-card>
 
@@ -28,7 +28,7 @@
             <i class="statIcon"></i>
           </div>
           @if (isLoading) { } @else {
-          <div class="statValue">{{ stats.totalReports || 0 }}</div>
+          <div class="statValue">{{ stats?.totalReports || 0 }}</div>
           }
         </mat-card>
       </div>
@@ -53,7 +53,7 @@
           </thead>
 
           <tbody>
-            @if (isLoading) { } @else {
+            @if (stats && stats.threeActiveUsers) {
             <tr *ngFor="let user of stats.threeActiveUsers">
               <td>
                 <div class="userCell">
@@ -81,6 +81,13 @@
 
               <td>{{ user.postsCount }}</td>
             </tr>
+            } @if (isLoading) {
+            <tr>
+              <td [colSpan]="3" class="spinnerContainer">
+                <app-spinner></app-spinner>
+              </td>
+              <!-- <mat-progress-spinner></mat-progress-spinner> -->
+            </tr>
             }
           </tbody>
         </table>
@@ -94,9 +101,9 @@
             matButton
             routerLink="/admin/reports"
             [queryParams]="{
-              totalUserReports: stats.totalUserReports,
-              totalPostReports: stats.totalPostReports,
-              totalCommentReports: stats.totalCommentReports
+              totalUserReports: stats?.totalUserReports,
+              totalPostReports: stats?.totalPostReports,
+              totalCommentReports: stats?.totalCommentReports
             }"
             class="sectionLink"
             >Reports Management <mat-icon>arrow_forward</mat-icon></a
@@ -107,7 +114,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th>Reported User</th>
+              <th>Reported</th>
               <th>Reporter</th>
               <th>Category</th>
               <th>Reason</th>
@@ -116,7 +123,7 @@
           </thead>
 
           <tbody>
-            @if (isLoading) { } @else {
+            @if (stats && stats.lastThreeReports) {
             <tr *ngFor="let report of stats.lastThreeReports">
               <td>
                 <div class="userCell">
@@ -163,6 +170,13 @@
               <!-- <td>
                 <mat-chip>{{ report.status }}</mat-chip>
               </td> -->
+            </tr>
+            } @if (isLoading) {
+            <tr>
+              <td [colSpan]="4" class="spinnerContainer">
+                <app-spinner></app-spinner>
+              </td>
+              <!-- <mat-progress-spinner></mat-progress-spinner> -->
             </tr>
             }
           </tbody>

@@ -11,6 +11,7 @@ import { AdminApiService } from '../../services/admin-api.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminStats } from '../../models/stats-model';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
+import { Spinner } from '../../../../shared/components/spinner/spinner';
 
 @Component({
   selector: 'app-admin-main',
@@ -21,12 +22,13 @@ import { ProfileDialog } from '../../../profile/components/profile-dialog/profil
     RouterLink,
     MatButtonModule,
     MatChipsModule,
+    Spinner,
   ],
   templateUrl: './admin-main.html',
   styleUrl: './admin-main.scss',
 })
 export class AdminMain {
-  stats!: AdminStats;
+  stats?: AdminStats;
   currentUser = mockCurrentUser;
   users = [...mockUsers];
   reports = [...mockReports];
@@ -46,7 +48,6 @@ export class AdminMain {
     this.apiService.fetchStats().subscribe({
       next: (response) => {
         this.stats = response;
-        console.log(response);
 
         this.isLoading = false;
       },
