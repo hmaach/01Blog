@@ -1,0 +1,10 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-navbar);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-dark);
+  // position: fixed;
+  // z-index: 100000;
+  // width: 100%;
+}

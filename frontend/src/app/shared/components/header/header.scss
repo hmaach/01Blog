@@ -31,7 +31,11 @@ mat-toolbar {
   top: 0;
   z-index: var(--z-navbar);
   backdrop-filter: blur(10px);
+  // position: fixed;
+  // z-index: 100000;
+  // width: 100%;
 }
+
 
 .navbarContainer {
   display: flex;
