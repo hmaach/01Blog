@@ -10,31 +10,39 @@
 
     <!-- Contact Form -->
     <div class="contact-form">
-      <form (submit)="onSubmit($event)" name="contactForm">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input id="name" formControlName="name" type="text" placeholder="Your Name" />
-        </div>
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="form-group w-100">
+          <mat-label>Name</mat-label>
+          <input matInput id="name" formControlName="name" type="text" placeholder="Your Name" />
+        </mat-form-field>
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input id="email" formControlName="email" type="email" placeholder="Your Email" />
-        </div>
+        <mat-form-field class="form-group w-100">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            required
+            formControlName="email"
+            type="email"
+            autocomplete="email"
+            placeholder="Your Email"
+          />
+        </mat-form-field>
 
-        <div class="form-group">
-          <label for="subject">Subject</label>
-          <input id="subject" formControlName="subject" type="text" placeholder="Subject" />
-        </div>
+        <mat-form-field class="form-group w-100">
+          <mat-label>Subject</mat-label>
+          <input matInput required formControlName="subject" type="text" placeholder="Subject" />
+        </mat-form-field>
 
-        <div class="form-group">
-          <label for="message">Message</label>
+        <mat-form-field class="form-group w-100">
+          <mat-label>Message</mat-label>
           <textarea
-            id="message"
+            matInput
+            required
             formControlName="message"
             rows="5"
             placeholder="Your Message"
           ></textarea>
-        </div>
+        </mat-form-field>
 
         <button
           matButton="filled"
