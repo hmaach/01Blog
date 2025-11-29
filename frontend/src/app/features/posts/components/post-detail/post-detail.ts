@@ -61,6 +61,7 @@ export class PostDetail {
   formatDate = formatDate;
   isLoading: boolean = true;
   isMediaLoading: boolean = true;
+  isUpdated: boolean = false;
 
   private commentsLimit: number = 10;
   private lastCommentTime: string | null = null;
@@ -153,6 +154,7 @@ export class PostDetail {
             next: (url) => (media.url = url),
           });
         });
+        this.isUpdated = true;
       }
     });
   }
@@ -194,7 +196,11 @@ export class PostDetail {
   }
 
   closeDialog(): void {
-    this.dialogRef.close();
+    if (this.isUpdated) {
+      this.dialogRef.close({ action: 'update', post: this.post });
+    } else {
+      this.dialogRef.close();
+    }
   }
 
   private loadPostDetail() {

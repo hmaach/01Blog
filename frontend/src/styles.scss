@@ -91,6 +91,10 @@ $dark-theme: mat.define-theme(
   );
 }
 
+img.main-img {
+  width: 100%;
+}
+
 html {
   @include mat.all-component-themes($light-theme);
 

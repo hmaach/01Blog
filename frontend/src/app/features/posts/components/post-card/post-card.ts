@@ -20,6 +20,7 @@ import { formatDate } from '../../../../shared/lib/date';
 export class PostCard {
   @Input() post!: Post;
   @Output() postDeleted = new EventEmitter<string>();
+  @Output() postUpdated = new EventEmitter<Post>();
 
   private blobService = inject(BlobService);
   private dialog = inject(MatDialog);
@@ -61,10 +62,10 @@ export class PostCard {
 
     // Notify parent that a post was deleted
     dialogRef.afterClosed().subscribe((result) => {
-      // console.log(result);
-
       if (result?.action === 'delete') {
         this.postDeleted.emit(result.postId);
+      } else if (result?.action === 'update') {
+        this.postUpdated.emit(result.post);
       }
     });
   }

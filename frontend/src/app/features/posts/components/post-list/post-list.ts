@@ -59,6 +59,18 @@ export class PostList {
     });
   }
 
+  updatePost(post: Post) {
+    if (!post) return;
+
+    const index = this.posts?.findIndex((p) => p.id === post.id);
+    if (index === undefined || index === -1 || !this.posts) return;
+
+    this.posts[index] = post;
+    if (post.media && post.media.length > 0) {
+      this.posts[index].firstMedia = post.media[0];
+    }
+  }
+
   removePost(postId: string) {
     if (!this.posts) return;
     this.posts = this.posts.filter((p) => p.id !== postId);
