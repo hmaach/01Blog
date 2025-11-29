@@ -24,14 +24,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> findAll(Instant before, Pageable pageable) {
+    public List<User> findAll(String query, Instant before, Pageable pageable) {
+
+        String q = (query == null || query.isBlank()) ? null : query.trim();
 
         Page<UserEntity> users;
 
         if (before == null && pageable != null) {
-            users = jpaRepository.findAll(pageable);
+            users = jpaRepository.findAll(q, pageable);
         } else {
-            users = jpaRepository.findAllBefore(before, pageable);
+            users = jpaRepository.findAllBefore(q, before, pageable);
         }
 
         return users

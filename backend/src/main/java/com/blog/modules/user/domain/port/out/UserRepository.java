@@ -11,7 +11,7 @@ import com.blog.modules.user.domain.model.User;
 
 public interface UserRepository {
 
-    List<User> findAll(Instant before, Pageable size);
+    List<User> findAll(String query, Instant before, Pageable size);
 
     User save(User user);
 

@@ -15,12 +15,25 @@ import org.springframework.data.repository.query.Param;
 public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID> {
 
     @Query("""
-            SELECT u
-            FROM UserEntity u
-            WHERE u.createdAt < :before
-            ORDER BY u.createdAt DESC
-        """)
-    Page<UserEntity> findAllBefore(@Param("before") Instant before, Pageable pageable);
+        SELECT u
+        FROM UserEntity u
+        WHERE (:query IS NULL OR :query = '' OR
+            LOWER(u.name) LIKE LOWER(CONCAT('%', :query, '%')) OR
+            LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%'))
+            )
+    """)
+    Page<UserEntity> findAll(@Param("query") String query, Pageable pageable);
+
+    @Query("""
+        SELECT u
+        FROM UserEntity u
+        WHERE u.createdAt < :before
+        AND (:query IS NULL OR :query = '' OR
+            LOWER(u.name) LIKE LOWER(CONCAT('%', :query, '%')) OR
+            LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%'))
+            )
+    """)
+    Page<UserEntity> findAllBefore(@Param("query") String query, @Param("before") Instant before, Pageable pageable);
 
     @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.avatar WHERE u.email = :email")
     Optional<UserEntity> findByEmail(@Param("email") String email);

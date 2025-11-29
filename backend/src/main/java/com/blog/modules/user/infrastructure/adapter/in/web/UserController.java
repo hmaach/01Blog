@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.modules.media.domain.port.in.MediaService;
-import com.blog.modules.user.application.service.UserServiceImpl;
 import com.blog.modules.user.domain.model.User;
+import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.CurrentUserResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserProfileResponse;
@@ -34,12 +34,12 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final MediaService mediaService;
     private final JwtService jwtService;
 
     public UserController(
-            UserServiceImpl userService,
+            UserService userService,
             MediaService mediaService,
             JwtService jwtService
     ) {
@@ -59,10 +59,11 @@ public class UserController {
     @GetMapping("/all")
     public List<UserResponse> getUsers(
             HttpServletRequest request,
+            @RequestParam(required = false) String query,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return userService.findAll(before, size).stream()
+        return userService.findAll(query, before, size).stream()
                 .map(UserResponse::fromDomain)
                 .toList();
     }

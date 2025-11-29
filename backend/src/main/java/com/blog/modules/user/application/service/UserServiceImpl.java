@@ -45,11 +45,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll(Instant before, int size) {
+    public List<User> findAll(String query, Instant before, int size) {
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(0, size, sort);
 
-        return userRepository.findAll(before, pageable);
+        return userRepository.findAll(query, before, pageable);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         Sort sort = Sort.by("postsCount").descending();
         Pageable pageable = PageRequest.of(0, 3, sort);
 
-        return userRepository.findAll(null, pageable);
+        return userRepository.findAll(null, null, pageable);
     }
 
     @Override

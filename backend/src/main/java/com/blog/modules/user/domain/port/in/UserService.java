@@ -9,7 +9,7 @@ import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand
 
 public interface UserService {
 
-    List<User> findAll(Instant before, int size);
+    List<User> findAll(String query, Instant before, int size);
 
     List<User> getThreeActiveUsers();
 
@@ -20,7 +20,6 @@ public interface UserService {
     boolean userExistByUsername(String username);
 
     boolean isSubscribed(UUID currUserId, UUID targetUserId);
-
 
     User findByUsername(String username);
 

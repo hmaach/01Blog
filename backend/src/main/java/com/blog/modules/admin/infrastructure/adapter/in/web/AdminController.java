@@ -76,10 +76,11 @@ public class AdminController {
     @GetMapping("/users")
     public List<UserProfileResponse> getUsers(
             HttpServletRequest request,
+            @RequestParam(required = false) String query,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return userService.findAll(before, size).stream()
+        return userService.findAll(query, before, size).stream()
                 .map(UserProfileResponse::fromDomain)
                 .toList();
     }
