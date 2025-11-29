@@ -1,6 +1,7 @@
 package com.blog.modules.user.infrastructure.adapter.out.persistence.user;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,6 +40,12 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID
     boolean existsByEmail(String email);
 
     boolean existsByUsername(String username);
+
+    @Query("SELECT u.role = 'ADMIN' FROM UserEntity u WHERE u.id = :userId")
+    boolean isAdmin(@Param("userId") UUID userId);
+
+    @Query("SELECT u.id FROM UserEntity u WHERE u.role = 'ADMIN'")
+    List<UUID> findFirstAdmin(@Param("userId") UUID userId, Pageable pageable);
 
     @Modifying
     @Query("UPDATE UserEntity u SET u.status = 'banned' WHERE u.id = :id")

@@ -11,4 +11,12 @@ public class ForbiddenException extends BaseException {
                 HttpStatus.FORBIDDEN
         );
     }
+
+    public ForbiddenException(String label) {
+        super(
+                "FORBIDDEN",
+                label,
+                HttpStatus.FORBIDDEN
+        );
+    }
 }

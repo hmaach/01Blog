@@ -23,6 +23,7 @@ import com.blog.modules.user.infrastructure.exception.EmailAlreadyExistsExceptio
 import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 import com.blog.modules.user.infrastructure.exception.UsernameAlreadyExistsException;
 import com.blog.shared.infrastructure.exception.ConflictException;
+import com.blog.shared.infrastructure.exception.ForbiddenException;
 
 import jakarta.transaction.Transactional;
 
@@ -144,10 +145,14 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId.toString()));
 
-        if (status != null) {
-            user.changeStatus(status);
-            userRepository.save(user);
+        if (userRepository.isAdmin(userId)) {
+            if (userRepository.isSuperAdmin(userId)) {
+                throw new ForbiddenException("You can't change the status of the supper user");
+            }
         }
+
+        user.changeStatus(status);
+        userRepository.save(user);
     }
 
     @Override
@@ -156,10 +161,14 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId.toString()));
 
-        if (role != null) {
-            user.changeRole(role);
-            userRepository.save(user);
+        if (userRepository.isAdmin(userId)) {
+            if (userRepository.isSuperAdmin(userId)) {
+                throw new ForbiddenException("You can't change the role of the supper user");
+            }
         }
+
+        user.changeRole(role);
+        userRepository.save(user);
     }
 
     @Override
@@ -194,6 +203,13 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(UUID userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId.toString()));
+
+        if (userRepository.isAdmin(userId)) {
+            if (userRepository.isSuperAdmin(userId)) {
+                throw new ForbiddenException("You can't delete of the supper user");
+            }
+        }
+
         userRepository.deleteById(userId);
     }
 

@@ -29,6 +29,10 @@ public interface UserRepository {
 
     boolean existsByUsername(String username);
 
+    boolean isAdmin(UUID userId);
+
+    boolean isSuperAdmin(UUID userId);
+
     Optional<UUID> getAvatarId(UUID userId);
 
     void updateAvatarId(UUID userId, UUID avatarUrl);

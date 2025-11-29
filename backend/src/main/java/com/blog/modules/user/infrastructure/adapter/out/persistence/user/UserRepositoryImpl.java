@@ -6,7 +6,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import com.blog.modules.user.domain.model.User;
@@ -60,6 +62,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean existsById(UUID userId) {
+        if (userId == null) {
+            return false;
+        }
         return jpaRepository.existsById(userId);
     }
 
@@ -74,6 +79,24 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean isAdmin(UUID userId) {
+        return jpaRepository.isAdmin(userId);
+    }
+
+    @Override
+    public boolean isSuperAdmin(UUID userId) {
+        Sort sort = Sort.by("createdAt").ascending();
+        Pageable pageable = PageRequest.of(0, 1, sort);
+
+        List<UUID> firstAdminId = jpaRepository.findFirstAdmin(userId, pageable);
+
+        if (!firstAdminId.isEmpty()) {
+            return userId.equals(firstAdminId.get(0));
+        }
+        return false;
+    }
+
+    @Override
     public Optional<UUID> getAvatarId(UUID userId) {
         return jpaRepository.findAvatarMediaIdById(userId);
     }
@@ -85,7 +108,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User save(User user) {
-        return UserMapper.toDomain(jpaRepository.save(UserMapper.toEntity(user)));
+        UserEntity entity = UserMapper.toEntity(user);
+        if (entity != null) {
+            return UserMapper.toDomain(jpaRepository.save(entity));
+        }
+        return null;
     }
 
     @Override
@@ -124,8 +151,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteById(UUID id) {
-        jpaRepository.deleteById(id);
+    public void deleteById(UUID userId) {
+        if (userId != null) {
+            jpaRepository.deleteById(userId);
+        }
     }
 
 }

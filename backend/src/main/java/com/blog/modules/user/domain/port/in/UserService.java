@@ -19,6 +19,9 @@ public interface UserService {
 
     boolean userExistByUsername(String username);
 
+    boolean isSubscribed(UUID currUserId, UUID targetUserId);
+
+
     User findByUsername(String username);
 
     User findByEmail(String email);
@@ -46,7 +49,5 @@ public interface UserService {
     void decrementPostsCount(UUID userId);
 
     void deleteUser(UUID userId);
-
-    boolean isSubscribed(UUID currUserId, UUID targetUserId);
 
 }

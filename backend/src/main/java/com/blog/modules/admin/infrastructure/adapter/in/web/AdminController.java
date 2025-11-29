@@ -31,6 +31,8 @@ import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserProfileResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
+import com.blog.shared.infrastructure.exception.ConflictException;
+import com.blog.shared.infrastructure.security.JwtService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -42,15 +44,18 @@ public class AdminController {
     private final AdminService adminService;
     private final UserService userService;
     private final ReportService reportService;
+    private final JwtService jwtService;
 
     public AdminController(
             AdminService adminService,
             UserService userService,
-            ReportService reportService
+            ReportService reportService,
+            JwtService jwtService
     ) {
         this.adminService = adminService;
         this.userService = userService;
         this.reportService = reportService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping("/stats")
@@ -82,24 +87,38 @@ public class AdminController {
     @PostMapping("/users/change-role/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void chnageUserRole(
+            HttpServletRequest request,
             @PathVariable UUID userId,
             @Valid @RequestBody ChangeUserRoleCommand cmd
     ) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        if (userId.equals(currUserId)) {
+            throw new ConflictException("You can't change the role of yourself!");
+        }
         userService.changeUserRole(userId, cmd.role());
     }
 
     @PostMapping("/users/change-status/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void chnageUserStatus(
+            HttpServletRequest request,
             @PathVariable UUID userId,
             @Valid @RequestBody ChangeUserStatusCommand cmd
     ) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        if (userId.equals(currUserId)) {
+            throw new ConflictException("You can't change the status of yourself!");
+        }
         userService.changeUserStatus(userId, cmd.status());
     }
 
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable UUID userId) {
+    public void deleteUser(HttpServletRequest request, @PathVariable UUID userId) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        if (userId.equals(currUserId)) {
+            throw new ConflictException("You can't delete your account!");
+        }
         userService.deleteUser(userId);
     }
 
