@@ -27,6 +27,10 @@ public interface UserService {
 
     User updateUser(UUID userId, UpdateUserCommand command);
 
+    void changeUserStatus(UUID userId, String status);
+
+    void changeUserRole(UUID userId, String role);
+
     void subscribeToUser(UUID currUserId, UUID targetUserId);
 
     void unsubscribeToUser(UUID currUserId, UUID targetUserId);

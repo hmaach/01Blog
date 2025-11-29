@@ -127,10 +127,6 @@ public class User {
         return avatarMediaId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getReadme() {
         return readme;
     }
@@ -150,6 +146,10 @@ public class User {
 
     public void changeRole(String role) {
         this.role = role;
+    }
+
+    public void changeStatus(String status) {
+        this.status = status;
     }
 
     public void changePassword(String password) {

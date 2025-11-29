@@ -140,10 +140,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(UUID userId) {
-        userRepository.findById(userId)
+    public void changeUserStatus(UUID userId, String status) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId.toString()));
-        userRepository.deleteById(userId);
+
+        if (status != null) {
+            user.changeStatus(status);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void changeUserRole(UUID userId, String role) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
+
+        if (role != null) {
+            user.changeRole(role);
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -171,6 +187,14 @@ public class UserServiceImpl implements UserService {
         }
         subscriptionRepository.unsubscribe(currUserId, targetUserId);
         eventPublisher.publishEvent(new UserWasUnsubscribedEvent(targetUserId));
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(UUID userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
+        userRepository.deleteById(userId);
     }
 
     // counters

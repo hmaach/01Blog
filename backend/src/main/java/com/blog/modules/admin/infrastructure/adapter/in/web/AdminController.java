@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,8 @@ import com.blog.modules.admin.domain.model.AdminStats;
 import com.blog.modules.admin.domain.port.in.AdminService;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.AdminStatsResponse;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.ChangeReportStatusCommand;
+import com.blog.modules.admin.infrastructure.adapter.in.web.dto.ChangeUserRoleCommand;
+import com.blog.modules.admin.infrastructure.adapter.in.web.dto.ChangeUserStatusCommand;
 import com.blog.modules.report.domain.model.Report;
 import com.blog.modules.report.domain.port.in.ReportService;
 import com.blog.modules.report.infrastructure.adapter.in.web.dto.ReportResponse;
@@ -59,6 +62,7 @@ public class AdminController {
         return ResponseEntity.ok(AdminStatsResponse.fromDomain(stats, users, reports));
     }
 
+    // =================== users Endpoints handlers   =================== 
     @GetMapping("/users/{userId}")
     public UserResponse getUser(@PathVariable UUID userId) {
         return UserResponse.fromDomain(userService.findById(userId));
@@ -75,21 +79,31 @@ public class AdminController {
                 .toList();
     }
 
-    // @PostMapping
-    // public UserResponse createUser(@RequestBody @Valid CreateUserCommand cmd) {
-    //     return UserResponse.fromDomain(service.createUser(cmd));
-    // }
-    // @PatchMapping("/{userId}")
-    // public UserResponse updateUser(@PathVariable UUID userId, @Valid @RequestBody UpdateUserCommand cmd) {
-    //     return UserResponse.fromDomain(service.updateUser(userId, cmd));
-    // }
+    @PostMapping("/users/change-role/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void chnageUserRole(
+            @PathVariable UUID userId,
+            @Valid @RequestBody ChangeUserRoleCommand cmd
+    ) {
+        userService.changeUserRole(userId, cmd.role());
+    }
+
+    @PostMapping("/users/change-status/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void chnageUserStatus(
+            @PathVariable UUID userId,
+            @Valid @RequestBody ChangeUserStatusCommand cmd
+    ) {
+        userService.changeUserStatus(userId, cmd.status());
+    }
+
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable UUID userId) {
         userService.deleteUser(userId);
     }
 
-    // reports Endpoints handlers
+    // =================== reports Endpoints handlers   =================== 
     @GetMapping("/reports")
     public ResponseEntity<List<ReportResponse>> findAll(
             HttpServletRequest request,

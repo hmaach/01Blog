@@ -5,8 +5,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import com.blog.modules.admin.domain.port.in.AdminUserService;
-import com.blog.modules.admin.infrastructure.adapter.in.web.dto.UpdateUserRoleCommand;
-import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.out.UserRepository;
 import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 
@@ -37,17 +35,6 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     }
 
-    @Override
-    public void ChangeUserRole(UUID userId, UpdateUserRoleCommand cmd) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
-
-        if (cmd.role() != null) {
-            user.changeRole(cmd.role());
-        }
-
-        userRepository.save(user);
-    }
 
     @Override
     public void DeleteUser(UUID userId) {

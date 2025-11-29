@@ -3,10 +3,10 @@ package com.blog.modules.admin.infrastructure.adapter.in.web.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public record ChangeReportStatusCommand(
+public record ChangeUserRoleCommand(
         @NotNull
-        @Pattern(regexp = "PENDING|ACCEPTED|REJECTED", message = "Status must be 'PENDING', 'ACCEPTED' or 'REJECTED'")
-        String status
+        @Pattern(regexp = "ADMIN|USER", message = "Role must be 'ADMIN' or 'USER'")
+        String role
         ) {
 
 }
