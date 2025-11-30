@@ -12,16 +12,19 @@
       </div>
 
       <mat-card class="searchBox">
-        <input
+        <!-- <input
           type="text"
           placeholder="Search by username or display name..."
           [value]="searchQuery()"
           (input)="searchQuery.set($any($event.target).value)"
           class="searchInput"
-        />
-        <span class="resultCount">
-          Found {{ users.length }} user{{ filteredUsers().length !== 1 ? 's' : '' }}
-        </span>
+        /> -->
+
+        <div class="search">
+          <mat-icon matPrefix>search</mat-icon>
+          <input type="text" placeholder="search.." />
+          <!-- <span>Search for bloggers...</span> -->
+        </div>
       </mat-card>
 
       <div class="tableWrapper">
@@ -34,7 +37,6 @@
               <th>Joined</th>
               <th>Role</th>
               <th>Status</th>
-              <!-- <th>Actions</th> -->
             </tr>
           </thead>
 
@@ -42,11 +44,6 @@
             <tr *ngFor="let user of users" [class.bannedRow]="user.status === 'banned'">
               <td class="userCell">
                 <div class="userRow">
-                  <!-- <img
-                    [src]="user.avatar || '/placeholder.svg'"
-                    [alt]="user.name"
-                    class="userAvatar"
-                  /> -->
                   <div>
                     <div class="userName authorName" (click)="openUserCardDialog(user.username)">
                       {{ user.name }}
@@ -63,57 +60,42 @@
 
               <td>{{ user.postsCount }}</td>
               <td>{{ user.subscribersCount }}</td>
-              <td>{{ user.createdAt | date : 'medium' }}</td>
+              <td>
+                <span class="createdAt">{{ user.createdAt | date : 'medium' }}</span>
+              </td>
 
               <td>
                 <span
                   class="roleBadge"
-                  [class.adminRole]="user.role == 'admin'"
-                  [class.userRole]="user.role == 'user'"
+                  [class.adminRole]="user.role == 'ADMIN'"
+                  [class.userRole]="user.role == 'USER'"
                 >
-                  {{ user.role }}
+                  {{ user.role.toLocaleLowerCase() }}
                 </span>
               </td>
 
               <td>
                 <span
                   class="statusBadge"
-                  [class.banned]="user.status === 'banned'"
-                  [class.active]="user.status === 'active'"
+                  [class.banned]="user.status === 'BANNED'"
+                  [class.active]="user.status === 'ACTIVE'"
                 >
-                  {{ user.status }}
+                  {{ user.status.toLocaleLowerCase() }}
                 </span>
               </td>
-
-              <!-- <td class="actionsCell">
-                <button matButton="outlined" (click)="handleBanUser(user.id)">
-                  {{ user.isBanned ? 'Unban' : 'Ban' }}
-                </button>
-
-                <button matButton="outlined" (click)="handleChangeRole(user.id)">
-                  {{ user.role === 'user' ? 'Make Admin' : 'Make User' }}
-                </button>
-
-                <button matButton="filled" color="red" (click)="handleDeleteUser(user.id)">
-                  Delete
-                </button>
-              </td> -->
             </tr>
             @if (isLoading) {
             <tr>
               <td [colSpan]="6" class="spinnerContainer">
                 <app-spinner></app-spinner>
               </td>
-              <!-- <mat-progress-spinner></mat-progress-spinner> -->
             </tr>
             }
           </tbody>
         </table>
       </div>
 
-      <div *ngIf="filteredUsers().length === 0" class="emptyState">
-        No users found matching your search
-      </div>
+      <div *ngIf="users.length === 0" class="emptyState">No users found matching your search</div>
     </div>
   </main>
 </div>

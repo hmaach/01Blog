@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
                 cmd.email(),
                 encoder.encode(cmd.password()),
                 "USER",
-                "active",
+                "ACTIVE",
                 readme,
                 now
         );

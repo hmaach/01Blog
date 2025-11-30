@@ -46,6 +46,37 @@
   transform: translateX(-4px);
 }
 
+.search {
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  font-size: 0.8rem;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--spacing-sm);
+  transition: all var(--transition-normal);
+  cursor: text;
+  width: 70%;
+}
+
+.search:hover {
+  border: 1px solid var(--mat-sys-primary);
+}
+
+.search input {
+  background-color: transparent;
+  border: none;
+  color: var(--mat-sys-on-background);
+  width: 95%;
+}
+
+.search input:focus {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
 .searchBox {
   // background: var(--bg-dark-secondary);
   border: 1px solid transparent;
@@ -56,6 +87,7 @@
   flex-direction: row;
   gap: var(--spacing-md);
   align-items: center;
+  justify-content: center;
 }
 
 .searchInput {
@@ -64,7 +96,7 @@
   // background: var(--bg-dark);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  color: var(--text-dark);
+  // color: var(--text-dark);
   font-size: 1rem;
   transition: all 0.3s ease;
 }
@@ -85,7 +117,7 @@
   // background: var(--bg-dark-secondary);
   // border: 1px solid var(--border-dark);
   // border-radius: var(--radius-lg);
-  // overflow-x: auto;
+  overflow-x: auto;
 }
 
 .table {
@@ -173,15 +205,18 @@
   font-weight: 600;
   display: inline-block;
 }
-
+.createdAt{
+  display: inline-block;
+  min-width: 100px;
+}
 .adminRole {
   background: rgba(147, 112, 219, 0.1);
-  color: #9370db;
+  color: #4f387c;
 }
 
 .userRole {
   background: rgba(100, 200, 255, 0.1);
-  color: #64c8ff;
+  color: #085883;
 }
 
 .active {
@@ -312,7 +347,17 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .page {
+    padding-top: 0px;
+  }
+  .main {
+    padding: var(--spacing-md);
+  }
+  .container {
+    padding: 0;
+  }
+
   .title {
     font-size: 1.5rem;
   }
@@ -324,6 +369,7 @@
   .table th,
   .table td {
     padding: var(--spacing-sm);
+    font-size: 0.8rem;
   }
 
   .userRow {
@@ -344,5 +390,13 @@
   .actionsCell {
     flex-direction: row;
     gap: var(--spacing-xs);
+  }
+  .roleBadge,
+  .statusBadge {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+  .search {
+    width: 100%;
   }
 }
