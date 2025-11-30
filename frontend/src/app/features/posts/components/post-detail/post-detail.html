@@ -79,7 +79,7 @@
 
       <div class="postMetrics">
         <div class="metric" style="gap: 0">
-          <button matIconButton class="{{ post.isLiked ? 'primary' : '' }}" (click)="toggleLike()">
+          <button matIconButton class="{{ post.isLiked ? 'primary' : '' }} likeButton" (click)="toggleLike()">
             @if (post.isLiked) {
             <mat-icon>favorite</mat-icon>
             }@else {

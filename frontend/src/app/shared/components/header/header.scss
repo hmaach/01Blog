@@ -15,14 +15,21 @@ mat-toolbar {
   }
 
   @media (max-width: 576px) {
-    flex-direction: column;
+    // flex-direction: column;
     align-items: flex-start;
     nav {
-      width: 100%;
+      // width: 100%;
       justify-content: space-between;
       margin-top: 0.5rem;
     }
   }
+}
+
+.matToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // border: red solid 1px;
 }
 
 /* Converting SCSS to CSS module */
@@ -31,11 +38,36 @@ mat-toolbar {
   top: 0;
   z-index: var(--z-navbar);
   backdrop-filter: blur(10px);
-  // position: fixed;
-  // z-index: 100000;
-  // width: 100%;
 }
 
+.mobileNavigation {
+  display: none;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  // justify-content: space-between;
+  gap: 20px;
+}
+
+.navSearch {
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  width: 227px;
+  font-size: 0.8rem;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: var(--spacing-sm);
+  transition: all var(--transition-normal);
+  cursor: text;
+}
+
+.navSearch:hover {
+  border: 1px solid var(--mat-sys-primary);
+}
 
 .navbarContainer {
   display: flex;
@@ -55,10 +87,6 @@ mat-toolbar {
   font-weight: 700;
   // color: var(--text-dark);
   text-decoration: none;
-}
-
-.logo:hover {
-  // color: var(--text-dark);
 }
 
 .logoIcon {
@@ -189,7 +217,7 @@ mat-toolbar {
   justify-content: center;
 }
 
-.mode-toggle-item{
+.mode-toggle-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -288,4 +316,14 @@ mat-toolbar {
 .dropdownUsername {
   font-size: 0.75rem;
   color: var(--text-dark-secondary);
+}
+
+@media (max-width: 830px) {
+  .mobileNavigation {
+    display: flex;
+    gap: 25px !important;
+  }
+  .navigation {
+    display: none;
+  }
 }

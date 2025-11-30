@@ -1,10 +1,12 @@
-<mat-toolbar
-  color="surface"
-  class="position-absolute d-flex justify-content-between align-items-center p-3 shadow-sm w-100"
->
+<mat-toolbar color="surface" class="matToolbar p-3 shadow-sm w-100">
   <app-header-logo></app-header-logo>
 
-  <nav class="d-flex align-items-center gap-3 flex-wrap">
+  <nav class="navigation">
+    <div class="navSearch" (click)="openSearchDialog()">
+      <mat-icon matPrefix>search</mat-icon>
+      <span>Search for bloggers...</span>
+    </div>
+
     <a mat-button routerLink="/feed" routerLinkActive="mat-primary" class="text-decoration-none">
       <mat-icon>home</mat-icon>
       <span>Feed</span>
@@ -44,6 +46,72 @@
           <span class="dropdownUsername">@{{ user?.username }}</span>
         </div>
       </a>
+      <a mat-menu-item class="w-full" (click)="themeService.toggleDarkMode()">
+        <mat-icon>mode_night</mat-icon>
+        <div class="mode-toggle-item">
+          <span>Dark Mode</span>
+          <app-switch-mode
+            (click)="themeService.toggleDarkMode()"
+            style="margin-left: 40px"
+          ></app-switch-mode>
+        </div>
+      </a>
+      <a mat-menu-item class="w-full" routerLink="/settings">
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </a>
+      <a mat-menu-item class="w-full" (click)="openContactDialog()">
+        <mat-icon>contact_mail</mat-icon>
+        <span>Contact Us</span>
+      </a>
+      <a mat-menu-item class="w-full" routerLink="/about-us">
+        <mat-icon>info</mat-icon>
+        <span>About Us</span>
+      </a>
+      <a mat-menu-item (click)="logout()" class="w-full">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </a>
+    </mat-menu>
+  </nav>
+
+  <nav class="mobileNavigation">
+    <button matIconButton (click)="openNotificationsDialog()">
+      <mat-icon matBadge="15" aria-hidden="false">notifications</mat-icon>
+    </button>
+    <button matIconButton [matMenuTriggerFor]="mobileMenu"><mat-icon>menu</mat-icon></button>
+    <mat-menu #mobileMenu="matMenu">
+      <a class="dropdownHeader" routerLink="/profile/{{ user?.username }}">
+        <img
+          src="{{ avatarUrl || '/assets/images/default-avatar.jpg' }}"
+          alt="name"
+          class="avatar"
+        />
+        <div class="dropdownUserInfo">
+          <span class="dropdownUserName">{{ user?.name }}</span>
+          <span class="dropdownUsername">@{{ user?.username }}</span>
+        </div>
+      </a>
+      <a mat-menu-item class="w-full" routerLink="/feed">
+        <mat-icon>home</mat-icon>
+        <span>Feed</span>
+      </a>
+      <a mat-menu-item class="w-full" routerLink="/explore">
+        <mat-icon>explore</mat-icon>
+        <span>Explore</span>
+      </a>
+
+      <a mat-menu-item class="w-full" (click)="openSearchDialog()">
+        <mat-icon>search</mat-icon>
+        <span>Search</span>
+      </a>
+
+      @if (isAdmin) {
+      <a mat-menu-item class="w-full" routerLink="/admin">
+        <mat-icon>admin_panel_settings</mat-icon>
+        <span>Admin panel</span>
+      </a>
+      }
       <a mat-menu-item class="w-full" (click)="themeService.toggleDarkMode()">
         <mat-icon>mode_night</mat-icon>
         <div class="mode-toggle-item">

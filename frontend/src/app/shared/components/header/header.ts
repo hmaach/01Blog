@@ -16,6 +16,9 @@ import { CurrentUserInfo } from '../../../core/models/user.model';
 import { ThemeService } from '../../../core/services/theme.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Contact } from '../contact/contact';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { Search } from '../search/search';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +33,10 @@ import { Contact } from '../contact/contact';
     MatToolbarModule,
     RouterLinkActive,
     MatBadgeModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
+  providers: [MatDialog],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
@@ -57,10 +63,15 @@ export class Header {
 
   openNotificationsDialog() {
     this.dialog.open(Notifications, {
-      panelClass: 'media-preview-dialog',
+      panelClass: 'notifications-preview-dialog',
     });
   }
 
+  openSearchDialog() {
+    this.dialog.open(Search, {
+      panelClass: 'serach-preview-dialog',
+    });
+  }
 
   openContactDialog(): void {
     this._bottomSheet.open(Contact);
