@@ -71,7 +71,6 @@ export class ExploreFeed {
       },
       error: (e) => {
         this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
-        console.log('Failed to fetch posts:', e);
         this.isLoading = false;
         this.isLoadingMore = false;
       },

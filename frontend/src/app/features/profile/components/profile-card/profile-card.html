@@ -4,6 +4,16 @@
     <button matIconButton class="closeButton" (click)="closeDialog?.()">
       <mat-icon>close</mat-icon>
     </button>
+    } @if(isFetchLoading) {
+    <div class="spinner-container">
+      <mat-spinner></mat-spinner>
+    </div>
+    } @if(notFound && isDialog) {
+    <div class="notFoundContainer">
+      <h2>Ops!!</h2>
+      <p>the user {{ username }} doesn't exist</p>
+      <button matButton="outlined" (click)="closeDialog?.()"><mat-icon>close</mat-icon> Close</button>
+    </div>
     } @if (user) { @if (user.relation !== 'owner' && !isAdmin) {
     <div class="reportContainer" (click)="openReportDialog()">
       <button matIconButton>
@@ -121,10 +131,6 @@
       </mat-menu>
 
       }
-    </div>
-    } @else {
-    <div class="spinner-container">
-      <mat-spinner></mat-spinner>
     </div>
     }
   </mat-card>

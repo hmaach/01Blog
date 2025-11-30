@@ -37,7 +37,6 @@ export class ProfileCard implements OnInit {
   private profileService = inject(ProfileApiService);
   private blobService = inject(BlobService);
   private storageService = inject(StorageService);
-  private adminService = inject(AdminApiService);
   private toast = inject(ToastService);
 
   @Input() username?: string;
@@ -47,15 +46,16 @@ export class ProfileCard implements OnInit {
 
   isAdmin: boolean = this.storageService.getUserRole() === 'ADMIN';
   isLoading: boolean = false;
+  isFetchLoading: boolean = true;
+  notFound: boolean = false;
   avatarUrl?: string;
   formatNumber = formatNumber;
 
   constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
-    console.log(this.user?.relation);
-
     if (this.user) {
+      this.isFetchLoading = false;
       if (this.user.avatarUrl) {
         this.blobService.loadBlob(this.user.avatarUrl).subscribe({
           next: (url) => {
@@ -77,9 +77,12 @@ export class ProfileCard implements OnInit {
             next: (url) => (this.avatarUrl = url),
           });
         }
+        this.isFetchLoading = false;
       },
-      error: (err) => {
-        this.toast.show('Failed to fetch user profile', 'error');
+      error: (e) => {
+        this.notFound = e.status === 404;
+        if (e.status !== 404) this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.isFetchLoading = false;
       },
     });
   }
@@ -131,19 +134,6 @@ export class ProfileCard implements OnInit {
     });
   }
 
-  handleDeleteUser() {
-    if (!this.isAdmin) return;
-    const dialogRef = this.dialog.open(Confirmation, {
-      data: { message: `Are you sure you want to DELETE this user ?` },
-      panelClass: 'post-report-dialog',
-    });
-
-    dialogRef.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
-        console.log('Delete', this.user?.id);
-      }
-    });
-  }
   toggleUserRole() {
     if (!this.isAdmin) return;
     const dialogRef = this.dialog.open(Confirmation, {
@@ -161,6 +151,7 @@ export class ProfileCard implements OnInit {
       }
     });
   }
+
   toggleUserBanning() {
     if (!this.isAdmin) return;
     const dialogRef = this.dialog.open(Confirmation, {
@@ -175,6 +166,20 @@ export class ProfileCard implements OnInit {
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         console.log('Ban/Unban', this.user?.id);
+      }
+    });
+  }
+
+  handleDeleteUser() {
+    if (!this.isAdmin) return;
+    const dialogRef = this.dialog.open(Confirmation, {
+      data: { message: `Are you sure you want to DELETE this user ?` },
+      panelClass: 'post-report-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        console.log('Delete', this.user?.id);
       }
     });
   }

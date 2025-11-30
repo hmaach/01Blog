@@ -62,7 +62,6 @@ export class Profile {
         if (err.status == 404) {
           this.notFound = true;
         } else {
-          console.log('Profile: Failed to fetch user profile:', err);
           this.toast.show('Failed to fetch user profile', 'error');
         }
         this.isLoading = false;

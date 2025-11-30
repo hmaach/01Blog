@@ -64,13 +64,11 @@ export class Contact {
       })
       .then(
         () => {
-          console.log('Message sent successfully!');
           this.toast.show('Message sent successfully!', 'success');
           this._bottomSheetRef.dismiss();
         },
         (error) => {
           this.toast.show('Error sending message.', 'error');
-          console.log('FAILED...', (error as EmailJSResponseStatus).text);
         }
       );
   }
