@@ -214,17 +214,17 @@
   text-transform: capitalize;
 }
 
-.status-pending {
+.status-PENDING {
   background: rgba(255, 140, 0, 0.1);
   color: var(--primary-orange);
 }
 
-.status-rejected {
+.status-REJECTED {
   background: rgba(255, 100, 100, 0.1);
   color: #ff6464;
 }
 
-.status-accepted {
+.status-ACCEPTED {
   background: rgba(74, 222, 128, 0.1);
   color: #4ade80;
 }
@@ -355,7 +355,34 @@
   }
 }
 
-@media (max-width: 480px) {
+
+@media (max-width: 640px) {
+  .page {
+    padding-top: 0px;
+  }
+
+  .main {
+    padding: 5px;
+  }
+
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .feedHeader {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .feedTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+
+  .feedSubtitle {
+    font-size: 1rem;
+  }
+
   .title {
     font-size: 1.3rem;
   }

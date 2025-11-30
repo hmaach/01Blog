@@ -113,28 +113,33 @@ export class AdminReports {
     return severity.toLowerCase();
   }
 
-  handleApprove(id: string) {
+  changeReportStatus(id: string, action: 'approve' | 'decline' | 'pending') {
     const dialogRef = this.dialog.open(Confirmation, {
-      data: { message: `Are you sure you want to approve this report ?` },
+      data: { message: `Are you sure you want to ${action} this report ?` },
       panelClass: 'post-report-dialog',
     });
 
-    dialogRef.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
-        console.log('Approve', id);
-      }
-    });
-  }
+    let status: string;
+    if (action === 'decline') status = 'REJECTED';
+    else if (action === 'approve') status = 'ACCEPTED';
+    else if (action === 'pending') status = 'PENDING';
+    else return;
 
-  handleDecline(id: string) {
-    const dialogRef = this.dialog.open(Confirmation, {
-      data: { message: `Are you sure you want to decline this report ?` },
-      panelClass: 'post-report-dialog',
-    });
     dialogRef.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
-        console.log('Decline', id);
-      }
+      if (!confirmed) return;
+
+      this.apiService.changeReportStatus(id, status).subscribe({
+        next: () => {
+          const report = this.reports.find((r) => r.id === id);
+          if (report) {
+            report.status = status;
+          }
+          this.toast.show('Report status changed successfully', 'success');
+        },
+        error: (e) => {
+          this.toast.show(e?.error?.message || 'Unkown error message', 'error');
+        },
+      });
     });
   }
 
@@ -143,10 +148,25 @@ export class AdminReports {
       data: { message: `Are you sure you want to delete this report ?` },
       panelClass: 'post-report-dialog',
     });
+
     dialogRef.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
-        console.log('Delete', id);
-      }
+      if (!confirmed) return;
+
+      this.apiService.deleteReport(id).subscribe({
+        next: () => {
+          const report = this.reports.find((r) => r.id === id);
+          this.reports = this.reports.filter((r) => r.id !== id);
+
+          if (report?.reportedType === 'POST') this.totalPostReports--;
+          else if (report?.reportedType === 'COMMENT') this.totalCommentReports--;
+          else if (report?.reportedType === 'USER') this.totalUserReports--;
+
+          this.toast.show('Report deleted successfully', 'success');
+        },
+        error: (e) => {
+          this.toast.show(e?.error?.message || 'Failed to delete report', 'error');
+        },
+      });
     });
   }
 

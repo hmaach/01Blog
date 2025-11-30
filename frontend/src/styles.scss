@@ -95,6 +95,10 @@ img.main-img {
   width: 100%;
 }
 
+.navbar {
+  padding: 0
+}
+
 html {
   @include mat.all-component-themes($light-theme);
 

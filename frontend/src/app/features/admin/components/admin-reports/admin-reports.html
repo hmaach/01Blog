@@ -80,12 +80,19 @@
               </button>
 
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="handleApprove(report.id)">
+                @if (report.status !== 'PENDING') {
+                <button mat-menu-item (click)="changeReportStatus(report.id, 'pending')">
+                  <mat-icon>access_time</mat-icon> Pend
+                </button>
+                } @if (report.status !== 'ACCEPTED') {
+                <button mat-menu-item (click)="changeReportStatus(report.id, 'approve')">
                   <mat-icon>check_circle</mat-icon> Approve
                 </button>
-                <button mat-menu-item (click)="handleDecline(report.id)">
+                } @if (report.status !== 'REJECTED') {
+                <button mat-menu-item (click)="changeReportStatus(report.id, 'decline')">
                   <mat-icon>thumb_down</mat-icon> Decline
                 </button>
+                }
                 <button mat-menu-item (click)="handleDelete(report.id)">
                   <mat-icon>delete</mat-icon> Delete
                 </button>

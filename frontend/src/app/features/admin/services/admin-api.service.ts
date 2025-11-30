@@ -45,4 +45,24 @@ export class AdminApiService {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }
+
+  changeReportStatus(id: string, status: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.patch<void>(
+      `${this.apiUrl}/admin/reports/${id}`,
+      { status },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      }
+    );
+  }
+
+  deleteReport(id: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.delete<void>(`${this.apiUrl}/admin/reports/${id}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
 }
