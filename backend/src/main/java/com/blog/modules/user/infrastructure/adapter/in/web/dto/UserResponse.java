@@ -11,6 +11,8 @@ public record UserResponse(
         String username,
         String email,
         String role,
+        int postsCount,
+        String avatarUrl,
         Instant createdAt
         ) {
 
@@ -21,6 +23,8 @@ public record UserResponse(
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole(),
+                user.getPostsCount(),
+                user.getAvatarUrl(),
                 user.getCreatedAt()
         );
     }
