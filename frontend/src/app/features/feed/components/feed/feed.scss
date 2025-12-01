@@ -32,6 +32,13 @@
   color: var(--text-dark-secondary);
 }
 
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--mat-sys-on-background);
+  border-radius: var(--radius-lg);
+}
+
 @media (max-width: 640px) {
   .page {
     padding-top: 0px;

@@ -5,10 +5,13 @@ import { PostList } from '../../../posts/components/post-list/post-list';
 import { ToastService } from '../../../../core/services/toast.service';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { FeedApiService } from '../../services/feed-api.service';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-feed',
-  imports: [CommonModule, PostList, Spinner],
+  imports: [CommonModule, PostList, Spinner, RouterLink, MatButtonModule, MatIconModule],
   templateUrl: './feed.html',
   styleUrl: './feed.scss',
 })

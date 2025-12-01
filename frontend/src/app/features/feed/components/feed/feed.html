@@ -9,6 +9,11 @@
       <app-spinner></app-spinner>
       }@else{
       <app-post-list [posts]="posts" [isLoadingMore]="isLoadingMore"></app-post-list>
+      } @if (posts.length === 0) {
+      <div class="emptyState">
+        <p>Your feed is empty, you need to follow some bloggers</p>
+        <a matButton="filled" routerLink="/explore">Explore blogs <mat-icon>explore</mat-icon></a>
+      </div>
       }
     </div>
   </main>
