@@ -14,10 +14,21 @@ import { formatDate } from '../../../../shared/lib/date';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { BlobService } from '../../../../core/services/blob.service';
 
 @Component({
   selector: 'app-admin-users',
-  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule, RouterLink, Spinner],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    RouterLink,
+    Spinner,
+    ReactiveFormsModule,
+  ],
   templateUrl: './admin-users.html',
   styleUrl: './admin-users.scss',
 })
@@ -25,6 +36,7 @@ export class AdminUsers {
   users: UserResponse[] = [];
 
   private apiService = inject(AdminApiService);
+  private blobService = inject(BlobService);
   private toast = inject(ToastService);
   private dialog = inject(MatDialog);
   formatDate = formatDate;
@@ -32,6 +44,7 @@ export class AdminUsers {
   isLoading: boolean = true;
   noMoreUsers = false;
 
+  private query: string | null = null;
   private limit: number = 9;
   private scrollDistance = 0.8;
   private throttle: number = 300;
@@ -39,23 +52,44 @@ export class AdminUsers {
   private lastUserTime: string | null = null;
 
   searchQuery = signal('');
-  actionMessage = signal('');
+
+  searchControl = new FormControl('');
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.loadUsers('load');
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((q) => {
+        this.query = q;
+        this.loadUsers('search');
+      });
   }
 
-  private loadUsers() {
-    this.apiService.fetchUsers(this.lastUserTime, this.limit).subscribe({
+  private loadUsers(actionType: 'search' | 'load' | 'loadMore') {
+    this.apiService.fetchUsers(this.query, this.lastUserTime, this.limit).subscribe({
       next: (response) => {
-        if (response.length === 0) {
+        if (response.length === 0 || !Array.isArray(response)) {
+          if (actionType === 'search') this.users = [];
           this.noMoreUsers = true;
           this.isLoading = false;
           return;
         }
 
         this.lastUserTime = response.at(-1)?.createdAt ?? null;
-        this.users.push(...response);
+        if (actionType === 'search') {
+          this.users = [];
+          this.users = response;
+        } else this.users.push(...response);
+
+        this.users.forEach((u) => {
+          if (u.avatarUrl) {
+            this.blobService.loadBlob(u.avatarUrl).subscribe({
+              next: (url) => (u.avatarUrl = url),
+            });
+          }
+        });
+
         this.isLoading = false;
       },
       error: (e) => {
@@ -94,8 +128,6 @@ export class AdminUsers {
 
     const user = this.userss().find((u) => u.id === userId);
     const newStatus = user?.isBanned ? 'banned' : 'unbanned';
-
-    this.showMessage(`User ${user?.name} has been ${newStatus}`);
   }
 
   handleDeleteUser(userId: string) {
@@ -104,7 +136,6 @@ export class AdminUsers {
 
     if (confirm(`Are you sure you want to delete ${user.name}? This action cannot be undone.`)) {
       this.userss.update((list) => list.filter((u) => u.id !== userId));
-      this.showMessage(`User ${user.name} has been deleted`);
     }
   }
 
@@ -115,13 +146,6 @@ export class AdminUsers {
 
     const user = this.userss().find((u) => u.id === userId);
     const newRole = user?.role === 'user' ? 'admin' : 'user';
-
-    this.showMessage(`${user?.name} is now an ${newRole}`);
-  }
-
-  private showMessage(text: string) {
-    this.actionMessage.set(text);
-    setTimeout(() => this.actionMessage.set(''), 3000);
   }
 
   openUserCardDialog(username: string | undefined) {

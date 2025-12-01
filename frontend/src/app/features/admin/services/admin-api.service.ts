@@ -22,14 +22,18 @@ export class AdminApiService {
     });
   }
 
-  fetchUsers(lastPostTime: string | null, limit: number): Observable<UserResponse[]> {
+  fetchUsers(
+    q: string | null,
+    lastPostTime: string | null,
+    limit: number
+  ): Observable<UserResponse[]> {
     const token = this.storageService.getAccessToken();
     const params = new URLSearchParams();
 
     params.append('size', limit.toString());
     if (lastPostTime) params.append('before', lastPostTime);
 
-    return this.http.get<UserResponse[]>(`${this.apiUrl}/admin/users`, {
+    return this.http.get<UserResponse[]>(`${this.apiUrl}/admin/users?${q ? 'query=' + q : ''}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }

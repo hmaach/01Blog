@@ -161,7 +161,11 @@
 }
 
 .userCell {
-  width: 300px;
+  max-width: 300px;
+  display: flex;
+  // justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .userRow {
@@ -176,7 +180,13 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--primary-orange);
+  transition: all var(--transition-normal);
+  cursor: pointer;
 }
+.userAvatar:hover {
+  border: 3px solid var(--primary-orange);
+}
+
 .authorName {
   cursor: pointer;
   transition: var(--transition-normal);
@@ -205,7 +215,7 @@
   font-weight: 600;
   display: inline-block;
 }
-.createdAt{
+.createdAt {
   display: inline-block;
   min-width: 100px;
 }

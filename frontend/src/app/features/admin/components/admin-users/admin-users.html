@@ -22,7 +22,7 @@
 
         <div class="search">
           <mat-icon matPrefix>search</mat-icon>
-          <input type="text" placeholder="search.." />
+          <input type="text" placeholder="search.." [formControl]="searchControl" />
           <!-- <span>Search for bloggers...</span> -->
         </div>
       </mat-card>
@@ -43,6 +43,12 @@
           <tbody>
             <tr *ngFor="let user of users" [class.bannedRow]="user.status === 'banned'">
               <td class="userCell">
+                <img
+                  [src]="user.avatarUrl || '/assets/images/default-avatar.jpg'"
+                  [alt]="user.name"
+                  class="userAvatar"
+                  (click)="openUserCardDialog(user.username)"
+                />
                 <div class="userRow">
                   <div>
                     <div class="userName authorName" (click)="openUserCardDialog(user.username)">
