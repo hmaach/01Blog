@@ -61,8 +61,11 @@ export class AdminUsers {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((q) => {
-        this.query = q;
-        this.loadUsers('search');
+        if (q && q?.trim().length !== 0) {
+          this.lastUserTime = null;
+          this.query = q.trim();
+          this.loadUsers('search');
+        }
       });
   }
 

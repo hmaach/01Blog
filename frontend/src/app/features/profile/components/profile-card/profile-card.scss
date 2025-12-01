@@ -50,12 +50,20 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 4px;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .profileUsername {
   font-size: 0.875rem;
   color: var(--text-dark-secondary);
   margin-bottom: var(--spacing-md);
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .profileBio {

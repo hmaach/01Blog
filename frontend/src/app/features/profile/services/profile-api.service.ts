@@ -12,6 +12,23 @@ export class ProfileApiService {
 
   constructor(private http: HttpClient) {}
 
+  fetchUsers(
+    q: string | null,
+    lastUserTime: string | null,
+    limit: number
+  ): Observable<UserResponse[]> {
+    const token = this.storageService.getAccessToken();
+    const params = new URLSearchParams();
+
+    if (q) params.append('query', q);
+    params.append('size', limit.toString());
+    if (lastUserTime) params.append('before', lastUserTime);
+
+    return this.http.get<UserResponse[]>(`${this.apiUrl}/user/all?${params.toString()}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
+
   fetchUserProfile(username: string): Observable<UserResponse> {
     const token = this.storageService.getAccessToken();
 

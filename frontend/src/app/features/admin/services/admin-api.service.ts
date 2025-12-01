@@ -24,16 +24,17 @@ export class AdminApiService {
 
   fetchUsers(
     q: string | null,
-    lastPostTime: string | null,
+    lastUserTime: string | null,
     limit: number
   ): Observable<UserResponse[]> {
     const token = this.storageService.getAccessToken();
     const params = new URLSearchParams();
 
+    if (q) params.append('query', q);
     params.append('size', limit.toString());
-    if (lastPostTime) params.append('before', lastPostTime);
+    if (lastUserTime) params.append('before', lastUserTime);
 
-    return this.http.get<UserResponse[]>(`${this.apiUrl}/admin/users?${q ? 'query=' + q : ''}`, {
+    return this.http.get<UserResponse[]>(`${this.apiUrl}/admin/users?${params.toString()}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }

@@ -1,1 +1,31 @@
-<p>search works!</p>
+<div class="preview-dialog">
+  <mat-card class="searchBox">
+    <div class="search">
+      <mat-icon for="searchInput" matPrefix>search</mat-icon>
+      <input type="text" id="searchInput" placeholder="search.." [formControl]="searchControl" />
+    </div>
+  </mat-card>
+  <ng-container *ngIf="users.length > 0">
+    <div class="usersList">
+      <mat-card *ngFor="let user of users" class="user" (click)="openUserCardDialog(user.username)">
+        <img
+          [src]="user?.avatarUrl || '/assets/images/default-avatar.jpg'"
+          [alt]="user?.name"
+          class="userAvatar"
+        />
+
+        <div class="userRow">
+          <div class="userName authorName">
+            {{ user.name }} {{ currUserId === user.id ? '(You)' : '' }}
+          </div>
+          <div class="userUsername authorName">@{{ user.username }}</div>
+        </div>
+      </mat-card>
+    </div>
+  </ng-container>
+  @if (users.length === 0) { @if (query) {
+  <div class="emptyState">No users found matching your search</div>
+  }@else {
+  <div class="emptyState">Start typing to search</div>
+  } }
+</div>
