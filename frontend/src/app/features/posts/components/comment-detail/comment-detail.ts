@@ -17,6 +17,8 @@ import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
 import { PostDetail } from '../post-detail/post-detail';
+import { AdminApiService } from '../../../admin/services/admin-api.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-comment-detail',
@@ -40,6 +42,7 @@ export class CommentDetail {
   private blobService = inject(BlobService);
   private storageService = inject(StorageService);
   private commentApi = inject(CommentApiService);
+  private adminApi = inject(AdminApiService);
   private toast = inject(ToastService);
   private dialog = inject(MatDialog);
 
@@ -106,7 +109,11 @@ export class CommentDetail {
   handleDeleteComment() {
     if (!this.data.commentId) return;
 
-    this.commentApi.deleteComment(this.data.commentId).subscribe({
+    const response: Observable<void> = this.isAdmin
+      ? this.adminApi.deleteComment(this.data.commentId)
+      : this.commentApi.deleteComment(this.data.commentId);
+      
+    response.subscribe({
       next: () => {
         this.toast.show('Comment deleted successfully!', 'success');
         this.closeDialog();

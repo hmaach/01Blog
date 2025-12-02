@@ -104,4 +104,30 @@ export class AdminApiService {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }
+
+  // ============== POST HANDLING ======================
+  changePostStatus(postId: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.delete<void>(`${this.apiUrl}/admin/posts/${postId}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
+
+  deletePost(postId: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.delete<void>(`${this.apiUrl}/admin/posts/${postId}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
+
+  // ============== COMMENT HANDLING ===================
+  deleteComment(commentId: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.delete<void>(`${this.apiUrl}/admin/comments/${commentId}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
 }

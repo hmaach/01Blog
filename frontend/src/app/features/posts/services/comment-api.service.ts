@@ -11,8 +11,12 @@ export class CommentApiService {
   private storageService = inject(StorageService);
 
   constructor(private http: HttpClient) {}
-
-  fetchComments(postId: string, lastPostTime: string | null, limit: number): Observable<Comment[]> {
+  //TODO: add pagination to comments
+  fetchComments(
+    postId: string,
+    lastCommentTime: string | null,
+    limit: number
+  ): Observable<Comment[]> {
     const token = this.storageService.getAccessToken();
 
     return this.http.get<Comment[]>(`${this.apiUrl}/comments/${postId}`, {
@@ -40,10 +44,10 @@ export class CommentApiService {
     );
   }
 
-  deleteComment(commentId: string) {
+  deleteComment(commentId: string): Observable<void> {
     const token = this.storageService.getAccessToken();
 
-    return this.http.delete(`${this.apiUrl}/comments/${commentId}`, {
+    return this.http.delete<void>(`${this.apiUrl}/comments/${commentId}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }

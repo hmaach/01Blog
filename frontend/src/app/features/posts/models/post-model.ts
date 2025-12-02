@@ -12,7 +12,7 @@ export interface Post {
   firstMedia?: Media;
   media?: Media[];
   createdAt: string;
-  isHidden?: boolean;
+  status: 'PUBLISHED' | 'HIDDEN';
   isOwner: boolean;
   isLiked: boolean;
 }

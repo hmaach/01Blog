@@ -47,8 +47,8 @@
               <mat-icon color="warn">delete</mat-icon>
               <span>Delete</span>
             </button>
-            }}@else {
-            <button mat-menu-item (click)="openReportDialog()">
+            }}@else if (!isAdmin ) {
+            <button mat-menu-item (click)="openPostReportDialog()">
               <mat-icon color="warn">report</mat-icon>
               <span>Report</span>
             </button>
@@ -138,6 +138,30 @@
               <div class="commentAuthor">{{ comment.author.name }}</div>
               <div class="commentDate">{{ formatDate(comment.createdAt) }}</div>
               <div class="commentText">{{ comment.content }}</div>
+            </div>
+            <div class="menuContainer">
+              @if (comment) {
+              <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+
+              <mat-menu #menu="matMenu">
+                @if (isAdmin || comment.isOwner) {
+                <button mat-menu-item (click)="handleDeleteComment(comment.id)">
+                  <mat-icon color="warn">delete</mat-icon>
+                  <span>Delete</span>
+                </button>
+                }@else if (!isAdmin ) {
+                <button
+                  mat-menu-item
+                  (click)="openCommentReportDialog(comment.id, comment.author.id)"
+                >
+                  <mat-icon color="warn">report</mat-icon>
+                  <span>Report</span>
+                </button>
+                }
+              </mat-menu>
+              }
             </div>
           </div>
         </div>

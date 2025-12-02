@@ -24,6 +24,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommentApiService } from '../../services/comment-api.service';
 import { Author } from '../../models/author-model';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
+import { Observable } from 'rxjs';
+import { UUID } from 'crypto';
+import { AdminApiService } from '../../../admin/services/admin-api.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -50,6 +53,7 @@ export class PostDetail {
   private storageService = inject(StorageService);
   private postApi = inject(PostApiService);
   private commentApi = inject(CommentApiService);
+  private adminApi = inject(AdminApiService);
   private toast = inject(ToastService);
   private blobService = inject(BlobService);
 
@@ -119,7 +123,7 @@ export class PostDetail {
     });
   }
 
-  openReportDialog(): void {
+  openPostReportDialog(): void {
     if (!this.post) return;
 
     this.dialog.open(ReportDialog, {
@@ -130,6 +134,20 @@ export class PostDetail {
       },
       maxHeight: '90vh',
       panelClass: 'post-report-dialog',
+    });
+  }
+
+  openCommentReportDialog(commentId: string, authorId: string): void {
+    if (!commentId) return;
+
+    this.dialog.open(ReportDialog, {
+      data: {
+        reportedType: 'COMMENT',
+        reportedUserId: authorId,
+        reportedCommentId: commentId,
+      },
+      maxHeight: '90vh',
+      panelClass: 'report-dialog',
     });
   }
 
@@ -246,34 +264,59 @@ export class PostDetail {
 
   private loadComments() {
     if (!this.postId || this.notFound) return;
-    this.commentApi
-      .fetchComments(this.postId + 'k', this.lastCommentTime, this.commentsLimit)
-      .subscribe({
-        next: (comments) => {
-          if (comments.length > 0) {
-            // this.comments = comments;
-            this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
-            comments.forEach((comment) => {
-              if (comment.author?.avatarUrl) {
-                this.blobService.loadBlob(comment.author?.avatarUrl).subscribe({
-                  next: (url) => {
-                    comment.author.avatarUrl = url;
-                  },
-                });
-              }
-            });
+    this.commentApi.fetchComments(this.postId, this.lastCommentTime, this.commentsLimit).subscribe({
+      next: (comments) => {
+        if (comments.length > 0) {
+          // this.comments = comments;
+          this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
+          comments.forEach((comment) => {
+            if (comment.author?.avatarUrl) {
+              this.blobService.loadBlob(comment.author?.avatarUrl).subscribe({
+                next: (url) => {
+                  comment.author.avatarUrl = url;
+                },
+              });
+            }
+          });
 
-            this.comments.push(...comments);
-            this.isCommentsLoading = false;
-          }
-        },
-        error: (e) => {
-          this.notFound = e.status === 404;
-          if (e.status !== 404)
-            this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+          this.comments.push(...comments);
           this.isCommentsLoading = false;
-        },
-      });
+        }
+      },
+      error: (e) => {
+        this.notFound = e.status === 404;
+        if (e.status !== 404) this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.isCommentsLoading = false;
+      },
+    });
+  }
+
+  handleDeleteComment(commentId: string) {
+    if (!commentId) return;
+    const dialogRef = this.dialog.open(Confirmation, {
+      data: { message: 'Are you sure you want to delete?' },
+      panelClass: 'post-report-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        const response: Observable<void> = this.isAdmin
+          ? this.adminApi.deleteComment(commentId)
+          : this.commentApi.deleteComment(commentId);
+
+        response.subscribe({
+          next: () => {
+            this.comments = this.comments.filter((c) => c.id !== commentId);
+            this.post.commentsCount -= 1;
+            this.toast.show('Comment deleted successfully!', 'success');
+          },
+          error: (e) => {
+            this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+            this.isLoading = false;
+          },
+        });
+      }
+    });
   }
 
   handleDeletePost() {

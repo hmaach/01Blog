@@ -197,6 +197,7 @@ export const mockPosts: Post[] = [
     createdAt: '2025-10-15T10:30:00Z',
     isOwner: false,
     isLiked: true,
+    status: 'PUBLISHED',
   },
   {
     id: '2',
@@ -214,6 +215,7 @@ export const mockPosts: Post[] = [
     createdAt: '2025-10-14T14:20:00Z',
     isOwner: false,
     isLiked: true,
+    status: 'PUBLISHED',
   },
   {
     id: '3',
@@ -239,6 +241,7 @@ export const mockPosts: Post[] = [
     createdAt: '2025-10-13T09:15:00Z',
     isOwner: false,
     isLiked: true,
+    status: 'PUBLISHED',
   },
   {
     id: '4',
@@ -256,6 +259,7 @@ export const mockPosts: Post[] = [
     createdAt: '2025-10-12T16:45:00Z',
     isOwner: false,
     isLiked: true,
+    status: 'PUBLISHED',
   },
   {
     id: '5',
@@ -281,6 +285,7 @@ export const mockPosts: Post[] = [
     createdAt: '2025-10-11T11:30:00Z',
     isOwner: false,
     isLiked: true,
+    status: 'PUBLISHED',
   },
   {
     id: '6',
@@ -298,6 +303,7 @@ export const mockPosts: Post[] = [
     createdAt: '2025-10-10T13:20:00Z',
     isOwner: false,
     isLiked: true,
+    status: 'PUBLISHED',
   },
 ];
 
