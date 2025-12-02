@@ -60,6 +60,7 @@ export class PostDetail {
   isAdmin: boolean = this.storageService.isAdmin();
   formatDate = formatDate;
   isLoading: boolean = true;
+  notFound: boolean = false;
   isMediaLoading: boolean = true;
   isUpdated: boolean = false;
 
@@ -235,7 +236,8 @@ export class PostDetail {
         }
       },
       error: (e) => {
-        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.notFound = e.status === 404;
+        if (e.status !== 404) this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
         this.isLoading = false;
         this.isMediaLoading = false;
       },
@@ -243,31 +245,35 @@ export class PostDetail {
   }
 
   private loadComments() {
-    if (!this.postId) return;
-    this.commentApi.fetchComments(this.postId, this.lastCommentTime, this.commentsLimit).subscribe({
-      next: (comments) => {
-        if (comments.length > 0) {
-          // this.comments = comments;
-          this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
-          comments.forEach((comment) => {
-            if (comment.author?.avatarUrl) {
-              this.blobService.loadBlob(comment.author?.avatarUrl).subscribe({
-                next: (url) => {
-                  comment.author.avatarUrl = url;
-                },
-              });
-            }
-          });
+    if (!this.postId || this.notFound) return;
+    this.commentApi
+      .fetchComments(this.postId + 'k', this.lastCommentTime, this.commentsLimit)
+      .subscribe({
+        next: (comments) => {
+          if (comments.length > 0) {
+            // this.comments = comments;
+            this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
+            comments.forEach((comment) => {
+              if (comment.author?.avatarUrl) {
+                this.blobService.loadBlob(comment.author?.avatarUrl).subscribe({
+                  next: (url) => {
+                    comment.author.avatarUrl = url;
+                  },
+                });
+              }
+            });
 
-          this.comments.push(...comments);
+            this.comments.push(...comments);
+            this.isCommentsLoading = false;
+          }
+        },
+        error: (e) => {
+          this.notFound = e.status === 404;
+          if (e.status !== 404)
+            this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
           this.isCommentsLoading = false;
-        }
-      },
-      error: (e) => {
-        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
-        this.isCommentsLoading = false;
-      },
-    });
+        },
+      });
   }
 
   handleDeletePost() {

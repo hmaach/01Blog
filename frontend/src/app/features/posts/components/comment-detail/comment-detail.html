@@ -1,4 +1,12 @@
 <div class="modalOverlay">
+  @if(notFound ) {
+  <div class="notFoundContainer">
+    <h2>Ops!!</h2>
+    <p>This comment doesn't exist</p>
+    <button matButton="outlined" (click)="closeDialog()"><mat-icon>close</mat-icon> Close</button>
+  </div>
+  }@else {
+
   <mat-card class="modalContent">
     <div class="modalHeader">
       <div class="headerLeft">
@@ -55,4 +63,5 @@
       }
     </div>
   </mat-card>
+  }
 </div>

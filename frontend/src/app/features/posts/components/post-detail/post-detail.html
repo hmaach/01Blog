@@ -1,4 +1,11 @@
 <div class="modalOverlay" (click)="closeDialog()">
+  @if(notFound ) {
+  <div class="notFoundContainer">
+    <h2>Ops!!</h2>
+    <p>This post doesn't exist</p>
+    <button matButton="outlined" (click)="closeDialog()"><mat-icon>close</mat-icon> Close</button>
+  </div>
+  } @else {
   <mat-card class="modalContent" (click)="stopPropagation($event)">
     <div class="modalHeader">
       <div class="headerLeft">
@@ -55,7 +62,6 @@
         </button>
       </div>
     </div>
-
     @if (isLoading) {
     <div class="modalBody">
       <app-spinner></app-spinner>
@@ -79,7 +85,11 @@
 
       <div class="postMetrics">
         <div class="metric" style="gap: 0">
-          <button matIconButton class="{{ post.isLiked ? 'primary' : '' }} likeButton" (click)="toggleLike()">
+          <button
+            matIconButton
+            class="{{ post.isLiked ? 'primary' : '' }} likeButton"
+            (click)="toggleLike()"
+          >
             @if (post.isLiked) {
             <mat-icon>favorite</mat-icon>
             }@else {
@@ -135,4 +145,5 @@
     </div>
     }
   </mat-card>
+  }
 </div>

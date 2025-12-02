@@ -49,6 +49,7 @@ export class CommentDetail {
   isAdmin: boolean = this.storageService.isAdmin();
   formatDate = formatDate;
   isLoading: boolean = true;
+  notFound: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<CommentDetail>,
@@ -79,7 +80,8 @@ export class CommentDetail {
         }
       },
       error: (e) => {
-        this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+        this.notFound = e.status === 404;
+        if (e.status !== 404) this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
         this.isLoading = false;
       },
     });
