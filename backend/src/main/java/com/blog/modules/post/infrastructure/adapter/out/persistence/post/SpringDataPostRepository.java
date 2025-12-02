@@ -85,7 +85,7 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
     void incrementCommentsCount(UUID postId);
 
     @Modifying
-    @Query("UPDATE PostEntity p SET p.commentsCount = p.commentsCount + 1 WHERE p.id = :postId")
+    @Query("UPDATE PostEntity p SET p.commentsCount = p.commentsCount - 1 WHERE p.id = :postId")
     void decrementCommentsCount(UUID postId);
 
     @Modifying
