@@ -73,6 +73,10 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
     String findFirstmediaUrl(@Param("id") UUID id);
 
     @Modifying
+    @Query("UPDATE PostEntity p SET p.status = :status WHERE p.id = :postId")
+    void changeStatus(@Param("postId") UUID postId, @Param("status") String status);
+
+    @Modifying
     @Query("UPDATE PostEntity p SET p.likesCount = p.likesCount + 1 WHERE p.id = :postId")
     void incrementLikesCount(@Param("postId") UUID postId);
 

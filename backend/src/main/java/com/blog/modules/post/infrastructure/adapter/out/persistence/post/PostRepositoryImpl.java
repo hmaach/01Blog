@@ -31,7 +31,7 @@ public class PostRepositoryImpl implements PostRepository {
     public List<Post> findAll(Instant before, Pageable pageable) {
         Page<PostEntity> posts;
 
-        if (before == null) {
+        if (before == null && pageable != null) {
             posts = jpaRepository.findAll(pageable);
         } else {
             posts = jpaRepository.findAllPostsBefore(before, pageable);
@@ -96,18 +96,32 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Optional<Post> findById(UUID postId) {
+        if (postId == null) {
+            return Optional.empty();
+        }
         return jpaRepository.findById(postId).map(PostMapper::toDomain);
     }
 
     @Override
     public Boolean existsById(UUID postId) {
-        return jpaRepository.existsById(postId);
+        if (postId != null) {
+            return jpaRepository.existsById(postId);
+        }
+        return false;
     }
 
     @Override
     public Post save(Post post) {
         PostEntity entity = PostMapper.toEntity(post);
-        return PostMapper.toDomain(jpaRepository.save(entity));
+        if (entity != null) {
+            return PostMapper.toDomain(jpaRepository.save(entity));
+        }
+        return null;
+    }
+
+    @Override
+    public void changeStatus(UUID postId, String status) {
+        jpaRepository.changeStatus(postId, status);
     }
 
     @Override
@@ -148,7 +162,8 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void deleteById(UUID postId) {
-        jpaRepository.deleteById(postId);
+        if (postId != null) {
+            jpaRepository.deleteById(postId);
+        }
     }
-
 }

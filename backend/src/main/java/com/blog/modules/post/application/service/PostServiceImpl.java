@@ -87,7 +87,7 @@ public class PostServiceImpl implements PostService {
 
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(0, size, sort);
-        
+
         return postRepository.findByUserUsername(username, pageable);
     }
 
@@ -181,6 +181,12 @@ public class PostServiceImpl implements PostService {
         postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
         likeService.likePost(postId, currentUserId);
+    }
+
+    @Override
+    @Transactional
+    public void changeStatus(UUID postId, String status) {
+        postRepository.changeStatus(postId, status);
     }
 
     @Override

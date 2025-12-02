@@ -40,4 +40,6 @@ public interface PostRepository {
     void incrementCommentsCount(UUID postId);
 
     void decrementCommentsCount(UUID postId);
+
+    void changeStatus(UUID postId, String status);
 }

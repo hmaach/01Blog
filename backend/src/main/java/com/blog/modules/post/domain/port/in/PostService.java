@@ -30,6 +30,8 @@ public interface PostService {
 
     void likePost(UUID postId, UUID currentUserId);
 
+    void changeStatus(UUID postId, String status);
+
     void deletePost(UUID postId, UUID currentUserId, boolean isAdmin);
 
     void incrementLikesCount(UUID postId);

@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.blog.modules.admin.domain.model.AdminStats;
 import com.blog.modules.admin.domain.port.in.AdminService;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.AdminStatsResponse;
+import com.blog.modules.admin.infrastructure.adapter.in.web.dto.ChangePostStatusCommand;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.ChangeReportStatusCommand;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.ChangeUserRoleCommand;
 import com.blog.modules.admin.infrastructure.adapter.in.web.dto.ChangeUserStatusCommand;
+import com.blog.modules.post.domain.port.in.CommentService;
+import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.report.domain.model.Report;
 import com.blog.modules.report.domain.port.in.ReportService;
 import com.blog.modules.report.infrastructure.adapter.in.web.dto.ReportResponse;
@@ -44,17 +47,23 @@ public class AdminController {
     private final AdminService adminService;
     private final UserService userService;
     private final ReportService reportService;
+    private final PostService postService;
+    private final CommentService commentService;
     private final JwtService jwtService;
 
     public AdminController(
             AdminService adminService,
             UserService userService,
             ReportService reportService,
+            PostService postService,
+            CommentService commentService,
             JwtService jwtService
     ) {
         this.adminService = adminService;
         this.userService = userService;
         this.reportService = reportService;
+        this.postService = postService;
+        this.commentService = commentService;
         this.jwtService = jwtService;
     }
 
@@ -149,4 +158,29 @@ public class AdminController {
         reportService.deleteReport(reportId);
     }
 
+    // =================== posts Endpoints handlers   =================== 
+    @PatchMapping("/posts/change-status/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void likePost(
+            @PathVariable UUID postId,
+            HttpServletRequest request,
+            @Valid @RequestBody ChangePostStatusCommand cmd
+    ) {
+        postService.changeStatus(postId, cmd.status());
+    }
+
+    @DeleteMapping("/posts/{postId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePost(@PathVariable UUID postId, HttpServletRequest request) {
+        UUID currentUserId = jwtService.extractUserIdFromRequest(request);
+        postService.deletePost(postId, currentUserId, true);
+    }
+
+    // =================== comments Endpoints handlers   =================== 
+    @DeleteMapping("/comments/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(HttpServletRequest request, @PathVariable UUID commentId) {
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+        commentService.deleteComment(commentId, currUserId, true);
+    }
 }
