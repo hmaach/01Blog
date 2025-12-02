@@ -85,7 +85,7 @@ public class AdminController {
                 .toList();
     }
 
-    @PostMapping("/users/change-role/{userId}")
+    @PatchMapping("/users/change-role/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void chnageUserRole(
             HttpServletRequest request,
@@ -99,7 +99,7 @@ public class AdminController {
         userService.changeUserRole(userId, cmd.role());
     }
 
-    @PostMapping("/users/change-status/{userId}")
+    @PatchMapping("/users/change-status/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void chnageUserStatus(
             HttpServletRequest request,
