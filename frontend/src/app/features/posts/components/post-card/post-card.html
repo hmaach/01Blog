@@ -1,4 +1,4 @@
-<mat-card class="postCard" (click)="openPostDetail(post)">
+<mat-card class="postCard" [class.hiddenPost]="post.status === 'HIDDEN'" (click)="openPostDetail(post)">
   <div class="postHeader">
     <img
       (click)="openUserCardDialog(post.author.username); $event.stopPropagation()"

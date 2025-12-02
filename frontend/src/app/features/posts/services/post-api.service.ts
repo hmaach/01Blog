@@ -48,10 +48,10 @@ export class PostApiService {
     });
   }
 
-  likePost(postId: string) {
+  likePost(postId: string): Observable<void> {
     const token = this.storageService.getAccessToken();
 
-    return this.http.post(
+    return this.http.post<void>(
       `${this.apiUrl}/posts/like/${postId}`,
       {},
       {
@@ -60,10 +60,10 @@ export class PostApiService {
     );
   }
 
-  deletePost(postId: string) {
+  deletePost(postId: string): Observable<void> {
     const token = this.storageService.getAccessToken();
 
-    return this.http.delete(`${this.apiUrl}/posts/${postId}`, {
+    return this.http.delete<void>(`${this.apiUrl}/posts/${postId}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }

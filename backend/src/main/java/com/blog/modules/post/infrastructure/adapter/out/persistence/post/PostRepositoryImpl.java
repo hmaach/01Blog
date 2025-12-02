@@ -32,7 +32,7 @@ public class PostRepositoryImpl implements PostRepository {
         Page<PostEntity> posts;
 
         if (before == null && pageable != null) {
-            posts = jpaRepository.findAll(pageable);
+            posts = jpaRepository.findAllPosts(pageable);
         } else {
             posts = jpaRepository.findAllPostsBefore(before, pageable);
         }

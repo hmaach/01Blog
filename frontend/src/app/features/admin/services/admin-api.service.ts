@@ -106,12 +106,16 @@ export class AdminApiService {
   }
 
   // ============== POST HANDLING ======================
-  changePostStatus(postId: string): Observable<void> {
+  changePostStatus(id: string, status: 'PUBLISHED' | 'HIDDEN'): Observable<void> {
     const token = this.storageService.getAccessToken();
 
-    return this.http.delete<void>(`${this.apiUrl}/admin/posts/${postId}`, {
-      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-    });
+    return this.http.patch<void>(
+      `${this.apiUrl}/admin/posts/change-status/${id}`,
+      { status },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      }
+    );
   }
 
   deletePost(postId: string): Observable<void> {

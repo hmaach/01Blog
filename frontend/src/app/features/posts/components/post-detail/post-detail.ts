@@ -53,7 +53,7 @@ export class PostDetail {
   private storageService = inject(StorageService);
   private postApi = inject(PostApiService);
   private commentApi = inject(CommentApiService);
-  private adminApi = inject(AdminApiService);
+  private adminService = inject(AdminApiService);
   private toast = inject(ToastService);
   private blobService = inject(BlobService);
 
@@ -113,6 +113,36 @@ export class PostDetail {
         this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
         console.error('Failed to like post:', e);
       },
+    });
+  }
+
+  togglePostStatus() {
+    if (!this.postId || !this.isAdmin) return;
+
+    const dialogRef = this.dialog.open(Confirmation, {
+      data: {
+        message: `Are you sure you want to ${
+          this.post.status === 'PUBLISHED' ? 'Hide' : 'Unhide'
+        } this post ?`,
+      },
+      panelClass: 'post-report-dialog',
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        if (confirmed && this.post?.id) {
+          const newStatus = this.post.status === 'PUBLISHED' ? 'HIDDEN' : 'PUBLISHED';
+          this.adminService.changePostStatus(this.post.id, newStatus).subscribe({
+            next: () => {
+              this.toast.show("Post's status changed seccufully!", 'success');
+              this.dialogRef.close({ action: 'changeStatus', postId: this.post?.id, newStatus });
+            },
+            error: (e) => {
+              this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+            },
+          });
+        }
+      }
     });
   }
 
@@ -301,7 +331,7 @@ export class PostDetail {
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         const response: Observable<void> = this.isAdmin
-          ? this.adminApi.deleteComment(commentId)
+          ? this.adminService.deleteComment(commentId)
           : this.commentApi.deleteComment(commentId);
 
         response.subscribe({
@@ -327,7 +357,10 @@ export class PostDetail {
 
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        this.postApi.deletePost(this.postId).subscribe({
+        const response: Observable<void> = this.isAdmin
+          ? this.adminService.deletePost(this.postId)
+          : this.postApi.deletePost(this.postId);
+        response.subscribe({
           next: () => {
             this.toast.show('Post deleted seccufully!', 'success');
             this.dialogRef.close({ action: 'delete', postId: this.postId });

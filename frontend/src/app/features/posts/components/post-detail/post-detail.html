@@ -37,10 +37,15 @@
               <mat-icon>edit</mat-icon>
               <span>Edit</span>
             </button>
-            } @if (isAdmin ) {
-            <button mat-menu-item>
+            } @if (isAdmin && post.status === 'PUBLISHED' ) {
+            <button mat-menu-item (click)="togglePostStatus()">
               <mat-icon>visibility_off</mat-icon>
               <span>Hide</span>
+            </button>
+            }@else if(isAdmin && post.status === 'HIDDEN'){
+            <button mat-menu-item (click)="togglePostStatus()">
+              <mat-icon>visibility</mat-icon>
+              <span>Unhide</span>
             </button>
             } @if (isAdmin || post.isOwner) {
             <button mat-menu-item (click)="handleDeletePost()">

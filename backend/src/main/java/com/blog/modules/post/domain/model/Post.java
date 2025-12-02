@@ -58,7 +58,7 @@ public class Post {
         this.title = title;
         this.body = body;
         this.userId = userId;
-        this.status = "published";
+        this.status = "PUBLISHED";
         this.likesCount = 0;
         this.commentsCount = 0;
         this.ImpressionsCount = 0;

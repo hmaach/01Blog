@@ -16,7 +16,7 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
     @Query("""
             SELECT p
             FROM PostEntity p
-            WHERE p.status = 'published'
+            WHERE p.status = 'PUBLISHED'
             AND (
                 p.user.id IN (
                     SELECT s.id.subscribedToId
@@ -32,7 +32,7 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
     @Query("""
             SELECT p
             FROM PostEntity p
-            WHERE p.status = 'published'
+            WHERE p.status = 'PUBLISHED'
             AND p.createdAt < :before
             AND (
                 p.user.id IN (
@@ -49,7 +49,15 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
     @Query("""
             SELECT p
             FROM PostEntity p
-            WHERE p.status = 'published'
+            WHERE p.status = 'PUBLISHED'
+            ORDER BY p.createdAt DESC
+        """)
+    Page<PostEntity> findAllPosts(Pageable pageable);
+
+    @Query("""
+            SELECT p
+            FROM PostEntity p
+            WHERE p.status = 'PUBLISHED'
             AND p.createdAt < :before
             ORDER BY p.createdAt DESC
         """)
