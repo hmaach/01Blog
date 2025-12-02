@@ -12,7 +12,9 @@
     <div class="notFoundContainer">
       <h2>Ops!!</h2>
       <p>the user {{ username }} doesn't exist</p>
-      <button matButton="outlined" (click)="closeDialog?.()"><mat-icon>close</mat-icon> Close</button>
+      <button matButton="outlined" (click)="closeDialog?.()">
+        <mat-icon>close</mat-icon> Close
+      </button>
     </div>
     } @if (user) { @if (user.relation !== 'owner' && !isAdmin) {
     <div class="reportContainer" (click)="openReportDialog()">
@@ -107,20 +109,19 @@
       </button>
 
       <mat-menu #menu="matMenu">
-        @if (user.status === "active") {
+        @if (user.status === "ACTIVE") {
         <button mat-menu-item color="warn" [disabled]="isLoading" (click)="toggleUserBanning()">
           <mat-icon>person_remove</mat-icon> Ban User
         </button>
-        } @else if (user.status === "banned") {
+        } @else if (user.status === "BANNED") {
         <button mat-menu-item color="warn" [disabled]="isLoading" (click)="toggleUserBanning()">
           <mat-icon>person_remove</mat-icon> Unban User
         </button>
         } @if (user.role === "USER") {
-
         <button mat-menu-item color="warn" [disabled]="isLoading" (click)="toggleUserRole()">
           <mat-icon>person_remove</mat-icon> Make Admin
         </button>
-        } @else if (user.status === "ADMIN") {
+        } @else if (user.role === "ADMIN") {
         <button mat-menu-item color="warn" [disabled]="isLoading" (click)="toggleUserRole()">
           <mat-icon>person_remove</mat-icon> Make User
         </button>

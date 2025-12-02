@@ -3,8 +3,8 @@ export interface UserResponse {
   name: string;
   username: string;
   relation: string;
-  status: string;
-  role: string;
+  status: 'ACTIVE' | 'BANNED';
+  role: 'ADMIN' | 'USER';
   avatarUrl: string;
   postsCount: number;
   subscribersCount: number;

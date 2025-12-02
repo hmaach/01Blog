@@ -6,7 +6,7 @@ import { ToastService } from '../../../../core/services/toast.service';
 import { BlobService } from '../../../../core/services/blob.service';
 import { UserResponse } from '../../models/user-response.model';
 import { MediaPreview } from '../../../../shared/components/media-preview/media-preview';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { formatNumber } from '../../../../shared/lib/format';
@@ -33,8 +33,9 @@ import { AdminApiService } from '../../../admin/services/admin-api.service';
   templateUrl: './profile-card.html',
   styleUrls: ['./profile-card.scss'],
 })
-export class ProfileCard implements OnInit {
+export class ProfileCard {
   private profileService = inject(ProfileApiService);
+  private adminService = inject(AdminApiService);
   private blobService = inject(BlobService);
   private storageService = inject(StorageService);
   private toast = inject(ToastService);
@@ -51,7 +52,7 @@ export class ProfileCard implements OnInit {
   avatarUrl?: string;
   formatNumber = formatNumber;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private dialogRef: MatDialogRef<ProfileCard>) {}
 
   ngOnInit() {
     if (this.user) {
@@ -146,8 +147,17 @@ export class ProfileCard implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
-        console.log('change role', this.user?.id);
+      if (confirmed && this.user?.id) {
+        const newRole = this.user.role === 'USER' ? 'ADMIN' : 'USER';
+        this.adminService.changeUserRole(this.user?.id, newRole).subscribe({
+          next: () => {
+            this.toast.show("User's role changed seccufully!", 'success');
+            this.dialogRef.close({ action: 'changeRole', userId: this.user?.id, newRole });
+          },
+          error: (e) => {
+            this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+          },
+        });
       }
     });
   }
@@ -157,7 +167,7 @@ export class ProfileCard implements OnInit {
     const dialogRef = this.dialog.open(Confirmation, {
       data: {
         message: `Are you sure you want to ${
-          this.user?.status === 'active' ? 'Ban' : 'Unban'
+          this.user?.status === 'ACTIVE' ? 'Ban' : 'Unban'
         } this user ?`,
       },
       panelClass: 'post-report-dialog',
@@ -165,21 +175,40 @@ export class ProfileCard implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        console.log('Ban/Unban', this.user?.id);
+        if (confirmed && this.user?.id) {
+          const newStatus = this.user.status === 'ACTIVE' ? 'BANNED' : 'ACTIVE';
+          this.adminService.changeUserStatus(this.user?.id, newStatus).subscribe({
+            next: () => {
+              this.toast.show("User's status changed seccufully!", 'success');
+              this.dialogRef.close({ action: 'changeStatus', userId: this.user?.id, newStatus });
+            },
+            error: (e) => {
+              this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+            },
+          });
+        }
       }
     });
   }
 
   handleDeleteUser() {
-    if (!this.isAdmin) return;
+    if (!this.isAdmin || !this.user) return;
     const dialogRef = this.dialog.open(Confirmation, {
       data: { message: `Are you sure you want to DELETE this user ?` },
       panelClass: 'post-report-dialog',
     });
 
     dialogRef.afterClosed().subscribe((confirmed) => {
-      if (confirmed) {
-        console.log('Delete', this.user?.id);
+      if (confirmed && this.user?.id) {
+        this.adminService.deleteUser(this.user?.id).subscribe({
+          next: () => {
+            this.toast.show('User deleted seccufully!', 'success');
+            this.dialogRef.close({ action: 'delete', userId: this.user?.id });
+          },
+          error: (e) => {
+            this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
+          },
+        });
       }
     });
   }

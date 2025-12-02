@@ -119,7 +119,7 @@ export class AdminReports {
       panelClass: 'post-report-dialog',
     });
 
-    let status: string;
+    let status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
     if (action === 'decline') status = 'REJECTED';
     else if (action === 'approve') status = 'ACCEPTED';
     else if (action === 'pending') status = 'PENDING';

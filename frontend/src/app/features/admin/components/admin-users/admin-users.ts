@@ -63,9 +63,9 @@ export class AdminUsers {
       .subscribe((q) => {
         if (q && q?.trim().length !== 0) {
           this.lastUserTime = null;
-          this.query = q.trim();
-          this.loadUsers('search');
         }
+        this.query = q?.trim() || null;
+        this.loadUsers('search');
       });
   }
 
@@ -153,9 +153,25 @@ export class AdminUsers {
 
   openUserCardDialog(username: string | undefined) {
     if (!username) return;
-    this.dialog.open(ProfileDialog, {
+    const dialogRef = this.dialog.open(ProfileDialog, {
       data: { username },
       panelClass: 'user-card-dialog',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+      if (result?.action === 'delete') {
+        this.users = this.users.filter((u) => u.id !== result.userId);
+      } else if (result?.action === 'changeRole') {
+        const user = this.users.find((u) => u.id === result.userId);
+        if (user) {
+          user.role = result.newRole;
+        }
+      } else if (result?.action === 'changeStatus') {
+        const user = this.users.find((u) => u.id === result.userId);
+        if (user) {
+          user.status = result.newStatus;
+        }
+      }
     });
   }
 }

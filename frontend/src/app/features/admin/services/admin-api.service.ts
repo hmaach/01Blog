@@ -22,6 +22,7 @@ export class AdminApiService {
     });
   }
 
+  // ============== USERS HANDLING ===================
   fetchUsers(
     q: string | null,
     lastUserTime: string | null,
@@ -39,6 +40,39 @@ export class AdminApiService {
     });
   }
 
+  changeUserStatus(id: string, status: 'BANNED' | 'ACTIVE'): Observable<void> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.patch<void>(
+      `${this.apiUrl}/admin/users/change-status/${id}`,
+      { status },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      }
+    );
+  }
+
+  changeUserRole(id: string, role: 'USER' | 'ADMIN'): Observable<void> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.patch<void>(
+      `${this.apiUrl}/admin/users/change-role/${id}`,
+      { role },
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      }
+    );
+  }
+
+  deleteUser(id: string): Observable<void> {
+    const token = this.storageService.getAccessToken();
+
+    return this.http.delete<void>(`${this.apiUrl}/admin/users/${id}`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
+  }
+
+  // ============== REPORTS HANDLING ===================
   fetchReports(lastPostTime: string | null, limit: number): Observable<Report[]> {
     const token = this.storageService.getAccessToken();
     const params = new URLSearchParams();

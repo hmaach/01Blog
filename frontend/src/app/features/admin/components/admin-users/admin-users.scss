@@ -162,16 +162,25 @@
 
 .userCell {
   max-width: 300px;
+  min-width: 100%;
   display: flex;
   // justify-content: center;
   align-items: center;
   gap: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .userRow {
   display: flex;
-  gap: var(--spacing-md);
-  align-items: center;
+  flex-direction: column;
+  // align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  // max-width: 360px;
 }
 
 .userAvatar {
@@ -190,6 +199,10 @@
 .authorName {
   cursor: pointer;
   transition: var(--transition-normal);
+  // max-width: 80%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .authorName:hover {

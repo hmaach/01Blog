@@ -7,7 +7,7 @@ export interface Report {
   reportedType: string;
   reportedPostId?: string;
   reportedCommentId?: string;
-  status: string;
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
   category: string;
   reason: string;
   createdAt: string;
