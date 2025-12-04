@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, Optional, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ProfileApiService } from '../../services/profile-api.service';
@@ -52,7 +52,10 @@ export class ProfileCard {
   avatarUrl?: string;
   formatNumber = formatNumber;
 
-  constructor(private dialog: MatDialog, private dialogRef: MatDialogRef<ProfileCard>) {}
+  constructor(
+    private dialog: MatDialog,
+    @Optional() private dialogRef: MatDialogRef<ProfileCard>
+  ) {}
 
   ngOnInit() {
     if (this.user) {
@@ -146,13 +149,13 @@ export class ProfileCard {
       panelClass: 'post-report-dialog',
     });
 
-    dialogRef.afterClosed().subscribe((confirmed) => {
+    dialogRef?.afterClosed().subscribe((confirmed) => {
       if (confirmed && this.user?.id) {
         const newRole = this.user.role === 'USER' ? 'ADMIN' : 'USER';
         this.adminService.changeUserRole(this.user?.id, newRole).subscribe({
           next: () => {
             this.toast.show("User's role changed seccufully!", 'success');
-            this.dialogRef.close({ action: 'changeRole', userId: this.user?.id, newRole });
+            this.dialogRef?.close({ action: 'changeRole', userId: this.user?.id, newRole });
           },
           error: (e) => {
             this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
@@ -173,14 +176,14 @@ export class ProfileCard {
       panelClass: 'post-report-dialog',
     });
 
-    dialogRef.afterClosed().subscribe((confirmed) => {
+    dialogRef?.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         if (confirmed && this.user?.id) {
           const newStatus = this.user.status === 'ACTIVE' ? 'BANNED' : 'ACTIVE';
           this.adminService.changeUserStatus(this.user?.id, newStatus).subscribe({
             next: () => {
               this.toast.show("User's status changed seccufully!", 'success');
-              this.dialogRef.close({ action: 'changeStatus', userId: this.user?.id, newStatus });
+              this.dialogRef?.close({ action: 'changeStatus', userId: this.user?.id, newStatus });
             },
             error: (e) => {
               this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
@@ -198,12 +201,12 @@ export class ProfileCard {
       panelClass: 'post-report-dialog',
     });
 
-    dialogRef.afterClosed().subscribe((confirmed) => {
+    dialogRef?.afterClosed().subscribe((confirmed) => {
       if (confirmed && this.user?.id) {
         this.adminService.deleteUser(this.user?.id).subscribe({
           next: () => {
             this.toast.show('User deleted seccufully!', 'success');
-            this.dialogRef.close({ action: 'delete', userId: this.user?.id });
+            this.dialogRef?.close({ action: 'delete', userId: this.user?.id });
           },
           error: (e) => {
             this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
