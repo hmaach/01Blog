@@ -1,104 +1,205 @@
-# API Documentation
+# **API Documentation**
 
-## Authentication Endpoints
+# **1. Error Response Format**
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/auth/register` | Register new user | ❌ |
-| POST | `/api/auth/login` | User login | ❌ |
-| GET | `/api/auth/me` | Get current user | ✅ |
-
-## User Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/users/{id}` | Get user profile | ❌ |
-| PUT | `/api/users/{id}` | Update profile | ✅ (Owner) |
-| POST | `/api/users/{id}/avatar` | Upload avatar | ✅ (Owner) |
-| GET | `/api/users/{id}/posts` | Get user posts | ❌ |
-
-## Post Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/posts` | List all posts | ❌ |
-| GET | `/api/posts/{id}` | Get post details | ❌ |
-| POST | `/api/posts` | Create post | ✅ |
-| PUT | `/api/posts/{id}` | Update post | ✅ (Owner/Admin) |
-| DELETE | `/api/posts/{id}` | Delete post | ✅ (Owner/Admin) |
-| POST | `/api/posts/{id}/like` | Like post | ✅ |
-| DELETE | `/api/posts/{id}/like` | Unlike post | ✅ |
-
-## Comment Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/posts/{postId}/comments` | Get comments | ❌ |
-| POST | `/api/posts/{postId}/comments` | Add comment | ✅ |
-| PUT | `/api/comments/{id}` | Update comment | ✅ (Owner) |
-| DELETE | `/api/comments/{id}` | Delete comment | ✅ (Owner/Admin) |
-
-## Media Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/media/upload` | Upload files | ✅ |
-| GET | `/api/media/{id}` | Get media file | ❌ |
-| DELETE | `/api/media/{id}` | Delete media | ✅ (Owner) |
-
-## Admin Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/admin/users` | List all users | ✅ (Admin) |
-| PUT | `/api/admin/users/{id}/block` | Block user | ✅ (Admin) |
-| PUT | `/api/admin/users/{id}/role` | Update user role | ✅ (Admin) |
-| GET | `/api/admin/reports` | View reports | ✅ (Admin) |
-| PUT | `/api/admin/reports/{id}` | Resolve report | ✅ (Admin) |
-
-## Request/Response Examples
-
-**Register User**
 ```json
-POST /api/auth/register
 {
-  "username": "john_doe",
-  "email": "john@example.com",
-  "password": "SecurePass123!",
-  "firstName": "John",
-  "lastName": "Doe"
-}
-
-Response: 201 Created
-{
-  "id": "uuid",
-  "username": "john_doe",
-  "email": "john@example.com",
-  "createdAt": "2025-10-17T10:30:00Z"
+  "error": "UNAUTHORIZED",
+  "message": "Authentication is required",
+  "status": 401
 }
 ```
 
-**Create Post**
-```json
-POST /api/posts
-Authorization: Bearer {token}
-{
-  "title": "My Learning Journey",
-  "content": "Today I learned about Clean Architecture...",
-  "mediaIds": ["media-uuid-1", "media-uuid-2"]
-}
+---
 
-Response: 201 Created
-{
-  "id": "post-uuid",
-  "title": "My Learning Journey",
-  "content": "Today I learned...",
-  "author": {
-    "id": "user-uuid",
-    "username": "john_doe"
-  },
-  "likeCount": 0,
-  "commentCount": 0,
-  "createdAt": "2025-10-17T10:30:00Z"
-}
+# **2. Authentication Mechanism**
+
+### **Authentication Endpoints**
+
+| Method | Path                 | Handler                   | Description       | Auth |
+| ------ | -------------------- | ------------------------- | ----------------- | ---- |
+| POST   | `/api/auth/login`    | `AuthController#login`    | User login        | No   |
+| POST   | `/api/auth/register` | `AuthController#register` | Register new user | No   |
+
+### **JWT Authentication (Bearer Token)**
+
+All protected endpoints require:
+
+```
+Authorization: Bearer <access_token>
+```
+
+### **Token Behavior**
+
+* Access tokens are **short-lived**
+* On expiration → client must log in again
+* The backend:
+
+  1. Extracts JWT
+  2. Validates signature/expiration
+  3. Injects authenticated user ID into request
+
+---
+
+# **3. Pagination & Query Parameters**
+
+All list endpoints may include:
+
+| Param    | Description                                                   |
+| -------- | ------------------------------------------------------------- |
+| `before` | Filter: return items **created before** timestamp (ISO-8601). |
+| `size`   | Number of items to return (default: `10`).                    |
+| `query`  | Text search term (users, explore posts, admin users).         |
+
+Format for `before`:
+
+```
+2025-01-20T12:30:55Z
+```
+
+---
+
+# **4. User Module**
+
+| Method | Path                                 | Handler             | Description                     | Auth |
+| ------ | ------------------------------------ | ------------------- | ------------------------------- | ---- |
+| GET    | `/api/user`                          | `getCurrentUser`    | Get current authenticated user  | Yes  |
+| PATCH  | `/api/user`                          | `updateUser`        | Update current user             | Yes  |
+| GET    | `/api/user/id/{id}`                  | `getUserById`       | Get user by ID                  | Yes  |
+| GET    | `/api/user/{username}`               | `getUserByUsername` | Get user by username            | Yes  |
+| GET    | `/api/user/all`                      | `getUsers`          | List users (pagination + query) | Yes  |
+| DELETE | `/api/user/subscribe/{targetUserId}` | `unsubscribeToUser` | Unsubscribe from user           | Yes  |
+
+### **Query Parameters for `/api/user/all`**
+
+```
+query?: string
+before?: Instant
+size?: number (default: 10)
+```
+
+---
+
+# **5. Post Module**
+
+| Method | Path                         | Handler                 | Description                  | Auth |
+| ------ | ---------------------------- | ----------------------- | ---------------------------- | ---- |
+| GET    | `/api/posts/feed`            | `getFeedPosts`          | Posts from followed accounts | Yes  |
+| GET    | `/api/posts/explore`         | `getExplorePosts`       | All posts + optional search  | Yes  |
+| GET    | `/api/posts/user/{username}` | `getPostByUserUsername` | Posts by specific user       | Yes  |
+| GET    | `/api/posts/{postId}`        | `getPost`               | Get post by ID               | Yes  |
+| PATCH  | `/api/posts/{postId}`        | `updatePost`            | Update post                  | Yes  |
+| DELETE | `/api/posts/{postId}`        | `deletePost`            | Delete post                  | Yes  |
+| POST   | `/api/posts/like/{postId}`   | `likePost`              | Like post                    | Yes  |
+
+### **Query Parameters**
+
+For:
+
+* `/api/posts/feed`
+* `/api/posts/explore`
+* `/api/posts/user/{username}`
+
+```
+before?: Instant
+size?: number (default: 10)
+query?: string (explore only)
+```
+
+---
+
+# **6. Comment Module**
+
+| Method | Path                                | Handler          | Description                        | Auth |
+| ------ | ----------------------------------- | ---------------- | ---------------------------------- | ---- |
+| GET    | `/api/comments/{postId}`            | `getAllComments` | List comments for post (paginated) | Yes  |
+| GET    | `/api/comments/details/{commentId}` | `getComment`     | Get comment details                | Yes  |
+| DELETE | `/api/comments/{commentId}`         | `deleteComment`  | Delete comment                     | Yes  |
+
+### **Query Parameters for `/api/comments/{postId}`**
+
+```
+before?: Instant
+size?: number (default: 10)
+```
+
+---
+
+# **7. Media Module**
+
+| Method | Path                            | Handler           | Description       | Auth |
+| ------ | ------------------------------- | ----------------- | ----------------- | ---- |
+| POST   | `/api/media/posts`              | `uploadPostMedia` | Upload post media | Yes  |
+| POST   | `/api/media/avatar`             | `uploadAvatar`    | Upload avatar     | Yes  |
+| GET    | `/api/media/posts/{filename}`   | `getPostMedia`    | Get post media    | Yes  |
+| GET    | `/api/media/avatars/{filename}` | `getAvatar`       | Get avatar        | Yes  |
+| DELETE | `/api/media/{mediaId}`          | `deleteMedia`     | Delete media      | Yes  |
+
+---
+
+## **Media Upload Guidelines**
+
+### **Accepted File Types**
+
+* **Images:**
+
+  * `image/jpeg`, `image/png`, `image/jpg`
+
+* **Videos:**
+
+  * `video/mp4`, `video/webm`
+
+### **Max File Size**
+
+| Type       | Max Size  |
+| ---------- | --------- |
+| Avatar     | **2 MB**  |
+| Post Media | **10 MB** |
+
+### **Upload Process**
+
+1. Client sends file via `multipart/form-data`
+2. Server generates unique filename & stores media
+3. Server responds with:
+
+```json
+"UUID"
+```
+
+### **Serving Media**
+
+Media is **not publicly accessible**.
+
+Clients must fetch as `Blob` and convert:
+
+```ts
+URL.createObjectURL(blob);
+```
+
+---
+
+# **8. Admin Module**
+
+| Method | Path                                      | Handler              | Description              | Auth  |
+| ------ | ----------------------------------------- | -------------------- | ------------------------ | ----- |
+| GET    | `/api/admin/users`                        | `getUsers`           | List all users           | Admin |
+| DELETE | `/api/admin/users/{userId}`               | `deleteUser`         | Delete user              | Admin |
+| GET    | `/api/admin/reports`                      | `findAll`            | List reports (paginated) | Admin |
+| DELETE | `/api/admin/reports/{reportId}`           | `deleteReportStatus` | Delete report            | Admin |
+| DELETE | `/api/admin/comments/{commentId}`         | `deleteComment`      | Delete comment           | Admin |
+| PATCH  | `/api/admin/posts/change-status/{postId}` | `likePost`           | Change post status       | Admin |
+
+### **Query Parameters for `/api/admin/users`**
+
+```
+query?: string   // name or username
+before?: Instant
+size?: number (default: 10)
+```
+
+### **Query Parameters for `/api/admin/reports`**
+
+```
+before?: Instant
+size?: number (default: 10)
 ```
