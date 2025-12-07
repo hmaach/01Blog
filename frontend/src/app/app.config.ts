@@ -28,11 +28,11 @@ export const appConfig: ApplicationConfig = {
     // provideHttpClient(withFetch()),
     provideHttpClient(withInterceptorsFromDi(), withFetch()),
     provideMarkdown({ loader: HttpClient }),
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: (authService: AuthService) => () => authService.validateToken(),
-    //   deps: [AuthService],
-    //   multi: true,
-    // },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (authService: AuthService) => () => authService.validateToken(),
+      deps: [AuthService],
+      multi: true,
+    },
   ],
 };

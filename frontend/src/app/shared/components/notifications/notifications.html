@@ -7,7 +7,7 @@
         [ngClass]="{ unread: !notification.isRead }"
       >
         <img
-          [src]="notification.relatedUser?.avatar || '/placeholder-user.jpg'"
+          [src]="notification.relatedUser?.avatar || '/assets/images/default-avatar.jpg'"
           [alt]="notification.relatedUser?.name"
           class="notificationAvatar"
         />
