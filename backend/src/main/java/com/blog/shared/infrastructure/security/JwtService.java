@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.blog.modules.user.domain.model.User;
+import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginResponse;
 
 import io.jsonwebtoken.Jwts;
@@ -23,10 +24,16 @@ public class JwtService {
 
     private final long jwtExpirationMs = 360000000;
 
+    private final UserService userService;
+
+    public JwtService(UserService userService) {
+        this.userService = userService;
+    }
+
     public LoginResponse generateToken(User user) {
         String token = Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("id", user.getId())
+                .setSubject(user.getId().toString())
+                .claim("email", user.getEmail())
                 .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
@@ -49,7 +56,7 @@ public class JwtService {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();
+                .get("email", String.class);
     }
 
     public String getIdFromToken(String token) {
@@ -57,7 +64,7 @@ public class JwtService {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody()
-                .get("id", String.class);
+                .getSubject();
     }
 
     public String getRoleFromToken(String token) {
@@ -69,7 +76,13 @@ public class JwtService {
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        return getEmailFromToken(token)
+
+        // System.err.println("+++++++++++++" + getEmailFromToken(token).equals(userDetails.getUsername()));
+        // System.err.println("++++++++++email froom jwt+++" + getIdFromToken(token));
+        User user = userService.findById(UUID.fromString(getIdFromToken(token)));
+
+        // System.err.println("++++++++++ yyy+++" + userDetails.getUsername());
+        return user.getEmail()
                 .equals(userDetails.getUsername());
     }
 

@@ -24,6 +24,9 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "verified_email")
+    Boolean emailVerified;
+
     @Column(nullable = false)
     private String name;
 
@@ -49,7 +52,6 @@ public class UserEntity {
 
     // @Column(name = "avatar_media_id")
     // private UUID avatarMediaId;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "avatar_media_id", referencedColumnName = "id")
     private MediaEntity avatar;
@@ -65,12 +67,14 @@ public class UserEntity {
             String name,
             String username,
             String email,
+            Boolean emailVerified,
             String password,
             String role,
             String status,
             int postsCount,
             int subscribersCount,
             int impressionsCount,
+            MediaEntity avatar,
             String readme,
             Instant createdAt
     ) {
@@ -78,12 +82,14 @@ public class UserEntity {
         this.name = name;
         this.username = username;
         this.email = email;
+        this.emailVerified = emailVerified;
         this.password = password;
         this.role = role;
         this.status = status;
         this.postsCount = postsCount;
         this.subscribersCount = subscribersCount;
         this.impressionsCount = impressionsCount;
+        this.avatar = avatar;
         this.readme = readme;
         this.createdAt = createdAt;
     }
@@ -174,11 +180,9 @@ public class UserEntity {
     // public MediaEntity getAvatarMediaId() {
     //     return avatarMediaId;
     // }
-
     // public void setAvatarMediaId(MediaEntity avatarMediaId) {
     //     this.avatarMediaId = avatarMediaId;
     // }
-
     public String getReadme() {
         return readme;
     }
@@ -193,5 +197,13 @@ public class UserEntity {
 
     public void setAvatar(MediaEntity avatar) {
         this.avatar = avatar;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }

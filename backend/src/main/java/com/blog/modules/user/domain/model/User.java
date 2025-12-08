@@ -6,9 +6,9 @@ import java.util.UUID;
 public class User {
 
     private final UUID id;
-
     private String name;
     private String email;
+    private Boolean emailVerified;
     private String username;
 
     private String role;
@@ -29,6 +29,7 @@ public class User {
             String name,
             String username,
             String email,
+            Boolean emailVerified,
             String password,
             String role,
             String status,
@@ -42,8 +43,9 @@ public class User {
     ) {
         this.id = id;
         this.name = name;
-        this.email = email;
         this.username = username;
+        this.email = email;
+        this.emailVerified = emailVerified;
         this.password = password;
         this.role = role;
         this.status = status;
@@ -61,6 +63,7 @@ public class User {
             String name,
             String username,
             String email,
+            Boolean emailVerified,
             String password,
             String role,
             String status,
@@ -70,6 +73,7 @@ public class User {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.emailVerified = emailVerified;
         this.username = username;
         this.password = password;
         this.role = role;
@@ -170,5 +174,13 @@ public class User {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }

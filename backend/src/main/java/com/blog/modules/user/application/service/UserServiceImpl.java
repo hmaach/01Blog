@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.blog.modules.media.application.validation.AvatarMediaValidator;
+import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.domain.event.UserFetchedEvent;
 import com.blog.modules.user.domain.event.UserWasSubscribedEvent;
 import com.blog.modules.user.domain.event.UserWasUnsubscribedEvent;
@@ -24,7 +26,9 @@ import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
 import com.blog.modules.user.infrastructure.exception.UsernameAlreadyExistsException;
 import com.blog.shared.infrastructure.exception.ConflictException;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
+import com.blog.shared.infrastructure.exception.InternalServerErrorException;
 
+import io.jsonwebtoken.io.IOException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -33,15 +37,23 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final MediaService mediaService;
+    private final AvatarMediaValidator avatarMediaValidator;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public UserServiceImpl(UserRepository userRepository,
+    public UserServiceImpl(
+            UserRepository userRepository,
             SubscriptionRepository subscriptionRepository,
-            ApplicationEventPublisher eventPublisher) {
+            ApplicationEventPublisher eventPublisher,
+            MediaService mediaService,
+            AvatarMediaValidator avatarMediaValidator
+    ) {
         this.userRepository = userRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.eventPublisher = eventPublisher;
+        this.mediaService = mediaService;
+        this.avatarMediaValidator = avatarMediaValidator;
     }
 
     @Override
@@ -106,32 +118,36 @@ public class UserServiceImpl implements UserService {
         return subscriptionRepository.isSubscribed(currUserId, targetUserId);
     }
 
+
+    // TODO: verify that the user is the owner, fix the avatar update
     @Override
     @Transactional
-    public User updateUser(UUID id, UpdateUserCommand cmd) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id.toString()));
+    public User updateUserInfo(UUID userId, UpdateUserCommand cmd) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId.toString()));
 
-        if (cmd.getName() != null) {
-            user.changeName(cmd.getName());
+        if (cmd.name() != null) {
+            user.changeName(cmd.name());
         }
 
-        if (cmd.getUsername() != null && !user.getUsername().equals(cmd.getUsername())) {
-            if (userRepository.findByUsername(cmd.getUsername()).isPresent()) {
-                throw new UsernameAlreadyExistsException(cmd.getUsername());
+        if (cmd.email() != null && !user.getEmail().equals(cmd.email())) {
+            if (userRepository.findByEmail(cmd.email()).isPresent()) {
+                throw new EmailAlreadyExistsException(cmd.email());
             }
-            user.changeUsername(cmd.getUsername());
-        }
-
-        if (cmd.getEmail() != null && !user.getEmail().equals(cmd.getEmail())) {
-            if (userRepository.findByEmail(cmd.getEmail()).isPresent()) {
-                throw new EmailAlreadyExistsException(cmd.getEmail());
+            if (userRepository.isEmailVerified(userId)) {
+                throw new ConflictException("You can't update verified email");
             }
-            user.changeEmail(cmd.getEmail());
+            user.changeEmail(cmd.email());
         }
 
-        if (cmd.getPassword() != null) {
-            user.changePassword(encoder.encode(cmd.getPassword()));
+        if (cmd.avatar() != null) {
+            avatarMediaValidator.validate(cmd.avatar());
+            try {
+                UUID mediaId = mediaService.uploadAvatar(userId, cmd.avatar());
+                user.changeAvatar(mediaId);
+            } catch (IOException | java.io.IOException | IllegalStateException e) {
+                throw new InternalServerErrorException("Failed to upload avatar: " + e.getMessage());
+            }
         }
 
         userRepository.save(user);

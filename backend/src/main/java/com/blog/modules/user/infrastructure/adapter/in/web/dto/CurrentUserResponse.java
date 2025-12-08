@@ -8,6 +8,8 @@ public record CurrentUserResponse(
         UUID id,
         String name,
         String username,
+        String email,
+        Boolean emailVerified,
         String role,
         String avatarUrl
         ) {
@@ -17,6 +19,8 @@ public record CurrentUserResponse(
                 user.getId(),
                 user.getName(),
                 user.getUsername(),
+                user.getEmail(),
+                user.getEmailVerified(),
                 user.getRole(),
                 user.getAvatarUrl()
         );
@@ -27,6 +31,8 @@ public record CurrentUserResponse(
                 user.getId(),
                 user.getName(),
                 user.getUsername(),
+                user.getEmail(),
+                user.getEmailVerified(),
                 user.getRole(),
                 avatarUrl
         );

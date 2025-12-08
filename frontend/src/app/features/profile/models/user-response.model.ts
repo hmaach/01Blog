@@ -11,3 +11,12 @@ export interface UserResponse {
   impressionsCount: number;
   createdAt: string;
 }
+
+export interface CurrentUserResponse {
+  id: string;
+  name: string;
+  username: string;
+  email: string;
+  emailVerified: boolean;
+  avatarUrl: string;
+}

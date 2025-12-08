@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface SpringDataLikeRepository extends JpaRepository<LikeEntity, UUID> {
 
-    @Query("SELECT COUNT(l) FROM LikeEntity l WHERE l.id.userId = :userId AND l.id.postId = :postId")
+    @Query("SELECT COUNT(l) > 0 FROM LikeEntity l WHERE l.id.userId = :userId AND l.id.postId = :postId")
     boolean existsByUserIdAndPostId(@Param("userId") UUID userId, @Param("postId") UUID postId);
 }

@@ -29,6 +29,8 @@ public interface UserRepository {
 
     boolean existsByUsername(String username);
 
+    boolean isEmailVerified(UUID userId);
+
     boolean isAdmin(UUID userId);
 
     boolean isSuperAdmin(UUID userId);

@@ -6,7 +6,7 @@
 
 @media (max-width: 640px) {
   .postsGrid {
-  gap: var(--spacing-md);
+    gap: var(--spacing-md);
     // grid-template-columns: 1fr;
   }
 }
@@ -55,7 +55,7 @@
 
 .menuDesc {
   font-size: 0.75rem;
-  color: var(--mat-sys-on-surface-variant);
+  color: var(--text-dark-secondary);
   opacity: 0.75;
   margin-bottom: 10px;
 }

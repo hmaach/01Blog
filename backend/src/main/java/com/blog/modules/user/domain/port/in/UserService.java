@@ -27,7 +27,7 @@ public interface UserService {
 
     String getUserReadme(UUID currentUserId, UUID userId);
 
-    User updateUser(UUID userId, UpdateUserCommand command);
+    User updateUserInfo(UUID userId, UpdateUserCommand command);
 
     void changeUserStatus(UUID userId, String status);
 

@@ -6,8 +6,13 @@
         <p class="subtitle">Manage your profile and account settings</p>
       </div>
 
-      <mat-card class="content">
-        <!-- Angular Material Tabs (navigation only) -->
+      <mat-card *ngIf="isFetching" class="content">
+        <app-spinner class="spinner"></app-spinner>
+      </mat-card>
+      <mat-card *ngIf="!isFetching" class="content">
+        @if (isLoading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
         <mat-tab-group
           [selectedIndex]="activeTabIndex"
           (selectedIndexChange)="onTabChange($event)"
@@ -19,38 +24,34 @@
           <mat-tab label="Account"></mat-tab>
         </mat-tab-group>
 
-        <!-- Sync activeTab with index -->
-        <!-- <ng-container
-          *ngIf="activeTab = ['profile','readme','password','account'][activeTabIndex]"
-        ></ng-container> -->
-
-        <div *ngIf="successMessage" class="successMessage">
-          {{ successMessage }}
-        </div>
-
         <!-- ************************************ -->
         <!-- PROFILE TAB -->
         <!-- ************************************ -->
-        <div class="section" *ngIf="activeTab === 'profile'">
+        <form [formGroup]="infoForm" class="section" *ngIf="activeTab === 'profile'">
           <h2 class="sectionTitle">Profile Settings</h2>
 
           <!-- Avatar -->
           <div class="formGroup">
             <label class="label">Profile Picture</label>
             <div class="avatarSection">
-              <img [src]="avatar" class="avatarPreview" alt="Avatar" />
+              <img
+                [src]="avatar || userInfo.avatarUrl || '/assets/images/default-avatar.jpg'"
+                class="avatarPreview"
+                alt="Avatar"
+              />
 
               <div class="avatarUpload">
-                <label class="uploadLabel">
+                <label class="uploadLabel" [ngClass]="{ disabled: isLoading }">
                   <input
                     type="file"
                     accept="image/*"
+                    [disabled]="isLoading"
                     (change)="handleAvatarChange($event)"
                     class="fileInput"
                   />
                   Choose Image
                 </label>
-                <p class="uploadHint">JPG, PNG or GIF (max 5MB)</p>
+                <p class="uploadHint">PNG, JPG OR JPEG (max 2MB)</p>
               </div>
             </div>
           </div>
@@ -58,33 +59,66 @@
           <!-- Display Name -->
           <div class="formGroup">
             <label class="label">Display Name</label>
-            <input type="text" [(ngModel)]="displayName" class="input" />
+            <mat-form-field appearance="fill" class="w-full">
+              <input matInput formControlName="name" maxlength="{{ maxNameChars }}" />
+              <mat-hint align="end">{{ infoForm.value.name?.length }}/{{ maxNameChars }}</mat-hint>
+            </mat-form-field>
           </div>
 
           <!-- Email -->
           <div class="formGroup">
-            <label class="label">Email</label>
+            <label class="label"
+              >Email
+              <span
+                class="badge"
+                [ngClass]="{
+                  verified: userInfo.emailVerified,
+                  notVerified: !userInfo.emailVerified
+                }"
+                >{{ userInfo.emailVerified ? 'Verified' : 'Not Verified' }}</span
+              ></label
+            >
             <div class="emailGroup">
-              <input type="email" [(ngModel)]="email" class="input" />
-              <span *ngIf="!emailVerified" class="badge">Not Verified</span>
+              <mat-form-field appearance="fill" class="w-full">
+                <input
+                  matInput
+                  type="email"
+                  autocomplete="email"
+                  formControlName="email"
+                  maxlength="{{ maxEmailChars }}"
+                />
+                <mat-hint align="end"
+                  >{{ infoForm.value.email?.length }}/{{ maxEmailChars }}</mat-hint
+                >
+              </mat-form-field>
+              <!-- <span *ngIf="!emailVerified" class="badge">Not Verified</span> -->
             </div>
-            <p class="hint">We'll send a verification link</p>
+            <p class="hint">You can't change your email if it's verified</p>
           </div>
 
           <!-- Username -->
           <div class="formGroup">
             <label class="label">Username</label>
-            <input type="text" [value]="username" disabled class="input disabled" />
+            <mat-form-field appearance="fill" class="w-full">
+              <input matInput value="{{ userInfo.username }}" disabled />
+            </mat-form-field>
             <p class="hint">Username cannot be changed</p>
           </div>
-
-          <button class="button" (click)="handleSaveProfile()">Save Changes</button>
-        </div>
+          <button
+            [disabled]="infoForm.invalid || !isInfoFormValid()"
+            mat-flat-button
+            color="primary"
+            (click)="handleSaveProfile()"
+          >
+            <mat-icon>save</mat-icon>
+            Save Changes
+          </button>
+        </form>
 
         <!-- ************************************ -->
         <!-- README TAB -->
         <!-- ************************************ -->
-        <div *ngIf="activeTab === 'readme'" class="section">
+        <form [formGroup]="readmeForm" *ngIf="activeTab === 'readme'" class="section">
           <h2 class="sectionTitle">Profile README</h2>
 
           <div class="readmeSteps">
@@ -123,50 +157,93 @@
 
           <div class="formGroup">
             <label class="label">Upload README.md</label>
-            <label class="uploadLabel">
+            <label class="uploadLabel" [ngClass]="{ disabled: isLoading }">
               <input
                 type="file"
                 accept=".md"
+                formControlName="readme"
                 (change)="handleReadmeUpload($event)"
                 class="fileInput"
               />
               Choose File
             </label>
-
-            <p *ngIf="readmeFile" class="selectedFile">✓ {{ readmeFile.name }} selected</p>
           </div>
 
+          <h3 class="previewTitle">Preview</h3>
           <div *ngIf="readmePreview" class="readmePreview">
-            <h3 class="previewTitle">Preview</h3>
-            <div class="previewContent">{{ readmePreview }}</div>
+            <markdown *ngIf="!isLoading" [data]="readmePreview"></markdown>
           </div>
-
-          <button class="button">Save README</button>
-        </div>
+          <button
+            mat-flat-button
+            color="primary"
+            [disabled]="readmeForm.invalid || isLoading"
+            (click)="handleSaveReadme()"
+          >
+            <mat-icon>save</mat-icon>
+            Save README
+          </button>
+        </form>
 
         <!-- ************************************ -->
         <!-- PASSWORD TAB -->
         <!-- ************************************ -->
-        <div *ngIf="activeTab === 'password'" class="section">
+        <form [formGroup]="passwordForm" *ngIf="activeTab === 'password'" class="section">
           <h2 class="sectionTitle">Change Password</h2>
 
           <div class="formGroup">
             <label class="label">Current Password</label>
-            <input type="password" [(ngModel)]="currentPassword" class="input" />
+            <mat-form-field appearance="fill" class="w-full">
+              <input
+                matInput
+                type="password"
+                formControlName="currentPassword"
+                maxlength="{{ maxPasswordChars }}"
+              />
+              <mat-hint align="end"
+                >{{ passwordForm.value.currentPassword?.length }}/{{ maxPasswordChars }}</mat-hint
+              >
+            </mat-form-field>
           </div>
 
           <div class="formGroup">
             <label class="label">New Password</label>
-            <input type="password" [(ngModel)]="newPassword" class="input" />
+            <mat-form-field appearance="fill" class="w-full">
+              <input
+                matInput
+                type="password"
+                formControlName="newPassword"
+                maxlength="{{ maxPasswordChars }}"
+              />
+              <mat-hint align="end"
+                >{{ passwordForm.value.newPassword?.length }}/{{ maxPasswordChars }}</mat-hint
+              >
+            </mat-form-field>
           </div>
 
           <div class="formGroup">
             <label class="label">Confirm Password</label>
-            <input type="password" [(ngModel)]="confirmPassword" class="input" />
+            <mat-form-field appearance="fill" class="w-full">
+              <input
+                matInput
+                type="password"
+                formControlName="confirmPassword"
+                maxlength="{{ maxPasswordChars }}"
+              />
+              <mat-hint align="end"
+                >{{ passwordForm.value.confirmPassword?.length }}/{{ maxPasswordChars }}</mat-hint
+              >
+            </mat-form-field>
           </div>
-
-          <button class="button" (click)="handleChangePassword()">Save Password</button>
-        </div>
+          <button
+            mat-flat-button
+            color="primary"
+            [disabled]="passwordForm.invalid || isLoading"
+            (click)="handleChangePassword()"
+          >
+            <mat-icon>save</mat-icon>
+            Save Password
+          </button>
+        </form>
 
         <!-- ************************************ -->
         <!-- ACCOUNT TAB -->
@@ -177,7 +254,15 @@
           <div class="dangerZone">
             <h3 class="dangerTitle">Danger Zone</h3>
             <p class="dangerDescription">Permanently delete your account.</p>
-            <button class="deleteButton" (click)="handleDeleteAccount()">Delete Account</button>
+            <button
+              mat-flat-button
+              color="primary"
+              [disabled]="isLoading"
+              class="deleteButton"
+              (click)="handleDeleteAccount()"
+            >
+              <mat-icon>trash</mat-icon> Delete Account
+            </button>
           </div>
         </div>
       </mat-card>

@@ -70,6 +70,7 @@ public class AuthServiceImpl implements AuthService {
                 cmd.name(),
                 username,
                 cmd.email(),
+                false,
                 encoder.encode(cmd.password()),
                 "USER",
                 "ACTIVE",
