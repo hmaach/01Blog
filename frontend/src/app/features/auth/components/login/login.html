@@ -1,3 +1,6 @@
+@if (isLoading) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 <mat-card-header class="d-flex flex-column mb-4">
   <mat-card-title class="text-center primary-text w-100 fs-4 fw-medium">
     Welcome Back!
@@ -9,6 +12,7 @@
     <mat-form-field class="w-100">
       <mat-label>Email</mat-label>
       <input
+        [disabled]="isLoading"
         matInput
         type="email"
         formControlName="email"
@@ -33,11 +37,13 @@
         formControlName="password"
         required
         placeholder="Enter your password"
+        [disabled]="isLoading"
       />
       <button
         mat-icon-button
         matSuffix
         type="button"
+        [disabled]="isLoading"
         (click)="hide = !hide"
         [attr.aria-label]="'Hide password'"
       >

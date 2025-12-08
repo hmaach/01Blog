@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 import { ToastService } from '../../../../core/services/toast.service';
 import { AuthService } from '../../services/auth.service';
 import { trimValidator } from '../../../../shared/lib/validators';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ import { trimValidator } from '../../../../shared/lib/validators';
     MatButtonModule,
     MatIconModule,
     RouterLink,
+    MatProgressBar,
   ],
   templateUrl: './login.html',
   styleUrls: ['./login.scss'],
@@ -34,6 +36,7 @@ export class Login {
   private isBrowser: boolean;
 
   hide: boolean = true;
+  isLoading: boolean = false;
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, trimValidator]],
@@ -58,8 +61,13 @@ export class Login {
       this.toast.show('Please fill out all fields correctly.', 'error');
       return;
     }
+    this.isLoading = true;
 
     const { email, password } = this.form.value;
-    this.authService.login(email?.trim()!, password?.trim()!).subscribe();
+    this.authService.login(email?.trim()!, password?.trim()!).subscribe({
+      error: () => {
+        this.isLoading = false;
+      },
+    });
   }
 }
