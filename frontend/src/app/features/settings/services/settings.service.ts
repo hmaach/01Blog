@@ -11,10 +11,10 @@ export class SettingsService {
   private storageService = inject(StorageService);
   private http = inject(HttpClient);
 
-  fetchUserInfo(currUserId: string): Observable<CurrentUserResponse> {
+  fetchUserInfo(): Observable<CurrentUserResponse> {
     const token = this.storageService.getAccessToken();
 
-    return this.http.get<CurrentUserResponse>(`${this.apiUrl}/user/id/${currUserId}`, {
+    return this.http.get<CurrentUserResponse>(`${this.apiUrl}/user`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }

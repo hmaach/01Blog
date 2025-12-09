@@ -54,7 +54,8 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID
 
     boolean existsByUsername(String username);
 
-    // boolean isEmailVerified(UUID userId);
+    @Query("SELECT u.emailVerified FROM UserEntity u WHERE u.id = :userId")
+    boolean isEmailVerified(UUID userId);
 
     @Query("SELECT u.role = 'ADMIN' FROM UserEntity u WHERE u.id = :userId")
     boolean isAdmin(@Param("userId") UUID userId);

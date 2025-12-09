@@ -128,7 +128,7 @@ export class Settings implements OnInit {
     const currUserId = this.storageService.getCurrentUserInfo()?.id;
     if (!currUserId) return;
 
-    this.settingsService.fetchUserInfo(currUserId).subscribe({
+    this.settingsService.fetchUserInfo().subscribe({
       next: (res: CurrentUserResponse) => {
         this.userInfo = res;
 
@@ -204,10 +204,10 @@ export class Settings implements OnInit {
     this.isLoading = true;
     const formData = new FormData();
 
-    if (this.userInfo.name !== this.infoForm.value.name!.trim())
+    if (this.infoForm.value.name && this.userInfo.name !== this.infoForm.value.name!.trim())
       formData.append('name', this.infoForm.value.name!.trim());
 
-    if (this.userInfo.email !== this.infoForm.value.email!.trim())
+    if (this.infoForm.value.email && this.userInfo.email !== this.infoForm.value.email!.trim())
       formData.append('email', this.infoForm.value.email!.trim());
 
     if (this.avatar) {
@@ -219,15 +219,19 @@ export class Settings implements OnInit {
       formData.append('avatar', new Blob([byteArray], { type: 'image/png' }), 'avatar.png');
     }
 
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    // for (const [key, value] of formData.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
     this.isLoading = false;
 
     this.settingsService.updateUserInfo(formData).subscribe({
       next: () => {
         this.toast.show('Profile updated successfully!', 'success');
         this.isLoading = false;
+        if (this.infoForm.value.name && this.userInfo.name !== this.infoForm.value.name!.trim())
+          this.userInfo.name = this.infoForm.value.name!.trim();
+        if (this.infoForm.value.email && this.userInfo.email !== this.infoForm.value.email!.trim())
+          this.userInfo.email = this.infoForm.value.email!.trim();
       },
       error: (e) => {
         this.toast.show(e?.error?.message || 'Unknown server error', 'error');
@@ -238,8 +242,8 @@ export class Settings implements OnInit {
 
   isInfoFormValid(): boolean {
     return (
-      (this.userInfo.name !== this.infoForm.value.name!.trim() ||
-        this.userInfo.email !== this.infoForm.value.email!.trim() ||
+      ((this.infoForm.value.name && this.userInfo.name !== this.infoForm.value.name!.trim()) ||
+        (this.infoForm.value.email && this.userInfo.email !== this.infoForm.value.email!.trim()) ||
         this.avatar !== null) &&
       this.isLoading === false
     );
