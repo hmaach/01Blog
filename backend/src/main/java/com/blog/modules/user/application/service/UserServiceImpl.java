@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    // TODO:  fix the avatar update
+    // TODO: fix the avatar update
     @Override
     @Transactional
     public User updateUserInfo(UUID userId, UpdateUserCommand cmd) {

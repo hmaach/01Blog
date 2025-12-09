@@ -77,7 +77,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean isEmailVerified(UUID userId) {
-        System.err.println("----------------------" + jpaRepository.isEmailVerified(userId));
         return jpaRepository.isEmailVerified(userId);
     }
 
