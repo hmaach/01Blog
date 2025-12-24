@@ -36,6 +36,8 @@ export class AdminReports {
   private toast = inject(ToastService);
   private dialog = inject(MatDialog);
   private route = inject(ActivatedRoute);
+  private observer!: IntersectionObserver;
+  private isBrowser: boolean;
 
   isLoading: boolean = true;
   isLoadingMore = true;
@@ -46,10 +48,13 @@ export class AdminReports {
   totalCommentReports!: number;
 
   private limit: number = 9;
-  private scrollDistance = 0.8;
   private throttle: number = 300;
   private isThrottled = false;
   private lastReportTime: string | null = null;
+
+  constructor() {
+    this.isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -58,6 +63,35 @@ export class AdminReports {
       this.totalCommentReports = params['totalCommentReports'];
     });
     this.loadReports();
+  }
+
+  ngAfterViewInit() {
+    if (!this.isBrowser) {
+      return;
+    }
+    this.observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !this.isLoading) {
+          if (this.isThrottled) return;
+
+          this.isThrottled = true;
+
+          setTimeout(() => {
+            this.isThrottled = false;
+
+            if (!this.noMoreReports && !this.isLoadingMore) {
+              this.isLoadingMore = true;
+              this.loadReports();
+            }
+          }, this.throttle);
+        }
+      });
+    });
+
+    const target = document.getElementById('scroll-trigger');
+    if (target) {
+      this.observer.observe(target);
+    }
   }
 
   private loadReports() {
@@ -74,6 +108,7 @@ export class AdminReports {
         this.reports.push(...response);
         this.isLoading = false;
         this.isLoadingMore = false;
+        console.log(this.lastReportTime);
       },
       error: (e) => {
         this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');

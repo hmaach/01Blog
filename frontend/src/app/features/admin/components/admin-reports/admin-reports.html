@@ -146,6 +146,14 @@
           </div>
         </mat-card>
         }
+        <div id="scroll-trigger"></div>
+        <div>
+          @if (noMoreReports) {
+          <p>no more reports</p>
+          } @else if (isLoadingMore) {
+          <app-spinner class="spinner-sm"></app-spinner>
+          }
+        </div>
       </div>
     </div>
   </main>

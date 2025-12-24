@@ -80,7 +80,7 @@ export class AdminApiService {
     params.append('size', limit.toString());
     if (lastPostTime) params.append('before', lastPostTime);
 
-    return this.http.get<Report[]>(`${this.apiUrl}/admin/reports`, {
+    return this.http.get<Report[]>(`${this.apiUrl}/admin/reports?${params.toString()}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }
