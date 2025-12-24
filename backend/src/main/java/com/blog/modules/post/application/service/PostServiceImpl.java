@@ -45,8 +45,7 @@ public class PostServiceImpl implements PostService {
             UserService userService,
             MediaService mediaService,
             LikeService likeService,
-            ApplicationEventPublisher eventPublisher
-    ) {
+            ApplicationEventPublisher eventPublisher) {
         this.postRepository = postRepository;
         this.userService = userService;
         this.mediaService = mediaService;
@@ -88,7 +87,7 @@ public class PostServiceImpl implements PostService {
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(0, size, sort);
 
-        return postRepository.findByUserUsername(username, pageable);
+        return postRepository.findByUserUsername(username, before, pageable);
     }
 
     @Override
@@ -114,8 +113,7 @@ public class PostServiceImpl implements PostService {
                 currentUserId,
                 cmd.title(),
                 cmd.body(),
-                Instant.now()
-        );
+                Instant.now());
 
         postRepository.save(post);
 

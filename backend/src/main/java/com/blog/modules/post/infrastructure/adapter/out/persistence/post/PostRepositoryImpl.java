@@ -37,15 +37,13 @@ public class PostRepositoryImpl implements PostRepository {
             posts = jpaRepository.findAllPostsBefore(before, pageable);
         }
 
-        posts.forEach(post
-                -> {
+        posts.forEach(post -> {
 
             Optional<PostMediaEntity> pm = postMediaJpaRepository.findFirstByIdPostIdOrderByCreatedAtAsc(post.getId());
             if (!pm.isEmpty()) {
                 post.setFirstMedia(pm.get().getMediaEntity());
             }
-        }
-        );
+        });
 
         return posts.stream()
                 .map(PostMapper::toDomain)
@@ -63,15 +61,13 @@ public class PostRepositoryImpl implements PostRepository {
             posts = jpaRepository.findFeedPostsBefore(currUserId, before, pageable);
         }
 
-        posts.forEach(post
-                -> {
+        posts.forEach(post -> {
 
             Optional<PostMediaEntity> pm = postMediaJpaRepository.findFirstByIdPostIdOrderByCreatedAtAsc(post.getId());
             if (!pm.isEmpty()) {
                 post.setFirstMedia(pm.get().getMediaEntity());
             }
-        }
-        );
+        });
 
         return posts.stream()
                 .map(PostMapper::toDomain)
@@ -87,9 +83,15 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public List<Post> findByUserUsername(String username, Pageable pageable) {
-        return jpaRepository.findByUserUsername(username, pageable)
-                .stream()
+    public List<Post> findByUserUsername(String username, Instant before, Pageable pageable) {
+        Page<PostEntity> posts;
+        if (before == null) {
+            posts = jpaRepository.findByUserUsername(username, pageable);
+        } else {
+            posts = jpaRepository.findByUserUsernameBefore(username, before, pageable);
+        }
+
+        return posts.stream()
                 .map(PostMapper::toDomain)
                 .toList();
     }
