@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, inject, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { PostList } from '../../../posts/components/post-list/post-list';
 import { Post } from '../../../posts/models/post-model';
 import { ToastService } from '../../../../core/services/toast.service';
@@ -19,6 +19,7 @@ export class ProfileBlock {
   isLoadingMore: boolean = true;
   noMorePosts: boolean = false;
 
+  private isBrowser: boolean;
   private page: number = 0;
   private limit: number = 8;
   private isThrottled: boolean = false;
@@ -29,6 +30,10 @@ export class ProfileBlock {
   private toast = inject(ToastService);
   private observer!: IntersectionObserver;
 
+  constructor() {
+    this.isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  }
+
   ngOnInit() {
     if (this.username) {
       this.loadPosts();
@@ -36,6 +41,9 @@ export class ProfileBlock {
   }
 
   ngAfterViewInit() {
+    if (!this.isBrowser) {
+      return;
+    }
     this.observer = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {

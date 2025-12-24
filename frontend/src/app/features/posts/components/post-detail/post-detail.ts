@@ -67,17 +67,25 @@ export class PostDetail {
   notFound: boolean = false;
   isMediaLoading: boolean = true;
   isUpdated: boolean = false;
+  private isBrowser: boolean;
 
+  private isThrottled: boolean = false;
+  private throttle: number = 300;
   private commentsLimit: number = 10;
   private lastCommentTime: string | null = null;
   commentText = '';
   isCommentsLoading: boolean = true;
+  isLoadingMoreComments: boolean = false;
+  noMoreComments: boolean = false;
+  private observer!: IntersectionObserver;
 
   constructor(
     private dialogRef: MatDialogRef<PostDetail>,
     @Inject(MAT_DIALOG_DATA) public data: { post: Post; postId: string },
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  }
 
   ngOnInit(): void {
     if (this.data?.post) {
@@ -93,6 +101,35 @@ export class PostDetail {
     if (this.postId) {
       this.loadPostDetail();
       this.loadComments();
+    }
+  }
+
+  ngAfterViewInit() {
+    if (!this.isBrowser) {
+      return;
+    }
+    this.observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !this.isLoading && !this.isCommentsLoading) {
+          if (this.isThrottled) return;
+
+          this.isThrottled = true;
+
+          setTimeout(() => {
+            this.isThrottled = false;
+
+            if (!this.noMoreComments && !this.isLoadingMoreComments) {
+              this.isLoadingMoreComments = true;
+              this.loadComments();
+            }
+          }, this.throttle);
+        }
+      });
+    });
+
+    const target = document.getElementById('scroll-trigger');
+    if (target) {
+      this.observer.observe(target);
     }
   }
 
@@ -296,8 +333,14 @@ export class PostDetail {
     if (!this.postId || this.notFound) return;
     this.commentApi.fetchComments(this.postId, this.lastCommentTime, this.commentsLimit).subscribe({
       next: (comments) => {
+        if (!comments || comments.length === 0) {
+          this.noMoreComments = true;
+          this.isCommentsLoading = false;
+          this.isLoadingMoreComments = false;
+          return;
+        }
+
         if (comments.length > 0) {
-          // this.comments = comments;
           this.lastCommentTime = comments.at(-1)?.createdAt ?? null;
           comments.forEach((comment) => {
             if (comment.author?.avatarUrl) {
@@ -311,6 +354,7 @@ export class PostDetail {
 
           this.comments.push(...comments);
           this.isCommentsLoading = false;
+          this.isLoadingMoreComments = false;
         }
       },
       error: (e) => {

@@ -169,6 +169,14 @@
               }
             </div>
           </div>
+          <div id="scroll-trigger"></div>
+          <div>
+            @if (noMoreComments) {
+            <p>no more comments</p>
+            } @else if (isLoadingMoreComments) {
+            <app-spinner class="spinner-sm"></app-spinner>
+            }
+          </div>
         </div>
       </div>
     </div>

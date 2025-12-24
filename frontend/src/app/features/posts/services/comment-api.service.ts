@@ -18,8 +18,12 @@ export class CommentApiService {
     limit: number
   ): Observable<Comment[]> {
     const token = this.storageService.getAccessToken();
+    const params = new URLSearchParams();
 
-    return this.http.get<Comment[]>(`${this.apiUrl}/comments/${postId}`, {
+    params.append('size', limit.toString());
+    if (lastCommentTime) params.append('before', lastCommentTime);
+
+    return this.http.get<Comment[]>(`${this.apiUrl}/comments/${postId}?${params.toString()}`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
     });
   }
