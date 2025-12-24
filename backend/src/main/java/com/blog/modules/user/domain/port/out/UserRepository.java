@@ -57,4 +57,6 @@ public interface UserRepository {
 
     void deleteById(UUID id);
 
+    void incrementUploadsSize(UUID currentUserId, long size);
+
 }

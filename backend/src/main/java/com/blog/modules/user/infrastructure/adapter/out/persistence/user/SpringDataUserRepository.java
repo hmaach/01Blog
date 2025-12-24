@@ -84,6 +84,10 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID
     void updateAvatarId(@Param("userId") UUID userId, @Param("avatarId") UUID avatarId);
 
     @Modifying
+    @Query("UPDATE UserEntity u SET u.uploadsSize = u.uploadsSize + :size WHERE u.id = :userId")
+    void incrementUploadsSize(@Param("userId") UUID userId, @Param("size") long size);
+
+    @Modifying
     @Query("UPDATE UserEntity u SET u.impressionsCount = u.impressionsCount + 1 WHERE u.id = :userId")
     void incrementImpressionsCount(@Param("userId") UUID userId);
 

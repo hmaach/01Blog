@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.blog.modules.media.application.validation.AvatarMediaValidator;
 import com.blog.modules.media.application.validation.PostMediaValidator;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
@@ -157,6 +156,8 @@ public class MediaServiceImpl implements MediaService {
         media.setUploadedAt(Instant.now());
 
         Media savedMedia = mediaRepository.save(media);
+
+        userRepository.incrementUploadsSize(currentUserId, file.getSize());
 
         return savedMedia;
     }

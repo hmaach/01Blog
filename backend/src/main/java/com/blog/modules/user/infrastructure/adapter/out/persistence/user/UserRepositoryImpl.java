@@ -138,6 +138,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void incrementUploadsSize(UUID userId, long size) {
+        jpaRepository.incrementUploadsSize(userId, size);
+    }
+
+    @Override
     public void incrementImpressionsCount(UUID userId) {
         jpaRepository.incrementImpressionsCount(userId);
     }
