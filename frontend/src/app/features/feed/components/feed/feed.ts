@@ -20,6 +20,7 @@ export class Feed {
   isLoading: boolean = true;
   isLoadingMore = true;
   noMorePosts = false;
+  noPostFound = false;
 
   private limit: number = 9;
   private scrollDistance = 0.8;
@@ -59,6 +60,9 @@ export class Feed {
     this.feedApi.fetchFeedPosts(this.lastPostTime, this.limit).subscribe({
       next: (response) => {
         if (response.length === 0) {
+          if (this.posts.length === 0) {
+            this.noPostFound = true;
+          }
           this.noMorePosts = true;
           this.isLoading = false;
           this.isLoadingMore = false;
