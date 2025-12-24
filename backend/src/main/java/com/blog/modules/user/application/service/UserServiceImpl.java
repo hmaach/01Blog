@@ -15,6 +15,7 @@ import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.domain.event.UserFetchedEvent;
 import com.blog.modules.user.domain.event.UserWasSubscribedEvent;
 import com.blog.modules.user.domain.event.UserWasUnsubscribedEvent;
+import com.blog.modules.user.domain.model.Notification;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.domain.port.out.SubscriptionRepository;
@@ -116,6 +117,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean isBanned(UUID userId) {
         return userRepository.isBanned(userId);
+    }
+
+    @Override
+    public List<Notification> getNotifications(UUID userId, Instant before, int size) {
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(0, size, sort);
+
+        return userRepository.getNotifications(userId, before, pageable);
+    }
+
+    @Override
+    @Transactional
+    public void createNotifications(UUID userId, UUID postId) {
+        userRepository.createNotifications(userId, postId);
     }
 
     // TODO: fix the avatar update

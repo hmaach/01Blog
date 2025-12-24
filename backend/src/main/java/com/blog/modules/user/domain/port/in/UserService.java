@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import com.blog.modules.user.domain.model.Notification;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 
@@ -50,5 +51,9 @@ public interface UserService {
     void decrementPostsCount(UUID userId);
 
     void deleteUser(UUID userId);
+
+    List<Notification> getNotifications(UUID userId, Instant before, int size);
+
+    void createNotifications(UUID userId, UUID postId);
 
 }

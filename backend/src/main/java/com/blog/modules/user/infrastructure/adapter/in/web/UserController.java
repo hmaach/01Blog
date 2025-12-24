@@ -6,23 +6,22 @@ import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.CurrentUserResponse;
+import com.blog.modules.user.infrastructure.adapter.in.web.dto.NotificationResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserProfileResponse;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
@@ -37,16 +36,13 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private final UserService userService;
-    private final MediaService mediaService;
     private final JwtService jwtService;
 
     public UserController(
             UserService userService,
-            MediaService mediaService,
             JwtService jwtService
     ) {
         this.userService = userService;
-        this.mediaService = mediaService;
         this.jwtService = jwtService;
     }
 
@@ -102,6 +98,20 @@ public class UserController {
         }
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
         return userService.getUserReadme(currUserId, userId);
+    }
+
+    @GetMapping("/notifications")
+    public List<NotificationResponse> getNotifications(
+            HttpServletRequest request,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+
+        return userService.getNotifications(currUserId, before, size).stream()
+                .map(NotificationResponse::fromDomain)
+                .toList();
     }
 
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

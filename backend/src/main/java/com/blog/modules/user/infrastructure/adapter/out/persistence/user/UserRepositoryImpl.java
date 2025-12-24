@@ -11,16 +11,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import com.blog.modules.user.domain.model.Notification;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.out.UserRepository;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.notification.NotificationEntity;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.notification.NotificationMapper;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.notification.SpringDataNotificationRepository;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
     private final SpringDataUserRepository jpaRepository;
+    private final SpringDataNotificationRepository noticicationRepository;
 
-    public UserRepositoryImpl(SpringDataUserRepository jpaRepository) {
+    public UserRepositoryImpl(SpringDataUserRepository jpaRepository,
+            SpringDataNotificationRepository noticicationRepository) {
         this.jpaRepository = jpaRepository;
+        this.noticicationRepository = noticicationRepository;
     }
 
     @Override
@@ -177,6 +184,27 @@ public class UserRepositoryImpl implements UserRepository {
         if (userId != null) {
             jpaRepository.deleteById(userId);
         }
+    }
+
+    @Override
+    public List<Notification> getNotifications(UUID userId, Instant before, Pageable pageable) {
+        Page<NotificationEntity> notification;
+
+        if (before == null && pageable != null) {
+            notification = noticicationRepository.findAll(pageable);
+        } else {
+            notification = noticicationRepository.findAllBefore(before, pageable);
+        }
+
+        return notification
+                .stream()
+                .map(NotificationMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public void createNotifications(UUID userId, UUID postId) {
+        noticicationRepository.createNotifications(userId, postId);
     }
 
 }

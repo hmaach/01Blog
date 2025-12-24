@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.infrastructure.exception.MediaStorageException;
+import com.blog.modules.post.domain.event.PostCreatedEvent;
 import com.blog.modules.post.domain.event.PostFetchedEvent;
 import com.blog.modules.post.domain.model.Post;
 import com.blog.modules.post.domain.port.in.LikeService;
@@ -123,7 +124,8 @@ public class PostServiceImpl implements PostService {
                 mediaService.linkMediaToPost(mediaId);
             }
         }
-        eventPublisher.publishEvent(new UserCreatedPostEvent(currentUserId));
+        eventPublisher.publishEvent(new UserCreatedPostEvent(currentUserId)); // to increment posts count
+        eventPublisher.publishEvent(new PostCreatedEvent(currentUserId, postId)); // to create notifications
         return post;
     }
 

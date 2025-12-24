@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Pageable;
 
+import com.blog.modules.user.domain.model.Notification;
 import com.blog.modules.user.domain.model.User;
 
 public interface UserRepository {
@@ -60,5 +61,9 @@ public interface UserRepository {
     void deleteById(UUID id);
 
     void incrementUploadsSize(UUID currentUserId, long size);
+
+    List<Notification> getNotifications(UUID userId, Instant before, Pageable pageable);
+
+    void createNotifications(UUID userId, UUID postId);
 
 }
