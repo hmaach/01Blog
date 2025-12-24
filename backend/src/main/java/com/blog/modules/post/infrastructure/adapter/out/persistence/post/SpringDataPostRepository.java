@@ -65,7 +65,14 @@ public interface SpringDataPostRepository extends JpaRepository<PostEntity, UUID
 
     Page<PostEntity> findByUserId(UUID userId, Pageable pageable);
 
-    Page<PostEntity> findByUserUsername(String username, Pageable pageable);
+    @Query("""
+            SELECT p
+            FROM PostEntity p
+            WHERE p.status = 'PUBLISHED'
+            AND p.user.username = :username
+            ORDER BY p.createdAt DESC
+        """)
+    Page<PostEntity> findByUserUsername(@Param("username") String username, Pageable pageable);
 
     @Query("SELECT p FROM PostEntity p WHERE p.createdAt < :before ORDER BY p.createdAt DESC")
     List<PostEntity> findPostsBefore(@Param("before") Instant before, Pageable pageable);
