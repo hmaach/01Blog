@@ -27,8 +27,7 @@ public class CommentServiceImpl implements CommentService {
 
     public CommentServiceImpl(
             CommentRepository commentRepository,
-            ApplicationEventPublisher eventPublisher
-    ) {
+            ApplicationEventPublisher eventPublisher) {
         this.commentRepository = commentRepository;
         this.eventPublisher = eventPublisher;
     }
@@ -37,7 +36,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getComments(UUID postId, Instant before, int size) {
         Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(0, size, sort);
-        return commentRepository.findByPostId(postId, pageable);
+        return commentRepository.findByPostId(postId, before, pageable);
     }
 
     @Override
@@ -60,8 +59,7 @@ public class CommentServiceImpl implements CommentService {
                 currUserId,
                 postId,
                 cmd.comment(),
-                Instant.now()
-        );
+                Instant.now());
         Comment newComment = commentRepository.save(comment);
         eventPublisher.publishEvent(new PostCreatedCommentEvent(postId));
         return newComment;

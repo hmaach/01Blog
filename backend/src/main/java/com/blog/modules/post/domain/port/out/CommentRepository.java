@@ -1,5 +1,6 @@
 package com.blog.modules.post.domain.port.out;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import com.blog.modules.post.domain.model.Comment;
 
 public interface CommentRepository {
 
-    List<Comment> findByPostId(UUID postId, Pageable pageable);
+    List<Comment> findByPostId(UUID postId, Instant before, Pageable pageable);
 
     Optional<Comment> findById(UUID commentId);
 
