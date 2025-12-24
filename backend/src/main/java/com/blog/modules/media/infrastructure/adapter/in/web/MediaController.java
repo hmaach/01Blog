@@ -67,7 +67,7 @@ public class MediaController {
         try {
             fileBytes = fileStorage.retrieve(path);
         } catch (java.nio.file.NoSuchFileException e) {
-            throw e;
+            return null;
         } catch (IOException | java.io.IOException | IllegalStateException e) {
             throw new InternalServerErrorException("Failed to retrieve avatar: " + e.getMessage());
         }
