@@ -21,10 +21,14 @@ public class LikeServiceImpl implements LikeService {
 
     public LikeServiceImpl(
             LikeRepository likeRepository,
-            ApplicationEventPublisher eventPublisher
-    ) {
+            ApplicationEventPublisher eventPublisher) {
         this.likeRepository = likeRepository;
         this.eventPublisher = eventPublisher;
+    }
+
+    @Override
+    public boolean isLiked(UUID postId, UUID userId) {
+        return likeRepository.existsByUserIdAndPostId(userId, postId);
     }
 
     @Override

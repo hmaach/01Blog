@@ -45,7 +45,7 @@ public record PostResponse(
         );
     }
 
-    public static PostResponse fromDomain(Post post, boolean isOwner, List<Media> mediaList) {
+    public static PostResponse fromDomain(Post post, boolean isOwner,Boolean isLiked,  List<Media> mediaList) {
         MediaResponse firstMedia = !mediaList.isEmpty() ? MediaResponse.fromDomain(mediaList.get(0)) : null;
         AuthorResponse author = post.getUser() != null ? AuthorResponse.fromDomain(post.getUser()) : null;
 
@@ -60,7 +60,7 @@ public record PostResponse(
                 post.getImpressionsCount(),
                 post.getCreatedAt(),
                 isOwner,
-                false,
+                isLiked,
                 firstMedia,
                 MediaResponse.fromDomain(mediaList)
         );

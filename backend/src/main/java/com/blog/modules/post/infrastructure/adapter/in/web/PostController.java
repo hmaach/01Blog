@@ -22,6 +22,7 @@ import com.blog.modules.media.application.validation.PostMediaValidator;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.post.domain.model.Post;
+import com.blog.modules.post.domain.port.in.LikeService;
 import com.blog.modules.post.domain.port.in.PostService;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.CreatePostCommand;
 import com.blog.modules.post.infrastructure.adapter.in.web.dto.PostResponse;
@@ -37,6 +38,7 @@ import jakarta.validation.Valid;
 public class PostController {
 
     private final PostService postService;
+    private final LikeService likeService;
     private final UserService userService;
     private final JwtService jwtService;
     private final MediaService mediaService;
@@ -44,12 +46,13 @@ public class PostController {
 
     public PostController(
             PostService postService,
+            LikeService likeService,
             UserService userService,
             JwtService jwtService,
             MediaService mediaService,
-            PostMediaValidator mediaValidator
-    ) {
+            PostMediaValidator mediaValidator) {
         this.postService = postService;
+        this.likeService = likeService;
         this.userService = userService;
         this.jwtService = jwtService;
         this.mediaService = mediaService;
@@ -60,8 +63,7 @@ public class PostController {
     public ResponseEntity<List<PostResponse>> getFeedPosts(
             HttpServletRequest request,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
 
         List<Post> posts = postService.findFeedPosts(currUserId, before, size);
@@ -80,8 +82,7 @@ public class PostController {
     public ResponseEntity<List<PostResponse>> getAllPosts(
             HttpServletRequest request,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
 
         List<Post> posts = postService.findAll(before, size);
@@ -101,8 +102,7 @@ public class PostController {
             HttpServletRequest request,
             @PathVariable String username,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
 
         List<Post> posts = postService.findByUserUsername(username, before, size);
@@ -125,15 +125,15 @@ public class PostController {
 
         List<Media> mediaList = mediaService.findByPostId(postId);
         Boolean isOwner = currUserId.equals(post.getUserId());
+        Boolean isLiked = likeService.isLiked(postId, currUserId);
 
-        return PostResponse.fromDomain(post, isOwner, mediaList);
+        return PostResponse.fromDomain(post, isOwner, isLiked, mediaList);
     }
 
     @PostMapping
     public ResponseEntity<PostResponse> createPost(
             HttpServletRequest request,
-            @Valid CreatePostCommand cmd
-    ) {
+            @Valid CreatePostCommand cmd) {
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
 
         Post createdPost = postService.createPost(cmd, currUserId);
@@ -148,27 +148,27 @@ public class PostController {
                 .body(PostResponse.fromDomain(
                         createdPost,
                         true,
-                        mediaList
-                ));
+                        false,
+                        mediaList));
     }
 
     @PatchMapping("/{postId}")
     public ResponseEntity<PostResponse> updatePost(
             @Valid UpdatePostCommand cmd,
             HttpServletRequest request,
-            @PathVariable UUID postId
-    ) {
+            @PathVariable UUID postId) {
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
         Post post = postService.updatePost(postId, cmd, currUserId, false);
         List<Media> mediaList = mediaService.findByPostId(postId);
+        Boolean isLiked = likeService.isLiked(postId, currUserId);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(PostResponse.fromDomain(
                         post,
                         true,
-                        mediaList
-                ));
+                        isLiked,
+                        mediaList));
     }
 
     @PostMapping("/like/{postId}")
