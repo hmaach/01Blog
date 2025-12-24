@@ -17,6 +17,8 @@ public interface UserService {
 
     Boolean userExist(UUID userId);
 
+    Boolean isBanned(UUID userId);
+
     boolean userExistByUsername(String username);
 
     boolean isSubscribed(UUID currUserId, UUID targetUserId);

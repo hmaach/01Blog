@@ -39,8 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException {
+            FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
         String userId = null;
@@ -55,8 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         response,
                         HttpStatus.UNAUTHORIZED.value(),
                         "UNAUTHORIZED",
-                        "Authentication is required"
-                );
+                        "Authentication is required");
                 return;
             }
         }
@@ -64,19 +62,29 @@ public class JwtFilter extends OncePerRequestFilter {
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userService.findById(UUID.fromString(userId));
 
+            System.out.println("-------------------------------------" + userService.isBanned(UUID.fromString(userId)));
+
+            if (userService.isBanned(UUID.fromString(userId))) {
+                JsonResponseWriter.write(
+                        response,
+                        HttpStatus.UNAUTHORIZED.value(),
+                        "UNAUTHORIZED",
+                        "You Are banned from the platform");
+                return;
+            }
+
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
             if (jwtService.validateToken(jwt, userDetails)) {
 
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
-                        userDetails.getAuthorities()
-                );
+                        userDetails.getAuthorities());
 
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(token);
             }
-            System.err.println("--------------------" + userDetails.getUsername());
+            // System.err.println("--------------------" + userDetails.getUsername());
         }
 
         filterChain.doFilter(request, response);

@@ -31,6 +31,8 @@ public interface UserRepository {
 
     boolean isEmailVerified(UUID userId);
 
+    boolean isBanned(UUID userId);
+
     boolean isAdmin(UUID userId);
 
     boolean isSuperAdmin(UUID userId);

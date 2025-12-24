@@ -63,6 +63,9 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID
     @Query("SELECT u.role = 'ADMIN' FROM UserEntity u WHERE u.id = :userId")
     boolean isAdmin(@Param("userId") UUID userId);
 
+    @Query("SELECT u.status = 'BANNED' FROM UserEntity u WHERE u.id = :userId")
+    boolean isBanned(UUID userId);
+
     @Query("SELECT u.id FROM UserEntity u WHERE u.role = 'ADMIN'")
     List<UUID> findFirstAdmin(@Param("userId") UUID userId, Pageable pageable);
 

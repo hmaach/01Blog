@@ -38,14 +38,12 @@ public class UserServiceImpl implements UserService {
     private final MediaService mediaService;
     private final AvatarMediaValidator avatarMediaValidator;
 
-
     public UserServiceImpl(
             UserRepository userRepository,
             SubscriptionRepository subscriptionRepository,
             ApplicationEventPublisher eventPublisher,
             MediaService mediaService,
-            AvatarMediaValidator avatarMediaValidator
-    ) {
+            AvatarMediaValidator avatarMediaValidator) {
         this.userRepository = userRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.eventPublisher = eventPublisher;
@@ -90,7 +88,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getUserReadme(UUID currentUserId, UUID userId) {
         String readme = userRepository.getUserReadme(userId);
-        if (!currentUserId.equals(userId)) { // prevent increment impressions if the user consulted his own profile 
+        if (!currentUserId.equals(userId)) { // prevent increment impressions if the user consulted his own profile
             eventPublisher.publishEvent(new UserFetchedEvent(userId));
         }
         return readme;
@@ -115,6 +113,10 @@ public class UserServiceImpl implements UserService {
         return subscriptionRepository.isSubscribed(currUserId, targetUserId);
     }
 
+    @Override
+    public Boolean isBanned(UUID userId) {
+        return userRepository.isBanned(userId);
+    }
 
     // TODO: fix the avatar update
     @Override

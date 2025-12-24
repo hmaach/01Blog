@@ -86,6 +86,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean isBanned(UUID userId) {
+        return jpaRepository.isBanned(userId);
+    }
+
+    @Override
     public boolean isAdmin(UUID userId) {
         return jpaRepository.isAdmin(userId);
     }
