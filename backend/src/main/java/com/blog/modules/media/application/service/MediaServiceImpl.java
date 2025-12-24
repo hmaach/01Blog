@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.blog.modules.media.application.validation.AvatarMediaValidator;
+import com.blog.modules.media.application.validation.PostMediaValidator;
 import com.blog.modules.media.domain.model.Media;
 import com.blog.modules.media.domain.port.in.MediaService;
 import com.blog.modules.media.domain.port.out.FileStorage;
@@ -31,16 +33,19 @@ public class MediaServiceImpl implements MediaService {
     private final MediaRepository mediaRepository;
     private final UserRepository userRepository;
     private final FileStorage fileStorage;
+    private final PostMediaValidator mediaValidator;
 
     public MediaServiceImpl(
             PostRepository postRepository,
             MediaRepository mediaRepository,
             UserRepository userRepository,
-            FileStorage fileStorage) {
+            FileStorage fileStorage,
+            PostMediaValidator mediaValidator) {
         this.postRepository = postRepository;
         this.mediaRepository = mediaRepository;
         this.userRepository = userRepository;
         this.fileStorage = fileStorage;
+        this.mediaValidator = mediaValidator;
     }
 
     @Override
@@ -132,12 +137,15 @@ public class MediaServiceImpl implements MediaService {
     public Media uploadPostMedia(UUID currentUserId, MultipartFile file)
             throws IOException, java.io.IOException {
 
+        long userUploadsSize = userRepository.getUploadsSize(currentUserId);
+
+        mediaValidator.validateUploadsSize(userUploadsSize, file);
+
         String filename = generateMediaFilename(currentUserId, file);
         String relativePath = "posts/" + filename;
 
         fileStorage.store(file, relativePath);
 
-        
         Media media = new Media();
         UUID mediaId = UUID.randomUUID();
         media.setId(mediaId);
@@ -147,32 +155,12 @@ public class MediaServiceImpl implements MediaService {
         media.setUrl(relativePath);
         media.setRelatedTo("nothing");
         media.setUploadedAt(Instant.now());
-        
+
         Media savedMedia = mediaRepository.save(media);
 
         return savedMedia;
     }
 
-    // @Override
-    // @Transactional
-    // public Media uploadMediaToPost(UUID currentUserId, UUID postId, MultipartFile file)
-    //         throws IOException, java.io.IOException {
-    //     String filename = generateMediaFilename(currentUserId, file);
-    //     String relativePath = "posts/" + filename;
-    //     fileStorage.store(file, relativePath);
-    //     UUID mediaId = UUID.randomUUID();
-    //     Media media = new Media();
-    //     media.setId(mediaId);
-    //     media.setUserId(currentUserId);
-    //     media.setMediaType(getMediaType(filename).toString());
-    //     media.setSize(file.getSize());
-    //     media.setUrl(relativePath);
-    //     media.setRelatedTo("post");
-    //     media.setUploadedAt(Instant.now());
-    //     Media savedMedia = mediaRepository.save(media);
-    //     postRepository.attachMediaToPost(postId, mediaId);
-    //     return savedMedia;
-    // }
     @Override
     @Transactional
     public void linkMediaToPost(UUID mediaId) {
@@ -188,7 +176,8 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     @Transactional
-    public void deleteMediaFromPost(UUID currentUserId, UUID postId, UUID mediaId) throws IOException, java.io.IOException {
+    public void deleteMediaFromPost(UUID currentUserId, UUID postId, UUID mediaId)
+            throws IOException, java.io.IOException {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId.toString()));
 

@@ -47,6 +47,9 @@ public class UserEntity {
     @Column(name = "impressions_count")
     private int impressionsCount;
 
+    @Column(name = "uploads_size")
+    private int uploadsSize;
+
     @Column(nullable = false)
     private String password;
 
@@ -76,8 +79,7 @@ public class UserEntity {
             int impressionsCount,
             MediaEntity avatar,
             String readme,
-            Instant createdAt
-    ) {
+            Instant createdAt) {
         this.id = id;
         this.name = name;
         this.username = username;
@@ -178,10 +180,10 @@ public class UserEntity {
     }
 
     // public MediaEntity getAvatarMediaId() {
-    //     return avatarMediaId;
+    // return avatarMediaId;
     // }
     // public void setAvatarMediaId(MediaEntity avatarMediaId) {
-    //     this.avatarMediaId = avatarMediaId;
+    // this.avatarMediaId = avatarMediaId;
     // }
     public String getReadme() {
         return readme;

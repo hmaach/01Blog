@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.blog.modules.media.application.validation.AvatarMediaValidator;
@@ -23,7 +22,6 @@ import com.blog.modules.user.domain.port.out.UserRepository;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UpdateUserCommand;
 import com.blog.modules.user.infrastructure.exception.EmailAlreadyExistsException;
 import com.blog.modules.user.infrastructure.exception.UserNotFoundException;
-import com.blog.modules.user.infrastructure.exception.UsernameAlreadyExistsException;
 import com.blog.shared.infrastructure.exception.ConflictException;
 import com.blog.shared.infrastructure.exception.ForbiddenException;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
@@ -40,7 +38,6 @@ public class UserServiceImpl implements UserService {
     private final MediaService mediaService;
     private final AvatarMediaValidator avatarMediaValidator;
 
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public UserServiceImpl(
             UserRepository userRepository,

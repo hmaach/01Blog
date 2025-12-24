@@ -123,6 +123,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public long getUploadsSize(UUID userId) {
+        return jpaRepository.getUploadsSize(userId);
+    }
+
+    @Override
     public void ban(UUID userId) {
         jpaRepository.ban(userId);
     }

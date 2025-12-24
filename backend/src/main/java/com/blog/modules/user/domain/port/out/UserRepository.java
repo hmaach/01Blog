@@ -37,6 +37,8 @@ public interface UserRepository {
 
     Optional<UUID> getAvatarId(UUID userId);
 
+    long getUploadsSize(UUID currentUserId);
+
     void updateAvatarId(UUID userId, UUID avatarUrl);
 
     void ban(UUID userId);

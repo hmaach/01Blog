@@ -15,24 +15,24 @@ import org.springframework.data.repository.query.Param;
 public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID> {
 
     @Query("""
-        SELECT u
-        FROM UserEntity u
-        WHERE (:query IS NULL OR :query = '' OR
-            LOWER(u.name) LIKE LOWER(CONCAT('%', :query, '%')) OR
-            LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%'))
-            )
-    """)
+                SELECT u
+                FROM UserEntity u
+                WHERE (:query IS NULL OR :query = '' OR
+                    LOWER(u.name) LIKE LOWER(CONCAT('%', :query, '%')) OR
+                    LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%'))
+                    )
+            """)
     Page<UserEntity> findAll(@Param("query") String query, Pageable pageable);
 
     @Query("""
-        SELECT u
-        FROM UserEntity u
-        WHERE u.createdAt < :before
-        AND (:query IS NULL OR :query = '' OR
-            LOWER(u.name) LIKE LOWER(CONCAT('%', :query, '%')) OR
-            LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%'))
-            )
-    """)
+                SELECT u
+                FROM UserEntity u
+                WHERE u.createdAt < :before
+                AND (:query IS NULL OR :query = '' OR
+                    LOWER(u.name) LIKE LOWER(CONCAT('%', :query, '%')) OR
+                    LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%'))
+                    )
+            """)
     Page<UserEntity> findAllBefore(@Param("query") String query, @Param("before") Instant before, Pageable pageable);
 
     @Query("SELECT u FROM UserEntity u LEFT JOIN FETCH u.avatar WHERE u.email = :email")
@@ -54,6 +54,9 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID
 
     boolean existsByUsername(String username);
 
+    @Query("SELECT u.uploadsSize FROM UserEntity u WHERE u.id = :userId")
+    long getUploadsSize(UUID userId);
+
     @Query("SELECT u.emailVerified FROM UserEntity u WHERE u.id = :userId")
     boolean isEmailVerified(UUID userId);
 
@@ -72,8 +75,10 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID
     void unban(@Param("id") UUID id);
 
     // @Modifying
-    // @Query("UPDATE UserEntity u SET u.avatarMediaId = :avatarId WHERE u.id = :userId")
-    // void updateAvatarId(@Param("userId") UUID userId, @Param("avatarId") UUID avatarId);
+    // @Query("UPDATE UserEntity u SET u.avatarMediaId = :avatarId WHERE u.id =
+    // :userId")
+    // void updateAvatarId(@Param("userId") UUID userId, @Param("avatarId") UUID
+    // avatarId);
     @Modifying
     @Query("UPDATE UserEntity u SET u.avatar.id = :avatarId WHERE u.id = :userId")
     void updateAvatarId(@Param("userId") UUID userId, @Param("avatarId") UUID avatarId);
