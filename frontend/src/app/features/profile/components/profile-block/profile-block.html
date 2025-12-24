@@ -3,7 +3,8 @@
     @if (isLoading) {
     <app-spinner></app-spinner>
     }@else{
-    <app-post-list [posts]="posts"></app-post-list>
+    <app-post-list [posts]="posts" [isLoadingMore]="isLoadingMore"></app-post-list>
     }
   </div>
+  <div id="scroll-trigger"></div>
 </main>

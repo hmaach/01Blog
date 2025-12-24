@@ -7,11 +7,11 @@
   <main class="main">
     <div class="container">
       <div class="mainContent">
-        <mat-tab-group class="tabs">
+        <mat-tab-group class="tabs" [selectedIndex]="1">
           <mat-tab label="README">
             <app-profile-readme [userId]="user.id"></app-profile-readme>
           </mat-tab>
-          <mat-tab label="Posts">
+          <mat-tab label="Posts" ch>
             <app-profile-block [username]="user.username"></app-profile-block>
           </mat-tab>
         </mat-tab-group>

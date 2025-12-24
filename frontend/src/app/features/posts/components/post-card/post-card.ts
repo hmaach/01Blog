@@ -9,11 +9,12 @@ import { PostDetail } from '../post-detail/post-detail';
 import { ProfileDialog } from '../../../profile/components/profile-dialog/profile-dialog';
 import { BlobService } from '../../../../core/services/blob.service';
 import { formatDate } from '../../../../shared/lib/date';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'app-post-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule, MatDialogModule],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatDialogModule, MatBadgeModule],
   templateUrl: './post-card.html',
   styleUrls: ['./post-card.scss'],
 })

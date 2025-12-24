@@ -248,3 +248,27 @@
 .saveButton:hover {
   background-color: var(--mat-sys-primary-hover);
 }
+
+@media (max-width: 640px) {
+  .page {
+    padding-top: 0px;
+  }
+
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .feedHeader {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .feedTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+
+  .feedSubtitle {
+    font-size: 1rem;
+  }
+}

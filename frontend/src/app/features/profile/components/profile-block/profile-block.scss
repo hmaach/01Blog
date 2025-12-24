@@ -31,3 +31,37 @@
   font-size: 1.125rem;
   color: var(--text-dark-secondary);
 }
+
+#scroll-trigger {
+  width: 10px;
+  height: 10px;
+  border: red solid 1px;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding-top: 0px;
+  }
+
+  .main {
+    padding: 0;
+  }
+
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .feedHeader {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .feedTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+  }
+
+  .feedSubtitle {
+    font-size: 1rem;
+  }
+}

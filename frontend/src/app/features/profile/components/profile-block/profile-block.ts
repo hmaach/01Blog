@@ -21,13 +21,13 @@ export class ProfileBlock {
 
   private page: number = 0;
   private limit: number = 8;
-  private scrollDistance: number = 0.8;
   private isThrottled: boolean = false;
   private throttle: number = 300;
   private lastPostTime: string | null = null;
 
   private postApi = inject(PostApiService);
   private toast = inject(ToastService);
+  private observer!: IntersectionObserver;
 
   ngOnInit() {
     if (this.username) {
@@ -35,34 +35,47 @@ export class ProfileBlock {
     }
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onScroll(event: any) {
-    if (this.isThrottled) return;
-    this.isThrottled = true;
+  ngAfterViewInit() {
+    this.observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          if (this.isThrottled) return;
 
-    setTimeout(() => {
-      this.isThrottled = false;
-      const scrollPosition = window.scrollY + window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
+          this.isThrottled = true;
 
-      if (
-        !this.noMorePosts &&
-        !this.isLoadingMore &&
-        scrollPosition >= documentHeight * this.scrollDistance
-      ) {
-        this.isLoadingMore = true;
-        this.page += 1;
-        this.loadPosts();
-      }
-    }, this.throttle);
+          setTimeout(() => {
+            this.isThrottled = false;
+
+            if (!this.noMorePosts && !this.isLoadingMore) {
+              this.isLoadingMore = true;
+              this.page += 1;
+              this.loadPosts();
+            }
+          }, this.throttle);
+        }
+      });
+    });
+
+    const target = document.getElementById('scroll-trigger');
+    if (target) {
+      this.observer.observe(target);
+    }
   }
 
   private loadPosts() {
     this.postApi.fetchUserPosts(this.username, this.lastPostTime, this.limit).subscribe({
       next: (response) => {
+        if (response.length === 0) {
+          this.noMorePosts = true;
+          this.isLoading = false;
+          this.isLoadingMore = false;
+          return;
+        }
+
         this.lastPostTime = response.at(-1)?.createdAt ?? null;
-        this.posts = response;
+        this.posts.push(...response);
         this.isLoading = false;
+        this.isLoadingMore = false;
       },
       error: (e) => {
         this.toast.show(e?.error?.message || 'Unknown Server Error', 'error');
