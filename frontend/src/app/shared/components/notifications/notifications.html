@@ -1,42 +1,42 @@
 <div class="preview-dialog">
+  @if (isLoading) {
+  <app-spinner></app-spinner>
+  }@else{
   <ng-container *ngIf="notifications.length > 0; else emptyState">
     <div class="notificationsList">
       <mat-card
         *ngFor="let notification of notifications"
         class="notification"
-        [ngClass]="{ unread: !notification.isRead }"
+        [ngClass]="{ unread: !notification.seen }"
+        (click)="handleClickNotif(notification.id, notification.postId)"
       >
         <img
-          [src]="notification.relatedUser?.avatar || '/assets/images/default-avatar.jpg'"
-          [alt]="notification.relatedUser?.name"
+          [src]="notification.author.avatarUrl || '/assets/images/default-avatar.jpg'"
+          [alt]="notification.author.name"
           class="notificationAvatar"
         />
 
         <div class="notificationContent">
           <p class="notificationText">
-            <strong>{{ notification.relatedUser?.name }}</strong>
-            {{ notification.message }}
+            <strong>{{ notification.author.name }}</strong>
+            created new post
           </p>
 
           <div class="notificationMeta">
-            <span>{{ formatDate(notification.timestamp) }}</span>
-
-            <span *ngIf="notification.relatedPost" class="notificationPost">
-              "{{ notification.relatedPost.title }}"
-            </span>
+            <span>{{ formatDate(notification.createdAt) }}</span>
           </div>
         </div>
 
-        <div *ngIf="!notification.isRead" class="unreadBadge"></div>
+        <div *ngIf="!notification.seen" class="unreadBadge"></div>
       </mat-card>
     </div>
   </ng-container>
-
+  }
+  <div id="scroll-trigger"></div>
   <!-- EMPTY STATE -->
   <ng-template #emptyState>
     <div class="emptyState">
       <!-- Replace icon with Angular icon component if needed -->
-      <i class="emptyIcon">🔔</i>
 
       <h2 class="emptyTitle">No notifications yet</h2>
       <p class="emptyText">When someone interacts with your posts, you'll see it here</p>

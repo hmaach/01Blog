@@ -66,4 +66,6 @@ public interface UserRepository {
 
     void createNotifications(UUID userId, UUID postId);
 
+    void markNotifSeen(UUID userId, UUID notifId);
+
 }

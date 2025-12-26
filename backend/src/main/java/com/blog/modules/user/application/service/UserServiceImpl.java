@@ -133,6 +133,12 @@ public class UserServiceImpl implements UserService {
         userRepository.createNotifications(userId, postId);
     }
 
+    @Override
+    @Transactional
+    public void markNotifSeen(UUID userId, UUID notifId) {
+        userRepository.markNotifSeen(userId, notifId);
+    }
+
     // TODO: fix the avatar update
     @Override
     @Transactional

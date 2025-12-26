@@ -3,6 +3,7 @@
   max-height: 90vh;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   // align-items: center;
   padding: var(--spacing-md);
 }
@@ -23,6 +24,13 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
+  margin-bottom: 10px;
+}
+
+#scroll-trigger {
+  border: red solid 1px;
+  width: 10px;
+  margin-bottom: 20px;
 }
 
 .notification {
@@ -34,6 +42,7 @@
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all var(--transition-normal);
+  min-width: 500px;
 }
 
 .notification:hover {
@@ -96,8 +105,8 @@
 .emptyState {
   text-align: center;
   padding: var(--spacing-2xl);
-  background-color: var(--bg-dark-secondary);
-  border: 1px solid var(--border-dark);
+  // background-color: var(--bg-dark-secondary);
+  // border: 1px solid var(--border-dark);
   border-radius: var(--radius-lg);
 }
 

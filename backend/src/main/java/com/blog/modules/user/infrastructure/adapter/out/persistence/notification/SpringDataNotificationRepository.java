@@ -15,18 +15,30 @@ public interface SpringDataNotificationRepository extends JpaRepository<Notifica
     @Query("""
             SELECT n
             FROM NotificationEntity n
-            WHERE n.createdAt < :before
+            WHERE n.userId = :userId
                 """)
-    Page<NotificationEntity> findAllBefore(Instant before, Pageable pageable);
+    Page<NotificationEntity> findAll(@Param("userId") UUID userId, Pageable pageable);
+
+    @Query("""
+            SELECT n
+            FROM NotificationEntity n
+            WHERE n.createdAt < :before
+            AND n.userId = :userId
+                """)
+    Page<NotificationEntity> findAllBefore(@Param("userId") UUID userId, Instant before, Pageable pageable);
 
     @Modifying
     @Query(value = """
             INSERT INTO notifications(id, user_id, post_owner_id, post_id, created_at)
-            SELECT :id, s.subscriber_id, :userId, :postId, CURRENT_TIMESTAMP
+            SELECT gen_random_uuid(), s.subscriber_id, :userId, :postId, :now
             FROM subscriptions s
-            WHERE s.subscribed_to_id = :userId 
+            WHERE s.subscribed_to_id = :userId
             ON CONFLICT (id) DO NOTHING;
             """, nativeQuery = true)
-    void createNotifications(@Param("id") UUID id, @Param("userId") UUID userId, @Param("postId") UUID postId);
+    void createNotifications(@Param("userId") UUID userId, @Param("postId") UUID postId, @Param("now") Instant now);
+
+    @Modifying
+    @Query("UPDATE NotificationEntity n SET n.seen = true WHERE n.id = :notifId AND n.userId = :userId")
+    void markNotifSeen(@Param("userId") UUID userId, @Param("notifId") UUID notifId);
 
 }

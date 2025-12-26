@@ -13,11 +13,12 @@ public class Notification {
     private Boolean seen;
     private Instant createdAt;
 
-    public Notification(UUID id, UUID userId, UUID userOwnerId, UUID postId, Instant createdAt) {
+    public Notification(UUID id, UUID userId, User user, UUID postId, Boolean seen, Instant createdAt) {
         this.id = id;
         this.userId = userId;
-        this.userOwnerId = userOwnerId;
+        this.user = user;
         this.postId = postId;
+        this.seen = seen;
         this.createdAt = createdAt;
     }
 

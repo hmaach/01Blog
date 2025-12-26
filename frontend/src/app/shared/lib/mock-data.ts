@@ -1,3 +1,4 @@
+import { Notification } from '../../core/models/notification.model';
 import { Comment } from '../../features/posts/models/comment-model';
 import { Post } from '../../features/posts/models/post-model';
 
@@ -114,23 +115,6 @@ export interface User {
 //     },
 //   },
 // ];
-
-export interface Notification {
-  id: string;
-  type: 'new_post' | 'comment' | 'like' | 'subscribe';
-  message: string;
-  relatedUser?: {
-    username: string;
-    name: string;
-    avatar?: string;
-  };
-  relatedPost?: {
-    id: string;
-    title: string;
-  };
-  timestamp: string;
-  isRead: boolean;
-}
 
 export interface Report {
   id: string;
@@ -336,148 +320,148 @@ export const mockComments: Comment[] = [
 ];
 
 // Mock notifications
-export const mockNotifications: Notification[] = [
-  {
-    id: '1',
-    type: 'comment',
-    message: 'commented on your post',
-    relatedUser: {
-      username: 'sarahchen',
-      name: 'Sarah Chen',
-    },
-    relatedPost: {
-      id: '1',
-      title: 'Building a Real-Time Chat App with WebSockets',
-    },
-    timestamp: '2025-10-15T11:00:00Z',
-    isRead: false,
-  },
-  {
-    id: '2',
-    type: 'like',
-    message: 'liked your post',
-    relatedUser: {
-      username: 'mikejohnson',
-      name: 'Mike Johnson',
-    },
-    relatedPost: {
-      id: '1',
-      title: 'Building a Real-Time Chat App with WebSockets',
-    },
-    timestamp: '2025-10-15T10:45:00Z',
-    isRead: false,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-  {
-    id: '3',
-    type: 'subscribe',
-    message: 'subscribed to your blog',
-    relatedUser: {
-      username: 'emilypark',
-      name: 'Emily Park',
-    },
-    timestamp: '2025-10-14T16:20:00Z',
-    isRead: true,
-  },
-];
+// export const mockNotifications: Notification[] = [
+//   {
+//     id: '1',
+//     type: 'comment',
+//     message: 'commented on your post',
+//     relatedUser: {
+//       username: 'sarahchen',
+//       name: 'Sarah Chen',
+//     },
+//     relatedPost: {
+//       id: '1',
+//       title: 'Building a Real-Time Chat App with WebSockets',
+//     },
+//     createdAt: '2025-10-15T11:00:00Z',
+//     isRead: false,
+//   },
+//   {
+//     id: '2',
+//     type: 'like',
+//     message: 'liked your post',
+//     relatedUser: {
+//       username: 'mikejohnson',
+//       name: 'Mike Johnson',
+//     },
+//     relatedPost: {
+//       id: '1',
+//       title: 'Building a Real-Time Chat App with WebSockets',
+//     },
+//     createdAt: '2025-10-15T10:45:00Z',
+//     isRead: false,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+//   {
+//     id: '3',
+//     type: 'subscribe',
+//     message: 'subscribed to your blog',
+//     relatedUser: {
+//       username: 'emilypark',
+//       name: 'Emily Park',
+//     },
+//     createdAt: '2025-10-14T16:20:00Z',
+//     isRead: true,
+//   },
+// ];
 
 // Mock reports for admin
 export const mockReports: Report[] = [

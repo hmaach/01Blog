@@ -1,6 +1,8 @@
 package com.blog.modules.user.infrastructure.adapter.out.persistence.notification;
 
 import com.blog.modules.user.domain.model.Notification;
+import com.blog.modules.user.domain.model.User;
+import com.blog.modules.user.infrastructure.adapter.out.persistence.user.UserMapper;
 
 public class NotificationMapper {
 
@@ -9,12 +11,16 @@ public class NotificationMapper {
             return null;
         }
 
+        User user = entity.getUser() != null
+                ? UserMapper.toDomain(entity.getUser())
+                : null;
+
         return new Notification(
                 entity.getId(),
                 entity.getUserId(),
-                entity.getUserOwnerId(),
+                user,
                 entity.getPostId(),
-                entity.getCreatedAt()
-        );
+                entity.getSeen(),
+                entity.getCreatedAt());
     }
 }

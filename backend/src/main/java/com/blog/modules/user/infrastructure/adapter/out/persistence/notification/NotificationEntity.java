@@ -30,7 +30,7 @@ public class NotificationEntity {
     @Column(name = "post_owner_id")
     private UUID userOwnerId;
 
-    private UUID seen;
+    private Boolean seen;
 
     @Column(name = "post_id")
     private UUID postId;
@@ -97,11 +97,11 @@ public class NotificationEntity {
         this.createdAt = createdAt;
     }
 
-    public UUID getSeen() {
+    public Boolean getSeen() {
         return seen;
     }
 
-    public void setSeen(UUID seen) {
+    public void setSeen(Boolean seen) {
         this.seen = seen;
     }
 

@@ -40,8 +40,7 @@ public class UserController {
 
     public UserController(
             UserService userService,
-            JwtService jwtService
-    ) {
+            JwtService jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
     }
@@ -59,8 +58,7 @@ public class UserController {
             HttpServletRequest request,
             @RequestParam(required = false) String query,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
         return userService.findAll(query, before, size).stream()
                 .map(UserResponse::fromDomain)
                 .toList();
@@ -104,14 +102,24 @@ public class UserController {
     public List<NotificationResponse> getNotifications(
             HttpServletRequest request,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant before,
-            @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "10") int size) {
 
         UUID currUserId = jwtService.extractUserIdFromRequest(request);
 
         return userService.getNotifications(currUserId, before, size).stream()
                 .map(NotificationResponse::fromDomain)
                 .toList();
+    }
+
+    @PatchMapping("/notifications/{notifId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void markNotifSeen(
+            HttpServletRequest request,
+            @PathVariable UUID notifId) {
+
+        UUID currUserId = jwtService.extractUserIdFromRequest(request);
+
+        userService.markNotifSeen(currUserId, notifId);
     }
 
     @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

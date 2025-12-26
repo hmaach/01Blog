@@ -191,9 +191,9 @@ public class UserRepositoryImpl implements UserRepository {
         Page<NotificationEntity> notification;
 
         if (before == null && pageable != null) {
-            notification = noticicationRepository.findAll(pageable);
+            notification = noticicationRepository.findAll(userId, pageable);
         } else {
-            notification = noticicationRepository.findAllBefore(before, pageable);
+            notification = noticicationRepository.findAllBefore(userId, before, pageable);
         }
 
         return notification
@@ -204,8 +204,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void createNotifications(UUID userId, UUID postId) {
-        UUID id = UUID.randomUUID();
-        noticicationRepository.createNotifications(id, userId, postId);
+        noticicationRepository.createNotifications(userId, postId, Instant.now());
+    }
+
+    @Override
+    public void markNotifSeen(UUID userId, UUID notifId) {
+        noticicationRepository.markNotifSeen(userId, notifId);
     }
 
 }
