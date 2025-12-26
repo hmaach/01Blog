@@ -20,8 +20,8 @@
         >
           <mat-tab label="Profile"></mat-tab>
           <mat-tab label="README"></mat-tab>
-          <mat-tab label="Password"></mat-tab>
-          <mat-tab label="Account"></mat-tab>
+          <!-- <mat-tab label="Password"></mat-tab>
+          <mat-tab label="Account"></mat-tab> -->
         </mat-tab-group>
 
         <!-- ************************************ -->
@@ -187,7 +187,7 @@
         <!-- ************************************ -->
         <!-- PASSWORD TAB -->
         <!-- ************************************ -->
-        <form [formGroup]="passwordForm" *ngIf="activeTab === 'password'" class="section">
+        <!-- <form [formGroup]="passwordForm" *ngIf="activeTab === 'password'" class="section">
           <h2 class="sectionTitle">Change Password</h2>
 
           <div class="formGroup">
@@ -243,12 +243,12 @@
             <mat-icon>save</mat-icon>
             Save Password
           </button>
-        </form>
+        </form> -->
 
         <!-- ************************************ -->
         <!-- ACCOUNT TAB -->
         <!-- ************************************ -->
-        <div *ngIf="activeTab === 'account'" class="section">
+        <!-- <div *ngIf="activeTab === 'account'" class="section">
           <h2 class="sectionTitle">Account Management</h2>
 
           <div class="dangerZone">
@@ -264,7 +264,7 @@
               <mat-icon>trash</mat-icon> Delete Account
             </button>
           </div>
-        </div>
+        </div> -->
       </mat-card>
     </div>
   </main>
