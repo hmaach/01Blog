@@ -4,7 +4,6 @@ import java.util.UUID;
 
 public record PostCreatedEvent(
         UUID userId,
-        UUID postId
-        ) {
+        UUID postId) {
 
 }

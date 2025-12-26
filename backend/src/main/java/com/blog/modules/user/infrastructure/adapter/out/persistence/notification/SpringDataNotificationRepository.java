@@ -13,19 +13,20 @@ import org.springframework.data.repository.query.Param;
 public interface SpringDataNotificationRepository extends JpaRepository<NotificationEntity, UUID> {
 
     @Query("""
-        SELECT n
-        FROM NotificationEntity n
-        WHERE n.createdAt < :before
-            """)
+            SELECT n
+            FROM NotificationEntity n
+            WHERE n.createdAt < :before
+                """)
     Page<NotificationEntity> findAllBefore(Instant before, Pageable pageable);
 
     @Modifying
     @Query(value = """
-        INSERT INTO notifications(user_id, post_id, created_at)
-        SELECT f.follower_id, :postId, CURRENT_TIMESTAMP
-        FROM followers f
-        WHERE f.followee_id = :userId
-        """, nativeQuery = true)
-    void createNotifications(@Param("userId") UUID userId, @Param("userId") UUID postId);
+            INSERT INTO notifications(id, user_id, post_owner_id, post_id, created_at)
+            SELECT :id, s.subscriber_id, :userId, :postId, CURRENT_TIMESTAMP
+            FROM subscriptions s
+            WHERE s.subscribed_to_id = :userId 
+            ON CONFLICT (id) DO NOTHING;
+            """, nativeQuery = true)
+    void createNotifications(@Param("id") UUID id, @Param("userId") UUID userId, @Param("postId") UUID postId);
 
 }

@@ -204,7 +204,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void createNotifications(UUID userId, UUID postId) {
-        noticicationRepository.createNotifications(userId, postId);
+        UUID id = UUID.randomUUID();
+        noticicationRepository.createNotifications(id, userId, postId);
     }
 
 }
