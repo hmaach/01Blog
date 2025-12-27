@@ -41,8 +41,14 @@ export class Profile {
   private toast = inject(ToastService);
 
   ngOnInit() {
-    this.username = this.route.snapshot.paramMap.get('username')!;
-    this.loadUserProfile();
+    this.route.paramMap.subscribe((params) => {
+      this.username = params.get('username')!;
+
+      this.isLoading = true;
+      this.notFound = false;
+
+      this.loadUserProfile();
+    });
   }
 
   private loadUserProfile() {
