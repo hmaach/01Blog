@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 public record RegisterUserCommand(
         @NotBlank
-        @Size(max = 50)
+        @Size(max = 30)
         String name,
         @Email
         @NotBlank

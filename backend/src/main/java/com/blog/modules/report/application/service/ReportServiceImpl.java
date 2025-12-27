@@ -35,8 +35,7 @@ public class ReportServiceImpl implements ReportService {
             ReportRepository reportRepository,
             UserService userService,
             PostService postService,
-            CommentService commentService
-    ) {
+            CommentService commentService) {
         this.reportRepository = reportRepository;
         this.userService = userService;
         this.postService = postService;
@@ -94,7 +93,7 @@ public class ReportServiceImpl implements ReportService {
         report.setReportedCommentId(cmd.reportedCommentId());
         report.setCategory(cmd.category());
         report.setReason(cmd.reason());
-        report.setStatus("pending");
+        report.setStatus("PENDING");
         report.setCreatedAt(Instant.now());
 
         return reportRepository.save(report);

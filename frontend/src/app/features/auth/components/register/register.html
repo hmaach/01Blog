@@ -14,7 +14,14 @@
         <!-- Full Name -->
         <mat-form-field class="w-100 mb-3">
           <mat-label>Full Name</mat-label>
-          <input matInput formControlName="nameCtrl" placeholder="Last name, First name" required />
+          <input
+            matInput
+            maxlength="30"
+            min="3"
+            formControlName="nameCtrl"
+            placeholder="Last name, First name"
+            required
+          />
           <mat-error *ngIf="firstFormGroup.get('nameCtrl')?.hasError('required')">
             Full name is required
           </mat-error>
@@ -27,6 +34,8 @@
             matInput
             type="email"
             formControlName="emailCtrl"
+            maxlength="100"
+            min="6"
             placeholder="Enter your email"
             required
           />
@@ -81,6 +90,8 @@
             matInput
             [type]="ConfirmPwdHide ? 'password' : 'text'"
             formControlName="confirmCtrl"
+            maxlength="50"
+            min="6"
             required
           />
           <button
@@ -102,6 +113,8 @@
           <button
             mat-raised-button
             color="primary"
+            maxlength="50"
+            min="6"
             matStepperNext
             [disabled]="secondFormGroup.invalid || passwordsDoNotMatch"
           >
@@ -167,7 +180,7 @@
     <span class="px-2 text-muted small" style="color: #6a7282">OR</span>
     <hr class="flex-grow-1 border-secondary" />
   </div>
-<!-- 
+  <!-- 
   <button matButton="filled" class="w-full google-btn">
     <i class="fa-brands fa-google"></i>
     Continue with Google

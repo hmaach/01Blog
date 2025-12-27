@@ -49,9 +49,9 @@ export class Settings implements OnInit {
   private settingsService = inject(SettingsService);
   private storageService = inject(StorageService);
 
-  maxNameChars: number = 100;
+  maxNameChars: number = 30;
   maxEmailChars: number = 100;
-  maxPasswordChars: number = 100;
+  maxPasswordChars: number = 50;
 
   userInfo!: CurrentUserResponse;
 

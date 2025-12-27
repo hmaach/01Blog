@@ -215,6 +215,10 @@
 
 .commentContent {
   flex: 1;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .commentAuthor {
@@ -230,6 +234,7 @@
   line-height: 1.6;
   margin-bottom: 4px;
   margin-top: 5px;
+  max-width: 100%;
 }
 
 .commentDate {

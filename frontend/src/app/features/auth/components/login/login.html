@@ -17,6 +17,8 @@
         type="email"
         formControlName="email"
         required
+        maxlength="100"
+        min="6"
         autocomplete="email"
         placeholder="Enter your email"
       />
@@ -38,6 +40,8 @@
         required
         placeholder="Enter your password"
         [disabled]="isLoading"
+        maxlength="50"
+        min="6"
       />
       <button
         mat-icon-button
@@ -45,6 +49,8 @@
         type="button"
         [disabled]="isLoading"
         (click)="hide = !hide"
+        maxlength="50"
+        min="6"
         [attr.aria-label]="'Hide password'"
       >
         <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
