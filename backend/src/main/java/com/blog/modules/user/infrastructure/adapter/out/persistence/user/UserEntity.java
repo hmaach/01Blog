@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import com.blog.modules.media.infrastructure.adapter.out.persistence.MediaEntity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -53,10 +54,11 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    // @Column(name = "avatar_media_id")
-    // private UUID avatarMediaId;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "avatar_media_id", referencedColumnName = "id")
+    @Column(name = "avatar_media_id")
+    private UUID avatarMediaId;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "avatar_media_id", referencedColumnName = "id", insertable = false, updatable = false)
     private MediaEntity avatar;
 
     @Column(name = "readme")
@@ -77,7 +79,7 @@ public class UserEntity {
             int postsCount,
             int subscribersCount,
             int impressionsCount,
-            MediaEntity avatar,
+            UUID avatarMediaId,
             String readme,
             Instant createdAt) {
         this.id = id;
@@ -91,7 +93,7 @@ public class UserEntity {
         this.postsCount = postsCount;
         this.subscribersCount = subscribersCount;
         this.impressionsCount = impressionsCount;
-        this.avatar = avatar;
+        this.avatarMediaId = avatarMediaId;
         this.readme = readme;
         this.createdAt = createdAt;
     }
@@ -191,6 +193,14 @@ public class UserEntity {
 
     public void setReadme(String readme) {
         this.readme = readme;
+    }
+
+    public UUID getAvatarMediaId() {
+        return avatarMediaId;
+    }
+
+    public void setAvatarMediaId(UUID avatarMediaId) {
+        this.avatarMediaId = avatarMediaId;
     }
 
     public MediaEntity getAvatar() {

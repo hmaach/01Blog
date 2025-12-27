@@ -2,7 +2,6 @@ package com.blog.modules.user.infrastructure.adapter.out.persistence.user;
 
 import java.util.UUID;
 
-import com.blog.modules.media.infrastructure.adapter.out.persistence.MediaEntity;
 import com.blog.modules.user.domain.model.User;
 
 public class UserMapper {
@@ -11,9 +10,6 @@ public class UserMapper {
         if (user == null) {
             return null;
         }
-
-        MediaEntity avatar = new MediaEntity();
-        avatar.setId(user.getAvatarMediaId());
 
         return new UserEntity(
                 user.getId(),
@@ -27,7 +23,7 @@ public class UserMapper {
                 user.getPostsCount(),
                 user.getSubscribersCount(),
                 user.getImpressionsCount(),
-                avatar,
+                user.getAvatarMediaId(),
                 user.getReadme(),
                 user.getCreatedAt()
         );
