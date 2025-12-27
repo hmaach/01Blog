@@ -157,6 +157,7 @@ export class PostForm {
     this.postApi.createPost(formData).subscribe({
       next: (response) => {
         const newPost: Post = response;
+        this.toast.show('Post created successfully', 'success');
         this.dialogRef.close(newPost);
       },
       error: (e) => {
@@ -183,6 +184,7 @@ export class PostForm {
     this.postApi.updatePost(this.data.post.id, formData).subscribe({
       next: (response) => {
         const updatedPost: Post = response;
+        this.toast.show('Post updated successfully', 'success');
         this.dialogRef.close(updatedPost);
       },
       error: (e) => {

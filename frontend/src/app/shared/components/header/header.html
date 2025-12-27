@@ -30,7 +30,7 @@
     <button
       matIconButton
       [matMenuTriggerFor]="menu"
-      class="d-flex justify-content-center align-items-center"
+      class="d-flex justify-content-center align-items-center avatarBtn"
     >
       <img src="{{ avatarUrl || '/assets/images/default-avatar.jpg' }}" alt="name" class="avatar" />
     </button>
@@ -77,7 +77,7 @@
 
   <nav class="mobileNavigation">
     <button matIconButton (click)="openNotificationsDialog()">
-      <mat-icon matBadge="15" aria-hidden="false">notifications</mat-icon>
+      <mat-icon  aria-hidden="false">notifications</mat-icon>
     </button>
     <button matIconButton [matMenuTriggerFor]="mobileMenu"><mat-icon>menu</mat-icon></button>
     <mat-menu #mobileMenu="matMenu">

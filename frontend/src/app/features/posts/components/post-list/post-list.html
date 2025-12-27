@@ -1,4 +1,14 @@
-<button matButton="outlined" color="primary" [matMenuTriggerFor]="menu" class="create-post-button">
+<button
+  matButton="outlined"
+  color="primary"
+  (click)="openCreatePostDialog()"
+  class="create-post-button"
+>
+  <mat-icon>add_circle</mat-icon>
+  Create Post
+</button>
+
+<!-- <button matButton="outlined" color="primary" [matMenuTriggerFor]="menu" class="create-post-button">
   <mat-icon>add_circle</mat-icon>
   Create Post
 </button>
@@ -19,7 +29,7 @@
       <span class="menuDesc">Long-form writing with formatting & markdown</span>
     </div>
   </button>
-</mat-menu>
+</mat-menu> -->
 
 <div class="postsGrid">
   @for (post of posts; track post.id) {

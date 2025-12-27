@@ -200,7 +200,11 @@ mat-toolbar {
   cursor: pointer;
   border: 2px solid transparent;
   transition: var(--transition-normal);
+  border: var(--mat-sys-primary) solid 2px;
 }
+
+// .avatarBtn {
+// }
 
 .avatar:hover {
   border-color: var(--mat-sys-primary);

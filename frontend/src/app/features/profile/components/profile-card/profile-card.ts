@@ -107,6 +107,7 @@ export class ProfileCard {
           this.profileService.subscribe(this.user.id).subscribe({
             next: () => {
               if (this.user) this.user.relation = 'subscribed';
+              this.toast.show('subscribed successfully', 'success');
               this.isLoading = false;
             },
             error: (e) => {
@@ -119,6 +120,7 @@ export class ProfileCard {
           this.profileService.unsubscribe(this.user.id).subscribe({
             next: () => {
               if (this.user) this.user.relation = 'unsubscribed';
+              this.toast.show('unsubscribed successfully', 'success');
               this.isLoading = false;
             },
             error: (e) => {
