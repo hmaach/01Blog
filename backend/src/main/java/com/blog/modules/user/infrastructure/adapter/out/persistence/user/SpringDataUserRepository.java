@@ -110,4 +110,9 @@ public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID
     @Query("UPDATE UserEntity u SET u.postsCount = u.postsCount - 1 WHERE u.id = :userId")
     void decrementPostsCount(@Param("userId") UUID userId);
 
+    @Override
+    @Modifying
+    @Query(value = "DELETE FROM users WHERE id = :userId", nativeQuery = true)
+    void deleteById(@Param("userId") UUID userId);
+
 }
