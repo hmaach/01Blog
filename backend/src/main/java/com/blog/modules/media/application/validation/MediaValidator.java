@@ -1,8 +1,10 @@
 package com.blog.modules.media.application.validation;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.tika.Tika;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.modules.media.infrastructure.exception.EmptyMediaFileException;
@@ -27,7 +29,14 @@ public abstract class MediaValidator {
     }
 
     protected void validateContentType(MultipartFile file, List<String> allowedTypes) {
-        String contentType = file.getContentType();
+        Tika tika = new Tika();
+        String contentType;
+
+        try {
+            contentType = tika.detect(file.getBytes());
+        } catch (IOException e) {
+            throw new InvalidMediaTypeException(allowedTypes);
+        }
         if (contentType == null || allowedTypes.stream().noneMatch(type -> type.equalsIgnoreCase(contentType))) {
             throw new InvalidMediaTypeException(allowedTypes);
         }
