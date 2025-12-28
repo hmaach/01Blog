@@ -142,6 +142,8 @@ Topics covered:
    cp .env-example .env
    ```
 
+   Update `.env` with your credentials:
+
 2. **Backend Setup**
 
    ```bash
