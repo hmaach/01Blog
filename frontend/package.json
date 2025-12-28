@@ -37,7 +37,6 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@ng-bootstrap/ng-bootstrap": "^19.0.1",
     "@popperjs/core": "^2.11.8",
-    "@tailwindcss/postcss": "^4.1.14",
     "bootstrap": "^5.3.6",
     "express": "^5.1.0",
     "marked": "^16.4.2",

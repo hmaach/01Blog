@@ -9,6 +9,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import {
+  HTTP_INTERCEPTORS,
   HttpClient,
   provideHttpClient,
   withFetch,
@@ -16,6 +17,7 @@ import {
 } from '@angular/common/http';
 import { AuthService } from './features/auth/services/auth.service';
 import { provideMarkdown } from 'ngx-markdown';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,6 +34,11 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: (authService: AuthService) => () => authService.validateToken(),
       deps: [AuthService],
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
       multi: true,
     },
   ],

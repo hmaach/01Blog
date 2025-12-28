@@ -21,6 +21,7 @@ import com.blog.modules.user.infrastructure.adapter.in.web.dto.RegisterUserComma
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.UserResponse;
 import com.blog.modules.user.infrastructure.exception.EmailAlreadyExistsException;
 import com.blog.shared.infrastructure.exception.InternalServerErrorException;
+import com.blog.shared.infrastructure.exception.UnauthorizedException;
 import com.blog.shared.infrastructure.security.JwtService;
 import com.blog.shared.utils.MarkdownUtils;
 
@@ -100,7 +101,7 @@ public class AuthServiceImpl implements AuthService {
 
         if (auth.isAuthenticated()) {
             User user = userRepository.findByEmail(cmd.email())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
+                    .orElseThrow(() -> new UnauthorizedException("User not found"));
 
             return jwtService.generateToken(user);
         }

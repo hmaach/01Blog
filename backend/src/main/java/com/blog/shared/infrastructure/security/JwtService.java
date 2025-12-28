@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.blog.modules.user.domain.model.User;
 import com.blog.modules.user.domain.port.in.UserService;
 import com.blog.modules.user.infrastructure.adapter.in.web.dto.LoginResponse;
+import com.blog.shared.infrastructure.exception.UnauthorizedException;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -92,7 +93,7 @@ public class JwtService {
             String token = authHeader.substring(7);
             return UUID.fromString(getIdFromToken(token));
         }
-        throw new RuntimeException("JWT token missing or invalid");
+        throw new UnauthorizedException("JWT token missing or invalid");
     }
 
     public String extractRoleFromRequest(HttpServletRequest request) {
@@ -101,6 +102,6 @@ public class JwtService {
             String token = authHeader.substring(7);
             return getRoleFromToken(token);
         }
-        throw new RuntimeException("JWT token missing or invalid");
+        throw new UnauthorizedException("JWT token missing or invalid");
     }
 }

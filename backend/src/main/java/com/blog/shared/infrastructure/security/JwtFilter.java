@@ -62,13 +62,14 @@ public class JwtFilter extends OncePerRequestFilter {
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userService.findById(UUID.fromString(userId));
 
-            System.out.println("-------------------------------------" + userService.isBanned(UUID.fromString(userId)));
+            // System.out.println("-------------------------------------" +
+            // userService.isBanned(UUID.fromString(userId)));
 
-            if (userService.isBanned(UUID.fromString(userId))) {
+            if (user.getStatus().equals("BANNED")) {
                 JsonResponseWriter.write(
                         response,
                         HttpStatus.UNAUTHORIZED.value(),
-                        "UNAUTHORIZED",
+                        "UNAUTHORIZED_BANNED",
                         "You Are banned from the platform");
                 return;
             }

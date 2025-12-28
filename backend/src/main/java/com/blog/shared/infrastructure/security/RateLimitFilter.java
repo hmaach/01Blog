@@ -24,8 +24,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
 
-    private int capacity = 50;
-    private int refillDurationMinutes = 10;
+    private int capacity = 100;
+    private int refillDurationMinutes = 1;
     private boolean enabled = true;
 
     @Override
