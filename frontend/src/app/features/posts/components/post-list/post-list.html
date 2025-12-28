@@ -1,3 +1,4 @@
+@if (this.isProfile && this.isOwner) {
 <button
   matButton="outlined"
   color="primary"
@@ -7,6 +8,7 @@
   <mat-icon>add_circle</mat-icon>
   Create Post
 </button>
+}
 
 <!-- <button matButton="outlined" color="primary" [matMenuTriggerFor]="menu" class="create-post-button">
   <mat-icon>add_circle</mat-icon>

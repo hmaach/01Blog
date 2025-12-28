@@ -11,6 +11,7 @@ import { StorageService } from '../../../../core/services/storage.service';
 import { Author } from '../../models/author-model';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Spinner } from '../../../../shared/components/spinner/spinner';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
@@ -33,8 +34,22 @@ export class PostList {
   @Input() noMorePosts?: boolean;
 
   private storageService = inject(StorageService);
+  private route = inject(ActivatedRoute);
 
+  isOwner: boolean = false;
+  isProfile: boolean = false;
   constructor(private dialog: MatDialog) {}
+
+  ngOnInit(): void {
+    const snapshot = this.route.snapshot;
+    const currentPath = snapshot.url.map((segment) => segment.path).join('/');
+
+    const username = snapshot.paramMap.get('username')!;
+    const currUserUsername = this.storageService.getCurrentUserInfo()?.username;
+
+    this.isOwner = username === currUserUsername;
+    this.isProfile = currentPath.startsWith('profile');
+  }
 
   openCreatePostDialog(): void {
     const dialogRef = this.dialog.open(PostForm, {
