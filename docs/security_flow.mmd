@@ -1,0 +1,95 @@
+graph TD
+    A[HTTP Request] --> B{RateLimitFilter<br/>OncePerRequestFilter}
+    
+    B -->|Rate Limit Exceeded| C[Return 429<br/>TOO_MANY_REQUESTS]
+    B -->|Within Limit| D{JwtFilter<br/>OncePerRequestFilter}
+    
+    D --> D1[Extract Authorization Header]
+    D1 --> D2{Bearer Token<br/>Present?}
+    
+    D2 -->|No| E[Continue Filter Chain]
+    D2 -->|Yes| D3[Extract JWT Token]
+    
+    D3 --> D4{Parse Token<br/>Valid Format?}
+    D4 -->|Invalid/Malformed| D5[Return 401<br/>UNAUTHORIZED]
+    D4 -->|Valid| D6[Extract User ID from Token]
+    
+    D6 --> D7{User ID Present &<br/>No Auth in Context?}
+    D7 -->|No| E
+    D7 -->|Yes| D8[Fetch User from Database]
+    
+    D8 --> D9{User Banned?}
+    D9 -->|Yes| D10[Return 401<br/>User Banned]
+    D9 -->|No| D11[Load UserDetails via<br/>CustomUserDetailsService]
+    
+    D11 --> D12{Validate Token<br/>Against UserDetails?}
+    D12 -->|Invalid| E
+    D12 -->|Valid| D13[Create Authentication Token<br/>UsernamePasswordAuthenticationToken]
+    
+    D13 --> D14[Set Authentication in<br/>SecurityContext]
+    D14 --> E
+    
+    E --> F{UsernamePasswordAuthenticationFilter<br/>Default Spring Security Filter}
+    
+    F --> G{Authorization Rules<br/>HttpSecurity Config}
+    
+    G --> G1{Endpoint Check}
+    G1 -->|/api/auth/**| H[Permit All]
+    G1 -->|GET /| H
+    G1 -->|GET /api/posts| H
+    G1 -->|/api/admin/**| I{Has ROLE_ADMIN?}
+    G1 -->|Other Endpoints| J{Authenticated?}
+    
+    I -->|No| K[JwtAuthenticationEntryPoint<br/>Return 401 UNAUTHORIZED]
+    I -->|Yes| L[Process Request]
+    
+    J -->|No| K
+    J -->|Yes| L
+    
+    H --> L
+    L --> M[Controller/Endpoint]
+    
+    style A fill:#e1f5ff
+    style B fill:#fff3cd
+    style D fill:#fff3cd
+    style F fill:#d4edda
+    style G fill:#d4edda
+    style M fill:#d1ecf1
+    style C fill:#f8d7da
+    style D5 fill:#f8d7da
+    style D10 fill:#f8d7da
+    style K fill:#f8d7da
+    
+    subgraph "Custom Filters"
+    B
+    D
+    end
+    
+    subgraph "Spring Security Default Filters"
+    F
+    end
+    
+    subgraph "Security Configuration"
+    G
+    end
+    
+    subgraph "Authentication Components"
+    N[DaoAuthenticationProvider]
+    O[CustomUserDetailsService]
+    P[BCryptPasswordEncoder]
+    Q[UserPrincipal]
+    end
+    
+    subgraph "JWT Components"
+    R[JwtService]
+    R1[Generate Token]
+    R2[Validate Token]
+    R3[Extract Claims]
+    R --> R1
+    R --> R2
+    R --> R3
+    end
+    
+    subgraph "Session Management"
+    S[SessionCreationPolicy.STATELESS]
+    end
