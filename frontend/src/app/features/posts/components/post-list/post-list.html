@@ -1,4 +1,4 @@
-@if (this.isProfile && this.isOwner) {
+@if (!this.isProfile || this.isOwner) {
 <button
   matButton="outlined"
   color="primary"

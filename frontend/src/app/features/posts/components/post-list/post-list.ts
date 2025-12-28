@@ -49,6 +49,9 @@ export class PostList {
 
     this.isOwner = username === currUserUsername;
     this.isProfile = currentPath.startsWith('profile');
+
+    console.log(this.isProfile);
+    
   }
 
   openCreatePostDialog(): void {
