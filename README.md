@@ -39,12 +39,14 @@ Built with modern technologies, 01Blog combines a robust **Java Spring Boot** ba
 ## 🛠️ Technologies Used
 
 ### Backend
+
 - **Java Spring Boot** - RESTful API development
 - **Spring Security** - Authentication and authorization
 - **PostgreSQL** - Relational database management
 - **Docker** - Containerization and deployment
 
 ### Frontend
+
 - **Angular** - Component-based UI framework
 - **Angular Material** - Modern UI components
 - **SCSS** - Enhanced styling capabilities
@@ -66,6 +68,7 @@ Built with modern technologies, 01Blog combines a robust **Java Spring Boot** ba
 4. **Frameworks & Drivers** - External integrations (database, web framework, UI)
 
 This architectural approach provides:
+
 - Independence from frameworks and external tools
 - Highly testable business logic
 - Flexibility to swap implementations
@@ -86,11 +89,13 @@ View the complete database schema and relationships:
 ## 📚 Documentation
 
 ### Backend Documentation
+
 Comprehensive backend setup, API endpoints, and implementation details:
 
 **[Backend Documentation →](https://github.com/hmaach/01Blog/tree/main/backend/README.md)**
 
 Topics covered:
+
 - Installation and setup
 - API endpoints and usage
 - Security configuration
@@ -98,11 +103,13 @@ Topics covered:
 - Testing strategies
 
 ### Frontend Documentation
+
 Frontend architecture, components, and development guide:
 
 **[Frontend Documentation →](https://github.com/hmaach/01Blog/tree/main/frontend/README.md)**
 
 Topics covered:
+
 - Installation and setup
 - Project structure
 - Component architecture
@@ -114,20 +121,29 @@ Topics covered:
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Java 17 or higher
 - Node.js 18+ and npm
 - PostgreSQL 14+
-- Docker (optional)
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/hmaach/01blog.git
    cd 01blog
    ```
 
+   ### 2. Set Up Environment
+
+   ```bash
+   cd backend
+   cp .env-example .env
+   ```
+
 2. **Backend Setup**
+
    ```bash
    cd backend
    ./mvnw spring-boot:run
@@ -138,11 +154,6 @@ Topics covered:
    cd frontend
    npm install
    ng serve
-   ```
-
-4. **Using Docker**
-   ```bash
-   docker-compose up
    ```
 
 Visit `http://localhost:4200` to access the application.
