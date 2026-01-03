@@ -168,4 +168,9 @@ public class PostRepositoryImpl implements PostRepository {
             jpaRepository.deleteById(postId);
         }
     }
+
+    @Override
+    public void deletePostMediaLink(UUID postId, UUID mediaId) {
+        postMediaJpaRepository.deletePostMediaLink(postId, mediaId);
+    }
 }

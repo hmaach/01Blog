@@ -25,6 +25,8 @@ public interface PostRepository {
 
     void deleteById(UUID id);
 
+    void deletePostMediaLink(UUID postId, UUID mediaId);
+
     void decrementLikesCount(UUID postId);
 
     void incrementImpressionsCount(UUID postIds);

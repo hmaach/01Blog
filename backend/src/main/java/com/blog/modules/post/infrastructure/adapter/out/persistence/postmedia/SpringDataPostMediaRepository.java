@@ -4,24 +4,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface SpringDataPostMediaRepository extends JpaRepository<PostMediaEntity, UUID> {
 
-    // @Query("""
-    //     SELECT pm 
-    //     FROM PostMediaEntity pm
-    //     WHERE pm.post_id = :postId
-    //     LIMIT 1
-    // """)
-    // Optional<PostMediaEntity> findFirstByPostId(@Param("postId") UUID postId);
-
     Optional<PostMediaEntity> findFirstByIdPostIdOrderByCreatedAtAsc(UUID postId);
 
+    @Modifying
+    @Query("DELETE FROM PostMediaEntity pm WHERE pm.id.postId = :postId AND pm.id.mediaId = :mediaId")
+    void deletePostMediaLink(@Param("postId") UUID postId, @Param("mediaId") UUID mediaId);
 
-    // @Modifying
-    // @Query("UPDATE PostEntity p SET p.likesCount = p.likesCount - 1 WHERE p.id = :postId")
-    // void deletePostMediaLinks(@Param("postId") UUID postId);
-    // @Modifying
-    // @Query("UPDATE PostEntity p SET p.likesCount = p.likesCount - 1 WHERE p.id = :postId")
-    // void deleteMediaLinks(@Param("postId") UUID mediaId);
 }

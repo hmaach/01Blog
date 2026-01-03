@@ -189,6 +189,8 @@ public class MediaServiceImpl implements MediaService {
         Media media = mediaRepository.findById(mediaId)
                 .orElseThrow(() -> new MediaNotFoundException(mediaId.toString()));
 
+        postRepository.deletePostMediaLink(postId, mediaId);
+
         fileStorage.delete(media.getUrl());
         mediaRepository.deleteById(media.getId());
     }
